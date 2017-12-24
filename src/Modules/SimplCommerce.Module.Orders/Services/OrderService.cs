@@ -260,19 +260,21 @@ namespace SimplCommerce.Module.Orders.Services
 
         private async Task<ShippingPrice> ValidateShippingMethod(string shippingMethodName, Address shippingAddress, Cart cart)
         {
-            var applicableShippingPrices = await _shippingPriceService.GetApplicableShippingPrices(new GetShippingPriceRequest
-            {
-                OrderAmount = cart.Items.Sum(x => x.Product.Price * x.Quantity),
-                ShippingAddress = shippingAddress
-            });
+            //var applicableShippingPrices = await _shippingPriceService.GetApplicableShippingPrices(new GetShippingPriceRequest
+            //{
+            //    OrderAmount = cart.Items.Sum(x => x.Product.Price * x.Quantity),
+            //    ShippingAddress = shippingAddress
+            //});
 
-            var shippingMethod = applicableShippingPrices.FirstOrDefault(x => x.Name == shippingMethodName);
-            if (shippingMethod == null)
-            {
-                throw new ApplicationException($"Invalid shipping method {shippingMethod}");
-            }
+            //var shippingMethod = applicableShippingPrices.FirstOrDefault(x => x.Name == shippingMethodName);
+            //if (shippingMethod == null)
+            //{
+            //    throw new ApplicationException($"Invalid shipping method {shippingMethod}");
+            //}
 
-            return shippingMethod;
+            //return shippingMethod;
+
+            return new ShippingPrice() { Name = "Default", Price = 0, Description = "Default" };
         }
     }
 }
