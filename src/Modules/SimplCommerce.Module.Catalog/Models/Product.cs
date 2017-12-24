@@ -69,6 +69,12 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public TaxClass TaxClass { get; set; }
 
+        public string Via { get; set; }
+
+        public string Currency { get; set; }
+
+        public string Provider { get; set; }
+
         public void AddCategory(ProductCategory category)
         {
             category.Product = this;

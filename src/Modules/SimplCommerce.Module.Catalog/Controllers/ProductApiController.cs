@@ -93,7 +93,13 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 CategoryIds = product.Categories.Select(x => x.CategoryId).ToList(),
                 ThumbnailImageUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage),
                 BrandId = product.BrandId,
-                TaxClassId = product.TaxClassId
+                TaxClassId = product.TaxClassId,
+                Baggage = product.DisplayOrder,
+                Seats = product.StockQuantity,
+                TerminalInfo = product.Sku,
+                Via = product.Via,
+                Provider = product.Provider,
+                Currency = product.Currency
             };
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
@@ -278,7 +284,13 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 TaxClassId = model.Product.TaxClassId,
                 HasOptions = model.Product.Variations.Any() ? true : false,
                 IsVisibleIndividually = true,
-                CreatedBy = currentUser
+                CreatedBy = currentUser,
+                DisplayOrder = model.Product.Baggage,
+                StockQuantity = model.Product.Seats,
+                Sku = model.Product.TerminalInfo,
+                Via = model.Product.Via,
+                Provider = model.Product.Provider,
+                Currency = model.Product.Currency
             };
 
             if (!User.IsInRole("admin"))
@@ -383,15 +395,21 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.IsCallForPricing = model.Product.IsCallForPricing;
             product.IsAllowToOrder = model.Product.IsAllowToOrder;
             product.UpdatedBy = currentUser;
+            product.DisplayOrder = model.Product.Baggage;
+            product.StockQuantity = model.Product.Seats;
+            product.Sku = model.Product.TerminalInfo;
+            product.Via = model.Product.Via;
+            product.Provider = model.Product.Provider;
+            product.Currency = model.Product.Currency;
 
             if (model.Product.IsOutOfStock)
             {
                 product.StockQuantity = 0;
             }
-            else
-            {
-                product.StockQuantity = null;
-            }
+            //else
+            //{
+            //    product.StockQuantity = null;
+            //}
 
             await SaveProductMedias(model, product);
 
