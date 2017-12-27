@@ -302,10 +302,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 product.StockQuantity = 0;
             }
-            else
-            {
-                product.StockQuantity = null;
-            }
+            //else
+            //{
+            //    product.StockQuantity = null;
+            //}
 
             var optionIndex = 0;
             foreach (var option in model.Product.Options)

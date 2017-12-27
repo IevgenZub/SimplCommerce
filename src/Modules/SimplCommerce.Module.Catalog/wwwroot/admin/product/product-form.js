@@ -131,7 +131,8 @@
                             name: vm.product.name + ' ' + optionCombinations.map(getItemValue).join(' '),
                             normalizedName : optionCombinations.map(getItemValue).join('-'),
                             optionCombinations: optionCombinations,
-                            price : vm.product.price
+                            price: vm.product.price,
+                            oldPrice: vm.product.oldPrice
                         };
                         vm.product.variations.push(variation);
                     } else {
@@ -197,7 +198,9 @@
                     return item.value;
                 }).join('-'),
                 optionCombinations: optionCombinations,
-                price: vm.addingVariation.price || vm.product.price
+                price: vm.addingVariation.price || vm.product.price,
+                oldPrice: vm.addingVariation.oldPrice || vm.pr.oldPrice
+
             };
 
             if (!vm.product.variations.find(function (item) { return item.name === variation.name; })) {
