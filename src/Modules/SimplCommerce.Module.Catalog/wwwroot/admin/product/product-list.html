@@ -1,10 +1,10 @@
 ﻿<div class="page-header">
     <div class="row">
         <div class="col-md-8">
-            <h2>{{::vm.translate.get('Products')}}</h2>
+            <h2>Manage Flights</h2>
         </div>
         <div class="col-md-4 text-right">
-            <a ui-sref="product-create" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>{{::vm.translate.get('Create Product')}}</a>
+            <a ui-sref="product-create" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>Create Flight</a>
         </div>
     </div>
 </div>
@@ -14,10 +14,10 @@
         <tr>
             <th st-sort="Name" class="sortable">Flight #</th>
             <th st-sort="Provider" class="sortable">Provider</th>
-            <th st-sort="From" class="sortable">From</th>
-            <th st-sort="To" class="sortable">To</th>
-            <th st-sort="DepartureDate" class="sortable">Departure</th>
-            <th st-sort="LandingDate" class="sortable">Landing</th>
+            <th st-sort="ShortDescription" class="sortable">From</th>
+            <th st-sort="Description" class="sortable">To</th>
+            <th st-sort="SpecialPriceStart" class="sortable">Departure</th>
+            <th st-sort="SpecialPriceEnd" class="sortable">Landing</th>
             <th>{{::vm.translate.get('Stock Quantity')}}</th>
             <th class="text-center">{{::vm.translate.get('Has Options')}}</th>
             <th st-sort="IsPublished" class="text-center sortable">{{::vm.translate.get('Is Published')}}</th>
@@ -89,6 +89,7 @@
                 <button ng-if="!product.isPublished" title="Publish" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>
                 <a ui-sref="product-edit({id: product.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil"></span></a>
                 <button ng-click="vm.deleteProduct(product)" title="Delete" class="btn btn-danger btn-xs delete"> <span class="glyphicon glyphicon-remove"></span></button>
+                <button title="Create RT" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-copy"></span></button>
             </td>
         </tr>
     </tbody>
@@ -99,7 +100,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="10"></td>
+            <td class="text-center" st-pagination="" st-items-by-page="10" st-displayed-pages="10" colspan="10"></td>
         </tr>
     </tfoot>
 </table>
