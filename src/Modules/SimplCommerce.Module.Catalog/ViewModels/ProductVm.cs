@@ -72,5 +72,17 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public List<ProductLinkVm> RelatedProducts { get; set; } = new List<ProductLinkVm>();
 
         public List<ProductLinkVm> CrossSellProducts { get; set; } = new List<ProductLinkVm>();
+
+        public int Baggage { get; set; }
+
+        public int? Seats { get; set; }
+
+        public string TerminalInfo { get; set; }
+
+        public string Via { get; set; }
+
+        public string Currency { get; set; }
+
+        public string Provider { get; set; }
     }
 }

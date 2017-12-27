@@ -69,6 +69,12 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public TaxClass TaxClass { get; set; }
 
+        public string Via { get; set; }
+
+        public string Currency { get; set; }
+
+        public string Provider { get; set; }
+
         public void AddCategory(ProductCategory category)
         {
             category.Product = this;
@@ -132,6 +138,14 @@ namespace SimplCommerce.Module.Catalog.Models
             product.StockQuantity = StockQuantity;
             product.BrandId = BrandId;
             product.VendorId = VendorId;
+            product.Via = Via;
+            product.DisplayOrder = DisplayOrder;
+            product.SpecialPriceEnd = SpecialPriceEnd;
+            product.SpecialPriceStart = SpecialPriceStart;
+            product.Sku = Sku;
+            product.Currency = Currency;
+            product.Provider = Provider;
+            product.TaxClassId = TaxClassId;
 
             foreach (var attribute in AttributeValues)
             {

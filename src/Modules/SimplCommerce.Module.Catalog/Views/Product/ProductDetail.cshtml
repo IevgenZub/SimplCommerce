@@ -24,29 +24,8 @@
 <div class="product-detail">
     <div class="row">
         <div class="col-md-6">
-
-            @if (!string.IsNullOrWhiteSpace(Model.Specification))
-            {
-                <div>
-                    <h3>@Localizer["Product specification"]</h3>
-                    @Html.Raw(Model.Specification)
-                </div>
-            }
-            @if (Model.Attributes.Any())
-            {
-                <div>
-                    <h3>@Localizer["Product specification"]</h3>
-                    <table class="table table-striped">
-                        @foreach (var attribute in Model.Attributes)
-                {
-                            <tr>
-                                <td>@attribute.Name</td>
-                                <td>@attribute.Value</td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            }
+            <div class="product-short-desc">From <lable>@Html.Raw(Model.ShortDescription)</lable></div>
+            <div class="product-short-desc">To <lable>@Html.Raw(Model.Description)</lable></div>
         </div>
         <div class="col-md-6">
             <div class="product-name">
@@ -58,7 +37,7 @@
                     <span>(@Model.ReviewsCount) <a href="#reviews">@Localizer["reviews"]</a> | <a href="#addreview"> @Localizer["Add Review"]</a></span>
                 </li>
             </ul>
-            <div class="product-short-desc">@Html.Raw(Model.ShortDescription)</div>
+
             @if (Model.HasVariation)
             {
                 <form>
