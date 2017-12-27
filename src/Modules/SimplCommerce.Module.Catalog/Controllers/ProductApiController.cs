@@ -201,6 +201,24 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.Name.Contains(name));
                 }
 
+                if (search.Provider != null)
+                {
+                    string provider = search.Provider;
+                    query = query.Where(x => x.Provider.Contains(provider));
+                }
+
+                if (search.From != null)
+                {
+                    string from = search.From;
+                    query = query.Where(x => x.ShortDescription.Contains(from));
+                }
+
+                if (search.To != null)
+                {
+                    string to = search.To;
+                    query = query.Where(x => x.Description.Contains(to));
+                }
+
                 if (search.HasOptions != null)
                 {
                     bool hasOptions = search.HasOptions;
@@ -248,7 +266,12 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     IsCallForPricing = x.IsCallForPricing,
                     StockQuantity = x.StockQuantity,
                     CreatedOn = x.CreatedOn,
-                    IsPublished = x.IsPublished
+                    IsPublished = x.IsPublished,
+                    From = x.ShortDescription,
+                    To = x.Description,
+                    Provider = x.Provider,
+                    DepartureDate = x.SpecialPriceStart,
+                    LandingDate = x.SpecialPriceEnd
                 });
 
             return Json(gridData);

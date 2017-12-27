@@ -12,13 +12,14 @@
 <table class="table table-striped" st-pipe="vm.getProducts" st-table="vm.products">
     <thead>
         <tr>
-            <th st-sort="Name" class="sortable">{{::vm.translate.get('Name')}}</th>
-            <th class="text-center">{{::vm.translate.get('Has Options')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Visible Individually')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Featured')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Allowed To Order')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Called For Pricing')}}</th>
+            <th st-sort="Name" class="sortable">Flight #</th>
+            <th st-sort="Provider" class="sortable">Provider</th>
+            <th st-sort="From" class="sortable">From</th>
+            <th st-sort="To" class="sortable">To</th>
+            <th st-sort="DepartureDate" class="sortable">Departure</th>
+            <th st-sort="LandingDate" class="sortable">Landing</th>
             <th>{{::vm.translate.get('Stock Quantity')}}</th>
+            <th class="text-center">{{::vm.translate.get('Has Options')}}</th>
             <th st-sort="IsPublished" class="text-center sortable">{{::vm.translate.get('Is Published')}}</th>
             <th st-sort="CreatedOn" class="text-center sortable">{{::vm.translate.get('Created On')}}</th>
             <th class="text-center">{{::vm.translate.get('Actions')}}</th>
@@ -31,6 +32,25 @@
             </th>
             <th>
                 <div class="form-group">
+                    <input class="form-control" st-search="Provider" />
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <input class="form-control" st-search="From" />
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <input class="form-control" st-search="To" />
+                </div>
+            </th>
+            <th></th>
+            <th></th>
+            <th>
+            </th>
+            <th>
+                <div class="form-group">
                     <select class="form-control" st-search="HasOptions">
                         <option value="">{{::vm.translate.get('All')}}</option>
                         <option value="true">{{::vm.translate.get('Yes')}}</option>
@@ -40,19 +60,6 @@
             </th>
             <th>
                 <div class="form-group">
-                    <select class="form-control" st-search="IsVisibleIndividually">
-                        <option value="">{{::vm.translate.get('All')}}</option>
-                        <option value="true">{{::vm.translate.get('Yes')}}</option>
-                        <option value="false">{{::vm.translate.get('No')}}</option>
-                    </select>
-                </div>
-            </th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>
-                <div class="form-group">
                     <select class="form-control" st-search="IsPublished">
                         <option value="">{{::vm.translate.get('All')}}</option>
                         <option value="true">{{::vm.translate.get('Yes')}}</option>
@@ -60,19 +67,21 @@
                     </select>
                 </div>
             </th>
-            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody ng-show="!vm.isLoading">
         <tr ng-repeat="product in vm.products">
             <td>{{product.name}}</td>
-            <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isVisibleIndividually && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isFeatured && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isAllowToOrder && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isCallForPricing && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
+            <td>{{product.provider}}</td>
+            <td>{{product.from}}</td>
+            <td>{{product.to}}</td>
+            <td>{{product.departureDate | date:'medium'}}</td>
+            <td>{{product.landingDate | date:'medium'}}</td>
             <td class="text-center">{{product.stockQuantity}}</td>
+            <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td class="text-center"><i ng-attr-class="{{product.isPublished && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td class="text-center">{{product.createdOn | date:'medium'}}</td>
             <td class="text-center">

@@ -23,5 +23,18 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public bool IsAllowToOrder { get; set; }
 
         public int? StockQuantity { get; set; }
+
+        public string From { get; set; }
+
+        public string To { get; set; }
+
+        public DateTimeOffset? DepartureDate { get; set; }
+
+        public DateTimeOffset? LandingDate { get; set; }
+
+        public string Status { get; set; }
+
+        public string Provider { get; set; }
+
     }
 }
