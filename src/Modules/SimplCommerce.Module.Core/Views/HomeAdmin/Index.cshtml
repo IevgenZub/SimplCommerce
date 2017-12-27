@@ -227,15 +227,15 @@
                     <li class="dropdown">
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Catalog"] <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a ui-sref="product">@Localizer["Products"]</a></li>
+                            <li><a ui-sref="product">Flights</a></li>
                             @if(User.IsInRole("admin"))
                             {
                                 <li><a ui-sref="category">@Localizer["Categories"]</a></li>
-                                <li><a ui-sref="brand">@Localizer["Brands"]</a></li>
-                                <li><a ui-sref="product-option">@Localizer["Product Options"]</a></li>
-                                <li><a ui-sref="product-attribute-group">@Localizer["Product Attribute Groups"]</a></li>
-                                <li><a ui-sref="product-attribute">@Localizer["Product Attributes"]</a></li>
-                                <li><a ui-sref="product-template">@Localizer["Product Templates"]</a></li>
+                                <li><a ui-sref="brand">Airlines</a></li>
+                                <li><a ui-sref="product-option">Flight Options</a></li>
+                                <li><a ui-sref="product-attribute-group">Flight Attribute Groups</a></li>
+                                <li><a ui-sref="product-attribute">Flight Attributes</a></li>
+                                <li><a ui-sref="product-template">Flight Templates</a></li>
                             }
                         </ul>
                     </li>
