@@ -100,12 +100,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Via = product.Via,
                 Provider = product.Provider,
                 Currency = product.Currency,
-                ReturnProvider = product.ReturnProvider,
                 ReturnFlightNumber = product.ReturnFlightNumber,
                 ReturnCarrierId = product.ReturnCarrierId,
                 ReturnDepartureDate = product.ReturnDepartureDate,
                 ReturnLandingDate = product.ReturnLandingDate,
-                IsRoundTrip = product.IsRoundTrip
+                IsRoundTrip = product.IsRoundTrip,
+                ReturnAircraftId = product.ReturnAircraftId,
+                ReturnTerminal = product.ReturnTerminal,
+                ReturnVia = product.ReturnVia
             };
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
@@ -320,12 +322,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Via = model.Product.Via,
                 Provider = model.Product.Provider,
                 Currency = model.Product.Currency,
-                ReturnProvider = model.Product.ReturnProvider,
                 ReturnFlightNumber = model.Product.ReturnFlightNumber,
                 ReturnCarrierId = model.Product.ReturnCarrierId,
                 ReturnDepartureDate = model.Product.ReturnDepartureDate,
                 ReturnLandingDate = model.Product.ReturnLandingDate,
-                IsRoundTrip = model.Product.IsRoundTrip
+                IsRoundTrip = model.Product.IsRoundTrip,
+                ReturnAircraftId = model.Product.ReturnAircraftId,
+                ReturnTerminal = model.Product.ReturnTerminal,
+                ReturnVia = model.Product.ReturnVia
             };
 
             if (!User.IsInRole("admin"))
@@ -436,12 +440,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.Via = model.Product.Via;
             product.Provider = model.Product.Provider;
             product.Currency = model.Product.Currency;
-            product.ReturnProvider = model.Product.ReturnProvider;
             product.ReturnFlightNumber = model.Product.ReturnFlightNumber;
             product.ReturnCarrierId = model.Product.ReturnCarrierId;
             product.ReturnDepartureDate = model.Product.ReturnDepartureDate;
             product.ReturnLandingDate = model.Product.ReturnLandingDate;
             product.IsRoundTrip = model.Product.IsRoundTrip;
+            product.ReturnAircraftId = model.Product.ReturnAircraftId;
+            product.ReturnTerminal = model.Product.ReturnTerminal;
+            product.ReturnVia = model.Product.ReturnVia;
 
             if (model.Product.IsOutOfStock)
             {
