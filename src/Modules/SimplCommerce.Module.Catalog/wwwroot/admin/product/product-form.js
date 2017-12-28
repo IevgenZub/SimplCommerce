@@ -374,6 +374,32 @@
                 if (vm.product.returnLandingDate) {
                     vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
                 }
+
+                var options = {
+                    url: "themes/AirlineTickets/data/airports.json",
+
+                    getValue: function (element) {
+                        return element.city + ", " + element.name + " (" + element.code + ")";
+                    },
+
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        },
+                        hideAnimation: {
+                            type: "slide", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        }
+                    }
+                };
+
+                $("#flightFrom, #flightTo").easyAutocomplete(options);
             });
         }
 
@@ -423,6 +449,8 @@
             getCategories();
             getBrands();
             getTaxClasses();
+
+
         }
 
         function getParentCategoryIds(categoryId) {
@@ -454,5 +482,7 @@
         }
 
         init();
+
+
     }
 })(jQuery);
