@@ -87,6 +87,8 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public Brand ReturnCarrier { get; set; }
 
+        public bool? IsRoundTrip { get; set; }
+
 
         public void AddCategory(ProductCategory category)
         {
@@ -159,6 +161,7 @@ namespace SimplCommerce.Module.Catalog.Models
             product.Currency = Currency;
             product.Provider = Provider;
             product.TaxClassId = TaxClassId;
+            product.IsRoundTrip = IsRoundTrip;
 
             foreach (var attribute in AttributeValues)
             {

@@ -97,5 +97,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public long? ReturnCarrierId { get; set; }
 
         public Brand ReturnCarrier { get; set; }
+
+        public bool? IsRoundTrip { get; set; }
     }
 }

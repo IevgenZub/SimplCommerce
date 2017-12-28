@@ -104,7 +104,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReturnFlightNumber = product.ReturnFlightNumber,
                 ReturnCarrierId = product.ReturnCarrierId,
                 ReturnDepartureDate = product.ReturnDepartureDate,
-                ReturnLandingDate = product.ReturnLandingDate
+                ReturnLandingDate = product.ReturnLandingDate,
+                IsRoundTrip = product.IsRoundTrip
             };
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
@@ -323,7 +324,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReturnFlightNumber = model.Product.ReturnFlightNumber,
                 ReturnCarrierId = model.Product.ReturnCarrierId,
                 ReturnDepartureDate = model.Product.ReturnDepartureDate,
-                ReturnLandingDate = model.Product.ReturnLandingDate
+                ReturnLandingDate = model.Product.ReturnLandingDate,
+                IsRoundTrip = model.Product.IsRoundTrip
             };
 
             if (!User.IsInRole("admin"))
@@ -439,6 +441,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.ReturnCarrierId = model.Product.ReturnCarrierId;
             product.ReturnDepartureDate = model.Product.ReturnDepartureDate;
             product.ReturnLandingDate = model.Product.ReturnLandingDate;
+            product.IsRoundTrip = model.Product.IsRoundTrip;
 
             if (model.Product.IsOutOfStock)
             {
