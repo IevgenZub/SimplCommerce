@@ -65,7 +65,6 @@
                                 <input type="text" class="form-control" id="rez-soyadi" placeholder="Lastname">
                             </div>
                             <button type="submit" class="btn btn-rez">Find Reservation</button>
-                            <a href="#" class="btn btn-rez">Cancel & Refund</a>
                         </form>
                     </div>
                 </div>
@@ -240,11 +239,11 @@
     <script>
             $(function () {
                 $('#gidis-tarihi').datetimepicker({
-                    format: 'DD MMMM YYYY'
+                    //format: 'DD MMMM YYYY'
                 });
                 $('#donus-tarihi').datetimepicker({
-                    useCurrent: false, //Important! See issue #1075
-                    format: 'DD MMMM YYYY'
+                    useCurrent: false//, //Important! See issue #1075
+                    //format: 'DD MMMM YYYY'
                 });
                 $("#gidis-tarihi").on("dp.change", function (e) {
                     $('#donus-tarihi').data("DateTimePicker").minDate(e.date);
@@ -254,9 +253,11 @@
                 });
 
                 var options = {
-                    url: "data/airports.json",
+                    url: "themes/AirlineTickets/data/airports.json",
 
-                    getValue: "name",
+                    getValue: function(element) {
+                        return element.city + ", "  + element.name + " (" + element.code + ")";
+                    },
 
                     list: {
                         match: {
@@ -274,7 +275,7 @@
                         }
                     }
                 };
-                $("#kalkis-yeri, #inis-yeri").easyAutocomplete(options);
+                $("#kalkis-yeri, #inis-yeri, #flightFrom, #flightTo").easyAutocomplete(options);
             });
     </script>
 

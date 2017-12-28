@@ -75,6 +75,24 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public string Provider { get; set; }
 
+        public string ReturnFlightNumber { get; set; }
+
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+
+        public DateTimeOffset? ReturnLandingDate { get; set; }
+
+        public long? ReturnCarrierId { get; set; }
+
+        public Brand ReturnCarrier { get; set; }
+
+        public long? ReturnAircraftId { get; set; }
+
+        public bool? IsRoundTrip { get; set; }
+
+        public string ReturnTerminal { get; set; }
+
+        public string ReturnVia { get; set; }
+
         public void AddCategory(ProductCategory category)
         {
             category.Product = this;
@@ -146,6 +164,7 @@ namespace SimplCommerce.Module.Catalog.Models
             product.Currency = Currency;
             product.Provider = Provider;
             product.TaxClassId = TaxClassId;
+            product.IsRoundTrip = IsRoundTrip;
 
             foreach (var attribute in AttributeValues)
             {

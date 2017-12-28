@@ -1,4 +1,4 @@
-@model SimplCommerce.Module.Core.ViewModels.HomeViewModel
+    @model SimplCommerce.Module.Core.ViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -55,22 +55,6 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="checkbox">
-                                <label class="check-label">
-                                    <input type="checkbox" id="aktarmasiz"> Nonstop
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label class="check-label">
-                                    <input type="checkbox" id="iptal-edilebilir"> Cancelable
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
             </form>
             <div class="row-passengers" style="display: none;">
                 <div class="box-with-arrow">
@@ -99,27 +83,6 @@
                                         <input type="text" data-ride="spinner" id="adult-passenger" class="spinner-input form-control input-number" value="1" readonly="readonly">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-passenger" data-value="increase" data-target="#adult-passenger" data-toggle="spinner">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row passenger-list valign-wrapper">
-                                <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Student</p>
-                                    <p class="second-line">(12-24)</p>
-                                </div>
-                                <div class="col-lg-6 col-xs-12">
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-passenger" data-value="decrease" data-target="#student-passenger" data-toggle="spinner">
-                                                <span class="glyphicon glyphicon-minus"></span>
-                                            </button>
-                                        </span>
-                                        <input type="text" data-ride="spinner" id="student-passenger" class="spinner-input form-control input-number" value="0" readonly="readonly">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-passenger" data-value="increase" data-target="#student-passenger" data-toggle="spinner">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
                                         </span>
