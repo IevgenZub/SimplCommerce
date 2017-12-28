@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimplCommerce.Module.Catalog.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -84,5 +85,17 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Currency { get; set; }
 
         public string Provider { get; set; }
+
+        public string ReturnProvider { get; set; }
+
+        public string ReturnFlightNumber { get; set; }
+
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+
+        public DateTimeOffset? ReturnLandingDate { get; set; }
+
+        public long? ReturnCarrierId { get; set; }
+
+        public Brand ReturnCarrier { get; set; }
     }
 }

@@ -34,6 +34,9 @@
         vm.datePickerSpecialPriceStart = {};
         vm.datePickerSpecialPriceEnd = {};
 
+        vm.datePickerReturnDepartureDate = {};
+        vm.datePickerReturnLandingDate = {};
+
         vm.updateSlug = function () {
             vm.product.slug = slugify(vm.product.name);
         };
@@ -311,6 +314,8 @@
             vm.product.specialPrice = vm.product.specialPrice === null ? '' : vm.product.specialPrice;
             vm.product.specialPriceStart = vm.product.specialPriceStart === null ? '' : vm.product.specialPriceStart;
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
+            vm.product.returnDepartureDate = vm.product.returnDepartureDate === null ? '' : vm.product.returnDepartureDate;
+            vm.product.returnLandingDate = vm.product.returnLandingDate === null ? '' : vm.product.returnLandingDate;
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;
             });
@@ -360,6 +365,14 @@
                 }
                 if (vm.product.specialPriceEnd) {
                     vm.product.specialPriceEnd = new Date(vm.product.specialPriceEnd);
+                }
+
+
+                if (vm.product.returnDepartureDate) {
+                    vm.product.returnDepartureDate = new Date(vm.product.returnDepartureDate);
+                }
+                if (vm.product.returnLandingDate) {
+                    vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
                 }
             });
         }
