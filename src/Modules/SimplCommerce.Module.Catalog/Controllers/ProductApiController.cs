@@ -540,7 +540,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productLink.LinkedProduct.NormalizedName = variationVm.NormalizedName;
                 productLink.LinkedProduct.HasOptions = false;
                 productLink.LinkedProduct.IsVisibleIndividually = false;
-
+                GenerateDates(productLink.LinkedProduct, product, variationVm);
+                
                 foreach (var combinationVm in variationVm.OptionCombinations)
                 {
                     productLink.LinkedProduct.AddOptionCombination(new ProductOptionCombination
@@ -554,6 +555,22 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productLink.LinkedProduct.ThumbnailImage = product.ThumbnailImage;
 
                 product.AddProductLinks(productLink);
+            }
+        }
+
+        private static void GenerateDates(Product linkedProduct, Product product, ProductVariationVm variation)
+        {
+            var date = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
+
+            if (date != null)
+            {
+                linkedProduct.SpecialPriceStart = Convert.ToDateTime(date.Value)
+                        .AddHours(product.SpecialPriceStart.Value.Hour)
+                        .AddMinutes(product.SpecialPriceStart.Value.Minute);
+
+                linkedProduct.SpecialPriceEnd = Convert.ToDateTime(date.Value)
+                        .AddHours(product.SpecialPriceEnd.Value.Hour)
+                        .AddMinutes(product.SpecialPriceEnd.Value.Minute);
             }
         }
 
