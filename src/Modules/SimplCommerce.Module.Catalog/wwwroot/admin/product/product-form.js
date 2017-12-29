@@ -38,7 +38,8 @@
         vm.datePickerReturnLandingDate = {};
 
         vm.updateSlug = function () {
-            vm.product.slug = slugify(vm.product.name);
+            vm.product.slug = slugify(vm.product.flightNumber);
+            vm.product.name = vm.product.flightNumber
         };
 
         vm.openCalendar = function (e, picker) {

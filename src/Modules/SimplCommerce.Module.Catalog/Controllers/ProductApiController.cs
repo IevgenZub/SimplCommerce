@@ -107,7 +107,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 IsRoundTrip = product.IsRoundTrip,
                 ReturnAircraftId = product.ReturnAircraftId,
                 ReturnTerminal = product.ReturnTerminal,
-                ReturnVia = product.ReturnVia
+                ReturnVia = product.ReturnVia,
+                FlightNumber = product.FlightNumber
             };
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
@@ -329,7 +330,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 IsRoundTrip = model.Product.IsRoundTrip,
                 ReturnAircraftId = model.Product.ReturnAircraftId,
                 ReturnTerminal = model.Product.ReturnTerminal,
-                ReturnVia = model.Product.ReturnVia
+                ReturnVia = model.Product.ReturnVia,
+                FlightNumber = model.Product.FlightNumber
             };
 
             if (!User.IsInRole("admin"))
@@ -448,6 +450,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.ReturnAircraftId = model.Product.ReturnAircraftId;
             product.ReturnTerminal = model.Product.ReturnTerminal;
             product.ReturnVia = model.Product.ReturnVia;
+            product.FlightNumber = model.Product.FlightNumber;
 
             if (model.Product.IsOutOfStock)
             {

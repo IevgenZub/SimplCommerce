@@ -93,6 +93,9 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public string ReturnVia { get; set; }
 
+        public string FlightNumber { get; set; }
+
+
         public void AddCategory(ProductCategory category)
         {
             category.Product = this;
