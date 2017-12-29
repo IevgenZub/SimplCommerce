@@ -375,6 +375,13 @@
                     vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
                 }
 
+            });
+        }
+
+        function getCategories() {
+            categoryService.getCategories().then(function (result) {
+                vm.categories = result.data;
+
                 var options = {
                     url: "themes/AirlineTickets/data/airports.json",
 
@@ -400,12 +407,6 @@
                 };
 
                 $("#flightFrom, #flightTo").easyAutocomplete(options);
-            });
-        }
-
-        function getCategories() {
-            categoryService.getCategories().then(function (result) {
-                vm.categories = result.data;
             });
         }
 
