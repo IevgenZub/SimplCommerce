@@ -11,6 +11,12 @@
 }
 
 <div class="row">
+     <!-- TODO: Add model as param and uncomment-->
+     @* @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Search/Views/Components/SearchForm.cshtml", Model) *@
+</div>
+
+
+<div class="row">
     <div class="col-md-3 product-list-filters">
         <h3>Filter by</h3>
         <form id="productFilter" name="productFilter" method="GET" action="~/search">
