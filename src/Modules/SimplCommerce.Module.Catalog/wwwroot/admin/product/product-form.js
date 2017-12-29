@@ -317,6 +317,9 @@
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
             vm.product.returnDepartureDate = vm.product.returnDepartureDate === null ? '' : vm.product.returnDepartureDate;
             vm.product.returnLandingDate = vm.product.returnLandingDate === null ? '' : vm.product.returnLandingDate;
+            vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
+            vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
+
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;
             });
@@ -387,7 +390,7 @@
                     url: "themes/AirlineTickets/data/airports.json",
 
                     getValue: function (element) {
-                        return element.city + ", " + element.name + " (" + element.code + ")";
+                        return element.city + ", " + element.name + " (" + element.code + "), " + element.country;
                     },
 
                     list: {
