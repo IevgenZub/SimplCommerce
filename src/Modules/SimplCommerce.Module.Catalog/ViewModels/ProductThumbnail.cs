@@ -40,13 +40,48 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public CalculatedProductPrice CalculatedProductPrice { get; set; }
 
         public string Departure { get; set; }
-
         public string Landing { get; set; }
+        public DateTimeOffset? DepartureDate { get; set; }
+        public DateTimeOffset? LandingDate { get; set; }
+        public string Carrier { get; set; }
+        public string Vendor { get; set; }
+        public string Via { get; set; }
+        public string Baggage { get; set; }
+        public string Provider { get; set; }
+        public string Terminal { get; set; }
+        public string FlightNumber { get; set; }
+        public string ReturnAircraft { get; set; }
+        public string Aircraft { get; set; }
+        public string ReturnCarrier { get; set; }
+        public string ReturnFlightNumber { get; set; }
+        public string ReturnVia { get; set; }
+        public string ReturnTerminal { get; set; }
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public bool? IsRoundTrip { get; set; }
 
-        public string DepartureDate { get; set; }
-
-        public string LandingDate { get; set; }
-
+        /*
+        product.StockQuantity = StockQuantity;
+            product.BrandId = BrandId;
+            product.VendorId = VendorId;
+            product.Via = Via;
+            product.DisplayOrder = DisplayOrder;
+            product.SpecialPriceEnd = SpecialPriceEnd;
+            product.SpecialPriceStart = SpecialPriceStart;
+            product.Sku = Sku;
+            product.Currency = Currency;
+            product.Provider = Provider;
+            product.TaxClassId = TaxClassId;
+            product.IsRoundTrip = IsRoundTrip;
+            product.FlightNumber = FlightNumber;
+            product.ReturnAircraftId = ReturnAircraftId;
+            product.ReturnCarrierId = ReturnCarrierId;
+            product.ReturnFlightNumber = ReturnFlightNumber;
+            product.ReturnVia = ReturnVia;
+            product.ReturnTerminal = ReturnTerminal;
+            product.ReturnDepartureDate = ReturnDepartureDate;
+            product.ReturnLandingDate = ReturnLandingDate;
+            */
         public static ProductThumbnail FromProduct(Product product)
         {
             var productThumbnail = new ProductThumbnail
@@ -67,9 +102,16 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 RatingAverage = product.RatingAverage,
                 Departure = product.ShortDescription,
                 Landing = product.Description,
-                DepartureDate = product.SpecialPriceStart.ToString(),
-                LandingDate = product.SpecialPriceEnd.ToString()
-            };
+                DepartureDate = product.SpecialPriceStart,
+                LandingDate = product.SpecialPriceEnd,
+                Provider = product.Provider,
+                ReturnDepartureDate = product.ReturnDepartureDate,
+                ReturnLandingDate = product.ReturnLandingDate,
+                ReturnFlightNumber = product.ReturnFlightNumber,
+                Terminal = product.Sku,
+                ReturnTerminal = product.ReturnTerminal,
+                IsRoundTrip = product.IsRoundTrip
+        };
 
             return productThumbnail;
         }
