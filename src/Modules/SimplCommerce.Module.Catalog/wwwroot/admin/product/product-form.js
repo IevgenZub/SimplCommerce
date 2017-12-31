@@ -38,7 +38,8 @@
         vm.datePickerReturnLandingDate = {};
 
         vm.updateSlug = function () {
-            vm.product.slug = slugify(vm.product.name);
+            vm.product.slug = slugify(vm.product.flightNumber);
+            vm.product.name = vm.product.flightNumber
         };
 
         vm.openCalendar = function (e, picker) {
@@ -316,6 +317,11 @@
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
             vm.product.returnDepartureDate = vm.product.returnDepartureDate === null ? '' : vm.product.returnDepartureDate;
             vm.product.returnLandingDate = vm.product.returnLandingDate === null ? '' : vm.product.returnLandingDate;
+            vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
+            vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
+            vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
+
+
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;
             });
@@ -374,12 +380,39 @@
                 if (vm.product.returnLandingDate) {
                     vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
                 }
+
             });
         }
 
         function getCategories() {
             categoryService.getCategories().then(function (result) {
                 vm.categories = result.data;
+
+                var options = {
+                    url: "themes/AirlineTickets/data/airports.json",
+
+                    getValue: function (element) {
+                        return element.city + ", " + element.name + " (" + element.code + "), " + element.country;
+                    },
+
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        },
+                        hideAnimation: {
+                            type: "slide", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        }
+                    }
+                };
+
+                $("#flightFrom, #flightTo").easyAutocomplete(options);
             });
         }
 
@@ -423,6 +456,8 @@
             getCategories();
             getBrands();
             getTaxClasses();
+
+
         }
 
         function getParentCategoryIds(categoryId) {
@@ -454,5 +489,7 @@
         }
 
         init();
+
+
     }
 })(jQuery);

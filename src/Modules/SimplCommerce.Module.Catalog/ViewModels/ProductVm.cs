@@ -103,5 +103,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string ReturnTerminal { get; set; }
 
         public string ReturnVia { get; set; }
+
+        public string FlightNumber { get; set; }
     }
 }

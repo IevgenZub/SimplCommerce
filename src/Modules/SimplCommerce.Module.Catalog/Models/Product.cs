@@ -93,6 +93,9 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public string ReturnVia { get; set; }
 
+        public string FlightNumber { get; set; }
+
+
         public void AddCategory(ProductCategory category)
         {
             category.Product = this;
@@ -165,6 +168,14 @@ namespace SimplCommerce.Module.Catalog.Models
             product.Provider = Provider;
             product.TaxClassId = TaxClassId;
             product.IsRoundTrip = IsRoundTrip;
+            product.FlightNumber = FlightNumber;
+            product.ReturnAircraftId = ReturnAircraftId;
+            product.ReturnCarrierId = ReturnCarrierId;
+            product.ReturnFlightNumber = ReturnFlightNumber;
+            product.ReturnVia = ReturnVia;
+            product.ReturnTerminal = ReturnTerminal;
+            product.ReturnDepartureDate = ReturnDepartureDate;
+            product.ReturnLandingDate = ReturnLandingDate;
 
             foreach (var attribute in AttributeValues)
             {
