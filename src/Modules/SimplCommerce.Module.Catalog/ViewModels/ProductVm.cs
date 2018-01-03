@@ -105,5 +105,10 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string ReturnVia { get; set; }
 
         public string FlightNumber { get; set; }
+
+        public int? SoldSeats { get; set; }
+
+        public bool? SaleRtOnly { get; set; }
+
     }
 }

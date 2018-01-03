@@ -95,6 +95,10 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public string FlightNumber { get; set; }
 
+        public int? SoldSeats { get; set; }
+
+        public bool? SaleRtOnly { get; set; }
+
 
         public void AddCategory(ProductCategory category)
         {
