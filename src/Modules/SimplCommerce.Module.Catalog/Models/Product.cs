@@ -84,6 +84,7 @@ namespace SimplCommerce.Module.Catalog.Models
         public string ReturnTerminal { get; set; }
         public string ReturnVia { get; set; }
 
+        public string Status { get; set; }
 
         // Admin Rules Departure
 

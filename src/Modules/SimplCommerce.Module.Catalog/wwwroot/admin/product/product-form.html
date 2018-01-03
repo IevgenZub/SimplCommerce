@@ -332,10 +332,60 @@
                 </uib-tab>
                 <uib-tab index="1" ng-show="vm.product.userIsAdmin" heading="Admin Rules: Departure">
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Status</label>
+                        <div class="col-sm-10">
+                            <select id="productCurrency" class="form-control" ng-model="vm.product.status">
+                                <option value="INSERTED">Inserted</option>
+                                <option value="ACCEPTED">Accepted</option>
+                                <option value="STOP SALE">Stop Sale</option>
+                                <option value="PAUSE">Pause</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" ng-model="vm.product.adminPayLater">Pay Later
+                                </label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input ng-disabled="!vm.product.adminPayLater"  id="productAdminPayLaterRule" type="text" name="adminPayLaterRule" ng-model="vm.product.adminPayLaterRule" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminIsSpecialOffer">Show as Special Offer
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminNotifyAgencies">Send email to all Agencies
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminNotifyLastPassanger">Send email all last passaganger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminIsLastMinute">Show as Last Minute
                                 </label>
                             </div>
                         </div>

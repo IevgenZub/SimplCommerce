@@ -110,8 +110,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReturnVia = product.ReturnVia,
                 FlightNumber = product.FlightNumber,
                 SoldSeats = product.SoldSeats,
-                SaleRtOnly = product.SaleRtOnly
-
+                SaleRtOnly = product.SaleRtOnly,
+                Status = product.Status
             };
 
             if (User.IsInRole("admin"))
@@ -361,7 +361,9 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReturnVia = model.Product.ReturnVia,
                 FlightNumber = model.Product.FlightNumber,
                 SoldSeats = model.Product.SoldSeats,
-                SaleRtOnly = model.Product.SaleRtOnly
+                SaleRtOnly = model.Product.SaleRtOnly,
+                Status = "INSERTED"
+                
             };
 
             if (!User.IsInRole("admin"))
@@ -507,6 +509,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
 
             if (User.IsInRole("admin"))
             {
+                product.Status = model.Product.Status;
                 product.AdminRoundTrip = model.Product.AdminRoundTrip;
                 product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
                 product.AdminPayLater = model.Product.AdminPayLater;
@@ -572,6 +575,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             }
 
             product.IsPublished = !product.IsPublished;
+            product.Status = product.IsPublished ? "ACCEPTED" : "PAUSE";
             await _productRepository.SaveChangesAsync();
 
             return Accepted();

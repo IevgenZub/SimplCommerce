@@ -110,6 +110,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public bool? SaleRtOnly { get; set; }
 
+        public string Status { get; set; }
+
         // Admin Rules Departure
 
         public bool? AdminRoundTrip { get; set; }
