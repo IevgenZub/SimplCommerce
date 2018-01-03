@@ -133,6 +133,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public bool? AdminReturnNotifyAgencies { get; set; }
         public bool? AdminReturnNotifyLastPassanger { get; set; }
         public bool? AdminReturnIsLastMinute { get; set; }
-
+        public bool UserIsAdmin { get; set; }
     }
 }

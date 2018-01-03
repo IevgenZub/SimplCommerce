@@ -330,7 +330,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="1" heading="Admin Rules: Departure">
+                <uib-tab index="1" ng-show="vm.product.userIsAdmin" heading="Admin Rules: Departure">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
@@ -341,7 +341,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="2" ng-show="vm.product.isRoundTrip" heading="Admin Rules: Return">
+                <uib-tab index="2" ng-show="vm.product.isRoundTrip && vm.product.userIsAdmin" heading="Admin Rules: Return">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
