@@ -320,6 +320,21 @@
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
+            vm.product.saleRtOnly = vm.product.saleRtOnly === null ? '' : vm.product.saleRtOnly;
+            vm.product.adminPayLater = vm.product.adminPayLater === null ? '' : vm.product.adminPayLater;
+            vm.product.adminRoundTrip = vm.product.adminRoundTrip === null ? '' : vm.product.adminRoundTrip;
+            vm.product.adminIsLastMinute = vm.product.adminIsLastMinute === null ? '' : vm.product.adminIsLastMinute;
+            vm.product.adminIsSpecialOffer = vm.product.adminIsSpecialOffer === null ? '' : vm.product.adminIsSpecialOffer;
+            vm.product.adminNotifyAgencies = vm.product.adminNotifyAgencies === null ? '' : vm.product.adminNotifyAgencies;
+            vm.product.adminPasExpirityRule = vm.product.adminPasExpirityRule === null ? '' : vm.product.adminPasExpirityRule;
+            vm.product.adminReturnIsLastMinute = vm.product.adminReturnIsLastMinute === null ? '' : vm.product.adminReturnIsLastMinute;
+            vm.product.adminNotifyLastPassanger = vm.product.adminNotifyLastPassanger === null ? '' : vm.product.adminNotifyLastPassanger;
+            vm.product.adminRoundTripOperatorId = vm.product.adminRoundTripOperatorId === null ? '' : vm.product.adminRoundTripOperatorId;
+            vm.product.adminReturnIsSpecialOffer = vm.product.adminReturnIsSpecialOffer === null ? '' : vm.product.adminReturnIsSpecialOffer;
+            vm.product.adminReturnNotifyAgencies = vm.product.adminReturnNotifyAgencies === null ? '' : vm.product.adminReturnNotifyAgencies;
+            vm.product.adminReturnPasExpirityRule = vm.product.adminReturnPasExpirityRule === null ? '' : vm.product.adminReturnPasExpirityRule;
+            vm.product.adminReturnNotifyLastPassanger = vm.product.adminReturnNotifyLastPassanger === null ? '' : vm.product.adminReturnNotifyLastPassanger;
+            vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
 
 
             vm.product.variations.forEach(function (item) {

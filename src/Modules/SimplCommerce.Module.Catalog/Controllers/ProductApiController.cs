@@ -87,7 +87,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SpecialPriceEnd = product.SpecialPriceEnd,
                 IsFeatured = product.IsFeatured,
                 IsPublished = product.IsPublished,
-                IsCallForPricing =  product.IsCallForPricing,
+                IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 IsOutOfStock = product.StockQuantity == 0,
                 CategoryIds = product.Categories.Select(x => x.CategoryId).ToList(),
@@ -111,7 +111,32 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 FlightNumber = product.FlightNumber,
                 SoldSeats = product.SoldSeats,
                 SaleRtOnly = product.SaleRtOnly
+
             };
+
+            if (User.IsInRole("admin"))
+            {
+                productVm.AdminRoundTrip = product.AdminRoundTrip;
+                productVm.AdminRoundTripOperatorId = product.AdminRoundTripOperatorId;
+                productVm.AdminPayLater = product.AdminPayLater;
+                productVm.AdminPayLaterRule = product.AdminPayLaterRule;
+                productVm.AdminBlackList = product.AdminBlackList;
+                productVm.AdminPasExpirityRule = product.AdminPasExpirityRule;
+                productVm.AdminIsSpecialOffer = product.AdminIsSpecialOffer;
+                productVm.AdminNotifyAgencies = product.AdminNotifyAgencies;
+                productVm.AdminNotifyLastPassanger = product.AdminNotifyLastPassanger;
+                productVm.AdminIsLastMinute = product.AdminIsLastMinute;
+                productVm.AdminReturnPayLater = product.AdminReturnPayLater;
+                productVm.AdminReturnPayLaterRule = product.AdminReturnPayLaterRule;
+                productVm.AdminReturnBlackList = product.AdminReturnBlackList;
+                productVm.AdminReturnPasExpirityRule = product.AdminReturnPasExpirityRule;
+                productVm.AdminReturnIsSpecialOffer = product.AdminReturnIsSpecialOffer;
+                productVm.AdminReturnNotifyAgencies = product.AdminReturnNotifyAgencies;
+                productVm.AdminReturnNotifyLastPassanger = product.AdminReturnNotifyLastPassanger;
+                productVm.AdminReturnIsLastMinute = product.AdminReturnIsLastMinute;
+            }
+
+
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
             {
@@ -342,6 +367,27 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 product.VendorId = currentUser.VendorId;
             }
+            else
+            {
+                product.AdminRoundTrip = model.Product.AdminRoundTrip;
+                product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
+                product.AdminPayLater = model.Product.AdminPayLater;
+                product.AdminPayLaterRule = model.Product.AdminPayLaterRule;
+                product.AdminBlackList = model.Product.AdminBlackList;
+                product.AdminPasExpirityRule = model.Product.AdminPasExpirityRule;
+                product.AdminIsSpecialOffer = model.Product.AdminIsSpecialOffer;
+                product.AdminNotifyAgencies = model.Product.AdminNotifyAgencies;
+                product.AdminNotifyLastPassanger = model.Product.AdminNotifyLastPassanger;
+                product.AdminIsLastMinute = model.Product.AdminIsLastMinute;
+                product.AdminReturnPayLater = model.Product.AdminReturnPayLater;
+                product.AdminReturnPayLaterRule = model.Product.AdminReturnPayLaterRule;
+                product.AdminReturnBlackList = model.Product.AdminReturnBlackList;
+                product.AdminReturnPasExpirityRule = model.Product.AdminReturnPasExpirityRule;
+                product.AdminReturnIsSpecialOffer = model.Product.AdminReturnIsSpecialOffer;
+                product.AdminReturnNotifyAgencies = model.Product.AdminReturnNotifyAgencies;
+                product.AdminReturnNotifyLastPassanger = model.Product.AdminReturnNotifyLastPassanger;
+                product.AdminReturnIsLastMinute = model.Product.AdminReturnIsLastMinute;
+            }
 
             if (model.Product.IsOutOfStock)
             {
@@ -457,6 +503,28 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.FlightNumber = model.Product.FlightNumber;
             product.SaleRtOnly = model.Product.SaleRtOnly;
             product.SoldSeats = model.Product.SoldSeats;
+
+            if (User.IsInRole("admin"))
+            {
+                product.AdminRoundTrip = model.Product.AdminRoundTrip;
+                product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
+                product.AdminPayLater = model.Product.AdminPayLater;
+                product.AdminPayLaterRule = model.Product.AdminPayLaterRule;
+                product.AdminBlackList = model.Product.AdminBlackList;
+                product.AdminPasExpirityRule = model.Product.AdminPasExpirityRule;
+                product.AdminIsSpecialOffer = model.Product.AdminIsSpecialOffer;
+                product.AdminNotifyAgencies = model.Product.AdminNotifyAgencies;
+                product.AdminNotifyLastPassanger = model.Product.AdminNotifyLastPassanger;
+                product.AdminIsLastMinute = model.Product.AdminIsLastMinute;
+                product.AdminReturnPayLater = model.Product.AdminReturnPayLater;
+                product.AdminReturnPayLaterRule = model.Product.AdminReturnPayLaterRule;
+                product.AdminReturnBlackList = model.Product.AdminReturnBlackList;
+                product.AdminReturnPasExpirityRule = model.Product.AdminReturnPasExpirityRule;
+                product.AdminReturnIsSpecialOffer = model.Product.AdminReturnIsSpecialOffer;
+                product.AdminReturnNotifyAgencies = model.Product.AdminReturnNotifyAgencies;
+                product.AdminReturnNotifyLastPassanger = model.Product.AdminReturnNotifyLastPassanger;
+                product.AdminReturnIsLastMinute = model.Product.AdminReturnIsLastMinute;
+            }
 
             if (model.Product.IsOutOfStock)
             {
