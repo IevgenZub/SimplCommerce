@@ -112,6 +112,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Status { get; set; }
 
+        public string ReservationNumber { get; set; }
+
+
         // Admin Rules Departure
 
         public bool? AdminRoundTrip { get; set; }

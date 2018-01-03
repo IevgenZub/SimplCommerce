@@ -83,6 +83,7 @@ namespace SimplCommerce.Module.Catalog.Models
         public long? ReturnAircraftId { get; set; }
         public string ReturnTerminal { get; set; }
         public string ReturnVia { get; set; }
+        public string ReservationNumber { get; set; }
 
         public string Status { get; set; }
 
@@ -208,6 +209,7 @@ namespace SimplCommerce.Module.Catalog.Models
             product.AdminReturnNotifyAgencies = AdminReturnNotifyAgencies;
             product.AdminReturnNotifyLastPassanger = AdminReturnNotifyLastPassanger;
             product.AdminReturnIsLastMinute = AdminReturnIsLastMinute;
+            product.ReservationNumber = ReservationNumber;
 
 
             foreach (var attribute in AttributeValues)

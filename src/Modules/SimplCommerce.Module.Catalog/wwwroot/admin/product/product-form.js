@@ -335,7 +335,7 @@
             vm.product.adminReturnPasExpirityRule = vm.product.adminReturnPasExpirityRule === null ? '' : vm.product.adminReturnPasExpirityRule;
             vm.product.adminReturnNotifyLastPassanger = vm.product.adminReturnNotifyLastPassanger === null ? '' : vm.product.adminReturnNotifyLastPassanger;
             vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
-
+            vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
 
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;

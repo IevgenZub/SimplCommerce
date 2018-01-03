@@ -111,7 +111,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 FlightNumber = product.FlightNumber,
                 SoldSeats = product.SoldSeats,
                 SaleRtOnly = product.SaleRtOnly,
-                Status = product.Status
+                Status = product.Status,
+                ReservationNumber = product.ReservationNumber
             };
 
             if (User.IsInRole("admin"))
@@ -362,8 +363,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 FlightNumber = model.Product.FlightNumber,
                 SoldSeats = model.Product.SoldSeats,
                 SaleRtOnly = model.Product.SaleRtOnly,
-                Status = "INSERTED"
-                
+                Status = "INSERTED",
+                ReservationNumber = model.Product.ReservationNumber
             };
 
             if (!User.IsInRole("admin"))
@@ -506,6 +507,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.FlightNumber = model.Product.FlightNumber;
             product.SaleRtOnly = model.Product.SaleRtOnly;
             product.SoldSeats = model.Product.SoldSeats;
+            product.ReservationNumber = model.Product.ReservationNumber;
 
             if (User.IsInRole("admin"))
             {
