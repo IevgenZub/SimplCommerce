@@ -39,6 +39,8 @@
 
 <!--TODO: Add binding for Round trip fields -->
 
+@if (Model.IsRoundTrip.Value)
+{
 <div class="col-md-6 col-sm-6">
     <div class="thumbnail"  style="overflow: hidden">
         <a href="~/@Model.SeoTitle">
@@ -75,3 +77,4 @@
         </a>
     </div>
 </div>
+}
