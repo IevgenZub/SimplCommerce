@@ -232,13 +232,13 @@
     <script>
             $(function () {
                 $('#gidis-tarihi').datetimepicker({
-                    locale: 'en-gb'
-                    //format: 'DD MMMM YYYY'
+                    locale: 'en-gb',
+                    format: 'L'
                 });
                 $('#donus-tarihi').datetimepicker({
                     locale: 'en-gb',
-                    useCurrent: false//, //Important! See issue #1075
-                    //format: 'DD MMMM YYYY'
+                    useCurrent: false, //Important! See issue #1075
+                    format: 'L'
                 });
                 $("#gidis-tarihi").on("dp.change", function (e) {
                     $('#donus-tarihi').data("DateTimePicker").minDate(e.date);
