@@ -98,7 +98,6 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Seats = product.StockQuantity,
                 TerminalInfo = product.Sku,
                 Via = product.Via,
-                Provider = product.Provider,
                 Currency = product.Currency,
                 ReturnFlightNumber = product.ReturnFlightNumber,
                 ReturnCarrierId = product.ReturnCarrierId,
@@ -112,7 +111,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SoldSeats = product.SoldSeats,
                 SaleRtOnly = product.SaleRtOnly,
                 Status = product.Status,
-                ReservationNumber = product.ReservationNumber
+                ReservationNumber = product.ReservationNumber,
+                VendorId = product.VendorId
             };
 
             if (User.IsInRole("admin"))
@@ -350,7 +350,6 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 StockQuantity = model.Product.Seats,
                 Sku = model.Product.TerminalInfo,
                 Via = model.Product.Via,
-                Provider = model.Product.Provider,
                 Currency = model.Product.Currency,
                 ReturnFlightNumber = model.Product.ReturnFlightNumber,
                 ReturnCarrierId = model.Product.ReturnCarrierId,
@@ -373,6 +372,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             }
             else
             {
+                product.VendorId = model.Product.VendorId;
                 product.AdminRoundTrip = model.Product.AdminRoundTrip;
                 product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
                 product.AdminPayLater = model.Product.AdminPayLater;
@@ -494,7 +494,6 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.StockQuantity = model.Product.Seats;
             product.Sku = model.Product.TerminalInfo;
             product.Via = model.Product.Via;
-            product.Provider = model.Product.Provider;
             product.Currency = model.Product.Currency;
             product.ReturnFlightNumber = model.Product.ReturnFlightNumber;
             product.ReturnCarrierId = model.Product.ReturnCarrierId;
@@ -508,9 +507,11 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.SaleRtOnly = model.Product.SaleRtOnly;
             product.SoldSeats = model.Product.SoldSeats;
             product.ReservationNumber = model.Product.ReservationNumber;
+            product.VendorId = model.Product.VendorId;
 
             if (User.IsInRole("admin"))
             {
+                product.VendorId = model.Product.VendorId;
                 product.Status = model.Product.Status;
                 product.AdminRoundTrip = model.Product.AdminRoundTrip;
                 product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;

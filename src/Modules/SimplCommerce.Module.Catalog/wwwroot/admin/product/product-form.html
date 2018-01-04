@@ -24,15 +24,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Reservation Number</label>
+                        <label class="col-sm-2 control-label">Reservation #</label>
                         <div class="col-sm-10">
-                            <input id="productProvider" required type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
+                            <input id="productReservationNumber" required type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Provider</label>
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">Agency/Tour Operator</label>
                         <div class="col-sm-10">
-                            <input id="productProvider" required type="text" name="provider" ng-model="vm.product.provider" class="form-control" />
+                            <select class="form-control" ng-model="vm.product.vendorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

@@ -84,8 +84,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Currency { get; set; }
 
-        public string Provider { get; set; }
-
         public string ReturnFlightNumber { get; set; }
 
         public DateTimeOffset? ReturnDepartureDate { get; set; }
@@ -113,6 +111,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Status { get; set; }
 
         public string ReservationNumber { get; set; }
+
+        public long? VendorId { get; set; }
 
 
         // Admin Rules Departure

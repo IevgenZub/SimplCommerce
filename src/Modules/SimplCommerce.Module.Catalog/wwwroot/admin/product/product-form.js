@@ -5,7 +5,7 @@
         .controller('ProductFormCtrl', ProductFormCtrl);
 
     /* @ngInject */
-    function ProductFormCtrl($state, $timeout, $stateParams, $http, categoryService, productService, summerNoteService, brandService, translateService) {
+    function ProductFormCtrl($state, $timeout, $stateParams, $http, categoryService, productService, summerNoteService, brandService, translateService, userService) {
         var vm = this;
         vm.translate = translateService;
         // declare shoreDescription and description for summernote
@@ -30,6 +30,7 @@
         vm.addingVariation = { price: 0 };
         vm.brands = [];
         vm.taxClasses = [];
+        vm.vendors = [];
 
         vm.datePickerSpecialPriceStart = {};
         vm.datePickerSpecialPriceEnd = {};
@@ -45,6 +46,7 @@
         vm.openCalendar = function (e, picker) {
             vm[picker].open = true;
         };
+
 
         vm.shortDescUpload = function (files) {
             summerNoteService.upload(files[0])
@@ -336,6 +338,7 @@
             vm.product.adminReturnNotifyLastPassanger = vm.product.adminReturnNotifyLastPassanger === null ? '' : vm.product.adminReturnNotifyLastPassanger;
             vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
             vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
+            vm.product.vendorId = vm.product.vendorId === null ? '' : vm.product.vendorId;
 
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;
@@ -461,19 +464,27 @@
             });
         }
 
+        function getVendors() {
+            userService.getVendors().then(function (result) {
+                vm.vendors = result.data;
+            });
+        }
+
+
         function init() {
             if (vm.isEditMode) {
                 getProduct();
             }
+            getVendors();
             getProductOptions();
             getProductTemplates();
             getAttributes();
             getCategories();
             getBrands();
             getTaxClasses();
-
-
         }
+
+
 
         function getParentCategoryIds(categoryId) {
             if (!categoryId) {
