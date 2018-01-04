@@ -339,6 +339,7 @@
             vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
             vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
             vm.product.vendorId = vm.product.vendorId === null ? '' : vm.product.vendorId;
+            vm.product.soldSeats = vm.product.soldSeats === null ? '' : vm.product.soldSeats;
 
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;

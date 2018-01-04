@@ -308,7 +308,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     To = x.Description,
                     Provider = x.Provider,
                     DepartureDate = x.SpecialPriceStart,
-                    LandingDate = x.SpecialPriceEnd
+                    LandingDate = x.SpecialPriceEnd,
+                    Status = x.Status
                 });
 
             return Json(gridData);
@@ -576,8 +577,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 return BadRequest(new { error = "You don't have permission to manage this product" });
             }
 
-            product.IsPublished = !product.IsPublished;
-            product.Status = product.IsPublished ? "ACCEPTED" : "PAUSE";
+            //product.IsPublished = !product.IsPublished;
+            product.Status = product.Status == "ACCEPTED" ? "PAUSE" : "ACCEPTED";
             await _productRepository.SaveChangesAsync();
 
             return Accepted();
