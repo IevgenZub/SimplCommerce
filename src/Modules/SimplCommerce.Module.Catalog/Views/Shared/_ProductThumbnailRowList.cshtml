@@ -1,14 +1,49 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
 
-<div class="thumbnail" style="overflow: hidden; margin:10px 20px;">
-    <a href="~/@Model.SeoTitle">
-
-        <div class="col-md-2 col-xs-2 caption">
-            <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 130px; min-width: 130px;">
+<div class="col-md-6 col-sm-6">
+    <div class="thumbnail" style="overflow: hidden">
+       <div class="col-md-3 col-xs-3 caption">
+           <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+        </div>
+        <div class="col-md-9 col-xs-9">
+            <h4 class="product-name">@Model.Name</h4>
+            <p class="product-price">
+                <input type="radio" name="selectTrip">
+                @if (Model.IsCallForPricing)
+                {
+                    @Localizer["Call for pricing"]
+                }
+                else
+                {
+                    @Model.CalculatedProductPrice.Price.ToString("C")
+                    if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                    {
+                        <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
+                        <br />
+                        <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
+                    }
+                }
+            </p>
         </div>
 
-        <div class="col-md-3 col-xs-3 caption">
-            <h4 class="product-name">@Model.Name</h4>
+        <div class="col-md-12 col-xs-12 caption">
+            <p>Departure: @Model.Departure @Model.DepartureDate</p>
+            <p>Landing: @Model.Landing @Model.LandingDate</p>
+        </div>
+    </div>
+</div>
+
+<!--TODO: Add binding for Round trip fields -->
+
+@if (Model.IsRoundTrip.Value)
+{
+<div class="col-md-6 col-sm-6">
+    <div class="thumbnail" style="overflow: hidden">
+       <div class="col-md-3 col-xs-3 caption">
+           <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+        </div>
+        <div class="col-md-9 col-xs-9">
+            <h4 class="product-name">@Model.ReturnFlightNumber</h4>
             <p class="product-price">
                 @if (Model.IsCallForPricing)
                 {
@@ -25,26 +60,12 @@
                     }
                 }
             </p>
-            <ul class="list-inline product-ratings">
-                <li><input value="@Model.RatingAverage" readonly="readonly" class="rating-loading" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" /></li>
-                @if (Model.ReviewsCount > 0)
-                {
-                    <li class="product-review-list">
-                        <span>(@Model.ReviewsCount reviews)</span>
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="col-md-4 col-xs-4 caption">
-            <h4>&nbsp;</h4>
-            <p>Departure: @Model.Departure</p>
-            <p>Landing: @Model.Landing</p>
-        </div>
-        <div class="col-md-3 col-xs-3 caption">
-            <h4>&nbsp;</h4>
-            <p>@Model.DepartureDate</p>
-            <p>@Model.LandingDate</p>
         </div>
 
-    </a>
+        <div class="col-md-12 col-xs-12 caption">
+            <p>Departure: @Model.Landing @Model.ReturnDepartureDate</p>
+            <p>Landing: @Model.Departure @Model.ReturnLandingDate</p>
+        </div>
+    </div>
 </div>
+}

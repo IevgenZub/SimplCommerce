@@ -5,7 +5,7 @@
         .controller('ProductFormCtrl', ProductFormCtrl);
 
     /* @ngInject */
-    function ProductFormCtrl($state, $timeout, $stateParams, $http, categoryService, productService, summerNoteService, brandService, translateService) {
+    function ProductFormCtrl($state, $timeout, $stateParams, $http, categoryService, productService, summerNoteService, brandService, translateService, userService) {
         var vm = this;
         vm.translate = translateService;
         // declare shoreDescription and description for summernote
@@ -30,7 +30,8 @@
         vm.addingVariation = { price: 0 };
         vm.brands = [];
         vm.taxClasses = [];
-
+        vm.vendors = [];
+        vm.userIsAdmin = false;       
         vm.datePickerSpecialPriceStart = {};
         vm.datePickerSpecialPriceEnd = {};
 
@@ -45,6 +46,7 @@
         vm.openCalendar = function (e, picker) {
             vm[picker].open = true;
         };
+
 
         vm.shortDescUpload = function (files) {
             summerNoteService.upload(files[0])
@@ -320,7 +322,24 @@
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
-
+            vm.product.saleRtOnly = vm.product.saleRtOnly === null ? '' : vm.product.saleRtOnly;
+            vm.product.adminPayLater = vm.product.adminPayLater === null ? '' : vm.product.adminPayLater;
+            vm.product.adminRoundTrip = vm.product.adminRoundTrip === null ? '' : vm.product.adminRoundTrip;
+            vm.product.adminIsLastMinute = vm.product.adminIsLastMinute === null ? '' : vm.product.adminIsLastMinute;
+            vm.product.adminIsSpecialOffer = vm.product.adminIsSpecialOffer === null ? '' : vm.product.adminIsSpecialOffer;
+            vm.product.adminNotifyAgencies = vm.product.adminNotifyAgencies === null ? '' : vm.product.adminNotifyAgencies;
+            vm.product.adminPasExpirityRule = vm.product.adminPasExpirityRule === null ? '' : vm.product.adminPasExpirityRule;
+            vm.product.adminReturnIsLastMinute = vm.product.adminReturnIsLastMinute === null ? '' : vm.product.adminReturnIsLastMinute;
+            vm.product.adminNotifyLastPassanger = vm.product.adminNotifyLastPassanger === null ? '' : vm.product.adminNotifyLastPassanger;
+            vm.product.adminRoundTripOperatorId = vm.product.adminRoundTripOperatorId === null ? '' : vm.product.adminRoundTripOperatorId;
+            vm.product.adminReturnIsSpecialOffer = vm.product.adminReturnIsSpecialOffer === null ? '' : vm.product.adminReturnIsSpecialOffer;
+            vm.product.adminReturnNotifyAgencies = vm.product.adminReturnNotifyAgencies === null ? '' : vm.product.adminReturnNotifyAgencies;
+            vm.product.adminReturnPasExpirityRule = vm.product.adminReturnPasExpirityRule === null ? '' : vm.product.adminReturnPasExpirityRule;
+            vm.product.adminReturnNotifyLastPassanger = vm.product.adminReturnNotifyLastPassanger === null ? '' : vm.product.adminReturnNotifyLastPassanger;
+            vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
+            vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
+            vm.product.vendorId = vm.product.vendorId === null ? '' : vm.product.vendorId;
+            vm.product.soldSeats = vm.product.soldSeats === null ? '' : vm.product.soldSeats;
 
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;
@@ -446,19 +465,31 @@
             });
         }
 
+        function getVendors() {
+            userService.getVendors().then(function (result) {
+                vm.vendors = result.data;
+            });
+        }
+
+
         function init() {
+
+            vm.userIsAdmin = window.userIsAdmin;
+
             if (vm.isEditMode) {
                 getProduct();
             }
+            getVendors();
             getProductOptions();
             getProductTemplates();
             getAttributes();
             getCategories();
             getBrands();
             getTaxClasses();
-
-
+            
         }
+
+
 
         function getParentCategoryIds(categoryId) {
             if (!categoryId) {

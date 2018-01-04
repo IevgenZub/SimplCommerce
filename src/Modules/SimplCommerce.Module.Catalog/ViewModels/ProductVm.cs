@@ -84,8 +84,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Currency { get; set; }
 
-        public string Provider { get; set; }
-
         public string ReturnFlightNumber { get; set; }
 
         public DateTimeOffset? ReturnDepartureDate { get; set; }
@@ -105,5 +103,40 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string ReturnVia { get; set; }
 
         public string FlightNumber { get; set; }
+
+        public int? SoldSeats { get; set; }
+
+        public bool? SaleRtOnly { get; set; }
+
+        public string Status { get; set; }
+
+        public string ReservationNumber { get; set; }
+
+        public long? VendorId { get; set; }
+
+
+        // Admin Rules Departure
+
+        public bool? AdminRoundTrip { get; set; }
+        public long? AdminRoundTripOperatorId { get; set; }
+        public bool? AdminPayLater { get; set; }
+        public string AdminPayLaterRule { get; set; }
+        public string AdminBlackList { get; set; }
+        public int? AdminPasExpirityRule { get; set; }
+        public bool? AdminIsSpecialOffer { get; set; }
+        public bool? AdminNotifyAgencies { get; set; }
+        public bool? AdminNotifyLastPassanger { get; set; }
+        public bool? AdminIsLastMinute { get; set; }
+
+        // Admin Rules Return
+
+        public bool? AdminReturnPayLater { get; set; }
+        public string AdminReturnPayLaterRule { get; set; }
+        public string AdminReturnBlackList { get; set; }
+        public int? AdminReturnPasExpirityRule { get; set; }
+        public bool? AdminReturnIsSpecialOffer { get; set; }
+        public bool? AdminReturnNotifyAgencies { get; set; }
+        public bool? AdminReturnNotifyLastPassanger { get; set; }
+        public bool? AdminReturnIsLastMinute { get; set; }
     }
 }
