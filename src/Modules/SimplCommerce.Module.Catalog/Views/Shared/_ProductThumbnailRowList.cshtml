@@ -1,7 +1,8 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
 
-<div class="col-md-6 col-sm-6">
-    <div class="thumbnail" style="overflow: hidden">
+<div class="thumbnail" style="overflow: hidden; margin:10px 20px;">
+    <div class="col-md-6 col-sm-6">
+
        <div class="col-md-3 col-xs-3 caption">
            <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
         </div>
@@ -31,15 +32,13 @@
             <p>Landing: @Model.Landing @Model.LandingDate</p>
         </div>
     </div>
-</div>
 
 
-@if (Model.IsRoundTrip.Value)
-{
-<div class="col-md-6 col-sm-6">
-    <div class="thumbnail" style="overflow: hidden">
-       <div class="col-md-3 col-xs-3 caption">
-           <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+    @if (Model.IsRoundTrip.Value)
+    {
+    <div class="col-md-6 col-sm-6">
+        <div class="col-md-3 col-xs-3 caption">
+            <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
         </div>
         <div class="col-md-9 col-xs-9">
             <h4 class="product-name">@Model.ReturnFlightNumber</h4>
@@ -50,5 +49,5 @@
             <p>Landing: @Model.Departure @Model.ReturnLandingDate</p>
         </div>
     </div>
+    }
 </div>
-}
