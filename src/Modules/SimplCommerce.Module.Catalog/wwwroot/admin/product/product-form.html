@@ -12,10 +12,28 @@
             </div>
             <uib-tabset>
                 <uib-tab index="0" heading="{{::vm.translate.get('General Information')}}">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Provider</label>
+                    <div  class="form-group">
+                        <label style="color:forestgreen" class="col-sm-2 control-label">Status</label>
                         <div class="col-sm-10">
-                            <input id="productProvider" required type="text" name="provider" ng-model="vm.product.provider" class="form-control" />
+                            <select ng-disabled="!vm.userIsAdmin" id="productStatus" class="form-control" ng-model="vm.product.status">
+                                <option value="INSERTED">Inserted</option>
+                                <option value="ACCEPTED">Accepted</option>
+                                <option value="STOP SALE">Stop Sale</option>
+                                <option value="PAUSE">Pause</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Reservation #</label>
+                        <div class="col-sm-10">
+                            <input id="productReservationNumber" type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
+                        </div>
+                    </div>
+                    <div ng-show="vm.userIsAdmin" class="form-group" >
+                        <label class="col-sm-2 control-label">Agency/Tour Operator</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" ng-model="vm.product.vendorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -95,6 +113,16 @@
                         </div>
                     </div>
                     
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.saleRtOnly">Sale Only RT
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="returnContainer" ng-show="vm.product.isRoundTrip">
                         <div class="form-group">
                             <h4 class="col-sm-2 control-label">Return</h4>
@@ -186,11 +214,19 @@
                             <input id="productSeats" type="number" name="seats" ng-model="vm.product.seats" class="form-control" />
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Sold Seats</label>
+                        <div class="col-sm-10">
+                            <input id="productSoldSeats" type="number" name="soldSeats" ng-model="vm.product.soldSeats" class="form-control" />
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Currency</label>
                         <div class="col-sm-10">
-                            <input id="productCurrency" type="text" name="currency" ng-model="vm.product.currency" class="form-control" />
+                            <select id="productCurrency"  class="form-control" ng-model="vm.product.currency">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
                         </div>
                     </div>
 
@@ -312,7 +348,69 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="1" heading="{{::vm.translate.get('Product Variations')}}">
+                <uib-tab index="1" ng-show="vm.userIsAdmin" heading="Admin Rules: Departure">
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminPayLater">Pay Later
+                                </label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input ng-disabled="!vm.product.adminPayLater"  id="productAdminPayLaterRule" type="text" name="adminPayLaterRule" ng-model="vm.product.adminPayLaterRule" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminIsSpecialOffer">Show as Special Offer
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminNotifyAgencies">Send email to all Agencies
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminNotifyLastPassanger">Send email all last passaganger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminIsLastMinute">Show as Last Minute
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab index="2" ng-show="vm.product.isRoundTrip && vm.userIsAdmin" heading="Admin Rules: Return">
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnPayLater">Pay Later
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab index="3" heading="Flight Variations">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Available Options')}}</label>
                         <div class="col-sm-10">
@@ -430,7 +528,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="2" heading="{{::vm.translate.get('Product Attributes')}}">
+                <uib-tab index="4" heading="Flight Attributes">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Product Templates')}}</label>
                         <div class="col-sm-10">
@@ -475,7 +573,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="3" heading="{{::vm.translate.get('Category Mapping')}}">
+                <uib-tab index="5" heading="{{::vm.translate.get('Category Mapping')}}">
                     <md-content class="md-padding">
                         <md-input-container class="md-block">
                             <div ng-repeat="category in vm.categories">
@@ -486,7 +584,7 @@
                         </md-input-container>
                     </md-content>
                 </uib-tab>
-                <uib-tab index="4" heading="{{::vm.translate.get('Related Products')}}">
+                <uib-tab index="6" heading="{{::vm.translate.get('Related Products')}}">
                     <product-selection-directive model-id="productRelationSelector" title="Add related products"  is-visible-individually="true" selected-products="vm.product.relatedProducts"></product-selection-directive>
                     <p><button type="button" class="btn btn-default" data-toggle="modal" data-target="#productRelationSelector">{{::vm.translate.get('Manage Related Products')}}</button></p>
                     <table class="table table-striped">
@@ -500,7 +598,7 @@
                         </tr>
                     </table>
                 </uib-tab>
-                <uib-tab index="5" heading="{{::vm.translate.get('Cross-sell Products')}}">
+                <uib-tab index="7" heading="{{::vm.translate.get('Cross-sell Products')}}">
                     <product-selection-directive model-id="productCrossSellSelector" title="Add cross-sell products" is-visible-individually="true" selected-products="vm.product.crossSellProducts"></product-selection-directive>
                     <p><button type="button" class="btn btn-default" data-toggle="modal" data-target="#productCrossSellSelector">{{::vm.translate.get('Manage Cross-sell Products')}}</button></p>
                     <table class="table table-striped">

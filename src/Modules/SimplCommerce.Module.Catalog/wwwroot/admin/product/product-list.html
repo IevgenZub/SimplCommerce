@@ -12,27 +12,27 @@
 <table class="table table-striped" st-pipe="vm.getProducts" st-table="vm.products">
     <thead>
         <tr>
-            <th st-sort="Name" class="sortable">Flight #</th>
-            <th st-sort="Provider" class="sortable">Provider</th>
+            <th st-sort="FlightNumber" class="sortable">Flight #</th>
+            <th st-sort="Operator" class="sortable">Operator</th>
             <th st-sort="ShortDescription" class="sortable">From</th>
             <th st-sort="Description" class="sortable">To</th>
             <th st-sort="SpecialPriceStart" class="sortable">Departure</th>
             <th st-sort="SpecialPriceEnd" class="sortable">Landing</th>
             <th>{{::vm.translate.get('Stock Quantity')}}</th>
             <th class="text-center">{{::vm.translate.get('Has Options')}}</th>
-            <th st-sort="IsPublished" class="text-center sortable">{{::vm.translate.get('Is Published')}}</th>
+            <th st-sort="Status" class="sortable">Status</th>
             <th st-sort="CreatedOn" class="text-center sortable">{{::vm.translate.get('Created On')}}</th>
             <th class="text-center">{{::vm.translate.get('Actions')}}</th>
         </tr>
         <tr>
             <th>
                 <div class="form-group">
-                    <input class="form-control" st-search="Name"/>
+                    <input class="form-control" st-search="FlightNumber"/>
                 </div>
             </th>
             <th>
                 <div class="form-group">
-                    <input class="form-control" st-search="Provider" />
+                    <input class="form-control" st-search="Operator" />
                 </div>
             </th>
             <th>
@@ -60,10 +60,12 @@
             </th>
             <th>
                 <div class="form-group">
-                    <select class="form-control" st-search="IsPublished">
+                    <select class="form-control" st-search="Status">
                         <option value="">{{::vm.translate.get('All')}}</option>
-                        <option value="true">{{::vm.translate.get('Yes')}}</option>
-                        <option value="false">{{::vm.translate.get('No')}}</option>
+                        <option value="INSERTED">Inserted</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="PAUSE">Pause</option>
+                        <option value="STOP SALE">Stop Sale</option>
                     </select>
                 </div>
             </th>
@@ -74,19 +76,19 @@
     </thead>
     <tbody ng-show="!vm.isLoading">
         <tr ng-repeat="product in vm.products">
-            <td>{{product.name}}</td>
-            <td>{{product.provider}}</td>
+            <td>{{product.flightNumber}}</td>
+            <td>{{product.operator}}</td>
             <td>{{product.from}}</td>
             <td>{{product.to}}</td>
             <td>{{product.departureDate | date:'medium'}}</td>
             <td>{{product.landingDate | date:'medium'}}</td>
             <td class="text-center">{{product.stockQuantity}}</td>
             <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isPublished && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
+            <td>{{product.status}}</td>
             <td class="text-center">{{product.createdOn | date:'medium'}}</td>
             <td class="text-center">
-                <button ng-if="product.isPublished" title="Un Publish" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pause"></span></button>
-                <button ng-if="!product.isPublished" title="Publish" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>
+                <button ng-if="vm.userIsAdmin && product.status == 'ACCEPTED'" title="Pause" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pause"></span></button>
+                <button ng-if="vm.userIsAdmin && product.status != 'ACCEPTED'" title="Accept" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>
                 <a ui-sref="product-edit({id: product.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil"></span></a>
                 <button ng-click="vm.deleteProduct(product)" title="Delete" class="btn btn-danger btn-xs delete"> <span class="glyphicon glyphicon-remove"></span></button>
             </td>

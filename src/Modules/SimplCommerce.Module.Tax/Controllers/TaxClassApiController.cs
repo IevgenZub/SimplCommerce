@@ -9,7 +9,7 @@ using SimplCommerce.Module.Tax.ViewModels;
 
 namespace SimplCommerce.Module.Tax.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, vendor")]
     [Route("api/tax-classes")]
     public class TaxClassApiController : Controller
     {
