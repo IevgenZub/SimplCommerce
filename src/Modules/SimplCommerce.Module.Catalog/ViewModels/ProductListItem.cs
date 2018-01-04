@@ -6,7 +6,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
     {
         public long Id { get; set; }
 
-        public string Name { get; set; }
+        public string FlightNumber { get; set; }
 
         public bool HasOptions { get; set; }
 
@@ -34,7 +34,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Status { get; set; }
 
-        public string Provider { get; set; }
+        public string Operator { get; set; }
 
     }
 }

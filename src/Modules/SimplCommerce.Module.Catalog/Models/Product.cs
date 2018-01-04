@@ -43,6 +43,8 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public long? VendorId { get; set; }
 
+        public Vendor Vendor { get; set; }
+
         public Media ThumbnailImage { get; set; }
 
         public IList<ProductMedia> Medias { get; protected set; } = new List<ProductMedia>();
@@ -210,7 +212,7 @@ namespace SimplCommerce.Module.Catalog.Models
             product.AdminReturnNotifyLastPassanger = AdminReturnNotifyLastPassanger;
             product.AdminReturnIsLastMinute = AdminReturnIsLastMinute;
             product.ReservationNumber = ReservationNumber;
-
+            product.Status = Status;
 
             foreach (var attribute in AttributeValues)
             {

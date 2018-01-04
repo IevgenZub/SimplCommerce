@@ -222,7 +222,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
         [HttpPost("grid")]
         public async Task<IActionResult> List([FromBody] SmartTableParam param)
         {
-            var query = _productRepository.Query().Where(x => !x.IsDeleted);
+            var query = _productRepository.Query().Include(x => x.Vendor).Where(x => !x.IsDeleted);
             var currentUser = await _workContext.GetCurrentUser();
             if (!User.IsInRole("admin"))
             {
@@ -232,16 +232,16 @@ namespace SimplCommerce.Module.Catalog.Controllers
             if (param.Search.PredicateObject != null)
             {
                 dynamic search = param.Search.PredicateObject;
-                if (search.Name != null)
+                if (search.FlightNumber != null)
                 {
-                    string name = search.Name;
+                    string name = search.FlightNumber;
                     query = query.Where(x => x.Name.Contains(name));
                 }
 
-                if (search.Provider != null)
+                if (search.Operator != null)
                 {
-                    string provider = search.Provider;
-                    query = query.Where(x => x.Provider.Contains(provider));
+                    string oper = search.Operator;
+                    query = query.Where(x => x.Vendor != null && x.Vendor.Name.Contains(oper));
                 }
 
                 if (search.From != null)
@@ -268,10 +268,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.IsVisibleIndividually == isVisibleIndividually);
                 }
 
-                if (search.IsPublished != null)
+                if (search.Status != null)
                 {
-                    bool isPublished = search.IsPublished;
-                    query = query.Where(x => x.IsPublished == isPublished);
+                    string status = search.Status;
+                    query = query.Where(x => x.Status.Contains(status));
                 }
 
                 if (search.CreatedOn != null)
@@ -295,7 +295,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 x => new ProductListItem
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    FlightNumber = x.FlightNumber,
                     HasOptions = x.HasOptions,
                     IsVisibleIndividually = x.IsVisibleIndividually,
                     IsFeatured = x.IsFeatured,
@@ -306,10 +306,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     IsPublished = x.IsPublished,
                     From = x.ShortDescription,
                     To = x.Description,
-                    Provider = x.Provider,
                     DepartureDate = x.SpecialPriceStart,
                     LandingDate = x.SpecialPriceEnd,
-                    Status = x.Status
+                    Status = x.Status,
+                    Operator = x.Vendor == null ? null : x.Vendor.Name
                 });
 
             return Json(gridData);
@@ -768,7 +768,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     productLink.LinkedProduct.HasOptions = false;
                     productLink.LinkedProduct.IsVisibleIndividually = false;
                     productLink.LinkedProduct.ThumbnailImage = product.ThumbnailImage;
-
+                   
                     foreach (var combinationVm in productVariationVm.OptionCombinations)
                     {
                         productLink.LinkedProduct.AddOptionCombination(new ProductOptionCombination
