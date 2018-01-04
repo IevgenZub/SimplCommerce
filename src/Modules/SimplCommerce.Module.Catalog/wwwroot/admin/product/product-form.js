@@ -31,7 +31,7 @@
         vm.brands = [];
         vm.taxClasses = [];
         vm.vendors = [];
-
+        vm.userIsAdmin = false;       
         vm.datePickerSpecialPriceStart = {};
         vm.datePickerSpecialPriceEnd = {};
 
@@ -472,6 +472,9 @@
 
 
         function init() {
+
+            vm.userIsAdmin = window.userIsAdmin;
+
             if (vm.isEditMode) {
                 getProduct();
             }
@@ -482,6 +485,7 @@
             getCategories();
             getBrands();
             getTaxClasses();
+            
         }
 
 

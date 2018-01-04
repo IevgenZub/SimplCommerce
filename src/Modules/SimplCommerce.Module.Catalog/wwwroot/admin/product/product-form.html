@@ -15,7 +15,7 @@
                     <div  class="form-group">
                         <label style="color:forestgreen" class="col-sm-2 control-label">Status</label>
                         <div class="col-sm-10">
-                            <select ng-disabled="!vm.product.userIsAdmin" id="productStatus" class="form-control" ng-model="vm.product.status">
+                            <select ng-disabled="!vm.userIsAdmin" id="productStatus" class="form-control" ng-model="vm.product.status">
                                 <option value="INSERTED">Inserted</option>
                                 <option value="ACCEPTED">Accepted</option>
                                 <option value="STOP SALE">Stop Sale</option>
@@ -29,7 +29,7 @@
                             <input id="productReservationNumber" required type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group" >
+                    <div ng-show="vm.userIsAdmin" class="form-group" >
                         <label class="col-sm-2 control-label">Agency/Tour Operator</label>
                         <div class="col-sm-10">
                             <select class="form-control" ng-model="vm.product.vendorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors">
@@ -348,7 +348,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="1" ng-show="vm.product.userIsAdmin" heading="Admin Rules: Departure">
+                <uib-tab index="1" ng-show="vm.userIsAdmin" heading="Admin Rules: Departure">
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
@@ -399,7 +399,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="2" ng-show="vm.product.isRoundTrip && vm.product.userIsAdmin" heading="Admin Rules: Return">
+                <uib-tab index="2" ng-show="vm.product.isRoundTrip && vm.userIsAdmin" heading="Admin Rules: Return">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">

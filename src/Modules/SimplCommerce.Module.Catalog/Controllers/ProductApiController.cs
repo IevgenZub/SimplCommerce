@@ -117,7 +117,6 @@ namespace SimplCommerce.Module.Catalog.Controllers
 
             if (User.IsInRole("admin"))
             {
-                productVm.UserIsAdmin = true;
                 productVm.AdminRoundTrip = product.AdminRoundTrip;
                 productVm.AdminRoundTripOperatorId = product.AdminRoundTripOperatorId;
                 productVm.AdminPayLater = product.AdminPayLater;
