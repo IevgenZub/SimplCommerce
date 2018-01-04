@@ -272,9 +272,12 @@
                     </div>
                 }
         </div>
-        <div class="row" style="text-align: center;">
-            <button type="submit" class="btn btn-primary">Buy</button>
-        </div>
+
+        @if (Model.Products.Count > 0) {
+            <div class="row" style="text-align: center;">
+                <button type="submit" class="btn btn-primary">Buy</button>
+            </div>
+        }
 
 
         <div class="row">
@@ -303,7 +306,25 @@
             currentMin: @((Model.CurrentSearchOption.MinPrice ?? Model.FilterOption.Price.MinPrice).ToString("F0")),
             currentMax: @((Model.CurrentSearchOption.MaxPrice ?? Model.FilterOption.Price.MaxPrice).ToString("F0"))
         };
-        // TODO: Add here button logic to show/hide Buy Button
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+
+        $("#kalkis-yeri").val(getUrlParameter('Departure').replace(new RegExp('\\+', 'g'), ' '));
+        $("#inis-yeri").val(getUrlParameter('Landing').replace(new RegExp('\\+', 'g'), ' '));
 
 
     </script>
