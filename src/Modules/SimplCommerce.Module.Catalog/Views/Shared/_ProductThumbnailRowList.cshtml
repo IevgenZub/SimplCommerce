@@ -44,22 +44,6 @@
         </div>
         <div class="col-md-9 col-xs-9">
             <h4 class="product-name">@Model.ReturnFlightNumber</h4>
-            <p class="product-price">
-                @if (Model.IsCallForPricing)
-                {
-                    @Localizer["Call for pricing"]
-                }
-                else
-                {
-                    @Model.CalculatedProductPrice.Price.ToString("C")
-                    if (Model.CalculatedProductPrice.PercentOfSaving > 0)
-                    {
-                        <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
-                        <br />
-                        <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
-                    }
-                }
-            </p>
         </div>
 
         <div class="col-md-12 col-xs-12 caption">
