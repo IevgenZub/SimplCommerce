@@ -215,6 +215,7 @@ namespace SimplCommerce.Module.Catalog.Models
             product.ReservationNumber = ReservationNumber;
             product.Status = Status;
             product.FlightClass = FlightClass;
+            product.SoldSeats = 0;
 
             foreach (var attribute in AttributeValues)
             {

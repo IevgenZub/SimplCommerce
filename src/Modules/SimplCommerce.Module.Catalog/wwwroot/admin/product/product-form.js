@@ -105,10 +105,39 @@
         }
 
         vm.newOptionValue = function (chip) {
-            return {
+
+            function generateDateRange (startDate, endDate) {
+                var retVal = [];
+                var current = new Date(startDate);
+                var end = new Date(endDate);
+
+                while (current <= end) {
+                    retVal.push(new Date(current));
+                    current.setDate(current.getDate() + 1);
+                }
+
+                return retVal;
+            }
+            
+           var departureDateOption = vm.product.options.filter(function (o) { return o.name === "Departure Date" })[0];
+           var seperatedString = angular.copy(chip);
+           seperatedString = seperatedString.toString();
+                
+           if (seperatedString.includes("-") && departureDateOption) {
+               var from = seperatedString.split('-')[0];
+               var to = seperatedString.split('-')[1];
+               var range = generateDateRange(from, to);
+
+               angular.forEach(range, function (chipToAdd) {
+                   departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value:'' });
+               });
+               return null;
+           }
+            
+           return {
                 key: chip,
                 value: ''
-            };
+           };
         };
 
         vm.generateOptionCombination = function generateOptionCombination() {
