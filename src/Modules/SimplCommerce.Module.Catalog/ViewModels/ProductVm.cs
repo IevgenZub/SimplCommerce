@@ -114,6 +114,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public long? VendorId { get; set; }
 
+        public string FlightClass { get; set; }
+
 
         // Admin Rules Departure
 

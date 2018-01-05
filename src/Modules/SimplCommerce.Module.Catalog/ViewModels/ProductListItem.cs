@@ -36,5 +36,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Operator { get; set; }
 
+        public string FlightClass { get; set; }
     }
 }

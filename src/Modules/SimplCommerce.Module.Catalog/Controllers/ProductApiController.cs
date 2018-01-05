@@ -112,7 +112,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SaleRtOnly = product.SaleRtOnly,
                 Status = product.Status,
                 ReservationNumber = product.ReservationNumber,
-                VendorId = product.VendorId
+                VendorId = product.VendorId,
+                FlightClass = product.FlightClass
             };
 
             if (User.IsInRole("admin"))
@@ -238,6 +239,12 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.Name.Contains(name));
                 }
 
+                if (search.FlightClass != null)
+                {
+                    string flightClass = search.FlightClass;
+                    query = query.Where(x => x.FlightClass.Contains(flightClass));
+                }
+
                 if (search.Operator != null)
                 {
                     string oper = search.Operator;
@@ -309,7 +316,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     DepartureDate = x.SpecialPriceStart,
                     LandingDate = x.SpecialPriceEnd,
                     Status = x.Status,
-                    Operator = x.Vendor == null ? null : x.Vendor.Name
+                    Operator = x.Vendor == null ? null : x.Vendor.Name,
+                    FlightClass = x.FlightClass
                 });
 
             return Json(gridData);
@@ -363,7 +371,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SoldSeats = model.Product.SoldSeats,
                 SaleRtOnly = model.Product.SaleRtOnly,
                 Status = "INSERTED",
-                ReservationNumber = model.Product.ReservationNumber
+                ReservationNumber = model.Product.ReservationNumber,
+                FlightClass = model.Product.FlightClass
             };
 
             if (!User.IsInRole("admin"))
@@ -508,6 +517,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.SoldSeats = model.Product.SoldSeats;
             product.ReservationNumber = model.Product.ReservationNumber;
             product.VendorId = model.Product.VendorId;
+            product.FlightClass = model.Product.FlightClass;
 
             if (User.IsInRole("admin"))
             {
@@ -622,7 +632,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productLink.LinkedProduct.NormalizedName = variationVm.NormalizedName;
                 productLink.LinkedProduct.HasOptions = false;
                 productLink.LinkedProduct.IsVisibleIndividually = false;
-                GenerateDates(productLink.LinkedProduct, product, variationVm);
+
+                GenerateValues(productLink.LinkedProduct, product, variationVm);
                 
                 foreach (var combinationVm in variationVm.OptionCombinations)
                 {
@@ -640,7 +651,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             }
         }
 
-        private static void GenerateDates(Product linkedProduct, Product product, ProductVariationVm variation)
+        private static void GenerateValues(Product linkedProduct, Product product, ProductVariationVm variation)
         {
             var date = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
 
@@ -653,6 +664,12 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 linkedProduct.SpecialPriceEnd = Convert.ToDateTime(date.Value)
                         .AddHours(product.SpecialPriceEnd.Value.Hour)
                         .AddMinutes(product.SpecialPriceEnd.Value.Minute);
+            }
+
+            var flightClass = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Class");
+            if (flightClass != null)
+            {
+                linkedProduct.FlightClass = flightClass.Value;
             }
         }
 
