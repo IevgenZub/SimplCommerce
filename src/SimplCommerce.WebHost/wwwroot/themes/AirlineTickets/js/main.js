@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     $('.spinner-input, #flight-class').change(function() {
-        var ids = ['adult', 'student', 'child', 'baby'];
+        var ids = ['adult', 'child', 'baby'];
         var totalCount = ids.reduce((prev, id) => parseInt($(`#${id}-passenger`).val()) + prev, 0);
         var fc = $('#flight-class option:selected').text();
 

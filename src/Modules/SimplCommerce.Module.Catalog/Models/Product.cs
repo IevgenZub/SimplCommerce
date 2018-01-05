@@ -88,7 +88,8 @@ namespace SimplCommerce.Module.Catalog.Models
         public string ReservationNumber { get; set; }
 
         public string Status { get; set; }
-
+        public string FlightClass { get; set; }
+        
         // Admin Rules Departure
 
         public bool? AdminRoundTrip { get; set; }
@@ -213,6 +214,8 @@ namespace SimplCommerce.Module.Catalog.Models
             product.AdminReturnIsLastMinute = AdminReturnIsLastMinute;
             product.ReservationNumber = ReservationNumber;
             product.Status = Status;
+            product.FlightClass = FlightClass;
+            product.SoldSeats = 0;
 
             foreach (var attribute in AttributeValues)
             {

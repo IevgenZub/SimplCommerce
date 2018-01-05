@@ -185,6 +185,17 @@
                         <h4 class="col-sm-2 control-label">Price & Availability</h4>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Class</label>
+                        <div class="col-sm-10">
+                            <select id="productFlightClass" class="form-control" ng-model="vm.product.flightClass">
+                                <option value="Economic">Economic</option>
+                                <option value="Business">Business</option>
+                                <option value="Comfort">Comfort</option>
+                                <option value="First Class">First Class</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">Adult Price</label>
                         <div class="col-sm-10">
                             <div class="input-number">
@@ -217,7 +228,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Sold Seats</label>
                         <div class="col-sm-10">
-                            <input id="productSoldSeats" type="number" name="soldSeats" ng-model="vm.product.soldSeats" class="form-control" />
+                            <input id="productSoldSeats" disabled type="number" name="soldSeats" ng-model="vm.product.soldSeats" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -358,8 +369,40 @@
                                 </label>
                             </div>
                             <div class="col-sm-10">
-                                <input ng-disabled="!vm.product.adminPayLater"  id="productAdminPayLaterRule" type="text" name="adminPayLaterRule" ng-model="vm.product.adminPayLaterRule" class="form-control" />
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pay Later Rule</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="!vm.product.adminPayLater" id="productAdminPayLaterRule" type="text" name="adminPayLaterRule" ng-model="vm.product.adminPayLaterRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminRoundTrip">Round Trip
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Round Trip Operator</label>
+                        <div class="col-sm-10">
+                            <select ng-disabled="!vm.product.adminRoundTrip" class="form-control" ng-model="vm.product.adminRoundTripOperatorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Black List</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-model="vm.product.adminBlackList" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pas Expirity Date Rule</label>
+                        <div class="col-sm-10">
+                            <input id="productAdminPasExpirityRule" type="number" name="seats" ng-model="vm.product.adminPasExpirityRule" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -400,11 +443,66 @@
                     </div>
                 </uib-tab>
                 <uib-tab index="2" ng-show="vm.product.isRoundTrip && vm.userIsAdmin" heading="Admin Rules: Return">
+
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" ng-model="vm.product.adminReturnPayLater">Pay Later
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pay Later Rule</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="!vm.product.adminReturnPayLater" id="productAdminReturnPayLaterRule" type="text" name="AdminReturnPayLaterRule" ng-model="vm.product.adminReturnPayLaterRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Black List</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-model="vm.product.adminReturnBlackList" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pas Expirity Date Rule</label>
+                        <div class="col-sm-10">
+                            <input id="productAdminReturnPasExpirityRule" type="number" name="seats" ng-model="vm.product.adminReturnPasExpirityRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnIsSpecialOffer">Show as Special Offer
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnNotifyAgencies">Send email to all Agencies
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnNotifyLastPassanger">Send email all last passaganger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnIsLastMinute">Show as Last Minute
                                 </label>
                             </div>
                         </div>

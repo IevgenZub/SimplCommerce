@@ -112,7 +112,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SaleRtOnly = product.SaleRtOnly,
                 Status = product.Status,
                 ReservationNumber = product.ReservationNumber,
-                VendorId = product.VendorId
+                VendorId = product.VendorId,
+                FlightClass = product.FlightClass
             };
 
             if (User.IsInRole("admin"))
@@ -238,6 +239,12 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.Name.Contains(name));
                 }
 
+                if (search.FlightClass != null)
+                {
+                    string flightClass = search.FlightClass;
+                    query = query.Where(x => x.FlightClass.Contains(flightClass));
+                }
+
                 if (search.Operator != null)
                 {
                     string oper = search.Operator;
@@ -297,19 +304,19 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Id = x.Id,
                     FlightNumber = x.FlightNumber,
                     HasOptions = x.HasOptions,
-                    IsVisibleIndividually = x.IsVisibleIndividually,
-                    IsFeatured = x.IsFeatured,
-                    IsAllowToOrder = x.IsAllowToOrder,
-                    IsCallForPricing = x.IsCallForPricing,
-                    StockQuantity = x.StockQuantity,
-                    CreatedOn = x.CreatedOn,
+                    Seats = x.SoldSeats + "/" + x.StockQuantity,
+                    CreatedOn = x.CreatedOn.ToString("dd.MM.yyyy"),
                     IsPublished = x.IsPublished,
-                    From = x.ShortDescription,
-                    To = x.Description,
-                    DepartureDate = x.SpecialPriceStart,
-                    LandingDate = x.SpecialPriceEnd,
+                    From = x.ShortDescription.Split('(', ')')[1],
+                    To = x.Description.Split('(', ')')[1],
+                    DepartureDate = x.SpecialPriceStart.Value.ToString("dd.MM.yyyy"),
+                    ReturnDepartureDate = x.ReturnDepartureDate.HasValue ? x.ReturnDepartureDate.Value.ToString("dd.MM.yyyy") : string.Empty,
                     Status = x.Status,
-                    Operator = x.Vendor == null ? null : x.Vendor.Name
+                    Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
+                    FlightClass = x.FlightClass,
+                    DepartureTime = x.SpecialPriceStart.Value.ToString("HH:mm"),
+                    LandingTime = x.SpecialPriceEnd.Value.ToString("HH:mm"),
+                    Price = x.Price.ToString("0.0") + " " + x.Currency
                 });
 
             return Json(gridData);
@@ -360,10 +367,11 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReturnTerminal = model.Product.ReturnTerminal,
                 ReturnVia = model.Product.ReturnVia,
                 FlightNumber = model.Product.FlightNumber,
-                SoldSeats = model.Product.SoldSeats,
+                SoldSeats = 0,
                 SaleRtOnly = model.Product.SaleRtOnly,
                 Status = "INSERTED",
-                ReservationNumber = model.Product.ReservationNumber
+                ReservationNumber = model.Product.ReservationNumber,
+                FlightClass = model.Product.FlightClass
             };
 
             if (!User.IsInRole("admin"))
@@ -508,6 +516,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.SoldSeats = model.Product.SoldSeats;
             product.ReservationNumber = model.Product.ReservationNumber;
             product.VendorId = model.Product.VendorId;
+            product.FlightClass = model.Product.FlightClass;
 
             if (User.IsInRole("admin"))
             {
@@ -622,7 +631,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productLink.LinkedProduct.NormalizedName = variationVm.NormalizedName;
                 productLink.LinkedProduct.HasOptions = false;
                 productLink.LinkedProduct.IsVisibleIndividually = false;
-                GenerateDates(productLink.LinkedProduct, product, variationVm);
+
+                GenerateValues(productLink.LinkedProduct, product, variationVm);
                 
                 foreach (var combinationVm in variationVm.OptionCombinations)
                 {
@@ -640,19 +650,35 @@ namespace SimplCommerce.Module.Catalog.Controllers
             }
         }
 
-        private static void GenerateDates(Product linkedProduct, Product product, ProductVariationVm variation)
+        private static void GenerateValues(Product linkedProduct, Product product, ProductVariationVm variation)
         {
-            var date = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
-
-            if (date != null)
+            var departureDateOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
+            if (departureDateOption != null)
             {
-                linkedProduct.SpecialPriceStart = Convert.ToDateTime(date.Value)
+                var departureDate = Convert.ToDateTime(departureDateOption.Value);
+
+                linkedProduct.SpecialPriceStart = departureDate
                         .AddHours(product.SpecialPriceStart.Value.Hour)
                         .AddMinutes(product.SpecialPriceStart.Value.Minute);
 
-                linkedProduct.SpecialPriceEnd = Convert.ToDateTime(date.Value)
+                linkedProduct.SpecialPriceEnd = departureDate
                         .AddHours(product.SpecialPriceEnd.Value.Hour)
                         .AddMinutes(product.SpecialPriceEnd.Value.Minute);
+
+                var daysOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Package Days");
+                if (daysOption != null)
+                {
+                    var days = Convert.ToInt32(daysOption.Value);
+
+                    linkedProduct.ReturnDepartureDate = linkedProduct.SpecialPriceStart.Value.AddDays(days);
+                    linkedProduct.ReturnLandingDate = linkedProduct.SpecialPriceEnd.Value.AddDays(days);
+                }
+            }
+
+            var flightClass = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Class");
+            if (flightClass != null)
+            {
+                linkedProduct.FlightClass = flightClass.Value;
             }
         }
 
