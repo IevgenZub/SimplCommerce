@@ -125,8 +125,8 @@ namespace SimplCommerce.WebHost.Extensions
                 
                 .AddFacebook(x =>
             {
-                x.AppId = "1716532045292977";
-                x.AppSecret = "dfece01ae919b7b8af23f962a1f87f95";
+                x.AppId = "130422180932529";
+                x.AppSecret = "540f3cb929fa626e800d766bce3db21c";
 
                 x.Events = new OAuthEvents
                 {
