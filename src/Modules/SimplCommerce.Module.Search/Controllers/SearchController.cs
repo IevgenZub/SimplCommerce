@@ -43,10 +43,22 @@ namespace SimplCommerce.Module.Search.Controllers
         [HttpGet("search")]
         public IActionResult Index(SearchOption searchOption)
         {
+            var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+            
             var query = _productRepository.Query().Where(x => 
-                x.ShortDescription == searchOption.Departure &&
-                x.Description == searchOption.Landing &&
-                x.IsPublished && x.IsVisibleIndividually);
+                x.ShortDescription.Contains(searchOption.Departure) &&
+                x.Description.Contains(searchOption.Landing) &&
+                x.SpecialPriceStart.Value.Date == departureDate.Date &&
+                x.Status == "ACCEPTED");
+
+            if (searchOption.TripType == "round-trip")
+            {
+                var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
+                query = query.Where(x => 
+                    x.IsRoundTrip.HasValue && 
+                    x.IsRoundTrip.Value && 
+                    x.ReturnDepartureDate.Value.Date == returnDate.Date);
+            }
 
             var brand = _brandRepository.Query().FirstOrDefault(x => x.Name == searchOption.Query && x.IsPublished);
             if(brand != null)
