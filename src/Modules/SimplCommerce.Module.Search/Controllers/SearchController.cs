@@ -44,12 +44,16 @@ namespace SimplCommerce.Module.Search.Controllers
         public IActionResult Index(SearchOption searchOption)
         {
             var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-            
+            var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
+            var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
+
             var query = _productRepository.Query().Where(x => 
                 x.ShortDescription.Contains(searchOption.Departure) &&
                 x.Description.Contains(searchOption.Landing) &&
                 x.SpecialPriceStart.Value.Date == departureDate.Date &&
-                x.Status == "ACCEPTED");
+                x.Status == "ACCEPTED" &&
+                x.FlightClass == flightClass &&
+                x.StockQuantity >= numberOfPeople);
 
             if (searchOption.TripType == "round-trip")
             {

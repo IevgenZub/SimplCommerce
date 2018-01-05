@@ -60,28 +60,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public DateTimeOffset? ReturnLandingDate { get; set; }
         public bool? IsRoundTrip { get; set; }
 
-        /*
-        product.StockQuantity = StockQuantity;
-            product.BrandId = BrandId;
-            product.VendorId = VendorId;
-            product.Via = Via;
-            product.DisplayOrder = DisplayOrder;
-            product.SpecialPriceEnd = SpecialPriceEnd;
-            product.SpecialPriceStart = SpecialPriceStart;
-            product.Sku = Sku;
-            product.Currency = Currency;
-            product.Provider = Provider;
-            product.TaxClassId = TaxClassId;
-            product.IsRoundTrip = IsRoundTrip;
-            product.FlightNumber = FlightNumber;
-            product.ReturnAircraftId = ReturnAircraftId;
-            product.ReturnCarrierId = ReturnCarrierId;
-            product.ReturnFlightNumber = ReturnFlightNumber;
-            product.ReturnVia = ReturnVia;
-            product.ReturnTerminal = ReturnTerminal;
-            product.ReturnDepartureDate = ReturnDepartureDate;
-            product.ReturnLandingDate = ReturnLandingDate;
-            */
         public static ProductThumbnail FromProduct(Product product)
         {
             var productThumbnail = new ProductThumbnail
