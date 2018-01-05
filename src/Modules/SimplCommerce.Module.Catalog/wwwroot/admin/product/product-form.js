@@ -353,6 +353,7 @@
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
             vm.product.saleRtOnly = vm.product.saleRtOnly === null ? '' : vm.product.saleRtOnly;
             vm.product.adminPayLater = vm.product.adminPayLater === null ? '' : vm.product.adminPayLater;
+            vm.product.adminPayLaterRule = vm.product.adminPayLaterRule === null ? '' : vm.product.adminPayLaterRule;
             vm.product.adminRoundTrip = vm.product.adminRoundTrip === null ? '' : vm.product.adminRoundTrip;
             vm.product.adminIsLastMinute = vm.product.adminIsLastMinute === null ? '' : vm.product.adminIsLastMinute;
             vm.product.adminIsSpecialOffer = vm.product.adminIsSpecialOffer === null ? '' : vm.product.adminIsSpecialOffer;
@@ -366,7 +367,11 @@
             vm.product.adminReturnPasExpirityRule = vm.product.adminReturnPasExpirityRule === null ? '' : vm.product.adminReturnPasExpirityRule;
             vm.product.adminReturnNotifyLastPassanger = vm.product.adminReturnNotifyLastPassanger === null ? '' : vm.product.adminReturnNotifyLastPassanger;
             vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
+            vm.product.adminReturnPayLaterRule = vm.product.adminReturnPayLaterRule === null ? '' : vm.product.adminReturnPayLaterRule;
             vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
+            vm.product.adminBlackList = vm.product.adminBlackList === null ? '' : vm.product.adminBlackList;
+            vm.product.adminReturnBlackList = vm.product.adminReturnBlackList === null ? '' : vm.product.adminReturnBlackList;
+
             vm.product.vendorId = vm.product.vendorId === null ? '' : vm.product.vendorId;
             vm.product.soldSeats = vm.product.soldSeats === null ? '' : vm.product.soldSeats;
             vm.product.flightClass = vm.product.flightClass === null ? '' : vm.product.flightClass;
