@@ -9,6 +9,9 @@ using SimplCommerce.Infrastructure;
 using SimplCommerce.Infrastructure.Web;
 using SimplCommerce.Module.Localization;
 using SimplCommerce.WebHost.Extensions;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace SimplCommerce.WebHost
 {
@@ -68,6 +71,13 @@ namespace SimplCommerce.WebHost
             app.UseCustomizedStaticFiles(env);
             app.UseCustomizedIdentity();
             app.UseCustomizedMvc();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/.well-known")),
+                RequestPath = new PathString("/.well-known"),
+                ServeUnknownFileTypes = true // serve extensionless file
+            });
 
             var moduleInitializers = app.ApplicationServices.GetServices<IModuleInitializer>();
             foreach (var moduleInitializer in moduleInitializers)
