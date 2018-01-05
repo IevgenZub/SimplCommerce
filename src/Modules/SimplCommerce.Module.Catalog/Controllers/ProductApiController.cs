@@ -304,19 +304,19 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Id = x.Id,
                     FlightNumber = x.FlightNumber,
                     HasOptions = x.HasOptions,
-                    StockQuantity = x.StockQuantity,
-                    CreatedOn = x.CreatedOn.Date.ToShortDateString(),
+                    Seats = x.SoldSeats + "/" + x.StockQuantity,
+                    CreatedOn = x.CreatedOn.ToString("dd.MM.yyyy"),
                     IsPublished = x.IsPublished,
                     From = x.ShortDescription.Split('(', ')')[1],
                     To = x.Description.Split('(', ')')[1],
-                    DepartureDate = x.SpecialPriceStart.Value.Date.ToShortDateString(),
-                    ReturnDepartureDate = x.ReturnDepartureDate.HasValue ? x.ReturnDepartureDate.Value.Date.ToShortDateString() : string.Empty,
-                    Status = x.Status == null ? string.Empty : x.Status[0].ToString(),
+                    DepartureDate = x.SpecialPriceStart.Value.ToString("dd.MM.yyyy"),
+                    ReturnDepartureDate = x.ReturnDepartureDate.HasValue ? x.ReturnDepartureDate.Value.ToString("dd.MM.yyyy") : string.Empty,
+                    Status = x.Status,
                     Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
-                    FlightClass = x.FlightClass == null ? string.Empty : x.FlightClass[0].ToString(),
+                    FlightClass = x.FlightClass,// == null ? string.Empty : x.FlightClass[0].ToString(),
                     DepartureTime = x.SpecialPriceStart.Value.ToString("HH:mm"),
                     LandingTime = x.SpecialPriceEnd.Value.ToString("HH:mm"),
-                    Price = x.Price.ToString("C") + " " + x.Currency
+                    Price = x.Price.ToString("0.0") + " " + x.Currency
                 });
 
             return Json(gridData);

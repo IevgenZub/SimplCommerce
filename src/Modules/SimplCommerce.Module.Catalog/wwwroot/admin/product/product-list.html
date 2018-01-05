@@ -13,14 +13,14 @@
     <thead>
         <tr>
             <th st-sort="Id" class="sortable">Id</th>
-            <th st-sort="Operator" class="sortable">Operator</th>
-            <th st-sort="DepartureDate" class="sortable">Departure</th>
+            <th st-sort="VendorId" class="sortable">Operator</th>
+            <th st-sort="SpecialPriceStart" class="sortable">Departure</th>
             <th st-sort="ReturnDepartureDate" class="sortable">Return</th>
             <th st-sort="FlightNumber" class="sortable">Flight #</th>
             <th st-sort="ShortDescription" class="sortable">From</th>
             <th st-sort="Description" class="sortable">To</th>
-            <th st-sort="DepartureTime" class="sortable">Dept. Time</th>
-            <th st-sort="LandingTime" class="sortable">Arr. Time</th>
+            <th>Dept. Time</th>
+            <th>Arr. Time</th>
             <th st-sort="FlightClass" class="sortable">Class</th>
             <th>Seats</th>
             <th st-sort="Price" class="sortable">Price</th>
@@ -35,7 +35,7 @@
             </th>
             <th>
                 <div class="form-group">
-                    <input style="width:100px" st-search="Operator" />
+                    <input style="width:80px" st-search="Operator" />
                 </div>
             </th>
             <th>
@@ -50,17 +50,17 @@
             </th>
             <th>
                 <div class="form-group">
-                    <input style="width:100px" st-search="FlightNumber" />
+                    <input style="width:80px" st-search="FlightNumber" />
                 </div>
             </th>
             <th>
                 <div class="form-group">
-                    <input style="width:100px" st-search="From" />
+                    <input style="width:80px" st-search="From" />
                 </div>
             </th>
             <th>
                 <div class="form-group">
-                    <input style="width:100px" st-search="To" />
+                    <input style="width:80px" st-search="To" />
                 </div>
             </th>
             <th><!--Departure Time--></th>
@@ -70,7 +70,7 @@
             <th><!--Price--></th>
             <th>
                 <div class="form-group">
-                    <select class="form-control" st-search="HasOptions">
+                    <select st-search="HasOptions">
                         <option value="">{{::vm.translate.get('All')}}</option>
                         <option value="true">{{::vm.translate.get('Yes')}}</option>
                         <option value="false">{{::vm.translate.get('No')}}</option>
@@ -79,7 +79,7 @@
             </th>
             <th>
                 <div class="form-group">
-                    <select class="form-control" st-search="Status">
+                    <select  st-search="Status">
                         <option value="">{{::vm.translate.get('All')}}</option>
                         <option value="INSERTED">Inserted</option>
                         <option value="ACCEPTED">Accepted</option>
@@ -105,7 +105,7 @@
             <td>{{product.departureTime}}</td>
             <td>{{product.landingTime}}</td>
             <td>{{product.flightClass}}</td>
-            <td class="text-center">{{product.stockQuantity}}</td>
+            <td class="text-center">{{product.seats}}</td>
             <td class="text-center">{{product.price}}</td>
             <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td>{{product.status}}</td>

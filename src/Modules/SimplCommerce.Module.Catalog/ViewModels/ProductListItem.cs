@@ -14,7 +14,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public bool IsPublished { get; set; }
         
-        public int? StockQuantity { get; set; }
+        public string Seats { get; set; }
 
         public string From { get; set; }
 
