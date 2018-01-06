@@ -74,6 +74,8 @@ namespace SimplCommerce.Module.Catalog.Models
         public string FlightNumber { get; set; }
         public int? SoldSeats { get; set; }
         public bool? SaleRtOnly { get; set; }
+        public DateTimeOffset? DepartureDate { get; set; }
+        public DateTimeOffset? LandingDate { get; set; }
 
         // Return
 
@@ -216,6 +218,8 @@ namespace SimplCommerce.Module.Catalog.Models
             product.Status = Status;
             product.FlightClass = FlightClass;
             product.SoldSeats = 0;
+            product.DepartureDate = DepartureDate;
+            product.LandingDate = LandingDate;
 
             foreach (var attribute in AttributeValues)
             {

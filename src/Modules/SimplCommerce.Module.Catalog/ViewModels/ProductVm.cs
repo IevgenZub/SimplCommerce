@@ -14,6 +14,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
             IsAllowToOrder = true;
             IsOutOfStock = false;
             Price = 0;
+            SoldSeats = 0;
         }
 
         public long Id { get; set; }
@@ -116,6 +117,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string FlightClass { get; set; }
 
+        public DateTimeOffset? DepartureDate { get; set; }
+
+        public DateTimeOffset? LandingDate { get; set; }
 
         // Admin Rules Departure
 

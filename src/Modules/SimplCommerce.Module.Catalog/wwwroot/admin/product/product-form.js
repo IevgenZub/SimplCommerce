@@ -32,12 +32,16 @@
         vm.taxClasses = [];
         vm.vendors = [];
         vm.userIsAdmin = false;       
+
         vm.datePickerSpecialPriceStart = {};
         vm.datePickerSpecialPriceEnd = {};
 
+        vm.datePickerDepartureDate = {};
+        vm.datePickerLandingDate = {};
+
         vm.datePickerReturnDepartureDate = {};
         vm.datePickerReturnLandingDate = {};
-
+        
         vm.updateSlug = function () {
             vm.product.slug = slugify(vm.product.flightNumber);
             vm.product.name = vm.product.flightNumber
@@ -46,7 +50,6 @@
         vm.openCalendar = function (e, picker) {
             vm[picker].open = true;
         };
-
 
         vm.shortDescUpload = function (files) {
             summerNoteService.upload(files[0])
@@ -348,6 +351,8 @@
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
             vm.product.returnDepartureDate = vm.product.returnDepartureDate === null ? '' : vm.product.returnDepartureDate;
             vm.product.returnLandingDate = vm.product.returnLandingDate === null ? '' : vm.product.returnLandingDate;
+            vm.product.departureDate = vm.product.departureDate === null ? '' : vm.product.departureDate;
+            vm.product.landingDate = vm.product.landingDate === null ? '' : vm.product.landingDate;
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
@@ -371,7 +376,8 @@
             vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
             vm.product.adminBlackList = vm.product.adminBlackList === null ? '' : vm.product.adminBlackList;
             vm.product.adminReturnBlackList = vm.product.adminReturnBlackList === null ? '' : vm.product.adminReturnBlackList;
-
+            vm.product.via = vm.product.via === null ? '' : vm.product.via;
+            vm.product.returnVia = vm.product.returnVia === null ? '' : vm.product.returnVia;
             vm.product.vendorId = vm.product.vendorId === null ? '' : vm.product.vendorId;
             vm.product.soldSeats = vm.product.soldSeats === null ? '' : vm.product.soldSeats;
             vm.product.flightClass = vm.product.flightClass === null ? '' : vm.product.flightClass;
@@ -427,7 +433,6 @@
                     vm.product.specialPriceEnd = new Date(vm.product.specialPriceEnd);
                 }
 
-
                 if (vm.product.returnDepartureDate) {
                     vm.product.returnDepartureDate = new Date(vm.product.returnDepartureDate);
                 }
@@ -435,6 +440,12 @@
                     vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
                 }
 
+                if (vm.product.departureDate) {
+                    vm.product.departureDate = new Date(vm.product.departureDate);
+                }
+                if (vm.product.landingDate) {
+                    vm.product.landingDate = new Date(vm.product.landingDate);
+                }
             });
         }
 
@@ -506,7 +517,6 @@
             });
         }
 
-
         function init() {
 
             vm.userIsAdmin = window.userIsAdmin;
@@ -523,8 +533,6 @@
             getTaxClasses();
             
         }
-
-
 
         function getParentCategoryIds(categoryId) {
             if (!categoryId) {
@@ -555,7 +563,5 @@
         }
 
         init();
-
-
     }
 })(jQuery);

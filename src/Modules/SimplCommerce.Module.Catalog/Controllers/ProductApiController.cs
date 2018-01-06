@@ -113,7 +113,9 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Status = product.Status,
                 ReservationNumber = product.ReservationNumber,
                 VendorId = product.VendorId,
-                FlightClass = product.FlightClass
+                FlightClass = product.FlightClass,
+                DepartureDate = product.DepartureDate,
+                LandingDate = product.LandingDate
             };
 
             if (User.IsInRole("admin"))
@@ -309,13 +311,13 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     IsPublished = x.IsPublished,
                     From = x.ShortDescription.Split('(', ')')[1],
                     To = x.Description.Split('(', ')')[1],
-                    DepartureDate = x.SpecialPriceStart.Value.ToString("dd.MM.yyyy"),
+                    DepartureDate = x.DepartureDate.Value.ToString("dd.MM.yyyy"),
                     ReturnDepartureDate = x.ReturnDepartureDate.HasValue ? x.ReturnDepartureDate.Value.ToString("dd.MM.yyyy") : string.Empty,
                     Status = x.Status,
                     Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
                     FlightClass = x.FlightClass,
-                    DepartureTime = x.SpecialPriceStart.Value.ToString("HH:mm"),
-                    LandingTime = x.SpecialPriceEnd.Value.ToString("HH:mm"),
+                    DepartureTime = x.DepartureDate.Value.ToString("HH:mm"),
+                    LandingTime = x.LandingDate.Value.ToString("HH:mm"),
                     Price = x.Price.ToString("0.0") + " " + x.Currency
                 });
 
@@ -371,7 +373,9 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SaleRtOnly = model.Product.SaleRtOnly,
                 Status = "INSERTED",
                 ReservationNumber = model.Product.ReservationNumber,
-                FlightClass = model.Product.FlightClass
+                FlightClass = model.Product.FlightClass,
+                DepartureDate = model.Product.DepartureDate,
+                LandingDate = model.Product.LandingDate
             };
 
             if (!User.IsInRole("admin"))
@@ -517,6 +521,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.ReservationNumber = model.Product.ReservationNumber;
             product.VendorId = model.Product.VendorId;
             product.FlightClass = model.Product.FlightClass;
+            product.DepartureDate = model.Product.DepartureDate;
+            product.LandingDate = model.Product.LandingDate;
 
             if (User.IsInRole("admin"))
             {
