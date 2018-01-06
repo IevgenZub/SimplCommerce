@@ -44,6 +44,72 @@
                     <input name="description" ng-model="vm.vendor.description" class="form-control" />
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Phone 1</label>
+                <div class="col-sm-10">
+                    <input name="Phone" ng-model="vm.vendor.phone1" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Phone 2</label>
+                <div class="col-sm-10">
+                    <input name="Phone" ng-model="vm.vendor.phone2" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">GSM Phone</label>
+                <div class="col-sm-10">
+                    <input name="Phone" ng-model="vm.vendor.phone3" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Fax Phone</label>
+                <div class="col-sm-10">
+                    <input name="Phone" ng-model="vm.vendor.phone4" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-10">
+                    <input name="description" ng-model="vm.vendor.address" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">City</label>
+                <div class="col-sm-10">
+                    <input name="description" ng-model="vm.vendor.city" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Country</label>
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="vm.vendor.countryId" ng-options="country.id as country.name for country in vm.countries"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Web Site</label>
+                <div class="col-sm-10">
+                    <input name="description" ng-model="vm.vendor.website" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="vm.vendor.sendEmails"> Send Emails
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <div class="checkbox">

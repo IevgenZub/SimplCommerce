@@ -96,9 +96,24 @@ namespace SimplCommerce.Module.Vendors.Controllers
                 Email = vendor.Email,
                 Description = vendor.Description,
                 IsActive = vendor.IsActive,
-                Managers = vendor.Users.Select(x => new VendorManager { UserId = x.Id, Email = x.Email }).ToList()
+                Managers = vendor.Users.Select(x => new VendorManager { UserId = x.Id, Email = x.Email }).ToList(),
+                VendorType = vendor.VendorType,
+                VendorClass = vendor.VendorClass,
+                Phone1 = vendor.Phone1,
+                Phone2 = vendor.Phone2,
+                Phone3 = vendor.Phone3,
+                Phone4 = vendor.Phone4,
+                Address = vendor.Address,
+                City = vendor.City,
+                CountryId = vendor.CountryId,
+                Area = vendor.Area,
+                Website = vendor.Website,
+                SendEmails = vendor.SendEmails,
+                BankName = vendor.BankName,
+                Iban = vendor.Iban,
+                Notes = vendor.Notes
             };
-
+    
             return Json(model);
         }
 
@@ -113,7 +128,22 @@ namespace SimplCommerce.Module.Vendors.Controllers
                     SeoTitle = model.Slug,
                     Email = model.Email,
                     Description = model.Description,
-                    IsActive = model.IsActive
+                    IsActive = model.IsActive,
+                    VendorType = model.VendorType,
+                    VendorClass = model.VendorClass,
+                    Phone1 = model.Phone1,
+                    Phone2 = model.Phone2,
+                    Phone3 = model.Phone3,
+                    Phone4 = model.Phone4,
+                    Address = model.Address,
+                    City = model.City,
+                    CountryId = model.CountryId,
+                    Area = model.Area,
+                    Website = model.Website,
+                    SendEmails = model.SendEmails,
+                    BankName = model.BankName,
+                    Iban = model.Iban,
+                    Notes = model.Notes
                 };
 
                 _vendorService.Create(vendor);
@@ -135,6 +165,21 @@ namespace SimplCommerce.Module.Vendors.Controllers
                 vendor.Description = model.Description;
                 vendor.IsActive = model.IsActive;
                 vendor.UpdatedOn = DateTimeOffset.Now;
+                vendor.VendorType = model.VendorType;
+                vendor.VendorClass = model.VendorClass;
+                vendor.Phone1 = model.Phone1;
+                vendor.Phone2 = model.Phone2;
+                vendor.Phone3 = model.Phone3;
+                vendor.Phone4 = model.Phone4;
+                vendor.Address = model.Address;
+                vendor.City = model.City;
+                vendor.CountryId = model.CountryId;
+                vendor.Area = model.Area;
+                vendor.Website = model.Website;
+                vendor.SendEmails = model.SendEmails;
+                vendor.BankName = model.BankName;
+                vendor.Iban = model.Iban;
+                vendor.Notes = model.Notes;
 
                 _vendorService.Update(vendor);
 
