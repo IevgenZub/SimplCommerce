@@ -361,7 +361,7 @@ a.promotion-link {
 .row-passengers {
    width: 40%;
    position: absolute;
-   right: 10%;
+   right: -4%;
    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5)
 }
 
@@ -543,8 +543,17 @@ section:last-child {
    border-radius: 0;
 }
 
+.easy-autocomplete {
+   width: auto !important;
+}
+
 @media only screen and (max-width: 1200px) {}
 
+@media only screen and (min-width: 1400px) {
+   .container {
+      width: 1370px;
+   }
+}
 
 /* Medium Devices, Desktops */
 
