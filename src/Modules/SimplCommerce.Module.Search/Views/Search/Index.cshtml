@@ -27,27 +27,27 @@
                 <fieldset>
                     <div class="row">
                         <div class="col-sm-12 form-group">
-                            <div class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
+                            <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0;">
                                 <label class="sr-only" for="kalkis-yeri">Departure Place</label>
                                 <input type="text" class="form-control" style="width: 100%;" id="kalkis-yeri" name="Departure" placeholder="Departure">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12" style="padding: 0">
+                            <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
                                 <label class="sr-only" for="inis-yeri">Landing Place</label>
                                 <input type="text" class="form-control date" style="width: 100%" id="inis-yeri" name="Landing" placeholder="Landing">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0">
+                            <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0; min-width: 170px;">
                                 <label class="sr-only" for="gidis-tarihi">Date of Departure</label>
                                 <input type="text" class="form-control" style="width: 100%" id="gidis-tarihi" name="DepartureDate" placeholder="Date of Departure">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0">
-                                <label class="sr-only" for="gidis-tarihi">Date of Return</label>
+                            <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0; min-width: 170px;">
+                                <label class="sr-only" for="donus-tarihi">Date of Return</label>
                                 <input type="text" class="form-control" style="width: 100%" id="donus-tarihi" name="ReturnDate" placeholder="Date of Return">
                             </div>
-                            <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0">
-                                <label class="sr-only" for="gidis-tarihi">Number of People</label>
+                            <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;  min-width: 190px;">
+                                <label class="sr-only" for="kisi-sayisi">Number of People</label>
                                 <input type="text" class="form-control" style="width: 100%" id="kisi-sayisi" name="NumberOfPeople" placeholder="Number of People" readonly="readonly">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12" style="padding: 0">
+                            <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                                 <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
@@ -326,6 +326,10 @@
         $("#kalkis-yeri").val(getUrlParameter('Departure').replace(new RegExp('\\+', 'g'), ' '));
         $("#inis-yeri").val(getUrlParameter('Landing').replace(new RegExp('\\+', 'g'), ' '));
 
+        $("#gidis-tarihi").val(getUrlParameter('DepartureDate').replace(new RegExp('\\+', 'g'), ' '));
+        $("#donus-tarihi").val(getUrlParameter('ReturnDate').replace(new RegExp('\\+', 'g'), ' '));
+
+        $("#kisi-sayisi").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
 
     </script>
     <script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
