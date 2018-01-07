@@ -157,7 +157,7 @@ input[type="radio"]:checked+label {
    border: 0;
    font-size: 16px;
    height: 44px;
-   padding: 6px 16px;
+   padding: 6px 10px;
    cursor: pointer;
 }
 
