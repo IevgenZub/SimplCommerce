@@ -34,6 +34,10 @@
     font-weight: bold;
 }
 
+.product-price label {
+    cursor: pointer;
+}
+
 .product-price .product-price-regular{
     text-decoration: line-through;
     padding-top: 5px;
