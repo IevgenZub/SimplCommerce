@@ -12,6 +12,8 @@
                     <p class="product-price">
                         <label>
                         <input type="radio" name="selectTrip" id="selectTrip">
+                        <input type="hidden" name="productId" id="productId" value="@Model.Id">
+
                             @if (Model.IsCallForPricing)
                             {
                                 @Localizer["Call for pricing"]
