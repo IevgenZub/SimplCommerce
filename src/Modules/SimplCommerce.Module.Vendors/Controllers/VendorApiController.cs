@@ -110,6 +110,7 @@ namespace SimplCommerce.Module.Vendors.Controllers
                 Website = vendor.Website,
                 SendEmails = vendor.SendEmails,
                 BankName = vendor.BankName,
+                AccountNumber = vendor.AccountNumber,
                 Iban = vendor.Iban,
                 Notes = vendor.Notes
             };
@@ -142,6 +143,7 @@ namespace SimplCommerce.Module.Vendors.Controllers
                     Website = model.Website,
                     SendEmails = model.SendEmails,
                     BankName = model.BankName,
+                    AccountNumber = model.AccountNumber,
                     Iban = model.Iban,
                     Notes = model.Notes
                 };
@@ -178,6 +180,7 @@ namespace SimplCommerce.Module.Vendors.Controllers
                 vendor.Website = model.Website;
                 vendor.SendEmails = model.SendEmails;
                 vendor.BankName = model.BankName;
+                vendor.AccountNumber = model.AccountNumber;
                 vendor.Iban = model.Iban;
                 vendor.Notes = model.Notes;
 

@@ -1,7 +1,7 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading">
-        <h2 ng-if="!vm.isEditMode">{{::vm.translate.get('Create Vendor')}}</h2>
-        <h2 ng-if="vm.isEditMode">{{::vm.translate.get('Edit Vendor')}}</h2>
+        <h2 ng-if="!vm.isEditMode">Create Tour Operator</h2>
+        <h2 ng-if="vm.isEditMode">Edit Tour Operator</h2>
     </div>
     <div class="panel-body">
         <form name="vendorForm" class="form-horizontal">
@@ -10,115 +10,165 @@
                     <li ng-repeat="error in vm.validationErrors track by $index">{{error}}</li>
                 </ul>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">{{::vm.translate.get('Name')}}</label>
-                <div class="col-sm-10">
-                    <input name="name" ng-model="vm.vendor.name" ng-change="vm.updateSlug()" class="form-control" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">{{::vm.translate.get('Slug')}}</label>
-                <div class="col-sm-10">
-                    <input name="slug" ng-model="vm.vendor.slug" class="form-control" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">{{::vm.translate.get('Email')}}</label>
-                <div class="col-sm-10">
-                    <input name="email" ng-model="vm.vendor.email" class="form-control" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">{{::vm.translate.get('Managers')}}</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static">
-                        <a ui-sref="user-edit({id: user.userId})" ng-repeat="user in vm.vendor.managers">{{user.email}} </a>
-                        <a ui-sref="users" ng-if="vm.vendor.managers.length === 0 && vm.isEditMode">Add users as manager</a>
-                        <span ng-if="!vm.isEditMode">After vendor is created. Go to user list and create or set users as managers</span>
-                    </p>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">{{::vm.translate.get('Description')}}</label>
-                <div class="col-sm-10">
-                    <input name="description" ng-model="vm.vendor.description" class="form-control" />
-                </div>
-            </div>
+            <uib-tabset>
+                <uib-tab index="0" heading="{{::vm.translate.get('General Information')}}">
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Phone 1</label>
-                <div class="col-sm-10">
-                    <input name="Phone" ng-model="vm.vendor.phone1" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Phone 2</label>
-                <div class="col-sm-10">
-                    <input name="Phone" ng-model="vm.vendor.phone2" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">GSM Phone</label>
-                <div class="col-sm-10">
-                    <input name="Phone" ng-model="vm.vendor.phone3" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Fax Phone</label>
-                <div class="col-sm-10">
-                    <input name="Phone" ng-model="vm.vendor.phone4" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Address</label>
-                <div class="col-sm-10">
-                    <input name="description" ng-model="vm.vendor.address" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">City</label>
-                <div class="col-sm-10">
-                    <input name="description" ng-model="vm.vendor.city" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Country</label>
-                <div class="col-sm-10">
-                    <select class="form-control" ng-model="vm.vendor.countryId" ng-options="country.id as country.name for country in vm.countries"></select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Web Site</label>
-                <div class="col-sm-10">
-                    <input name="description" ng-model="vm.vendor.website" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="vm.vendor.sendEmails"> Send Emails
-                        </label>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{::vm.translate.get('Name')}}</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-model="vm.vendor.name" ng-change="vm.updateSlug()" class="form-control" />
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="vm.vendor.isActive"> {{::vm.translate.get('Is Active')}}
-                        </label>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Type</label>
+                        <div class="col-sm-10">
+                            <input name="email" ng-model="vm.vendor.vendorType" class="form-control" />
+                        </div>
                     </div>
-                </div>
-            </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Class</label>
+                        <div class="col-sm-10">
+                            <input name="email" ng-model="vm.vendor.vendorClass" class="form-control" />
+                        </div>
+                    </div>
+                    <div ng-show="false" class="form-group">
+                        <label class="col-sm-2 control-label">{{::vm.translate.get('Slug')}}</label>
+                        <div class="col-sm-10">
+                            <input name="slug" ng-model="vm.vendor.slug" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{::vm.translate.get('Email')}}</label>
+                        <div class="col-sm-10">
+                            <input name="email" ng-model="vm.vendor.email" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{::vm.translate.get('Managers')}}</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">
+                                <a ui-sref="user-edit({id: user.userId})" ng-repeat="user in vm.vendor.managers">{{user.email}} </a>
+                                <a ui-sref="users" ng-if="vm.vendor.managers.length === 0 && vm.isEditMode">Add users as manager</a>
+                                <span ng-if="!vm.isEditMode">After tour operator is created. Go to user list and create or set users as managers</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{::vm.translate.get('Description')}}</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.description" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Phone 1</label>
+                        <div class="col-sm-10">
+                            <input name="Phone" ng-model="vm.vendor.phone1" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Phone 2</label>
+                        <div class="col-sm-10">
+                            <input name="Phone" ng-model="vm.vendor.phone2" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">GSM Phone</label>
+                        <div class="col-sm-10">
+                            <input name="Phone" ng-model="vm.vendor.phone3" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Fax Phone</label>
+                        <div class="col-sm-10">
+                            <input name="Phone" ng-model="vm.vendor.phone4" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.address" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.city" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Area</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.area" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Country</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" ng-model="vm.vendor.countryId" ng-options="country.id as country.name for country in vm.countries"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Web Site</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.website" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.vendor.sendEmails"> Send Emails
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.vendor.isActive"> {{::vm.translate.get('Is Active')}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab index="1" heading="Bank Info">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Bank</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.bankName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Account #</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.accountNumber" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">IBAN</label>
+                        <div class="col-sm-10">
+                            <input name="description" ng-model="vm.vendor.iban" class="form-control" />
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab index="2" heading="Notes">
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <textarea name="description" rows="5" ng-model="vm.vendor.notes" class="form-control" />
+                        </div>
+                    </div>
+                </uib-tab>
+              </uib-tabset>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button class="btn btn-primary" ng-click="vm.save()"><span class="glyphicon glyphicon-ok"></span> {{::vm.translate.get('Save')}}</button>
