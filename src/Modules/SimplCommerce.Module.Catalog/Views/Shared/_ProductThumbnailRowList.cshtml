@@ -1,6 +1,8 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
 
 <div class="thumbnail" style="overflow: hidden; margin:10px 20px;">
+
+    <div class="row-fluid">
     <div class="col-md-6 col-sm-6">
 
        <div class="col-md-3 col-xs-3 caption">
@@ -9,27 +11,29 @@
         <div class="col-md-9 col-xs-9">
             <h4 class="product-name">@Model.Name</h4>
             <p class="product-price">
-                <input type="radio" name="selectTrip">
-                @if (Model.IsCallForPricing)
-                {
-                    @Localizer["Call for pricing"]
-                }
-                else
-                {
-                    @Model.CalculatedProductPrice.Price.ToString("C")
-                    if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                <label>
+                <input type="radio" name="selectTrip" id="selectTrip">
+                    @if (Model.IsCallForPricing)
                     {
-                        <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
-                        <br />
-                        <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
+                        @Localizer["Call for pricing"]
                     }
-                }
+                    else
+                    {
+                        @Model.CalculatedProductPrice.Price.ToString("C")
+                        if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                        {
+                            <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
+                            <br />
+                            <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
+                        }
+                    }
+                </label>
             </p>
         </div>
 
         <div class="col-md-12 col-xs-12 caption">
-            <p>Departure: @Model.Departure @Model.DepartureDate</p>
-            <p>Landing: @Model.Landing @Model.LandingDate</p>
+            <p><b>Departure:</b> @Model.Departure @Model.DepartureDate</p>
+            <p><b>Landing:</b> @Model.Landing @Model.LandingDate</p>
         </div>
     </div>
 
@@ -45,9 +49,26 @@
         </div>
 
         <div class="col-md-12 col-xs-12 caption">
-            <p>Departure: @Model.Landing @Model.ReturnDepartureDate</p>
-            <p>Landing: @Model.Departure @Model.ReturnLandingDate</p>
+            <p><b>Departure:</b> @Model.Landing @Model.ReturnDepartureDate</p>
+            <p><b>Landing:</b> @Model.Departure @Model.ReturnLandingDate</p>
         </div>
     </div>
     }
+    <div class="col-md-12 col-sm-12">
+        <div class="col-md-6 col-sm-6">
+            <a class="moreDetails">More Details</a>
+        </div>
+    </div>
+
+    </div>
+
+
+    <div class="product-details" style="display: none;">
+        <div class="col-md-6 col-sm-6">
+            <h4>Product Details</h4>
+        </div>
+        <div class="col-md-6 col-sm-6"></div>
+    </div>
+
+
 </div>

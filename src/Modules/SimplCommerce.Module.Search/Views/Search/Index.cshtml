@@ -331,6 +331,29 @@
 
         $("#kisi-sayisi").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
 
+
+        $(".moreDetails").click(function () {
+
+
+            $current = $(this);
+            //getting the next element
+            $details = $current.parents(".thumbnail").find('.product-details').first();
+            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+
+
+            $details.slideToggle(500, function () {
+                //execute this after slideToggle is done
+                //change text of header based on visibility of content div
+                /*
+                $header.text(function () {
+                    //change text based on condition
+                    return $content.is(":visible") ? "Collapse" : "Expand";
+                });
+                */
+            });
+
+        });
+
     </script>
     <script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
 }

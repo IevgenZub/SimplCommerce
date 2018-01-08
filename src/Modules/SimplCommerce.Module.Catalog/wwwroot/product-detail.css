@@ -31,6 +31,11 @@
     text-align: left;
     border: 2px dashed #E0E0E0;
     overflow: hidden;
+    font-weight: bold;
+}
+
+.product-price label {
+    cursor: pointer;
 }
 
 .product-price .product-price-regular{
