@@ -143,7 +143,7 @@
     <div class="col-md-3 product-list-filters">
         <h3>Filter by</h3>
         <form id="productFilter" name="productFilter" method="GET" action="~/search">
-            <div class="panel-group" id="accordion-category">
+            <div  class="panel-group" id="accordion-category">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
@@ -176,7 +176,7 @@
                     <div class="panel-heading">
                         <h2 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion-brand" href="#collapse-brand">
-                                Brands
+                                Carriers
                                 <i class="fa fa-angle-down"></i>
                             </a>
                         </h2>
@@ -233,7 +233,7 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-7 category-result">
-                <h2>Search result for @Model.CurrentSearchOption.Query</h2>
+                <h2>Search results</h2>
                 <small class="badge-results">@Model.TotalProduct Results</small>
             </div>
             <div class="col-md-5">
@@ -273,13 +273,6 @@
                 }
         </div>
 
-        @if (Model.Products.Count > 0) {
-            <div class="row" style="text-align: center;">
-                <button type="submit" class="btn btn-add-cart btn-primary">Buy</button>
-            </div>
-        }
-
-
         <div class="row">
             <div class="col-md-12 text-right">
                 <cs-pager cs-paging-pagesize="@Model.CurrentSearchOption.PageSize"
@@ -316,7 +309,7 @@
             for (i = 0; i < sURLVariables.length; i++) {
                 sParameterName = sURLVariables[i].split('=');
 
-                if (sParameterName[0] === sParam) {
+                if (sParameterName[0].toLowerCase() === sParam.toLowerCase()) {
                     return sParameterName[1] === undefined ? true : sParameterName[1];
                 }
             }
@@ -327,7 +320,11 @@
         $("#inis-yeri").val(getUrlParameter('Landing').replace(new RegExp('\\+', 'g'), ' '));
 
         $("#gidis-tarihi").val(getUrlParameter('DepartureDate').replace(new RegExp('\\+', 'g'), ' '));
-        $("#donus-tarihi").val(getUrlParameter('ReturnDate').replace(new RegExp('\\+', 'g'), ' '));
+
+        var returnDate = getUrlParameter('ReturnDate');
+        if (returnDate) {
+            $("#donus-tarihi").val(returnDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
 
         $("#kisi-sayisi").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
 

@@ -2,8 +2,7 @@
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
         var quantity,
-            //$form = $(this).closest("input:checked"),
-            productId = $("input:checked").next('input[name=productId]').val(),
+            productId = $(this).attr("id");
             //$quantityInput = $form.find('.quantity-field');
 
             quantity = 1; //$quantityInput.length === 1 ? $quantityInput.val() : 1;
