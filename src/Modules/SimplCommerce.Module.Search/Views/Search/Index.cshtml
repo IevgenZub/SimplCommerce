@@ -333,23 +333,19 @@
 
 
         $(".moreDetails").click(function () {
-
-
             $current = $(this);
-            //getting the next element
             $details = $current.parents(".thumbnail").find('.product-details').first();
-            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+            $iconDown = $current.parent().find(".fa-angle-double-down");
+            $iconUp = $current.parent().find(".fa-angle-double-up");
 
-
-            $details.slideToggle(500, function () {
-                //execute this after slideToggle is done
-                //change text of header based on visibility of content div
-                /*
-                $header.text(function () {
-                    //change text based on condition
-                    return $content.is(":visible") ? "Collapse" : "Expand";
-                });
-                */
+            $details.slideToggle(300, function () {
+                if($iconDown.is(':visible')) {
+                    $iconDown.hide();
+                    $iconUp.show();
+                } else {
+                    $iconUp.hide();
+                    $iconDown.show();
+                }
             });
 
         });

@@ -2,72 +2,103 @@
 
 <div class="thumbnail" style="overflow: hidden; margin:10px 20px;">
 
-    <div class="row-fluid">
-    <div class="col-md-6 col-sm-6">
-
-       <div class="col-md-3 col-xs-3 caption">
-           <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
-        </div>
-        <div class="col-md-9 col-xs-9">
-            <h4 class="product-name">@Model.Name</h4>
-            <p class="product-price">
-                <label>
-                <input type="radio" name="selectTrip" id="selectTrip">
-                    @if (Model.IsCallForPricing)
-                    {
-                        @Localizer["Call for pricing"]
-                    }
-                    else
-                    {
-                        @Model.CalculatedProductPrice.Price.ToString("C")
-                        if (Model.CalculatedProductPrice.PercentOfSaving > 0)
-                        {
-                            <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
-                            <br />
-                            <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
-                        }
-                    }
-                </label>
-            </p>
-        </div>
-
-        <div class="col-md-12 col-xs-12 caption">
-            <p><b>Departure:</b> @Model.Departure @Model.DepartureDate</p>
-            <p><b>Landing:</b> @Model.Landing @Model.LandingDate</p>
-        </div>
-    </div>
-
-
-    @if (Model.IsRoundTrip.Value)
-    {
-    <div class="col-md-6 col-sm-6">
-        <div class="col-md-3 col-xs-3 caption">
-            <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
-        </div>
-        <div class="col-md-9 col-xs-9">
-            <h4 class="product-name">@Model.ReturnFlightNumber</h4>
-        </div>
-
-        <div class="col-md-12 col-xs-12 caption">
-            <p><b>Departure:</b> @Model.Landing @Model.ReturnDepartureDate</p>
-            <p><b>Landing:</b> @Model.Departure @Model.ReturnLandingDate</p>
-        </div>
-    </div>
-    }
-    <div class="col-md-12 col-sm-12">
+    <div class="row">
         <div class="col-md-6 col-sm-6">
-            <a class="moreDetails">More Details</a>
+                <div class="col-md-3 col-xs-3 caption">
+                   <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+                </div>
+                <div class="col-md-9 col-xs-9">
+                    <h4 class="product-name">@Model.Name</h4>
+                    <p class="product-price">
+                        <label>
+                        <input type="radio" name="selectTrip" id="selectTrip">
+                            @if (Model.IsCallForPricing)
+                            {
+                                @Localizer["Call for pricing"]
+                            }
+                            else
+                            {
+                                @Model.CalculatedProductPrice.Price.ToString("C")
+                                if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                                {
+                                    <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
+                                    <br />
+                                    <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
+                                }
+                            }
+                        </label>
+                    </p>
+                </div>
+
+                <div class="col-md-12 col-xs-12">
+                    <p><b>Departure:</b> @Model.Departure @Model.DepartureDate</p>
+                    <p><b>Landing:</b> @Model.Landing @Model.LandingDate</p>
+                </div>
         </div>
-    </div>
-
-    </div>
 
 
-    <div class="product-details" style="display: none;">
+        @if (Model.IsRoundTrip.Value)
+        {
         <div class="col-md-6 col-sm-6">
-            <h4>Product Details</h4>
+            <div class="row">
+                <div class="col-md-3 col-xs-3 caption">
+                    <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+                </div>
+                <div class="col-md-9 col-xs-9">
+                    <h4 class="product-name">@Model.ReturnFlightNumber</h4>
+                </div>
+
+                <div class="col-md-12 col-xs-12">
+                    <p><b>Departure:</b> @Model.Landing @Model.ReturnDepartureDate</p>
+                    <p><b>Landing:</b> @Model.Departure @Model.ReturnLandingDate</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-sm-6"></div>
+        }
+
+        <div class="col-md-12 col-sm-12">
+            <div class="col-md-6 col-sm-6">
+                <small>
+                    <i class="fa fa-angle-double-down"></i>
+                    <i class="fa fa-angle-double-up" style="display: none;"></i>
+                    <a class="moreDetails" style="cursor: pointer;">More Details</a>
+                </small>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row product-details" style="display: none; transition: max-height 0.3s">
+        <div class="col-md-12 col-sm-12">
+            <div style="border-bottom: 1px solid #ddd; margin: 5px 15px; "></div>
+
+            <div class="col-md-3 col-sm-3">
+                <p><small>Carrier: ###CarrierValue###</small></p>
+                <p><small>Flight #: ###FlightValue###</small></p>
+                <p><small>Take Off: ###TakeOffValue###</small></p>
+                <p><small>Landing: ###LandingValue###</small></p>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Terminal: @Model.Terminal</small></p>
+                <p><small>Aircraft: ###AircraftValue###</small></p>
+                <p><small>Via: ###ViaValue###</small></p>
+            </div>
+
+            @if (Model.IsRoundTrip.Value)
+            {
+            <div class="col-md-3 col-sm-3">
+                <p><small>Carrier: ###CarrierValue###</small></p>
+                <p><small>Flight #: ###FlightValue###</small></p>
+                <p><small>Take Off: ###TakeOffValue###</small></p>
+                <p><small>Landing: ###LandingValue###</small></p>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Terminal: @Model.ReturnTerminal</small></p>
+                <p><small>Aircraft: ###AircraftValue###</small></p>
+                <p><small>Via: ###ViaValue###</small></p>
+            </div>
+            }
+        </div>
     </div>
 
 
