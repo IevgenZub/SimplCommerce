@@ -34,6 +34,7 @@
         vm.userIsAdmin = false;       
 
         vm.datePickerSpecialPriceStart = {};
+
         vm.datePickerSpecialPriceEnd = {};
 
         vm.datePickerDepartureDate = {};
@@ -425,7 +426,7 @@
                     attributeIds.splice(index, 1);
                     vm.attributes.splice(index, 1);
                 }
-
+                
                 if (vm.product.specialPriceStart) {
                     vm.product.specialPriceStart = new Date(vm.product.specialPriceStart);
                 }
@@ -443,6 +444,7 @@
                 if (vm.product.departureDate) {
                     vm.product.departureDate = new Date(vm.product.departureDate);
                 }
+
                 if (vm.product.landingDate) {
                     vm.product.landingDate = new Date(vm.product.landingDate);
                 }
