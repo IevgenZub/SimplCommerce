@@ -132,7 +132,11 @@ namespace SimplCommerce.Module.Search.Controllers
 
             query = query
                 .Include(x => x.ThumbnailImage)
-                .Include(x => x.AttributeValues).ThenInclude(a => a.Attribute);
+                .Include(x => x.AttributeValues).ThenInclude(a => a.Attribute)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
+                .Include(x => x.Brand)
+                .Include(x => x.TaxClass);
 
             query = AppySort(searchOption, query);
 

@@ -134,10 +134,6 @@ section {
    z-index: 999;
 }
 
-label>input[type=radio] {
-   visibility: hidden;
-}
-
 .btn-radio {
    color: #fff;
    padding-left: 0;
@@ -157,7 +153,7 @@ input[type="radio"]:checked+label {
    border: 0;
    font-size: 16px;
    height: 44px;
-   padding: 6px 16px;
+   padding: 6px 10px;
    cursor: pointer;
 }
 

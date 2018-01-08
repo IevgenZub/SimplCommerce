@@ -2,11 +2,10 @@
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
         var quantity,
-            $form = $(this).closest("form"),
-            productId = $(this).closest("form").find('input[name=productId]').val(),
-            $quantityInput = $form.find('.quantity-field');
+            productId = $(this).attr("id");
+            //$quantityInput = $form.find('.quantity-field');
 
-        quantity = $quantityInput.length === 1 ? $quantityInput.val() : 1;
+            quantity = 1; //$quantityInput.length === 1 ? $quantityInput.val() : 1;
 
         $.ajax({
             type: 'POST',

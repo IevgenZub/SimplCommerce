@@ -1,53 +1,92 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
 
 <div class="thumbnail" style="overflow: hidden; margin:10px 20px;">
-    <div class="col-md-6 col-sm-6">
 
-       <div class="col-md-3 col-xs-3 caption">
-           <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
-        </div>
-        <div class="col-md-9 col-xs-9">
-            <h4 class="product-name">@Model.Name</h4>
-            <p class="product-price">
-                <input type="radio" name="selectTrip">
-                @if (Model.IsCallForPricing)
-                {
-                    @Localizer["Call for pricing"]
-                }
-                else
-                {
-                    @Model.CalculatedProductPrice.Price.ToString("C")
-                    if (Model.CalculatedProductPrice.PercentOfSaving > 0)
-                    {
-                        <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
-                        <br />
-                        <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
-                    }
-                }
-            </p>
-        </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-3">
+                <div class="col-md-3 col-xs-3 caption">
+                    <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+                </div>
+                <div class="col-md-9 col-xs-9">
+                    <h5 class="product-name">@Model.DepartureDate.Value.LocalDateTime.ToShortDateString()</h5>
+                </div>
+                <div class="col-md-9 col-xs-9">
+                    <small style="color:gray" class="product-name">@Model.Carrier</small>
+                    <small class="product-name">@Model.FlightNumber</small>
+                </div>
+            </div>
+       <div class="col-md-3 col-sm-3">
+            <p style="padding-top:5px"><b>Departure:</b> @Model.Departure </p>
+            <small>@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
+            <p><b>Landing:</b> @Model.Landing </p>
+            <small>@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</small>
+       </div>
 
-        <div class="col-md-12 col-xs-12 caption">
-            <p>Departure: @Model.Departure @Model.DepartureDate</p>
-            <p>Landing: @Model.Landing @Model.LandingDate</p>
+        @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+        {
+        <div class="col-md-3 col-sm-3">
+                <div class="col-md-3 col-xs-3 caption">
+                    <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
+                </div>
+                <div class="col-md-9 col-xs-9">
+                    <h5 class="product-name">@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()</h5>
+                </div>
+
+                <div class="col-md-9 col-xs-9">
+                    <small style="color:gray" class="product-name">@Model.ReturnCarrier</small>
+                    <small class="product-name">@Model.ReturnFlightNumber</small>
+                </div>
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <p style="padding-top:5px"><b>Departure:</b> @Model.Landing  </p>
+            <small>@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
+            <p><b>Landing:</b> @Model.Departure </p>
+            <small>@Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</small>
+        </div>
+        }
+
+        <div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12">
+                <small>
+                    <i class="fa fa-angle-double-down"></i>
+                    <i class="fa fa-angle-double-up" style="display: none;"></i>
+                    <a class="moreDetails" style="cursor: pointer;">More Details</a>
+                    <button type="submit" id="@Model.Id" style="float:right" class="btn btn-add-cart btn-primary">@Model.Price  @Model.Currency >></button>
+                    <input type="hidden" name="productId" id="productId" value="@Model.Id">
+                </small>
+            </div>
         </div>
     </div>
 
 
-    @if (Model.IsRoundTrip.Value)
-    {
-    <div class="col-md-6 col-sm-6">
-        <div class="col-md-3 col-xs-3 caption">
-            <img alt="@Model.ReturnFlightNumber" src="@Model.ThumbnailUrl" style="max-width: 60px; min-width: 60px;">
-        </div>
-        <div class="col-md-9 col-xs-9">
-            <h4 class="product-name">@Model.ReturnFlightNumber</h4>
-        </div>
+    <div class="row product-details" style="display: none; transition: max-height 0.3s">
+        <div class="col-md-12 col-sm-12">
+            <div style="border-bottom: 1px solid #ddd; margin: 5px 15px; "></div>
 
-        <div class="col-md-12 col-xs-12 caption">
-            <p>Departure: @Model.Landing @Model.ReturnDepartureDate</p>
-            <p>Landing: @Model.Departure @Model.ReturnLandingDate</p>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Carrier: @Model.Carrier</small></p>
+                <p><small>Flight #: @Model.FlightNumber</small></p>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Terminal: @Model.Terminal</small></p>
+                <p><small>Aircraft: @Model.Aircraft</small></p>
+                <p><small>Via: @Model.Via</small></p>
+            </div>
+
+           @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+           {
+            <div class="col-md-3 col-sm-3">
+                <p><small>Carrier: @Model.ReturnCarrier</small></p>
+                <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Terminal: @Model.ReturnTerminal</small></p>
+                <p><small>Aircraft: @Model.ReturnAircraft</small></p>
+                <p><small>Via: @Model.ReturnVia</small></p>
+            </div>
+           }
         </div>
     </div>
-    }
+
+
 </div>

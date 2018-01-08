@@ -64,6 +64,16 @@ namespace SimplCommerce.Module.Core.Controllers
             return Json(countries);
         }
 
+        [HttpGet("all")]
+        public IActionResult All()
+        {
+            var query = _countryRepository.Query();
+
+            var countries = query.ToList();
+
+            return Json(countries);
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, [FromBody] CountryForm model)
         {

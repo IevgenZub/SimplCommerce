@@ -305,19 +305,19 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 {
                     Id = x.Id,
                     FlightNumber = x.FlightNumber,
+                    Name = x.Name,
                     HasOptions = x.HasOptions,
                     Seats = x.SoldSeats + "/" + x.StockQuantity,
-                    CreatedOn = x.CreatedOn.ToString("dd.MM.yyyy"),
+                    CreatedOn = x.CreatedOn.Date.ToShortDateString(),
                     IsPublished = x.IsPublished,
                     From = x.ShortDescription.Split('(', ')')[1],
                     To = x.Description.Split('(', ')')[1],
-                    DepartureDate = x.DepartureDate.Value.ToString("dd.MM.yyyy"),
-                    ReturnDepartureDate = x.ReturnDepartureDate.HasValue ? x.ReturnDepartureDate.Value.ToString("dd.MM.yyyy") : string.Empty,
+                    DepartureDate = x.DepartureDate,
+                    ReturnDepartureDate = x.ReturnDepartureDate,
+                    LandingDate = x.LandingDate,
                     Status = x.Status,
                     Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
                     FlightClass = x.FlightClass,
-                    DepartureTime = x.DepartureDate.Value.ToString("HH:mm"),
-                    LandingTime = x.LandingDate.Value.ToString("HH:mm"),
                     Price = x.Price.ToString("0.0") + " " + x.Currency
                 });
 
@@ -661,26 +661,31 @@ namespace SimplCommerce.Module.Catalog.Controllers
             var departureDateOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
             if (departureDateOption != null)
             {
-                var departureDate = Convert.ToDateTime(departureDateOption.Value);
+                DateTimeOffset departureDate = DateTime.SpecifyKind(Convert.ToDateTime(departureDateOption.Value), DateTimeKind.Utc);
 
-                linkedProduct.SpecialPriceStart = departureDate
-                        .AddHours(product.SpecialPriceStart.Value.Hour)
-                        .AddMinutes(product.SpecialPriceStart.Value.Minute);
+                linkedProduct.DepartureDate = departureDate
+                        .AddHours(product.DepartureDate.Value.Hour)
+                        .AddMinutes(product.DepartureDate.Value.Minute);
 
-                linkedProduct.SpecialPriceEnd = departureDate
-                        .AddHours(product.SpecialPriceEnd.Value.Hour)
-                        .AddMinutes(product.SpecialPriceEnd.Value.Minute);
+                linkedProduct.LandingDate = departureDate
+                        .AddHours(product.LandingDate.Value.Hour)
+                        .AddMinutes(product.LandingDate.Value.Minute);
 
                 var daysOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Package Days");
                 if (daysOption != null)
                 {
                     var days = Convert.ToInt32(daysOption.Value);
-
-                    linkedProduct.ReturnDepartureDate = linkedProduct.SpecialPriceStart.Value.AddDays(days);
-                    linkedProduct.ReturnLandingDate = linkedProduct.SpecialPriceEnd.Value.AddDays(days);
+                    var returnDepartureTime = linkedProduct.ReturnDepartureDate.Value.TimeOfDay;
+                    var returnLandingTime = linkedProduct.ReturnLandingDate.Value.TimeOfDay;
+                    linkedProduct.ReturnDepartureDate = DateTime.SpecifyKind(linkedProduct.DepartureDate.Value.Date
+                        .AddDays(days)
+                        .Add(returnDepartureTime), DateTimeKind.Utc);
+                    linkedProduct.ReturnLandingDate = DateTime.SpecifyKind(linkedProduct.DepartureDate.Value.Date
+                        .AddDays(days)
+                        .Add(returnLandingTime), DateTimeKind.Utc);
                 }
             }
-
+        
             var flightClass = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Class");
             if (flightClass != null)
             {

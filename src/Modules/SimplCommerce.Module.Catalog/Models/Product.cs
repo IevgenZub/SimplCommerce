@@ -85,6 +85,7 @@ namespace SimplCommerce.Module.Catalog.Models
         public long? ReturnCarrierId { get; set; }
         public Brand ReturnCarrier { get; set; }
         public long? ReturnAircraftId { get; set; }
+        public TaxClass ReturnAircraft { get; set; }
         public string ReturnTerminal { get; set; }
         public string ReturnVia { get; set; }
         public string ReservationNumber { get; set; }

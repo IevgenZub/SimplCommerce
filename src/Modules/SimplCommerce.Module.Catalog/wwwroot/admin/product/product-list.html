@@ -97,13 +97,13 @@
         <tr ng-repeat="product in vm.products">
             <td>{{product.id}}</td>
             <td>{{product.operator}}</td>
-            <td>{{product.departureDate | date:'medium'}}</td>
-            <td>{{product.returnDepartureDate | date:'medium'}}</td>
+            <td>{{product.departureDate | date:'MM/dd/yyyy'}}</td>
+            <td>{{product.returnDepartureDate | date:'MM/dd/yyyy'}}</td>
             <td>{{product.flightNumber}}</td>
             <td>{{product.from}}</td>
             <td>{{product.to}}</td>
-            <td>{{product.departureTime}}</td>
-            <td>{{product.landingTime}}</td>
+            <td>{{product.departureDate | date:'HH:mm' }}</td>
+            <td>{{product.landingDate | date:'HH:mm'}}</td>
             <td>{{product.flightClass}}</td>
             <td class="text-center">{{product.seats}}</td>
             <td class="text-center">{{product.price}}</td>

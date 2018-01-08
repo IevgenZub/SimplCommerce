@@ -35,17 +35,17 @@
                                 <label class="sr-only" for="inis-yeri">Landing Place</label>
                                 <input type="text" class="form-control date" style="width: 100%" id="inis-yeri" name="Landing" placeholder="Landing">
                             </div>
-                            <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0; min-width: 170px;">
+                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
                                 <label class="sr-only" for="gidis-tarihi">Date of Departure</label>
                                 <input type="text" class="form-control" style="width: 100%" id="gidis-tarihi" name="DepartureDate" placeholder="Date of Departure">
                             </div>
-                            <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0; min-width: 170px;">
+                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
                                 <label class="sr-only" for="donus-tarihi">Date of Return</label>
                                 <input type="text" class="form-control" style="width: 100%" id="donus-tarihi" name="ReturnDate" placeholder="Date of Return">
                             </div>
-                            <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;  min-width: 190px;">
-                                <label class="sr-only" for="kisi-sayisi">Number of People</label>
-                                <input type="text" class="form-control" style="width: 100%" id="kisi-sayisi" name="NumberOfPeople" placeholder="Number of People" readonly="readonly">
+                            <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;">
+                                <label class="sr-only" for="kisi-sayisi">Travelers</label>
+                                <input type="text" class="form-control" style="width: 100%" id="kisi-sayisi" name="NumberOfPeople" placeholder="Travelers" readonly="readonly">
                             </div>
                             <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                                 <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
@@ -143,7 +143,7 @@
     <div class="col-md-3 product-list-filters">
         <h3>Filter by</h3>
         <form id="productFilter" name="productFilter" method="GET" action="~/search">
-            <div class="panel-group" id="accordion-category">
+            <div  class="panel-group" id="accordion-category">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
@@ -176,7 +176,7 @@
                     <div class="panel-heading">
                         <h2 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion-brand" href="#collapse-brand">
-                                Brands
+                                Carriers
                                 <i class="fa fa-angle-down"></i>
                             </a>
                         </h2>
@@ -233,7 +233,7 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-7 category-result">
-                <h2>Search result for @Model.CurrentSearchOption.Query</h2>
+                <h2>Search results</h2>
                 <small class="badge-results">@Model.TotalProduct Results</small>
             </div>
             <div class="col-md-5">
@@ -273,13 +273,6 @@
                 }
         </div>
 
-        @if (Model.Products.Count > 0) {
-            <div class="row" style="text-align: center;">
-                <button type="submit" class="btn btn-primary">Buy</button>
-            </div>
-        }
-
-
         <div class="row">
             <div class="col-md-12 text-right">
                 <cs-pager cs-paging-pagesize="@Model.CurrentSearchOption.PageSize"
@@ -316,7 +309,7 @@
             for (i = 0; i < sURLVariables.length; i++) {
                 sParameterName = sURLVariables[i].split('=');
 
-                if (sParameterName[0] === sParam) {
+                if (sParameterName[0].toLowerCase() === sParam.toLowerCase()) {
                     return sParameterName[1] === undefined ? true : sParameterName[1];
                 }
             }
@@ -327,9 +320,32 @@
         $("#inis-yeri").val(getUrlParameter('Landing').replace(new RegExp('\\+', 'g'), ' '));
 
         $("#gidis-tarihi").val(getUrlParameter('DepartureDate').replace(new RegExp('\\+', 'g'), ' '));
-        $("#donus-tarihi").val(getUrlParameter('ReturnDate').replace(new RegExp('\\+', 'g'), ' '));
+
+        var returnDate = getUrlParameter('ReturnDate');
+        if (returnDate) {
+            $("#donus-tarihi").val(returnDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
 
         $("#kisi-sayisi").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
+
+
+        $(".moreDetails").click(function () {
+            $current = $(this);
+            $details = $current.parents(".thumbnail").find('.product-details').first();
+            $iconDown = $current.parent().find(".fa-angle-double-down");
+            $iconUp = $current.parent().find(".fa-angle-double-up");
+
+            $details.slideToggle(300, function () {
+                if($iconDown.is(':visible')) {
+                    $iconDown.hide();
+                    $iconUp.show();
+                } else {
+                    $iconUp.hide();
+                    $iconDown.show();
+                }
+            });
+
+        });
 
     </script>
     <script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>

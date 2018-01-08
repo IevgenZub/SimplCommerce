@@ -6,6 +6,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
     {
         public long Id { get; set; }
 
+        public string Name { get; set; }
+
         public string FlightNumber { get; set; }
 
         public bool HasOptions { get; set; }
@@ -20,14 +22,12 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string To { get; set; }
 
-        public string DepartureDate { get; set; }
+        public DateTimeOffset? DepartureDate { get; set; }
 
-        public string ReturnDepartureDate { get; set; }
+        public DateTimeOffset? LandingDate { get; set; }
 
-        public string DepartureTime { get; set; }
-
-        public string LandingTime { get; set; }
-
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+    
         public string Status { get; set; }
 
         public string Operator { get; set; }
