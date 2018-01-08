@@ -16,10 +16,14 @@
                 </div>
             </div>
        <div class="col-md-3 col-sm-3">
-            <p style="padding-top:5px"><b>Departure:</b> @Model.Departure </p>
-            <small>@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
-            <p><b>Landing:</b> @Model.Landing </p>
-            <small>@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</small>
+            <p style="padding-top:5px">
+                <b>Departure:</b> @Model.Departure <br/>
+                <small>@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
+            </p>
+            <p>
+                <b>Landing:</b> @Model.Landing <br/>
+                <small>@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</small>
+            </p>
        </div>
 
         @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
@@ -38,10 +42,14 @@
                 </div>
         </div>
         <div class="col-md-3 col-sm-3">
-            <p style="padding-top:5px"><b>Departure:</b> @Model.Landing  </p>
-            <small>@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
-            <p><b>Landing:</b> @Model.Departure </p>
-            <small>@Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</small>
+            <p style="padding-top:5px">
+                <b>Departure:</b> @Model.Landing <br/>
+                <small>@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
+            </p>
+            <p>
+                <b>Landing:</b> @Model.Departure <br/>
+                <small>@Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</small>
+            </p>
         </div>
         }
 
