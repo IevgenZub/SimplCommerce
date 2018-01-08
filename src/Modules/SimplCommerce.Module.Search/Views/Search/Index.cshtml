@@ -143,6 +143,8 @@
     <div class="col-md-3 product-list-filters">
         <h3>Filter by</h3>
         <form id="productFilter" name="productFilter" method="GET" action="~/search">
+            @if (Model.FilterOption.Categories.Count > 0)
+            {
             <div  class="panel-group" id="accordion-category">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -171,6 +173,7 @@
                     </div>
                 </div>
             </div>
+            }
             <div class="panel-group" id="accordion-brand">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -327,7 +330,7 @@
         }
 
         $("#kisi-sayisi").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
-
+        
 
         $(".moreDetails").click(function () {
             $current = $(this);
