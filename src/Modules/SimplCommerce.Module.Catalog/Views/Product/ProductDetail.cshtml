@@ -4,16 +4,10 @@
     ViewBag.Title = Model.Name;
 }
 
-<div class="product-detail" style="padding-left:15px;padding-right:15px">
+<div class="product-detail" style="padding-left:15px;padding-right:15px; padding-top:15px">
     <div class="row">
         <div class="col-md-12">
-            <ul class="list-inline product-ratings">
-                <li><input value="@Model.RatingAverage" readonly="readonly" class="rating-loading" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" /></li>
-                <li class="product-review-list">
-                    <span>(@Model.ReviewsCount) <a href="#reviews">@Localizer["reviews"]</a> | <a href="#addreview"> @Localizer["Add Review"]</a></span>
-                </li>
-            </ul>
-
+           
             @if (Model.HasVariation)
             {
                 <form>
@@ -21,7 +15,7 @@
                         @foreach (var option in Model.AvailableOptions)
                         {
                             <div>
-                                <h4>@option.OptionName </h4>
+                                <h5>@option.OptionName </h5>
                                 <ul class="list-inline product-attr-options" style="font:smaller">
                                     @foreach (var value in option.Values)
                                     {
@@ -85,18 +79,6 @@
                                     <button type="button" class="quantity-button" style="font-size:smaller" name="add" value="+">+</button>
                                 </div>
                                 <button type="button" style="font-size:smaller"  disabled="@(!variant.IsAllowToOrder || variant.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
-                                <div>
-                                    <ul class="list-inline add-to-wishlist">
-                                        @*<li class="wishlist-in">
-                                            <i class="fa fa-heart"></i>
-                                            <a href="#">Add to Wishlist</a>
-                                        </li>*@
-                                        <li class="compare-in">
-                                            <i class="fa fa-exchange"></i>
-                                            <a href="#" class="add-to-comparison">Add to Compare</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -137,18 +119,6 @@
                             <button type="button" style="font-size:smaller" class="quantity-button" name="add" value="+">+</button>
                         </div>
                         <button type="button" style="font-size:smaller" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
-                        <div>
-                            <ul class="list-inline add-to-wishlist">
-                                @*<li class="wishlist-in">
-                                    <i class="fa fa-heart"></i>
-                                    <a href="#">Add to Wishlist</a>
-                                </li>*@
-                                <li class="compare-in">
-                                    <i class="fa fa-exchange"></i>
-                                    <a href="#" class="add-to-comparison">Add to Compare</a>
-                                </li>
-                            </ul>
-                        </div>
                     </form>
                 </div>
             }

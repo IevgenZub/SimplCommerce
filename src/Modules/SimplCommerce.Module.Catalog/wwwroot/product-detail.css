@@ -128,9 +128,9 @@
     border: 1px solid #eee;
 }
 
-.product-detail .btn-add-cart {
+.btn-add-cart {
     background: #18ba9b;
-    font-size: 18px;
+    font-size: smaller;
     padding: 10px 25px;
     border: 0;
     color: #fff;

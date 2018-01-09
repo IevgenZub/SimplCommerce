@@ -59,7 +59,7 @@
                     <i class="fa fa-angle-double-down"></i>
                     <i class="fa fa-angle-double-up" style="display: none;"></i>
                     <a class="moreDetails" style="cursor: pointer;">More Details</a>
-                    <button type="submit" id="@Model.Id" style="float:right" class="btn btn-add-cart btn-primary">@Model.Price  @Model.Currency >></button>
+                    <button type="submit" id="@Model.Id" style="float:right" class="btn btn-add-cart btn-lg btn-hide">@Model.Price  @Model.Currency >></button>
                     <input type="hidden" name="productId" id="productId" value="@Model.Id">
                 </small>
             </div>
@@ -69,7 +69,7 @@
 
     <div class="row product-details" style="display: none; transition: max-height 0.3s">
         <div class="col-md-12 col-sm-12" >
-            @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Product/ProductDetail.cshtml", Model.Details);
+            @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Product/ProductDetail.cshtml", Model.Details)
         </div>
         <div class="col-md-12 col-sm-12">
             <div style="border-bottom: 1px solid #ddd; margin: 5px 15px; "></div>

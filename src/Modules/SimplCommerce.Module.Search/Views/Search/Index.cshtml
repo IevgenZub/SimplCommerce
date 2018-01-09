@@ -344,9 +344,11 @@
                 if($iconDown.is(':visible')) {
                     $iconDown.hide();
                     $iconUp.show();
+                    $('.btn-hide').hide();
                 } else {
                     $iconUp.hide();
                     $iconDown.show();
+                    $('.btn-hide').show();
                 }
             });
 

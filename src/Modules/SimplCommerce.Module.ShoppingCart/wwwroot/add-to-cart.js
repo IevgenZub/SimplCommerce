@@ -1,12 +1,19 @@
 ﻿/*global $ */
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
-        var quantity,
+        var quantity, productId
+
+        if ($(this).hasClass('btn-hide')) {
             productId = $(this).attr("id");
-            //$quantityInput = $form.find('.quantity-field');
-
-            quantity = 1; //$quantityInput.length === 1 ? $quantityInput.val() : 1;
-
+            quantity = 1; 
+        }
+        else {
+            var $form = $(this).closest("form"),
+            productId = $(this).closest("form").find('input[name=productId]').val(),
+            $quantityInput = $form.find('.quantity-field');
+            quantity = $quantityInput.length === 1 ? $quantityInput.val() : 1;
+        }
+            
         $.ajax({
             type: 'POST',
             url: '/cart/addtocart',
