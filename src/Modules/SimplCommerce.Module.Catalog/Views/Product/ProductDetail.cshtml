@@ -4,40 +4,10 @@
     ViewBag.Title = Model.Name;
 }
 
-@section head
-{
-    <link simpl-append-version="true" rel="stylesheet" href="~/lib/smoothproducts/css/smoothproducts.css" />
-    <link simpl-append-version="true" rel="stylesheet" href="~/modules/catalog/product-detail.css" />
-}
-
-<div>
-    <ol class="breadcrumb">
-        <li><a href="~/">@Localizer["Home"]</a></li>
-        @if (Model.Categories.Any())
-        {
-            @await Component.InvokeAsync("CategoryBreadcrumb", new { categoryIds = Model.Categories.Select(x => x.Id) })
-        }
-        <li><span class="active">@Model.Name</span></li>
-    </ol>
-</div>
-
-<div class="product-detail">
+<div class="product-detail" style="padding-left:15px;padding-right:15px; padding-top:15px">
     <div class="row">
-        <div class="col-md-6">
-            <div class="product-short-desc">From <lable>@Html.Raw(Model.ShortDescription)</lable></div>
-            <div class="product-short-desc">To <lable>@Html.Raw(Model.Description)</lable></div>
-        </div>
-        <div class="col-md-6">
-            <div class="product-name">
-                <h1 class="">@Model.Name</h1>
-            </div>
-            <ul class="list-inline product-ratings">
-                <li><input value="@Model.RatingAverage" readonly="readonly" class="rating-loading" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" /></li>
-                <li class="product-review-list">
-                    <span>(@Model.ReviewsCount) <a href="#reviews">@Localizer["reviews"]</a> | <a href="#addreview"> @Localizer["Add Review"]</a></span>
-                </li>
-            </ul>
-
+        <div class="col-md-12">
+           
             @if (Model.HasVariation)
             {
                 <form>
@@ -45,8 +15,8 @@
                         @foreach (var option in Model.AvailableOptions)
                         {
                             <div>
-                                <h4>@option.OptionName </h4>
-                                <ul class="list-inline product-attr-options">
+                                <h5>@option.OptionName </h5>
+                                <ul class="list-inline product-attr-options" style="font:smaller">
                                     @foreach (var value in option.Values)
                                     {
                                         var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
@@ -60,7 +30,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <label>@Model.OptionDisplayValues[value].Value</label>
+                                                    <label style="font-size:unset; height:28px" >@Model.OptionDisplayValues[value].Value</label>
                                                 }
                                             }
                                             else
@@ -86,7 +56,7 @@
                             }
                             else
                             {
-                                <h3>@variant.CalculatedProductPrice.Price.ToString("C")</h3>
+                                <label>@variant.CalculatedProductPrice.Price.ToString("C")</label>
                                 if (variant.CalculatedProductPrice.PercentOfSaving > 0)
                                 {
                                     <p class="product-price-regular">@variant.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
@@ -104,23 +74,11 @@
                             <form class="inline">
                                 <input type="hidden" name="productId" value="@variant.Id" />
                                 <div class="product-quantity">
-                                    <button type="button" class="quantity-button" name="subtract" value="-">-</button>
-                                    <input type="text" class="quantity-field" readonly="readonly" name="qty" value="1">
-                                    <button type="button" class="quantity-button" name="add" value="+">+</button>
+                                    <button type="button" style="font-size:smaller" class="quantity-button" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" class="quantity-field" readonly="readonly" name="qty" value="1">
+                                    <button type="button" class="quantity-button" style="font-size:smaller" name="add" value="+">+</button>
                                 </div>
-                                <button type="button" disabled="@(!variant.IsAllowToOrder || variant.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
-                                <div>
-                                    <ul class="list-inline add-to-wishlist">
-                                        @*<li class="wishlist-in">
-                                            <i class="fa fa-heart"></i>
-                                            <a href="#">Add to Wishlist</a>
-                                        </li>*@
-                                        <li class="compare-in">
-                                            <i class="fa fa-exchange"></i>
-                                            <a href="#" class="add-to-comparison">Add to Compare</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <button type="button" style="font-size:smaller"  disabled="@(!variant.IsAllowToOrder || variant.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
                             </form>
                         </div>
                     </div>
@@ -138,7 +96,7 @@
                     }
                     else
                     {
-                        <h3>@Model.CalculatedProductPrice.Price.ToString("C")</h3>
+                        <label>@Model.CalculatedProductPrice.Price.ToString("C")</label>
                         if (Model.CalculatedProductPrice.PercentOfSaving > 0)
                         {
                             <p class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
@@ -156,74 +114,14 @@
                     <form class="inline">
                         <input type="hidden" name="productId" value="@Model.Id" />
                         <div class="product-quantity">
-                            <button type="button" class="quantity-button" name="subtract" value="-">-</button>
-                            <input type="text" class="quantity-field" readonly="readonly" name="qty" value="1">
-                            <button type="button" class="quantity-button" name="add" value="+">+</button>
+                            <button type="button" class="quantity-button" style="font-size:smaller" name="subtract" value="-">-</button>
+                            <input type="text"  class="quantity-field" style="font-size:smaller" readonly="readonly" name="qty" value="1">
+                            <button type="button" style="font-size:smaller" class="quantity-button" name="add" value="+">+</button>
                         </div>
-                        <button type="button" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
-                        <div>
-                            <ul class="list-inline add-to-wishlist">
-                                @*<li class="wishlist-in">
-                                    <i class="fa fa-heart"></i>
-                                    <a href="#">Add to Wishlist</a>
-                                </li>*@
-                                <li class="compare-in">
-                                    <i class="fa fa-exchange"></i>
-                                    <a href="#" class="add-to-comparison">Add to Compare</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <button type="button" style="font-size:smaller" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
                     </form>
                 </div>
             }
         </div>
     </div>
-    @if (!string.IsNullOrWhiteSpace(Model.Description))
-    {
-        <div>
-            <h3>@Localizer["Product detail"]</h3>
-            @Html.Raw(Model.Description)
-        </div>
-    }
-
 </div>
-
-@if (Model.RelatedProducts.Any()) {
-    <h2 class="page-header">Related Products</h2>
-    <div class="row product-list">
-        @foreach (var product in Model.RelatedProducts)
-        {
-            <div class="col-xs-6 col-md-3">
-                @await Html.PartialAsync("_ProductThumbnail", product)
-            </div>
-        }
-    </div>
-}
-
-@if (Model.CrossSellProducts.Any())
-{
-    <h2 class="page-header">Cross-sell Products</h2>
-    <div class="row product-list">
-        @foreach (var product in Model.CrossSellProducts)
-        {
-            <div class="col-xs-6 col-md-3">
-                @await Html.PartialAsync("_ProductThumbnail", product)
-            </div>
-        }
-    </div>
-}
-
-@await Component.InvokeAsync("ProductRecentlyViewed", new { productId = Model.Id })
-
-<div>
-    <h3>@Localizer["Customer reviews"]</h3>
-    @await Component.InvokeAsync("Review", new { entityId = Model.Id, entityTypeId = (long)3 })
-</div>
-
-
-@section scripts
-{
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script simpl-append-version="true" src="~/lib/smoothproducts/js/smoothproducts.js"></script>
-    <script simpl-append-version="true" src="~/modules/catalog/product-detail.js"></script>
-}
