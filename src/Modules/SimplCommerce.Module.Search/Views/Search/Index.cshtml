@@ -15,8 +15,8 @@
                 <fieldset>
                     <div class="row">
                         <div class="col-sm-12 btn-group" data-toggle="buttons">
-                            <label class="btn btn-radio btn-cift active">
-                                <input class="this-is-checked" name="TripType" id="gidis-donus" value="round-trip" type="radio" checked> Round-Trip
+                            <label class="btn btn-radio btn-cift">
+                                <input class="this-is-checked" name="TripType" id="gidis-donus" value="round-trip" type="radio"> Round-Trip
                             </label>
                             <label class="btn btn-radio btn-tek-yon">
                                 <input class="this-is-checked" name="TripType" id="tek-yon" value="one-way" type="radio"> One Way
@@ -213,7 +213,7 @@
                     <div id="collapse-price" class="panel-collapse collapse in" style="padding:10px">
                         <div class="panel-body">
                             <div id="priceSlider" ></div>
-                            <div style="padding:5px"> 
+                            <div style="padding:5px">
                                 <input type="hidden" id="originMinPrice" value="@Model.FilterOption.Price.MinPrice.ToString("F0")"/>
                                 <input type="hidden" id="originMaxPrice" value="@Model.FilterOption.Price.MaxPrice.ToString("F0")" />
                                 <span id="minPrice"></span>
@@ -328,6 +328,12 @@
 
         $("#kisi-sayisi").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
 
+        var tripType = getUrlParameter('TripType');
+        if (tripType === "one-way") {
+            $('#tek-yon').prop('checked',true).parent().addClass('active');
+        } else {
+            $('#gidis-donus').prop('checked',true).parent().addClass('active');
+        }
 
         $(".moreDetails").click(function () {
             $current = $(this);
@@ -344,7 +350,6 @@
                     $iconDown.show();
                 }
             });
-
         });
 
     </script>
