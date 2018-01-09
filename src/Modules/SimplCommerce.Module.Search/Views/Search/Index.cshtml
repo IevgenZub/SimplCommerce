@@ -8,6 +8,8 @@
 
 @section head {
     <link simpl-append-version="true" href="~/lib/nouislider/nouislider.min.css" rel="stylesheet" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/smoothproducts/css/smoothproducts.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/modules/catalog/product-detail.css" />
 }
 
 <div class="row form-container">
@@ -352,4 +354,7 @@
 
     </script>
     <script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script simpl-append-version="true" src="~/lib/smoothproducts/js/smoothproducts.js"></script>
+    <script simpl-append-version="true" src="~/modules/catalog/product-detail.js"></script>
 }

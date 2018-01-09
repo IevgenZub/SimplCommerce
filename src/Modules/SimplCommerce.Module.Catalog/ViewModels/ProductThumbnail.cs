@@ -61,6 +61,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public bool? IsRoundTrip { get; set; }
         public string Currency { get; set; }
 
+        public ProductDetail Details { get; set; }
+
         public static ProductThumbnail FromProduct(Product product)
         {
             var productThumbnail = new ProductThumbnail
