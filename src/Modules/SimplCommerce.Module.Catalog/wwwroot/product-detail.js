@@ -3,6 +3,17 @@
     $(window).load(function () {
         $('.sp-wrap').smoothproducts();
 
+        var departrueDate = new Date($("#departure-date").val());
+        var selected = $('input[value="' +
+            (departrueDate.getMonth() + 1) + '/' +
+            departrueDate.getDate() + '/' +
+            departrueDate.getFullYear() + '"]');
+
+        if (selected)
+        {
+            selected.prop('checked', true);
+        }
+
         $('.product-attrs li').on('click', function () {
             var $variationDiv,
                 selectedproductOptions = [],

@@ -7,11 +7,11 @@ $(document).ready(function() {
             $(this).hide();
         });
     });
-    $('.btn-tek-yon').on('click', function() {
-        $('#donus-tarihi').attr('disabled', 'disabled');
+    $('.btn-one-way').on('click', function() {
+        $('#return-date').attr('disabled', 'disabled');
     });
     $('.btn-cift').on('click', function() {
-        $('#donus-tarihi').removeAttr('disabled')
+        $('#return-date').removeAttr('disabled')
     });
 
     $('.spinner-input, #flight-class').change(function() {
@@ -19,6 +19,6 @@ $(document).ready(function() {
         var totalCount = ids.reduce((prev, id) => parseInt($(`#${id}-passenger`).val()) + prev, 0);
         var fc = $('#flight-class option:selected').text();
 
-        $('#kisi-sayisi').val(totalCount + ' - ' + fc);
+        $('#number-of-people').val(totalCount + ' - ' + fc);
     });
 });

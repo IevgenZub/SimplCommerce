@@ -92,6 +92,11 @@
     border-color: #18ba9b;
 }
 
+.product-attr-options li {
+    height: 22px;
+    line-height: 22px;
+}
+
 .product-detail .add-to-cart {
     margin-top: 10px;
 }
