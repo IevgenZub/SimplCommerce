@@ -43,31 +43,42 @@ namespace SimplCommerce.Module.Search.Controllers
             _pageSize = config.GetValue<int>("Catalog.ProductPageSize");
         }
 
+
+
         [HttpGet("search")]
         public IActionResult Index(SearchOption searchOption)
         {
-            var query = _productRepository.Query().Where(x =>
-                x.ShortDescription.Contains(searchOption.Departure) &&
-                x.Description.Contains(searchOption.Landing) &&
-                x.Status == "ACCEPTED" &&
-                x.IsVisibleIndividually);
+            var query = _productRepository.Query()
+                .Where(x =>
+                    x.ShortDescription.Contains(searchOption.Departure) &&
+                    x.Description.Contains(searchOption.Landing) &&
+                    x.Status == "ACCEPTED" &&
+                    x.IsVisibleIndividually);
+
+            DateTime departureDate;
 
             if (!string.IsNullOrEmpty(searchOption.DepartureDate))
             {
-                var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-                query = query.Where(x => x.DepartureDate.Value.Date == departureDate.Date);
-            }
+                departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                query = query.Where(x =>
+                    (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
+                    (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(departureDate.Month + "/" + departureDate.Day + "/" + departureDate.Year))));
 
-            if (searchOption.TripType == "round-trip")
-            {
-                query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
-
-                if (!string.IsNullOrEmpty(searchOption.ReturnDate))
+                if (searchOption.TripType == "round-trip")
                 {
-                    var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
-                    query = query.Where(x => x.ReturnDepartureDate.Value.Date == returnDate.Date);
+                    query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
+
+                    if (!string.IsNullOrEmpty(searchOption.ReturnDate))
+                    {
+                        var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
+                        var packageDays = (returnDate - departureDate).TotalDays;
+                        query = query.Where(x =>
+                            (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
+                            (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
+                    }
                 }
             }
+
 
             if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
             {
@@ -135,11 +146,11 @@ namespace SimplCommerce.Module.Search.Controllers
 
             query = query
                 .Include(x => x.ThumbnailImage)
-                .Include(x => x.AttributeValues).ThenInclude(a => a.Attribute)
                 .Include(x => x.ReturnAircraft)
                 .Include(x => x.ReturnCarrier)
                 .Include(x => x.Brand)
-                .Include(x => x.TaxClass);
+                .Include(x => x.TaxClass)
+                .Include(x => x.OptionValues);
 
             query = AppySort(searchOption, query);
 
