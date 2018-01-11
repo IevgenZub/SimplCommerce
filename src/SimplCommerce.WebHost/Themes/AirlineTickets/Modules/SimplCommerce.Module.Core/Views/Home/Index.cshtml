@@ -1,4 +1,4 @@
-    @model SimplCommerce.Module.Core.ViewModels.HomeViewModel
+@model SimplCommerce.Module.Core.ViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,8 +8,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h2>Cheapest Tickets</h2>
-                <h4>Find cheapest tickets like million people</h4>
+                <h2>@Localizer["Cheapest Tickets"]</h2>
+                <h4>@Localizer["Find cheapest tickets like million people"]</h4>
             </div>
         </div>
         <div class="row form-container">
@@ -18,10 +18,10 @@
                     <div class="row">
                         <div class="col-sm-12 btn-group" data-toggle="buttons">
                             <label class="btn btn-radio btn-cift active">
-                                <input class="this-is-checked" name="TripType" id="round-trip" value="round-trip" type="radio" checked> Round-Trip
+                                <input class="this-is-checked" name="TripType" id="round-trip" value="round-trip" type="radio" checked> @Localizer["Round Trip"]
                             </label>
                             <label class="btn btn-radio btn-one-way">
-                                <input class="this-is-checked" name="TripType" id="one-way" value="one-way" type="radio"> One Way
+                                <input class="this-is-checked" name="TripType" id="one-way" value="one-way" type="radio"> @Localizer["One Way"]
                             </label>
                         </div>
                     </div>
@@ -30,24 +30,24 @@
                     <div class="row">
                         <div class="col-sm-12 form-group">
                             <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0;">
-                                <label class="sr-only" for="departure">Departure Place</label>
-                                <input type="text" class="form-control" style="width: 100%;" id="departure" name="Departure" placeholder="Departure">
+                                <label class="sr-only" for="departure">@Localizer["Departure"]</label>
+                                <input type="text" class="form-control" style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
                             </div>
                             <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
-                                <label class="sr-only" for="landing">Landing Place</label>
-                                <input type="text" class="form-control date" style="width: 100%" id="landing" name="Landing" placeholder="Landing">
+                                <label class="sr-only" for="landing">@Localizer["Landing"]</label>
+                                <input type="text" class="form-control date" style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
                             </div>
                             <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
-                                <label class="sr-only" for="departure-date">Date of Departure</label>
-                                <input type="text" class="form-control" style="width: 100%" id="departure-date" name="DepartureDate" placeholder="Date of Departure">
+                                <label class="sr-only" for="departure-date">@Localizer["Departure Date"]</label>
+                                <input type="text" class="form-control" style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
                             </div>
                             <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
-                                <label class="sr-only" for="return-date">Date of Return</label>
-                                <input type="text" class="form-control" style="width: 100%" id="return-date" name="ReturnDate" placeholder="Date of Return">
+                                <label class="sr-only" for="return-date">@Localizer["Return Date"]</label>
+                                <input type="text" class="form-control" style="width: 100%" id="return-date" name="ReturnDate" placeholder="@Localizer["Return Date"]">
                             </div>
                             <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;">
-                                <label class="sr-only" for="number-of-people">Travelers</label>
-                                <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="Travelers" readonly="readonly">
+                                <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
+                                <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
                             </div>
                             <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                                 <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
@@ -70,7 +70,7 @@
                         <div class="passengers">
                             <div class="row passenger-list valign-wrapper">
                                 <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Adult</p>
+                                    <p class="first-line">@Localizer["Adult"]</p>
                                     <p class="second-line">(18+)</p>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -91,7 +91,7 @@
                             </div>
                             <div class="row passenger-list valign-wrapper">
                                 <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Child</p>
+                                    <p class="first-line">@Localizer["Child"]</p>
                                     <p class="second-line">(2-11)</p>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -112,7 +112,7 @@
                             </div>
                             <div class="row passenger-list valign-wrapper">
                                 <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Baby</p>
+                                    <p class="first-line">@Localizer["Child"]</p>
                                     <p class="second-line">(0-2)</p>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <div class="submit-icon">
-                            <a class="btn btn-success" style="width: 100%; border-radius: 0; margin-top: 10px;">Save</a>
+                            <a class="btn btn-success" style="width: 100%; border-radius: 0; margin-top: 10px;">@Localizer["Save"]</a>
                         </div>
                     </div>
                 </div>

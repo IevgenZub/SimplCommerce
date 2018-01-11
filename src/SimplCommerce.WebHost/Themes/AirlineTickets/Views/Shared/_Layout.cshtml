@@ -29,7 +29,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-register">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i class="fa fa-check"></i><span class="currency">Check Reservation</span></a></li>
+                        <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i class="fa fa-check"></i><span class="currency">@Localizer["Check reservation"]</span></a></li>
                         @await Html.PartialAsync("_SelectLanguagePartial")
                         @await Html.PartialAsync("_LoginPartial")
                     </ul>
@@ -44,19 +44,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="rezKontrolLabel">Check Reservation</h4>
+                        <h4 class="modal-title" id="rezKontrolLabel">@Localizer["Check reservation"]</h4>
                     </div>
                     <div class="modal-body">
                         <form class="modal-form" action="#" method="post" accept-charset="utf-8">
                             <div class="form-group">
-                                <label class="sr-only" for="rez-no">Reservation Number</label>
-                                <input type="text" class="form-control" id="rez-no" placeholder="Reservation Number">
+                                <label class="sr-only" for="rez-no">@Localizer["Reservation Number"]</label>
+                                <input type="text" class="form-control" id="rez-no" placeholder="@Localizer["Reservation Number"]">
                             </div>
-                            <div class="form-group">
-                                <label class="sr-only" for="rez-soyadi">Lastname</label>
-                                <input type="text" class="form-control" id="rez-soyadi" placeholder="Lastname">
-                            </div>
-                            <button type="submit" class="btn btn-rez">Find Reservation</button>
+                            <button type="submit" class="btn btn-rez">@Localizer["Find Reservation"]</button>
                         </form>
                     </div>
                 </div>
@@ -72,7 +68,7 @@
                 </div>
             </div>
         </section>
-
+        <!--
         <section id="register-now" class="valign-wrapper">
             <div class="overlay"></div>
             <div class="container">
@@ -84,6 +80,7 @@
                 </div>
             </div>
         </section>
+        -->
     </main>
     <footer class="main-page-footer">
         <div class="container">
