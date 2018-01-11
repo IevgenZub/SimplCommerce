@@ -8,6 +8,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 {
     public class SearchOption
     {
+        public string Reservation { get; set; }
+
         public string TripType { get; set; }
 
         public string Departure { get; set; }

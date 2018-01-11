@@ -19,4 +19,5 @@ INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Child', N'Ребенок')
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Save', N'Сохранить')
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Search results', N'Результаты поиска')
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Newest Flights', N'Новые рейсы')
 

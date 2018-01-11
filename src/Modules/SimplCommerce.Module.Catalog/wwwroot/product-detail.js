@@ -3,15 +3,24 @@
     $(window).load(function () {
         $('.sp-wrap').smoothproducts();
 
-        var departrueDate = new Date($("#departure-date").val());
-        var selected = $('input[value="' +
-            (departrueDate.getMonth() + 1) + '/' +
-            departrueDate.getDate() + '/' +
-            departrueDate.getFullYear() + '"]');
+        var departrueDateVal = $("#departure-date").val();
+        if (departrueDateVal.length > 0) {
 
-        if (selected)
-        {
-            selected.prop('checked', true);
+            var day, month, year, selected;
+            var splitChar = departrueDateVal.includes('.') ? '.' : '/'
+
+            day = splitChar == '.' ? departrueDateVal.split(splitChar)[0] : departrueDateVal.split(splitChar)[1];
+            month = splitChar == '.' ? departrueDateVal.split(splitChar)[1] : departrueDateVal.split(splitChar)[0];
+            year = departrueDateVal.split(splitChar)[2];
+            
+            selected = $('input[value="' +
+                    parseInt(month, 10) + '/' +
+                    parseInt(day, 10) + '/' +
+                    parseInt(year, 10) + '"]');
+            
+            if (selected) {
+                selected.prop('checked', true);
+            }
         }
 
         $('.product-attrs li').on('click', function () {
