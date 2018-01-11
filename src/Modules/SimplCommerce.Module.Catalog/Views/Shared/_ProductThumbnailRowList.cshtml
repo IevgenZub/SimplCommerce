@@ -17,11 +17,11 @@
             </div>
        <div class="col-md-3 col-sm-3">
             <p style="padding-top:5px">
-                <b>Departure:</b> @Model.Departure <br/>
+                <b>@Localizer["Departure"]:</b> @Model.Departure <br/>
                 <small>@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
             </p>
             <p>
-                <b>Landing:</b> @Model.Landing <br/>
+                <b>@Localizer["Landing"]:</b> @Model.Landing <br/>
                 <small>@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</small>
             </p>
        </div>
@@ -43,11 +43,11 @@
         </div>
         <div class="col-md-3 col-sm-3">
             <p style="padding-top:5px">
-                <b>Departure:</b> @Model.Landing <br/>
+                <b>@Localizer["Departure"]:</b> @Model.Landing <br/>
                 <small>@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</small>
             </p>
             <p>
-                <b>Landing:</b> @Model.Departure <br/>
+                <b>@Localizer["Landing"]:</b> @Model.Departure <br/>
                 <small>@Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</small>
             </p>
         </div>
@@ -58,8 +58,8 @@
                 <small>
                     <i class="fa fa-angle-double-down"></i>
                     <i class="fa fa-angle-double-up" style="display: none;"></i>
-                    <a class="moreDetails" style="cursor: pointer;">More Details</a>
-                    <button type="submit" id="@Model.Id" style="float:right" class="btn btn-add-cart btn-lg btn-hide">@Model.Price  @Model.Currency >></button>
+                    <a class="moreDetails" style="cursor: pointer;">@Localizer["More Details"]</a>
+                    <button type="submit" id="@Model.Id" style="float:right" class="btn btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
                     <input type="hidden" name="productId" id="productId" value="@Model.Id">
                 </small>
             </div>
