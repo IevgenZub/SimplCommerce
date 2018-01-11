@@ -178,6 +178,8 @@
                 </div>
             </div>
             }
+            @if (Model.FilterOption.Brands.Count > 0)
+            { 
             <div class="panel-group" id="accordion-brand">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -192,7 +194,7 @@
                         <div class="panel-body">
                             <ul class="list-unstyled checkbox-list" style="padding-left:20px">
                                 @foreach(var brand in Model.FilterOption.Brands)
-        {
+                                {
                                     <li>
                                         <label class="checkbox">
                                             <input type = "checkbox" value="@brand.SeoTitle" name="brand" checked="@Model.CurrentSearchOption.GetBrands().Contains(brand.SeoTitle)">
@@ -206,7 +208,8 @@
                     </div>
                 </div>
             </div>
-            @if(Model.FilterOption.Price.MaxPrice != Model.FilterOption.Price.MinPrice)
+            }
+            @if (Model.FilterOption.Price.MaxPrice != Model.FilterOption.Price.MinPrice)
             {
             <div class="panel-group" id="accordion-price">
                 <div class="panel panel-default">
@@ -323,24 +326,38 @@
             }
         };
 
+        var departure = getUrlParameter('Departure');
+        if (departure) {
+            $("#departure").val(departure.replace(new RegExp('\\+', 'g'), ' '));
+        }
 
-        $("#departure").val(getUrlParameter('Departure').replace(new RegExp('\\+', 'g'), ' '));
-        $("#landing").val(getUrlParameter('Landing').replace(new RegExp('\\+', 'g'), ' '));
+        var landing = getUrlParameter('Landing');
+        if (landing) {
+            $("#landing").val(landing.replace(new RegExp('\\+', 'g'), ' '));
+        }
 
-        $("#departure-date").val(getUrlParameter('DepartureDate').replace(new RegExp('\\+', 'g'), ' '));
+        var departureDate = getUrlParameter('DepartureDate');
+        if (departureDate) {
+            $("#departure-date").val(departureDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
 
         var returnDate = getUrlParameter('ReturnDate');
         if (returnDate) {
             $("#return-date").val(returnDate.replace(new RegExp('\\+', 'g'), ' '));
         }
 
-        $("#number-of-people").val(getUrlParameter('NumberOfPeople').replace(new RegExp('\\+', 'g'), ' '));
+        var number = getUrlParameter('NumberOfPeople');
+        if (number) {
+            $("#number-of-people").val(number.replace(new RegExp('\\+', 'g'), ' '));
+        }
 
         var tripType = getUrlParameter('TripType');
-        if (tripType === "one-way") {
-            $('#one-way').prop('checked',true).parent().addClass('active');
-        } else {
-            $('#round-trip').prop('checked',true).parent().addClass('active');
+        if (tripType) {
+            if (tripType === "one-way") {
+                $('#one-way').prop('checked', true).parent().addClass('active');
+            } else {
+                $('#round-trip').prop('checked', true).parent().addClass('active');
+            }
         }
 
         $(".moreDetails").click(function () {
@@ -363,7 +380,7 @@
         });
 
     </script>
-    <script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
+<script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script simpl-append-version="true" src="~/lib/smoothproducts/js/smoothproducts.js"></script>
     <script simpl-append-version="true" src="~/modules/catalog/product-detail.js"></script>

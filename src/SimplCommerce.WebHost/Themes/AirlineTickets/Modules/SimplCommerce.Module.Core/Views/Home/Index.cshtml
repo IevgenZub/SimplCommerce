@@ -4,6 +4,13 @@
     ViewData["Title"] = "Home Page";
 }
 
+@section head {
+    <link simpl-append-version="true" href="~/lib/nouislider/nouislider.min.css" rel="stylesheet" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/smoothproducts/css/smoothproducts.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/modules/catalog/product-detail.css" />
+}
+
+
 <section id="form-coming">
     <div class="container">
         <div class="row">
@@ -148,3 +155,81 @@
 
 @await Html.PartialAsync("_WidgetInstances", Model.WidgetInstances.Where(x => x.WidgetZoneId == WidgetZoneIds.HomeAfterMainContent))
 
+@section scripts {
+    <script simpl-append-version="true" src="~/lib/wnumb/wNumb.js"></script>
+    <script simpl-append-version="true" src="~/lib/nouislider/nouislider.min.js"></script>
+
+    <script>
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0].toLowerCase() === sParam.toLowerCase()) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        var departure = getUrlParameter('Departure');
+        if (departure) {
+            $("#departure").val(departure.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var landing = getUrlParameter('Landing');
+        if (landing) {
+            $("#landing").val(landing.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var departureDate = getUrlParameter('DepartureDate');
+        if (departureDate) {
+            $("#departure-date").val(departureDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var returnDate = getUrlParameter('ReturnDate');
+        if (returnDate) {
+            $("#return-date").val(returnDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var number = getUrlParameter('NumberOfPeople');
+        if (number) {
+            $("#number-of-people").val(number.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var tripType = getUrlParameter('TripType');
+        if (tripType) {
+            if (tripType === "one-way") {
+                $('#one-way').prop('checked', true).parent().addClass('active');
+            } else {
+                $('#round-trip').prop('checked', true).parent().addClass('active');
+            }
+        }
+
+        $(".moreDetails").click(function () {
+            $current = $(this);
+            $details = $current.parents(".thumbnail").find('.product-details').first();
+            $iconDown = $current.parent().find(".fa-angle-double-down");
+            $iconUp = $current.parent().find(".fa-angle-double-up");
+
+            $details.slideToggle(300, function () {
+                if($iconDown.is(':visible')) {
+                    $iconDown.hide();
+                    $iconUp.show();
+                    $('.btn-hide').hide();
+                } else {
+                    $iconUp.hide();
+                    $iconDown.show();
+                    $('.btn-hide').show();
+                }
+            });
+        });
+
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script simpl-append-version="true" src="~/lib/smoothproducts/js/smoothproducts.js"></script>
+    <script simpl-append-version="true" src="~/modules/catalog/product-detail.js"></script>
+}

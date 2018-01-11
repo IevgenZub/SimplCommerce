@@ -48,51 +48,60 @@ namespace SimplCommerce.Module.Search.Controllers
         [HttpGet("search")]
         public IActionResult Index(SearchOption searchOption)
         {
-            var query = _productRepository.Query()
-                .Where(x =>
+            var query = _productRepository.Query();
+
+            if (!string.IsNullOrEmpty(searchOption.Reservation))
+            {
+                query = query.Where(x => x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper());
+            }
+
+            else
+            {
+                query = query.Where(x =>
                     x.ShortDescription.Contains(searchOption.Departure) &&
                     x.Description.Contains(searchOption.Landing) &&
                     x.Status == "ACCEPTED" &&
                     x.IsVisibleIndividually);
 
-            DateTime departureDate;
+                DateTime departureDate;
 
-            if (!string.IsNullOrEmpty(searchOption.DepartureDate))
-            {
-                departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-                query = query.Where(x =>
-                    (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
-                    (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(departureDate.Month + "/" + departureDate.Day + "/" + departureDate.Year))));
-
-                if (searchOption.TripType == "round-trip")
+                if (!string.IsNullOrEmpty(searchOption.DepartureDate))
                 {
-                    query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
+                    departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                    query = query.Where(x =>
+                        (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
+                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(departureDate.Month + "/" + departureDate.Day + "/" + departureDate.Year))));
 
-                    if (!string.IsNullOrEmpty(searchOption.ReturnDate))
+                    if (searchOption.TripType == "round-trip")
                     {
-                        var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
-                        var packageDays = (returnDate - departureDate).TotalDays;
-                        query = query.Where(x =>
-                            (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
-                            (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
+                        query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
+
+                        if (!string.IsNullOrEmpty(searchOption.ReturnDate))
+                        {
+                            var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
+                            var packageDays = (returnDate - departureDate).TotalDays;
+                            query = query.Where(x =>
+                                (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
+                                (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
+                        }
                     }
                 }
-            }
 
 
-            if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
-            {
-                var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
-                var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
-                query = query.Where(x => 
-                    x.FlightClass == flightClass &&
-                    (x.StockQuantity - x.SoldSeats) >= numberOfPeople);
-            }
+                if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
+                {
+                    var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
+                    var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
+                    query = query.Where(x =>
+                        x.FlightClass == flightClass &&
+                        (x.StockQuantity - x.SoldSeats) >= numberOfPeople);
+                }
 
-            var brand = _brandRepository.Query().FirstOrDefault(x => x.Name == searchOption.Query && x.IsPublished);
-            if(brand != null)
-            {
-                return Redirect(string.Format("~/{0}", brand.SeoTitle));
+                var brand = _brandRepository.Query().FirstOrDefault(x => x.Name == searchOption.Query && x.IsPublished);
+                if (brand != null)
+                {
+                    return Redirect(string.Format("~/{0}", brand.SeoTitle));
+                }
             }
 
             var model = new SearchResult
