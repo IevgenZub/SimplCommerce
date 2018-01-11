@@ -30,12 +30,28 @@
                                                 }
                                                 else
                                                 {
-                                                    <label style="font-size:unset; height:28px" >@Model.OptionDisplayValues[value].Value</label>
+                                                    if (option.OptionName == "Departure Date")
+                                                    {
+                                                        var departureDate = Convert.ToDateTime(Model.OptionDisplayValues[value].Value, new System.Globalization.CultureInfo("en-US", true));
+                                                        <label style="font-size:unset; height:28px">@departureDate.ToShortDateString()</label>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <label style="font-size:unset; height:28px" >@Model.OptionDisplayValues[value].Value</label>
+                                                    }
                                                 }
                                             }
                                             else
                                             {
-                                                <label>@value</label>
+                                                if (option.OptionName == "Departure Date")
+                                                {
+                                                    var departureDate = Convert.ToDateTime(value, new System.Globalization.CultureInfo("en-US", true));
+                                                    <label style="font-size:unset; height:28px">@departureDate.ToShortDateString()</label>
+                                                }
+                                                else
+                                                {
+                                                    <label>@value</label>
+                                                }
                                             }
                                         </li>
                                     }
