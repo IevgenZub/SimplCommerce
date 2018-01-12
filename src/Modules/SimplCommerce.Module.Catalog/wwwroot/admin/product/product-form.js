@@ -106,38 +106,40 @@
                     }, 1);
                 }
             });
-        }
+        };
 
-        vm.newOptionValue = function (chip) {
-
-            function generateDateRange (startDate, endDate) {
+        
+        vm.generateDepartureOptions = function () {
+            function generateRange(startDate, endDate) {
                 var retVal = [];
                 var current = new Date(startDate);
                 var end = new Date(endDate);
 
                 while (current <= end) {
-                    retVal.push(new Date(current));
+                    if ($('#' + current.getDay()).prop('checked')) {
+                        retVal.push(new Date(current));
+                    }
                     current.setDate(current.getDate() + 1);
                 }
 
                 return retVal;
-            }
-            
-           var departureDateOption = vm.product.options.filter(function (o) { return o.name === "Departure Date" })[0];
-           var seperatedString = angular.copy(chip);
-           seperatedString = seperatedString.toString();
-                
-           if (seperatedString.includes("-") && departureDateOption) {
-               var from = seperatedString.split('-')[0];
-               var to = seperatedString.split('-')[1];
-               var range = generateDateRange(from, to);
+            };
 
-               angular.forEach(range, function (chipToAdd) {
-                   departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value:'' });
-               });
-               return null;
-           }
-            
+            var departureDateOption = vm.product.options.filter(function (o) { return o.name === "Departure Date" })[0];
+            if (!departureDateOption) {
+                departureDateOption = vm.options.filter(function (o) { return o.name === "Departure Date" })[0];
+                vm.addingOption = departureDateOption;
+                vm.addOption();
+            }
+
+            var range = generateRange($('#chipStart').val(), $('#chipEnd').val());
+
+            angular.forEach(range, function (chipToAdd) {
+                departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value: '' });
+            });
+        };
+
+        vm.newOptionValue = function (chip) {             
            return {
                 key: chip,
                 value: ''
