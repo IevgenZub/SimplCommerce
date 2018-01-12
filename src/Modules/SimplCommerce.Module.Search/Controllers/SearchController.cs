@@ -225,7 +225,11 @@ namespace SimplCommerce.Module.Search.Controllers
                 {
                     if (!model.OptionDisplayValues.ContainsKey(value.Key))
                     {
-                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay { DisplayType = item.DisplayType, Value = value.Display });
+                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay
+                        {
+                            DisplayType = item.DisplayType,
+                            Value = (string.IsNullOrEmpty(value.Display) || value.Display.ToLower() == "null") ? value.Key : value.Display
+                        });
                     }
                 }
             }

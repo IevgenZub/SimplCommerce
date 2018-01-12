@@ -44,6 +44,11 @@ namespace SimplCommerce.Module.Catalog.Components
 
             model.Products = query
               .Include(x => x.ThumbnailImage)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
+                .Include(x => x.Brand)
+                .Include(x => x.TaxClass)
+
               .OrderByDescending(x => x.CreatedOn)
               .Take(model.Setting.NumberOfProducts)
               .Select(x => ProductThumbnail.FromProduct(x)).ToList();
@@ -100,7 +105,11 @@ namespace SimplCommerce.Module.Catalog.Components
                 {
                     if (!model.OptionDisplayValues.ContainsKey(value.Key))
                     {
-                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay { DisplayType = item.DisplayType, Value = value.Display });
+                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay
+                        {
+                            DisplayType = item.DisplayType,
+                            Value = (string.IsNullOrEmpty(value.Display) || value.Display.ToLower() == "null") ? value.Key : value.Display
+                        });
                     }
                 }
             }
