@@ -63,7 +63,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.Status == "ACCEPTED" &&
                     x.IsVisibleIndividually);
 
-                DateTime departureDate;
+                DateTime departureDate = new DateTime();
 
                 if (!string.IsNullOrEmpty(searchOption.DepartureDate))
                 {
@@ -71,19 +71,19 @@ namespace SimplCommerce.Module.Search.Controllers
                     query = query.Where(x =>
                         (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
                         (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(departureDate.Month + "/" + departureDate.Day + "/" + departureDate.Year))));
+                }
 
-                    if (searchOption.TripType == "round-trip")
+                if (searchOption.TripType == "round-trip")
+                {
+                    query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
+
+                    if (!string.IsNullOrEmpty(searchOption.ReturnDate))
                     {
-                        query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
-
-                        if (!string.IsNullOrEmpty(searchOption.ReturnDate))
-                        {
-                            var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
-                            var packageDays = (returnDate - departureDate).TotalDays;
-                            query = query.Where(x =>
-                                (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
-                                (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
-                        }
+                        var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
+                        var packageDays = (returnDate - departureDate).TotalDays;
+                        query = query.Where(x =>
+                            (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
+                            (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
                     }
                 }
 
@@ -225,7 +225,11 @@ namespace SimplCommerce.Module.Search.Controllers
                 {
                     if (!model.OptionDisplayValues.ContainsKey(value.Key))
                     {
-                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay { DisplayType = item.DisplayType, Value = value.Display });
+                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay
+                        {
+                            DisplayType = item.DisplayType,
+                            Value = (string.IsNullOrEmpty(value.Display) || value.Display.ToLower() == "null") ? value.Key : value.Display
+                        });
                     }
                 }
             }

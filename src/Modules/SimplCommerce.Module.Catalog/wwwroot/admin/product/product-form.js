@@ -77,6 +77,18 @@
             onModifyOption(function() {
                 vm.addingOption.values = [];
                 vm.addingOption.displayType = "text";
+
+                vm.addingOption.type = "text";
+                if (vm.addingOption.name.toLowerCase().includes('date')) {
+                    vm.addingOption.type =  "date";
+                }
+                if (vm.addingOption.name.toLowerCase().includes('number') || vm.addingOption.name.toLowerCase().includes('days')) {
+                    vm.addingOption.type = "number";
+                }
+                if (vm.addingOption.name.toLowerCase().includes('time')) {
+                    vm.addingOption.type = "time";
+                }
+
                 var index = vm.options.indexOf(vm.addingOption);
                 vm.product.options.push(vm.addingOption);
                 vm.options.splice(index, 1);
@@ -106,39 +118,47 @@
                     }, 1);
                 }
             });
-        }
+        };
 
-        vm.newOptionValue = function (chip) {
-
-            function generateDateRange (startDate, endDate) {
+        
+        vm.generateDepartureOptions = function () {
+            function generateRange(startDate, endDate) {
                 var retVal = [];
                 var current = new Date(startDate);
                 var end = new Date(endDate);
 
                 while (current <= end) {
-                    retVal.push(new Date(current));
+                    if ($('#' + current.getDay()).prop('checked')) {
+                        retVal.push(new Date(current));
+                    }
                     current.setDate(current.getDate() + 1);
                 }
 
                 return retVal;
-            }
-            
-           var departureDateOption = vm.product.options.filter(function (o) { return o.name === "Departure Date" })[0];
-           var seperatedString = angular.copy(chip);
-           seperatedString = seperatedString.toString();
-                
-           if (seperatedString.includes("-") && departureDateOption) {
-               var from = seperatedString.split('-')[0];
-               var to = seperatedString.split('-')[1];
-               var range = generateDateRange(from, to);
+            };
 
-               angular.forEach(range, function (chipToAdd) {
-                   departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value:'' });
-               });
-               return null;
-           }
-            
-           return {
+            var departureDateOption = vm.product.options.filter(function (o) { return o.name === "Departure Date" })[0];
+            if (!departureDateOption) {
+                departureDateOption = vm.options.filter(function (o) { return o.name === "Departure Date" })[0];
+                vm.addingOption = departureDateOption;
+                vm.addOption();
+            }
+
+            var range = generateRange($('#chipStart').val(), $('#chipEnd').val());
+
+            angular.forEach(range, function (chipToAdd) {
+                departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value: '' });
+            });
+        };
+
+        vm.newOptionValue = function (chip) {   
+            var dateString = angular.copy(chip);
+            dateString = dateString.toString();
+            if (dateString.split('-').length == 3) {
+                chip = new Date(dateString).toLocaleDateString("en-US");
+            }
+
+            return {
                 key: chip,
                 value: ''
            };

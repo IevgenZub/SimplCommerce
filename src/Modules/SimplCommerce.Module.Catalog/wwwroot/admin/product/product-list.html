@@ -97,19 +97,19 @@
         <tr ng-repeat="product in vm.products">
             <td>{{product.id}}</td>
             <td>{{product.operator}}</td>
-            <td>{{product.departureDate | date:'MM/dd/yyyy'}}</td>
-            <td>{{product.returnDepartureDate | date:'MM/dd/yyyy'}}</td>
+            <td>{{product.departureDate | date:'shortDate'}}</td>
+            <td>{{product.returnDepartureDate | date:'shortDate'}}</td>
             <td>{{product.flightNumber}}</td>
             <td>{{product.from}}</td>
             <td>{{product.to}}</td>
-            <td>{{product.departureDate | date:'HH:mm' }}</td>
-            <td>{{product.landingDate | date:'HH:mm'}}</td>
+            <td>{{product.departureDate | date:'shortTime' }}</td>
+            <td>{{product.landingDate | date:'shortTime'}}</td>
             <td>{{product.flightClass}}</td>
             <td class="text-center">{{product.seats}}</td>
             <td class="text-center">{{product.price}}</td>
             <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td>{{product.status}}</td>
-            <td class="text-center">{{product.createdOn | date:'medium'}}</td>
+            <td class="text-center">{{product.createdOn | date:'shortDate'}}</td>
             <td>               
                     <button ng-if="vm.userIsAdmin && product.status == 'ACCEPTED'" title="Pause" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pause"></span></button>
                     <button ng-if="vm.userIsAdmin && product.status != 'ACCEPTED'" title="Accept" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>
