@@ -31,18 +31,22 @@
                 $attrOptions = $form.find('.product-attr-options');
 
             $(this).find('input').prop('checked', true);
-
+            
             $attrOptions.each(function () {
                 selectedproductOptions.push($(this).find('input[type=radio]:checked').val());
             });
+            var current = $(this);
+            var details = current.parents(".thumbnail").find('.product-details').first();
+
             variationName = selectedproductOptions.join('-');
-            $variationDiv = $('div[data-variation-name="' + variationName +'"]');
-            $('.product-variation').hide();
+            $variationDiv = details.find('div[data-variation-name="' + variationName + '"]');
+
+            details.find('.product-variation').hide();
             if ($variationDiv.length > 0) {
                 $variationDiv.show();
-                $('.product-variation-notavailable').hide();
+                details.find('.product-variation-notavailable').hide();
             } else {
-                $('.product-variation-notavailable').show();
+                details.find('.product-variation-notavailable').show();
             }
         });
 

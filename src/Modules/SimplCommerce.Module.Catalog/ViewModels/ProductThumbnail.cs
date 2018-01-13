@@ -97,7 +97,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 Carrier = product.Brand == null ? "" : product.Brand.Name,
                 ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
-                Via = product.Via
+                Via = product.Via,
+                ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
+                ReturnVia = product.ReturnVia
         };
 
             return productThumbnail;
