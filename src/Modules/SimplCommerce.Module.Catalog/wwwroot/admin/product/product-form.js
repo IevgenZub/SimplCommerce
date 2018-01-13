@@ -77,6 +77,18 @@
             onModifyOption(function() {
                 vm.addingOption.values = [];
                 vm.addingOption.displayType = "text";
+
+                vm.addingOption.type = "text";
+                if (vm.addingOption.name.toLowerCase().includes('date')) {
+                    vm.addingOption.type =  "date";
+                }
+                if (vm.addingOption.name.toLowerCase().includes('number') || vm.addingOption.name.toLowerCase().includes('days')) {
+                    vm.addingOption.type = "number";
+                }
+                if (vm.addingOption.name.toLowerCase().includes('time')) {
+                    vm.addingOption.type = "time";
+                }
+
                 var index = vm.options.indexOf(vm.addingOption);
                 vm.product.options.push(vm.addingOption);
                 vm.options.splice(index, 1);
@@ -139,8 +151,14 @@
             });
         };
 
-        vm.newOptionValue = function (chip) {             
-           return {
+        vm.newOptionValue = function (chip) {   
+            var dateString = angular.copy(chip);
+            dateString = dateString.toString();
+            if (dateString.split('-').length == 3) {
+                chip = new Date(dateString).toLocaleDateString("en-US");
+            }
+
+            return {
                 key: chip,
                 value: ''
            };

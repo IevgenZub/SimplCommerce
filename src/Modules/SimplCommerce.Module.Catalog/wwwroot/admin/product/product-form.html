@@ -532,40 +532,6 @@
                 </uib-tab>
                 <uib-tab index="3" heading="Flight Variations">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Departure Date range</label>
-                        <div class="col-md-2">
-                            <input type="date" id="chipStart" class="form-control" >
-                        </div>
-                        <div class="col-md-2">
-                            <input type="date" id="chipEnd" class="form-control" >
-                        </div>
-                        <div class="col-md-2">
-                            <label class="control-label">Day</label>
-                            <label>
-                                <input type="checkbox" id="1">1
-                            </label>
-                            <label>
-                                <input type="checkbox" id="2">2
-                            </label>
-                            <label>
-                                <input type="checkbox" id="3">3
-                            </label>
-                            <label>
-                                <input type="checkbox" id="4">4
-                            </label>
-                            <label>
-                                <input type="checkbox" id="5">5
-                            </label>
-                            <label>
-                                <input type="checkbox" id="6">6
-                            </label>
-                            <label>
-                                <input type="checkbox" id="7">7
-                            </label>
-                        </div>
-                        <button class="btn btn-default" ng-click="vm.generateDepartureOptions()">Generate</button>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Available Options')}}</label>
                         <div class="col-sm-10">
                             <div class="form-group row">
@@ -592,6 +558,7 @@
                                                       delete-button-label="Remove {{option.name}}"
                                                       delete-hint="Press delete to remove {{option.name}}"
                                                       secondary-placeholder="+{{option.name}}">
+                                                <input  type="{{option.type}}">
                                                 <md-chip-template>
                                                     <span>
                                                         {{$chip.key}}
@@ -603,7 +570,45 @@
                                         <button class="btn btn-default" data-toggle="modal" data-target="#option_{{option.id}}">{{::vm.translate.get('Configure Display')}}</button>
                                         <button class="btn btn-default" ng-click="vm.deleteOption(option)">{{::vm.translate.get('Delete Option')}}</button>
                                     </div>
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div ng-if="option.name == 'Departure Date'">
+                                                <div class="col-md-2">
+                                                    <input type="date" id="chipStart" class="form-control">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="date" id="chipEnd" class="form-control">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>
+                                                        <input type="checkbox" id="1">1
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="2">2
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="3">3
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="4">4
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="5">5
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="6">6
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="7">7
+                                                    </label>
+                                                </div>
+                                                <button class="btn btn-default" ng-click="vm.generateDepartureOptions()">Add Dates</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
+                               
                             </div>
                         </div>
                     </div>
