@@ -135,8 +135,8 @@ namespace SimplCommerce.WebHost.Extensions
             })
                 .AddGoogle(x =>
                 {
-                    x.ClientId = "583825788849-8g42lum4trd5g3319go0iqt6pn30gqlq.apps.googleusercontent.com";
-                    x.ClientSecret = "X8xIiuNEUjEYfiEfiNrWOfI4";
+                    x.ClientId = "558702492493-g2iq1q7j94dirnvam936kb0egl0plu6p.apps.googleusercontent.com";
+                    x.ClientSecret = "YVGjHOWYDEBXdRvDB5ph8cBM";
                     x.Events = new OAuthEvents
                     {
                         OnRemoteFailure = ctx => HandleRemoteLoginFailure(ctx)

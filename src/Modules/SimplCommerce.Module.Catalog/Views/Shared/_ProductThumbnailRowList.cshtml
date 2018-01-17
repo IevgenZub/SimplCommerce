@@ -7,14 +7,31 @@
         padding: 4px;
         overflow: hidden;
     }
+
+    .my-thumbnail img {
+        max-height: 40px;
+        max-width: 40px;
+    }
+
+    .my-thumbnail figcaption {
+        font-size: 11px;
+        white-space: nowrap;
+        color: gray;
+     }
+
+    .airlines {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+    }
 </style>
 
 <div class="my-thumbnail">
     <div class="row my-row">
-        <div class="airlines col-sm-1" style="margin-left:5px">
+        <div class="airlines col-sm-1">
             <figure>
-                <img  src="@Model.ThumbnailUrl" style="width: 40px; height: 40px;">
-                <figcaption style="font-size:smaller; color:gray">@Model.Carrier</figcaption>
+                <img  src="@Model.ThumbnailUrl" style="">
+                <figcaption>@Model.Carrier</figcaption>
             </figure>
         </div>
         <div class="flight-number col-sm-1">
@@ -40,11 +57,11 @@
         <div class="col-sm-1">
             @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
             {
-                <img src="~/themes/AirlineTickets/img/round-trip.png" style="width:40px; height:40px" />
+                <img src="~/themes/AirlineTickets/img/round-trip.png" />
             }
             else
             {
-                <img src="~/themes/AirlineTickets/img/one-way1.jpg" style="width:40px; height:40px" />
+                <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
             }
         </div>
         <div class="col-sm-1">
@@ -60,10 +77,10 @@
     @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
     {
         <div class="row my-row">
-            <div class="airlines col-sm-1" style="margin-left:5px">
+            <div class="airlines col-sm-1">
                     <figure>
-                        <img src="@Model.ThumbnailUrl" style="width: 40px; height: 40px;">
-                        <figcaption style="font-size:smaller; color:gray">@Model.ReturnCarrier</figcaption>
+                        <img src="@Model.ThumbnailUrl">
+                        <figcaption>@Model.ReturnCarrier</figcaption>
                     </figure>
             </div>
             <div class="flight-number col-sm-1">
@@ -89,11 +106,11 @@
             <div class="col-sm-1">
                 @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
                 {
-                    <img src="~/themes/AirlineTickets/img/round-trip.png" style="width:40px; height:40px" />
+                    <img src="~/themes/AirlineTickets/img/round-trip.png" />
                 }
                 else
                 {
-                    <img src="~/themes/AirlineTickets/img/one-way1.jpg" style="width:40px; height:40px" />
+                    <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
                 }
             </div>
         </div>
