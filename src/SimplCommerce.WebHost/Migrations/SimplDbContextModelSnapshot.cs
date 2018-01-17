@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SimplCommerce.Module.Core.Data;
 using System;
 
@@ -482,6 +479,8 @@ namespace SimplCommerce.WebHost.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("CustomLink");
+
+                    b.Property<int>("DisplayOrder");
 
                     b.Property<long?>("EntityId");
 
@@ -1324,8 +1323,6 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<string>("LandingViewComponentName");
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("PaymentProviderTypeName");
 
                     b.HasKey("Id");
 
