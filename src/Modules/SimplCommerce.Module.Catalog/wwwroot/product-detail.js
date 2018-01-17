@@ -3,6 +3,26 @@
     $(window).load(function () {
         $('.sp-wrap').smoothproducts();
 
+        var departrueDateVal = $("#departure-date").val();
+        if (departrueDateVal.length > 0) {
+
+            var day, month, year, selected;
+            var splitChar = departrueDateVal.includes('.') ? '.' : '/'
+
+            day = splitChar == '.' ? departrueDateVal.split(splitChar)[0] : departrueDateVal.split(splitChar)[1];
+            month = splitChar == '.' ? departrueDateVal.split(splitChar)[1] : departrueDateVal.split(splitChar)[0];
+            year = departrueDateVal.split(splitChar)[2];
+            
+            selected = $('input[value="' +
+                    parseInt(month, 10) + '/' +
+                    parseInt(day, 10) + '/' +
+                    parseInt(year, 10) + '"]');
+            
+            if (selected) {
+                selected.prop('checked', true);
+            }
+        }
+
         $('.product-attrs li').on('click', function () {
             var $variationDiv,
                 selectedproductOptions = [],
@@ -11,18 +31,22 @@
                 $attrOptions = $form.find('.product-attr-options');
 
             $(this).find('input').prop('checked', true);
-
+            
             $attrOptions.each(function () {
                 selectedproductOptions.push($(this).find('input[type=radio]:checked').val());
             });
+            var current = $(this);
+            var details = current.parents(".thumbnail").find('.product-details').first();
+
             variationName = selectedproductOptions.join('-');
-            $variationDiv = $('div[data-variation-name="' + variationName +'"]');
-            $('.product-variation').hide();
+            $variationDiv = details.find('div[data-variation-name="' + variationName + '"]');
+
+            details.find('.product-variation').hide();
             if ($variationDiv.length > 0) {
                 $variationDiv.show();
-                $('.product-variation-notavailable').hide();
+                details.find('.product-variation-notavailable').hide();
             } else {
-                $('.product-variation-notavailable').show();
+                details.find('.product-variation-notavailable').show();
             }
         });
 

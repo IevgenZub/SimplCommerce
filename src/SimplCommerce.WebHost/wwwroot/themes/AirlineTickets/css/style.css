@@ -127,15 +127,11 @@ section {
 .form-container {
    background: rgba(0, 0, 0, 0.8);
    min-height: 50px;
-   padding: 10px 60px;
+   padding: 10px 20px;
    border-radius: 5px;
    margin-top: 1em;
    position: relative;
    z-index: 999;
-}
-
-label>input[type=radio] {
-   visibility: hidden;
 }
 
 .btn-radio {
@@ -157,7 +153,7 @@ input[type="radio"]:checked+label {
    border: 0;
    font-size: 16px;
    height: 44px;
-   padding: 6px 16px;
+   padding: 6px 10px;
    cursor: pointer;
 }
 
@@ -361,7 +357,7 @@ a.promotion-link {
 .row-passengers {
    width: 40%;
    position: absolute;
-   right: 10%;
+   right: -4%;
    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5)
 }
 
@@ -543,8 +539,17 @@ section:last-child {
    border-radius: 0;
 }
 
+.easy-autocomplete {
+   width: auto !important;
+}
+
 @media only screen and (max-width: 1200px) {}
 
+@media only screen and (min-width: 1400px) {
+   .container {
+      width: 1370px;
+   }
+}
 
 /* Medium Devices, Desktops */
 

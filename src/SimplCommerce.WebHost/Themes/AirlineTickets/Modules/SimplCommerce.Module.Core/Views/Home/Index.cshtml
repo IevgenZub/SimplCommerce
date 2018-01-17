@@ -4,12 +4,19 @@
     ViewData["Title"] = "Home Page";
 }
 
+@section head {
+    <link simpl-append-version="true" href="~/lib/nouislider/nouislider.min.css" rel="stylesheet" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/smoothproducts/css/smoothproducts.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/modules/catalog/product-detail.css" />
+}
+
+
 <section id="form-coming">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h2>Cheapest Tickets</h2>
-                <h4>Find cheapest tickets like million people</h4>
+                <h2>@Localizer["Cheapest Tickets"]</h2>
+                <h4>@Localizer["Find cheapest tickets like million people"]</h4>
             </div>
         </div>
         <div class="row form-container">
@@ -18,10 +25,10 @@
                     <div class="row">
                         <div class="col-sm-12 btn-group" data-toggle="buttons">
                             <label class="btn btn-radio btn-cift active">
-                                <input class="this-is-checked" name="yonunu_sec" id="gidis-donus" value="gidis-donus" type="radio" checked> Round-Trip
+                                <input class="this-is-checked" name="TripType" id="round-trip" value="round-trip" type="radio" checked> @Localizer["Round Trip"]
                             </label>
-                            <label class="btn btn-radio btn-tek-yon">
-                                <input class="this-is-checked" name="yonunu_sec" id="tek-yon" value="tek-yon" type="radio"> One Way
+                            <label class="btn btn-radio btn-one-way">
+                                <input class="this-is-checked" name="TripType" id="one-way" value="one-way" type="radio"> @Localizer["One Way"]
                             </label>
                         </div>
                     </div>
@@ -29,44 +36,28 @@
                 <fieldset>
                     <div class="row">
                         <div class="col-sm-12 form-group">
-                            <div class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
-                                <label class="sr-only" for="kalkis-yeri">Departure Place</label>
-                                <input type="text" class="form-control" style="width: 100%;" id="kalkis-yeri" name="Departure" placeholder="Departure">
+                            <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0;">
+                                <label class="sr-only" for="departure">@Localizer["Departure"]</label>
+                                <input type="text" class="form-control" style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12" style="padding: 0">
-                                <label class="sr-only" for="inis-yeri">Landing Place</label>
-                                <input type="text" class="form-control date" style="width: 100%" id="inis-yeri" name="Landing" placeholder="Landing">
+                            <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
+                                <label class="sr-only" for="landing">@Localizer["Landing"]</label>
+                                <input type="text" class="form-control date" style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0">
-                                <label class="sr-only" for="gidis-tarihi">Date of Departure</label>
-                                <input type="text" class="form-control" style="width: 100%" id="gidis-tarihi" name="DepartureDate" placeholder="Date of Departure">
+                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                                <label class="sr-only" for="departure-date">@Localizer["Departure Date"]</label>
+                                <input type="text" class="form-control" style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0">
-                                <label class="sr-only" for="gidis-tarihi">Date of Return</label>
-                                <input type="text" class="form-control" style="width: 100%" id="donus-tarihi" name="ReturnDate" placeholder="Date of Return">
+                            <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                                <label class="sr-only" for="return-date">@Localizer["Return Date"]</label>
+                                <input type="text" class="form-control" style="width: 100%" id="return-date" name="ReturnDate" placeholder="@Localizer["Return Date"]">
                             </div>
-                            <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0">
-                                <label class="sr-only" for="gidis-tarihi">Number of People</label>
-                                <input type="text" class="form-control" style="width: 100%" id="kisi-sayisi" name="NumberOfPeople" placeholder="Number of People" readonly="readonly">
+                            <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;">
+                                <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
+                                <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
                             </div>
-                            <div class="col-lg-2 col-md-6 col-xs-12" style="padding: 0">
+                            <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                                 <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="checkbox">
-                                <label class="check-label">
-                                    <input type="checkbox" id="aktarmasiz"> Nonstop
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label class="check-label">
-                                    <input type="checkbox" id="iptal-edilebilir"> Cancelable
-                                </label>
                             </div>
                         </div>
                     </div>
@@ -86,7 +77,7 @@
                         <div class="passengers">
                             <div class="row passenger-list valign-wrapper">
                                 <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Adult</p>
+                                    <p class="first-line">@Localizer["Adult"]</p>
                                     <p class="second-line">(18+)</p>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -107,28 +98,7 @@
                             </div>
                             <div class="row passenger-list valign-wrapper">
                                 <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Student</p>
-                                    <p class="second-line">(12-24)</p>
-                                </div>
-                                <div class="col-lg-6 col-xs-12">
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-passenger" data-value="decrease" data-target="#student-passenger" data-toggle="spinner">
-                                                <span class="glyphicon glyphicon-minus"></span>
-                                            </button>
-                                        </span>
-                                        <input type="text" data-ride="spinner" id="student-passenger" class="spinner-input form-control input-number" value="0" readonly="readonly">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-passenger" data-value="increase" data-target="#student-passenger" data-toggle="spinner">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row passenger-list valign-wrapper">
-                                <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Child</p>
+                                    <p class="first-line">@Localizer["Child"]</p>
                                     <p class="second-line">(2-11)</p>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -149,7 +119,7 @@
                             </div>
                             <div class="row passenger-list valign-wrapper">
                                 <div class="col-lg-6 col-xs-12">
-                                    <p class="first-line">Baby</p>
+                                    <p class="first-line">@Localizer["Child"]</p>
                                     <p class="second-line">(0-2)</p>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -170,7 +140,7 @@
                             </div>
                         </div>
                         <div class="submit-icon">
-                            <a class="btn btn-success" style="width: 100%; border-radius: 0; margin-top: 10px;">Save</a>
+                            <a class="btn btn-success" style="width: 100%; border-radius: 0; margin-top: 10px;">@Localizer["Save"]</a>
                         </div>
                     </div>
                 </div>
@@ -185,3 +155,81 @@
 
 @await Html.PartialAsync("_WidgetInstances", Model.WidgetInstances.Where(x => x.WidgetZoneId == WidgetZoneIds.HomeAfterMainContent))
 
+@section scripts {
+    <script simpl-append-version="true" src="~/lib/wnumb/wNumb.js"></script>
+    <script simpl-append-version="true" src="~/lib/nouislider/nouislider.min.js"></script>
+
+    <script>
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0].toLowerCase() === sParam.toLowerCase()) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        var departure = getUrlParameter('Departure');
+        if (departure) {
+            $("#departure").val(departure.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var landing = getUrlParameter('Landing');
+        if (landing) {
+            $("#landing").val(landing.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var departureDate = getUrlParameter('DepartureDate');
+        if (departureDate) {
+            $("#departure-date").val(departureDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var returnDate = getUrlParameter('ReturnDate');
+        if (returnDate) {
+            $("#return-date").val(returnDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var number = getUrlParameter('NumberOfPeople');
+        if (number) {
+            $("#number-of-people").val(number.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var tripType = getUrlParameter('TripType');
+        if (tripType) {
+            if (tripType === "one-way") {
+                $('#one-way').prop('checked', true).parent().addClass('active');
+            } else {
+                $('#round-trip').prop('checked', true).parent().addClass('active');
+            }
+        }
+
+        $(".moreDetails").click(function () {
+            $current = $(this);
+            $details = $current.parents(".my-thumbnail").find('.product-details').first();
+            $iconDown = $current.parent().find(".fa-angle-double-down");
+            $iconUp = $current.parent().find(".fa-angle-double-up");
+
+            $details.slideToggle(300, function () {
+                if($iconDown.is(':visible')) {
+                    $iconDown.hide();
+                    $iconUp.show();
+                    $('.btn-hide').hide();
+                } else {
+                    $iconUp.hide();
+                    $iconDown.show();
+                    $('.btn-hide').show();
+                }
+            });
+        });
+
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script simpl-append-version="true" src="~/lib/smoothproducts/js/smoothproducts.js"></script>
+    <script simpl-append-version="true" src="~/modules/catalog/product-detail.js"></script>
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimplCommerce.Module.Catalog.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +14,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
             IsAllowToOrder = true;
             IsOutOfStock = false;
             Price = 0;
+            SoldSeats = 0;
         }
 
         public long Id { get; set; }
@@ -72,5 +74,75 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public List<ProductLinkVm> RelatedProducts { get; set; } = new List<ProductLinkVm>();
 
         public List<ProductLinkVm> CrossSellProducts { get; set; } = new List<ProductLinkVm>();
+
+        public int Baggage { get; set; }
+
+        public int? Seats { get; set; }
+
+        public string TerminalInfo { get; set; }
+
+        public string Via { get; set; }
+
+        public string Currency { get; set; }
+
+        public string ReturnFlightNumber { get; set; }
+
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+
+        public DateTimeOffset? ReturnLandingDate { get; set; }
+
+        public long? ReturnCarrierId { get; set; }
+
+        public Brand ReturnCarrier { get; set; }
+
+        public long? ReturnAircraftId { get; set; }
+
+        public bool? IsRoundTrip { get; set; }
+
+        public string ReturnTerminal { get; set; }
+
+        public string ReturnVia { get; set; }
+
+        public string FlightNumber { get; set; }
+
+        public int? SoldSeats { get; set; }
+
+        public bool? SaleRtOnly { get; set; }
+
+        public string Status { get; set; }
+
+        public string ReservationNumber { get; set; }
+
+        public long? VendorId { get; set; }
+
+        public string FlightClass { get; set; }
+
+        public DateTimeOffset? DepartureDate { get; set; }
+
+        public DateTimeOffset? LandingDate { get; set; }
+
+        // Admin Rules Departure
+
+        public bool? AdminRoundTrip { get; set; }
+        public long? AdminRoundTripOperatorId { get; set; }
+        public bool? AdminPayLater { get; set; }
+        public string AdminPayLaterRule { get; set; }
+        public string AdminBlackList { get; set; }
+        public int? AdminPasExpirityRule { get; set; }
+        public bool? AdminIsSpecialOffer { get; set; }
+        public bool? AdminNotifyAgencies { get; set; }
+        public bool? AdminNotifyLastPassanger { get; set; }
+        public bool? AdminIsLastMinute { get; set; }
+
+        // Admin Rules Return
+
+        public bool? AdminReturnPayLater { get; set; }
+        public string AdminReturnPayLaterRule { get; set; }
+        public string AdminReturnBlackList { get; set; }
+        public int? AdminReturnPasExpirityRule { get; set; }
+        public bool? AdminReturnIsSpecialOffer { get; set; }
+        public bool? AdminReturnNotifyAgencies { get; set; }
+        public bool? AdminReturnNotifyLastPassanger { get; set; }
+        public bool? AdminReturnIsLastMinute { get; set; }
     }
 }

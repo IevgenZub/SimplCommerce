@@ -1,10 +1,10 @@
 ﻿<div class="page-header">
     <div class="row">
         <div class="col-md-8">
-            <h2>{{::vm.translate.get('Products')}}</h2>
+            <h2>Manage Flights</h2>
         </div>
         <div class="col-md-4 text-right">
-            <a ui-sref="product-create" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>{{::vm.translate.get('Create Product')}}</a>
+            <a ui-sref="product-create" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>Create Flight</a>
         </div>
     </div>
 </div>
@@ -12,26 +12,65 @@
 <table class="table table-striped" st-pipe="vm.getProducts" st-table="vm.products">
     <thead>
         <tr>
-            <th st-sort="Name" class="sortable">{{::vm.translate.get('Name')}}</th>
+            <th st-sort="Id" class="sortable">Id</th>
+            <th st-sort="VendorId" class="sortable">Operator</th>
+            <th st-sort="DepartureDate" class="sortable">Departure</th>
+            <th st-sort="ReturnDepartureDate" class="sortable">Return</th>
+            <th st-sort="FlightNumber" class="sortable">Flight #</th>
+            <th st-sort="ShortDescription" class="sortable">From</th>
+            <th st-sort="Description" class="sortable">To</th>
+            <th>Dept. Time</th>
+            <th>Arr. Time</th>
+            <th st-sort="FlightClass" class="sortable">Class</th>
+            <th>Seats</th>
+            <th st-sort="Price" class="sortable">Price</th>
             <th class="text-center">{{::vm.translate.get('Has Options')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Visible Individually')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Featured')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Allowed To Order')}}</th>
-            <th class="text-center">{{::vm.translate.get('Is Called For Pricing')}}</th>
-            <th>{{::vm.translate.get('Stock Quantity')}}</th>
-            <th st-sort="IsPublished" class="text-center sortable">{{::vm.translate.get('Is Published')}}</th>
+            <th st-sort="Status" class="sortable">Status</th>
             <th st-sort="CreatedOn" class="text-center sortable">{{::vm.translate.get('Created On')}}</th>
             <th class="text-center">{{::vm.translate.get('Actions')}}</th>
         </tr>
         <tr>
             <th>
+                <!--Id-->
+            </th>
+            <th>
                 <div class="form-group">
-                    <input class="form-control" st-search="Name"/>
+                    <input style="width:80px" st-search="Operator" />
                 </div>
             </th>
             <th>
                 <div class="form-group">
-                    <select class="form-control" st-search="HasOptions">
+                    <input style="width:40px" st-search="DepartureDate" />
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <input style="width:40px" st-search="ReturnDepartureDate" />
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <input style="width:80px" st-search="FlightNumber" />
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <input style="width:80px" st-search="From" />
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <input style="width:80px" st-search="To" />
+                </div>
+            </th>
+            <th><!--Departure Time--></th>
+            <th><!--Landing Time--></th>
+            <th><!--Class--></th>
+            <th><!--Seats--></th>
+            <th><!--Price--></th>
+            <th>
+                <div class="form-group">
+                    <select st-search="HasOptions">
                         <option value="">{{::vm.translate.get('All')}}</option>
                         <option value="true">{{::vm.translate.get('Yes')}}</option>
                         <option value="false">{{::vm.translate.get('No')}}</option>
@@ -40,46 +79,42 @@
             </th>
             <th>
                 <div class="form-group">
-                    <select class="form-control" st-search="IsVisibleIndividually">
+                    <select  st-search="Status">
                         <option value="">{{::vm.translate.get('All')}}</option>
-                        <option value="true">{{::vm.translate.get('Yes')}}</option>
-                        <option value="false">{{::vm.translate.get('No')}}</option>
+                        <option value="INSERTED">Inserted</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="PAUSE">Pause</option>
+                        <option value="STOP SALE">Stop Sale</option>
                     </select>
                 </div>
             </th>
             <th></th>
             <th></th>
-            <th></th>
-            <th></th>
-            <th>
-                <div class="form-group">
-                    <select class="form-control" st-search="IsPublished">
-                        <option value="">{{::vm.translate.get('All')}}</option>
-                        <option value="true">{{::vm.translate.get('Yes')}}</option>
-                        <option value="false">{{::vm.translate.get('No')}}</option>
-                    </select>
-                </div>
-            </th>
-            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
             <th></th>
         </tr>
     </thead>
     <tbody ng-show="!vm.isLoading">
         <tr ng-repeat="product in vm.products">
-            <td>{{product.name}}</td>
+            <td>{{product.id}}</td>
+            <td>{{product.operator}}</td>
+            <td>{{product.departureDate | date:'shortDate'}}</td>
+            <td>{{product.returnDepartureDate | date:'shortDate'}}</td>
+            <td>{{product.flightNumber}}</td>
+            <td>{{product.from}}</td>
+            <td>{{product.to}}</td>
+            <td>{{product.departureDate | date:'shortTime' }}</td>
+            <td>{{product.landingDate | date:'shortTime'}}</td>
+            <td>{{product.flightClass}}</td>
+            <td class="text-center">{{product.seats}}</td>
+            <td class="text-center">{{product.price}}</td>
             <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isVisibleIndividually && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isFeatured && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isAllowToOrder && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center"><i ng-attr-class="{{product.isCallForPricing && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center">{{product.stockQuantity}}</td>
-            <td class="text-center"><i ng-attr-class="{{product.isPublished && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
-            <td class="text-center">{{product.createdOn | date:'medium'}}</td>
-            <td class="text-center">
-                <button ng-if="product.isPublished" title="Un Publish" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pause"></span></button>
-                <button ng-if="!product.isPublished" title="Publish" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>
-                <a ui-sref="product-edit({id: product.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil"></span></a>
-                <button ng-click="vm.deleteProduct(product)" title="Delete" class="btn btn-danger btn-xs delete"> <span class="glyphicon glyphicon-remove"></span></button>
+            <td>{{product.status}}</td>
+            <td class="text-center">{{product.createdOn | date:'shortDate'}}</td>
+            <td>               
+                    <button ng-if="vm.userIsAdmin && product.status == 'ACCEPTED'" title="Pause" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pause"></span></button>
+                    <button ng-if="vm.userIsAdmin && product.status != 'ACCEPTED'" title="Accept" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>
+                    <a ui-sref="product-edit({id: product.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil"></span></a>
+                    <button ng-click="vm.deleteProduct(product)" title="Delete" class="btn btn-danger btn-xs delete"> <span class="glyphicon glyphicon-remove"></span></button>
             </td>
         </tr>
     </tbody>
@@ -90,7 +125,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="10"></td>
+            <td class="text-center" st-pagination="" st-items-by-page="10" st-displayed-pages="10" colspan="10"></td>
         </tr>
     </tfoot>
 </table>

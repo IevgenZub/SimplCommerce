@@ -40,12 +40,28 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public CalculatedProductPrice CalculatedProductPrice { get; set; }
 
         public string Departure { get; set; }
-
         public string Landing { get; set; }
+        public DateTimeOffset? DepartureDate { get; set; }
+        public DateTimeOffset? LandingDate { get; set; }
+        public string Carrier { get; set; }
+        public string Vendor { get; set; }
+        public string Via { get; set; }
+        public string Baggage { get; set; }
+        public string Provider { get; set; }
+        public string Terminal { get; set; }
+        public string FlightNumber { get; set; }
+        public string ReturnAircraft { get; set; }
+        public string Aircraft { get; set; }
+        public string ReturnCarrier { get; set; }
+        public string ReturnFlightNumber { get; set; }
+        public string ReturnVia { get; set; }
+        public string ReturnTerminal { get; set; }
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public bool? IsRoundTrip { get; set; }
+        public string Currency { get; set; }
 
-        public string DepartureDate { get; set; }
-
-        public string LandingDate { get; set; }
+        public ProductDetail Details { get; set; }
 
         public static ProductThumbnail FromProduct(Product product)
         {
@@ -65,11 +81,26 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 ThumbnailImage = product.ThumbnailImage,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
-                Departure = product.ShortDescription,
-                Landing = product.Description,
-                DepartureDate = product.SpecialPriceStart.ToString(),
-                LandingDate = product.SpecialPriceEnd.ToString()
-            };
+                Departure = product.ShortDescription.Split(',')[0] + " (" + product.ShortDescription.Split('(', ')')[1] + ")",
+                Landing = product.Description.Split(',')[0] + " (" + product.Description.Split('(', ')')[1] + ")",
+                DepartureDate = product.DepartureDate,
+                LandingDate = product.LandingDate,
+                Provider = product.Provider,
+                ReturnDepartureDate = product.ReturnDepartureDate,
+                ReturnLandingDate = product.ReturnLandingDate,
+                ReturnFlightNumber = product.ReturnFlightNumber,
+                Terminal = product.Sku,
+                ReturnTerminal = product.ReturnTerminal,
+                IsRoundTrip = product.IsRoundTrip,
+                FlightNumber = product.FlightNumber,
+                Currency = product.Currency,
+                Carrier = product.Brand == null ? "" : product.Brand.Name,
+                ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
+                Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
+                Via = product.Via,
+                ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
+                ReturnVia = product.ReturnVia
+        };
 
             return productThumbnail;
         }

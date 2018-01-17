@@ -5,12 +5,13 @@
         .controller('VendorFormCtrl', VendorFormCtrl);
 
     /* @ngInject */
-    function VendorFormCtrl($state, $stateParams, vendorService, translateService) {
+    function VendorFormCtrl($state, $stateParams, vendorService, translateService, countryService) {
         var vm = this;
         vm.translate = translateService;
         vm.vendor = {};
         vm.vendorId = $stateParams.id;
         vm.isEditMode = vm.vendorId > 0;
+        vm.countries = [];
 
         vm.updateSlug = function () {
             vm.vendor.slug = slugify(vm.vendor.name);
@@ -47,6 +48,10 @@
                     vm.vendor = result.data;
                 });
             }
+
+            countryService.getAllCountries().then(function (result) {
+                vm.countries = result.data;
+            })
         }
 
         init();

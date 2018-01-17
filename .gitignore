@@ -160,3 +160,6 @@ $RECYCLE.BIN/
 .DS_Store
 
 src/Modules/**/launchSettings.json
+
+#WebStorm
+.idea

@@ -9,7 +9,7 @@
         <a asp-controller="Manage" asp-action="Index" title="@Localizer["Manage"]">@Localizer["Hello {0}!", UserManager.GetUserName(User)]</a>
     </li>
     <li>
-        <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="">
+        <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" style="margin-top: 15px;">
             <button type="submit" class="btn btn-link">@Localizer["Log off"]</button>
         </form>
     </li>

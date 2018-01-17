@@ -1,50 +1,149 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
 
-<div class="thumbnail" style="overflow: hidden; margin:10px 20px;">
-    <a href="~/@Model.SeoTitle">
+<style>
+    .my-thumbnail {
+        border-bottom: 1px solid #eee;
+        display: block;
+        padding: 4px;
+        overflow: hidden;
+    }
 
-        <div class="col-md-2 col-xs-2 caption">
-            <img alt="@Model.Name" src="@Model.ThumbnailUrl" style="max-width: 130px; min-width: 130px;">
+    .my-thumbnail img {
+        max-height: 40px;
+        max-width: 40px;
+    }
+
+    .my-thumbnail figcaption {
+        font-size: 11px;
+        white-space: nowrap;
+        color: gray;
+     }
+
+    .airlines {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+    }
+</style>
+
+<div class="my-thumbnail">
+    <div class="row my-row">
+        <div class="airlines col-sm-1">
+            <figure>
+                <img  src="@Model.ThumbnailUrl" style="">
+                <figcaption>@Model.Carrier</figcaption>
+            </figure>
         </div>
+        <div class="flight-number col-sm-1">
+            @Model.DepartureDate.Value.LocalDateTime.ToShortDateString()
+        </div>
+        <div class="flight-number col-sm-1">
+            @Model.FlightNumber
+        </div>
+        <div class="from col-sm-2">
+            <span style="color:darkblue">@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString() </span> @Model.Departure 
+        </div>
+        <div class="to col-sm-2">
+            <span style="color:darkblue">@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</span>  @Model.Landing 
+        </div>
+        <div class="to col-sm-1">
+            @{
+                var duration = Model.LandingDate.Value.Subtract(Model.DepartureDate.Value);
+                var durationTime = duration.Hours + "h " + duration.Minutes + "m";
+             }
 
-        <div class="col-md-3 col-xs-3 caption">
-            <h4 class="product-name">@Model.Name</h4>
-            <p class="product-price">
-                @if (Model.IsCallForPricing)
+             @durationTime   
+        </div>
+        <div class="col-sm-1">
+            @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+            {
+                <img src="~/themes/AirlineTickets/img/round-trip.png" />
+            }
+            else
+            {
+                <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
+            }
+        </div>
+        <div class="col-sm-1">
+            <small>
+                <i class="fa fa-angle-double-down"></i>
+                <i class="fa fa-angle-double-up" style="display: none;"></i>
+                <a class="moreDetails" style="cursor: pointer;">@Localizer["Details"]</a>
+            </small>
+        </div>
+        <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
+        <input type="hidden" name="productId" id="productId" value="@Model.Id">
+    </div>
+    @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+    {
+        <div class="row my-row">
+            <div class="airlines col-sm-1">
+                    <figure>
+                        <img src="@Model.ThumbnailUrl">
+                        <figcaption>@Model.ReturnCarrier</figcaption>
+                    </figure>
+            </div>
+            <div class="flight-number col-sm-1">
+                @Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()
+            </div>
+            <div class="flight-number col-sm-1">
+                @Model.ReturnFlightNumber
+            </div>
+            <div class="from col-sm-2">
+                <span style="color:darkblue">@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</span> @Model.Landing
+            </div>
+            <div class="to col-sm-2">
+                <span style="color:darkblue"> @Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</span> @Model.Departure
+            </div>
+            <div class="to col-sm-1">
+                @{
+                    var returnDuration = Model.ReturnLandingDate.Value.Subtract(Model.ReturnDepartureDate.Value);
+                    var returnDurationTime = duration.Hours + "h " + duration.Minutes + "m";
+                }
+
+                @returnDurationTime
+            </div>
+            <div class="col-sm-1">
+                @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
                 {
-                    @Localizer["Call for pricing"]
+                    <img src="~/themes/AirlineTickets/img/round-trip.png" />
                 }
                 else
                 {
-                    @Model.CalculatedProductPrice.Price.ToString("C")
-                    if (Model.CalculatedProductPrice.PercentOfSaving > 0)
-                    {
-                        <span class="product-price-saving">-@(Model.CalculatedProductPrice.PercentOfSaving)%</span>
-                        <br />
-                        <span class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</span>
-                    }
+                    <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
                 }
-            </p>
-            <ul class="list-inline product-ratings">
-                <li><input value="@Model.RatingAverage" readonly="readonly" class="rating-loading" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" /></li>
-                @if (Model.ReviewsCount > 0)
-                {
-                    <li class="product-review-list">
-                        <span>(@Model.ReviewsCount reviews)</span>
-                    </li>
-                }
-            </ul>
+            </div>
         </div>
-        <div class="col-md-4 col-xs-4 caption">
-            <h4>&nbsp;</h4>
-            <p>Departure: @Model.Departure</p>
-            <p>Landing: @Model.Landing</p>
-        </div>
-        <div class="col-md-3 col-xs-3 caption">
-            <h4>&nbsp;</h4>
-            <p>@Model.DepartureDate</p>
-            <p>@Model.LandingDate</p>
-        </div>
+    }
 
-    </a>
+    <div class="row product-details" style="display: none; transition: max-height 0.3s">
+        <div class="col-md-12 col-sm-12" >
+            @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Product/ProductDetail.cshtml", Model.Details)
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div style="border-bottom: 1px solid #ddd; margin: 5px 15px; "></div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Carrier: @Model.Carrier</small></p>
+                <p><small>Flight #: @Model.FlightNumber</small></p>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Terminal: @Model.Terminal</small></p>
+                <p><small>Aircraft: @Model.Aircraft</small></p>
+                <p><small>Via: @Model.Via</small></p>
+            </div>
+
+           @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+           {
+            <div class="col-md-3 col-sm-3">
+                <p><small>Carrier: @Model.ReturnCarrier</small></p>
+                <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <p><small>Terminal: @Model.ReturnTerminal</small></p>
+                <p><small>Aircraft: @Model.ReturnAircraft</small></p>
+                <p><small>Via: @Model.ReturnVia</small></p>
+            </div>
+           }
+        </div>
+    </div>
 </div>

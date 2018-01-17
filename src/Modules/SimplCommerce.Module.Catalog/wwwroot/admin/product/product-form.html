@@ -1,7 +1,7 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading">
-        <h2 ng-if="!vm.isEditMode">{{::vm.translate.get('Create Product')}}</h2>
-        <h2 ng-if="vm.isEditMode">{{::vm.translate.get('Edit Product')}} {{vm.product.name}}</h2>
+        <h2 ng-if="!vm.isEditMode">Create Flight</h2>
+        <h2 ng-if="vm.isEditMode">Edit Flight {{vm.product.name}}</h2>
     </div>
     <div class="panel-body">
         <form name="productForm" class="form-horizontal">
@@ -12,31 +12,73 @@
             </div>
             <uib-tabset>
                 <uib-tab index="0" heading="{{::vm.translate.get('General Information')}}">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Flight #</label>
+                    <div  class="form-group">
+                        <label style="color:forestgreen" class="col-sm-2 control-label">Status</label>
                         <div class="col-sm-10">
-                            <input name="name" ng-model="vm.product.name" ng-change="vm.updateSlug()" required class="form-control" />
+                            <select ng-disabled="!vm.userIsAdmin" id="productStatus" class="form-control" ng-model="vm.product.status">
+                                <option value="INSERTED">Inserted</option>
+                                <option value="ACCEPTED">Accepted</option>
+                                <option value="STOP SALE">Stop Sale</option>
+                                <option value="PAUSE">Pause</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Reservation #</label>
+                        <div class="col-sm-10">
+                            <input id="productReservationNumber" type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
+                        </div>
+                    </div>
+                    <div ng-show="vm.userIsAdmin" class="form-group" >
+                        <label class="col-sm-2 control-label">Agency/Tour Operator</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" ng-model="vm.product.vendorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">From</label>
                         <div class="col-sm-10">
-                            <input name="name" class="form-control" ng-model="vm.product.shortDescription"/>
+                            <input name="flightFrom" required  id="flightFrom" class="form-control" ng-model="vm.product.shortDescription" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">To</label>
                         <div class="col-sm-10">
-                            <input name="name" class="form-control" ng-model="vm.product.description" />
+                            <input name="flightTo" required id="flightTo" class="form-control" ng-model="vm.product.description" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.isRoundTrip">Is Round Trip
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h4 class="col-sm-2 control-label">Departure</h4>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Carrier</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" required ng-model="vm.product.brandId" ng-options="brand.id as brand.name for brand in vm.brands"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Flight #</label>
+                        <div class="col-sm-10">
+                            <input name="flightNumber" ng-model="vm.product.flightNumber" ng-change="vm.updateSlug()" required class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Take Off</label>
                         <div class="col-sm-10">
                             <p class="input-group simpl-datetime-picker">
-                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="vm.product.specialPriceStart" is-open="vm.datePickerSpecialPriceStart.open" datepicker-options="vm.datePickerSpecialPriceStart.datepickerOptions" />
+                                <input type="text" class="form-control" required datetime-picker="dd MMM yyyy HH:mm" ng-model-options="{timezone: 'utc'}" ng-model="vm.product.departureDate" is-open="vm.datePickerDepartureDate.open" datepicker-options="vm.datePickerDepartureDate.datepickerOptions" />
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerSpecialPriceStart')"><i class="fa fa-calendar"></i></button>
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerDepartureDate')"><i class="fa fa-calendar"></i></button>
                                 </span>
                             </p>
                         </div>
@@ -45,23 +87,112 @@
                         <label class="col-sm-2 control-label">Landing</label>
                         <div class="col-sm-10">
                             <p class="input-group simpl-datetime-picker">
-                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="vm.product.specialPriceEnd" is-open="vm.datePickerSpecialPriceEnd.open" datepicker-options="vm.datePickerSpecialPriceEnd.datepickerOptions" />
+                                <input type="text" class="form-control" required datetime-picker="dd MMM yyyy HH:mm" ng-model-options="{timezone: 'utc'}" ng-model="vm.product.landingDate" is-open="vm.datePickerLandingDate.open" datepicker-options="vm.datePickerLandingDate.datepickerOptions" />
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerSpecialPriceEnd')"><i class="fa fa-calendar"></i></button>
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerLandingDate')"><i class="fa fa-calendar"></i></button>
                                 </span>
                             </p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Carrier</label>
+                        <label class="col-sm-2 control-label">Aircraft</label>
                         <div class="col-sm-10">
-                            <select class="form-control" ng-model="vm.product.brandId" ng-options="brand.id as brand.name for brand in vm.brands"></select>
+                            <select class="form-control" required ng-model="vm.product.taxClassId" ng-options="taxClass.id as taxClass.name for taxClass in vm.taxClasses"></select>
+                        </div>
+                    </div>                 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Terminal Info</label>
+                        <div class="col-sm-10">
+                            <input id="productTerminalInfo" type="text" name="terminalInfo" ng-model="vm.product.terminalInfo" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Aircraft</label>
+                        <label class="col-sm-2 control-label">Via</label>
                         <div class="col-sm-10">
-                            <select class="form-control" ng-model="vm.product.taxClassId" ng-options="taxClass.id as taxClass.name for taxClass in vm.taxClasses"></select>
+                            <input id="productVia" type="text" name="via" ng-model="vm.product.via" class="form-control" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.saleRtOnly">Sale Only RT
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="returnContainer" ng-show="vm.product.isRoundTrip">
+                        <div class="form-group">
+                            <h4 class="col-sm-2 control-label">Return</h4>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Carrier</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" ng-required="vm.product.isRoundTrip" ng-model="vm.product.returnCarrierId" ng-options="brand.id as brand.name for brand in vm.brands"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Flight #</label>
+                            <div class="col-sm-10">
+                                <input name="returnFlight" ng-required="vm.product.isRoundTrip" ng-model="vm.product.returnFlightNumber" required class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Take Off</label>
+                            <div class="col-sm-10">
+                                <p class="input-group simpl-datetime-picker">
+                                    <input type="text" class="form-control" ng-required="vm.product.isRoundTrip" datetime-picker="dd MMM yyyy HH:mm" ng-model="vm.product.returnDepartureDate" is-open="vm.datePickerReturnDepartureDate.open" datepicker-options="vm.datePickerReturnDepartureDate.datepickerOptions" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerReturnDepartureDate')"><i class="fa fa-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Landing</label>
+                            <div class="col-sm-10">
+                                <p class="input-group simpl-datetime-picker">
+                                    <input type="text" class="form-control" ng-required="vm.product.isRoundTrip" datetime-picker="dd MMM yyyy HH:mm" ng-model="vm.product.returnLandingDate" is-open="vm.datePickerReturnLandingDate.open" datepicker-options="vm.datePickerReturnLandingDate.datepickerOptions" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerReturnLandingDate')"><i class="fa fa-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Aircraft</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" ng-model="vm.product.returnAircraftId" ng-required="vm.product.isRoundTrip" ng-options="taxClass.id as taxClass.name for taxClass in vm.taxClasses"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Terminal Info</label>
+                            <div class="col-sm-10">
+                                <input id="productReturnTerminal" type="text" name="returnTerminal" ng-model="vm.product.returnTerminal" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Via</label>
+                            <div class="col-sm-10">
+                                <input id="productReturnVia" type="text" name="returnVia" ng-model="vm.product.returnVia" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h4 class="col-sm-2 control-label">Price & Availability</h4>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Class</label>
+                        <div class="col-sm-10">
+                            <select id="productFlightClass" class="form-control" ng-model="vm.product.flightClass">
+                                <option value="Economic">Economic</option>
+                                <option value="Business">Business</option>
+                                <option value="Comfort">Comfort</option>
+                                <option value="First Class">First Class</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -83,6 +214,37 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Baggage(kg)</label>
+                        <div class="col-sm-10">
+                            <input id="productBaggage" type="number" name="baggage" ng-model="vm.product.baggage" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Seats</label>
+                        <div class="col-sm-10">
+                            <input id="productSeats" type="number" name="seats" required ng-model="vm.product.seats" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Sold Seats</label>
+                        <div class="col-sm-10">
+                            <input id="productSoldSeats" disabled type="number" name="soldSeats" ng-model="vm.product.soldSeats" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Currency</label>
+                        <div class="col-sm-10">
+                            <select id="productCurrency"  class="form-control" ng-model="vm.product.currency">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h4 class="col-sm-2 control-label">Other</h4>
+                    </div>
+                    <div ng-show="false" class="form-group">
+
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Slug')}}</label>
                         <div class="col-sm-10">
                             <input name="slug" ng-model="vm.product.slug" class="form-control" />
@@ -90,12 +252,40 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">{{::vm.translate.get('Specification')}}</label>
+                        <label class="col-sm-2 control-label">Code</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-model="vm.product.name" required class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Custom Widget</label>
                         <div class="col-sm-10">
                             <summernote on-image-upload="vm.specUpload(files)" editor="vm.specEditor" ng-model="vm.product.specification"></summernote>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Special Price Start</label>
+                        <div class="col-sm-10">
+                            <p class="input-group simpl-datetime-picker">
+                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="vm.product.specialPriceStart"  is-open="vm.datePickerSpecialPriceStart.open" datepicker-options="vm.datePickerSpecialPriceStart.datepickerOptions" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerSpecialPriceStart')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Special Price End</label>
+                        <div class="col-sm-10">
+                            <p class="input-group simpl-datetime-picker">
+                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="vm.product.specialPriceEnd" is-open="vm.datePickerSpecialPriceEnd.open" datepicker-options="vm.datePickerSpecialPriceEnd.datepickerOptions" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerSpecialPriceEnd')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Special Price')}}</label>
                         <div class="col-sm-10">
@@ -105,7 +295,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Thumbnail')}}</label>
                         <div class="col-sm-10">
@@ -144,11 +333,105 @@
                             </span>
                         </div>
                     </div>
+                    <div ng-show="false">
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.product.isFeatured">{{::vm.translate.get('Is Featured')}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.product.isPublished">{{::vm.translate.get('Is Published')}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.product.isCallForPricing">{{::vm.translate.get('Is Called For Pricing')}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.product.isAllowToOrder">{{::vm.translate.get('Is Allowed To Order')}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.product.isOutOfStock">{{::vm.translate.get('Out Of Stock')}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab index="1" ng-show="vm.userIsAdmin" heading="Admin Rules: Departure">
+
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="vm.product.isFeatured">{{::vm.translate.get('Is Featured')}}
+                                    <input type="checkbox" ng-model="vm.product.adminPayLater">Pay Later
+                                </label>
+                            </div>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pay Later Rule</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="!vm.product.adminPayLater" id="productAdminPayLaterRule" type="text" name="adminPayLaterRule" ng-model="vm.product.adminPayLaterRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminRoundTrip">Round Trip
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Round Trip Operator</label>
+                        <div class="col-sm-10">
+                            <select ng-disabled="!vm.product.adminRoundTrip" class="form-control" ng-model="vm.product.adminRoundTripOperatorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Black List</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-model="vm.product.adminBlackList" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pas Expiry Date Rule</label>
+                        <div class="col-sm-10">
+                            <input id="productAdminPasExpirityRule" type="number" name="seats" ng-model="vm.product.adminPasExpirityRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminIsSpecialOffer">Show as Special Offer
                                 </label>
                             </div>
                         </div>
@@ -157,7 +440,7 @@
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="vm.product.isPublished">{{::vm.translate.get('Is Published')}}
+                                    <input type="checkbox" ng-model="vm.product.adminNotifyAgencies">Send email to all Agencies
                                 </label>
                             </div>
                         </div>
@@ -166,7 +449,7 @@
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="vm.product.isCallForPricing">{{::vm.translate.get('Is Called For Pricing')}}
+                                    <input type="checkbox" ng-model="vm.product.adminNotifyLastPassanger">Send email all last passaganger
                                 </label>
                             </div>
                         </div>
@@ -175,22 +458,79 @@
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="vm.product.isAllowToOrder">{{::vm.translate.get('Is Allowed To Order')}}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="vm.product.isOutOfStock">{{::vm.translate.get('Out Of Stock')}}
+                                    <input type="checkbox" ng-model="vm.product.adminIsLastMinute">Show as Last Minute
                                 </label>
                             </div>
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="1" heading="{{::vm.translate.get('Product Variations')}}">
+                <uib-tab index="2" ng-show="vm.product.isRoundTrip && vm.userIsAdmin" heading="Admin Rules: Return">
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnPayLater">Pay Later
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pay Later Rule</label>
+                        <div class="col-sm-10">
+                            <input ng-disabled="!vm.product.adminReturnPayLater" id="productAdminReturnPayLaterRule" type="text" name="AdminReturnPayLaterRule" ng-model="vm.product.adminReturnPayLaterRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Black List</label>
+                        <div class="col-sm-10">
+                            <input name="name" ng-model="vm.product.adminReturnBlackList" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Pas Expiry Date Rule</label>
+                        <div class="col-sm-10">
+                            <input id="productAdminReturnPasExpirityRule" type="number" name="seats" ng-model="vm.product.adminReturnPasExpirityRule" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnIsSpecialOffer">Show as Special Offer
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnNotifyAgencies">Send email to all Agencies
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnNotifyLastPassanger">Send email all last passaganger
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.product.adminReturnIsLastMinute">Show as Last Minute
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab index="3" heading="Flight Variations">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Available Options')}}</label>
                         <div class="col-sm-10">
@@ -218,6 +558,7 @@
                                                       delete-button-label="Remove {{option.name}}"
                                                       delete-hint="Press delete to remove {{option.name}}"
                                                       secondary-placeholder="+{{option.name}}">
+                                                <input  type="{{option.type}}">
                                                 <md-chip-template>
                                                     <span>
                                                         {{$chip.key}}
@@ -229,7 +570,45 @@
                                         <button class="btn btn-default" data-toggle="modal" data-target="#option_{{option.id}}">{{::vm.translate.get('Configure Display')}}</button>
                                         <button class="btn btn-default" ng-click="vm.deleteOption(option)">{{::vm.translate.get('Delete Option')}}</button>
                                     </div>
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div ng-if="option.name == 'Departure Date'">
+                                                <div class="col-md-2">
+                                                    <input type="date" id="chipStart" class="form-control">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="date" id="chipEnd" class="form-control">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>
+                                                        <input type="checkbox" id="1">1
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="2">2
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="3">3
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="4">4
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="5">5
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="6">6
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" id="7">7
+                                                    </label>
+                                                </div>
+                                                <button class="btn btn-default" ng-click="vm.generateDepartureOptions()">Add Dates</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -244,8 +623,8 @@
                             <table class="table table-striped">
                                 <tr>
                                     <th class="col-sm-4">{{::vm.translate.get('Option Combinations')}}</th>
-                                    <th class="col-sm-2">{{::vm.translate.get('Price')}}</th>
-                                    <th class="col-sm-2">{{::vm.translate.get('Old Price')}}</th>
+                                    <th class="col-sm-2">Adult Price</th>
+                                    <th class="col-sm-2">Infant Price</th>
                                     <th class="col-sm-2">{{::vm.translate.get('Images')}}</th>
                                     <th class="col-sm-2">{{::vm.translate.get('Actions')}}</th>
                                 </tr>
@@ -308,7 +687,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="2" heading="{{::vm.translate.get('Product Attributes')}}">
+                <uib-tab index="4" heading="Flight Attributes">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{::vm.translate.get('Product Templates')}}</label>
                         <div class="col-sm-10">
@@ -353,7 +732,7 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab index="3" heading="{{::vm.translate.get('Category Mapping')}}">
+                <uib-tab index="5" heading="{{::vm.translate.get('Category Mapping')}}">
                     <md-content class="md-padding">
                         <md-input-container class="md-block">
                             <div ng-repeat="category in vm.categories">
@@ -364,7 +743,7 @@
                         </md-input-container>
                     </md-content>
                 </uib-tab>
-                <uib-tab index="4" heading="{{::vm.translate.get('Related Products')}}">
+                <uib-tab index="6" heading="{{::vm.translate.get('Related Products')}}">
                     <product-selection-directive model-id="productRelationSelector" title="Add related products"  is-visible-individually="true" selected-products="vm.product.relatedProducts"></product-selection-directive>
                     <p><button type="button" class="btn btn-default" data-toggle="modal" data-target="#productRelationSelector">{{::vm.translate.get('Manage Related Products')}}</button></p>
                     <table class="table table-striped">
@@ -378,7 +757,7 @@
                         </tr>
                     </table>
                 </uib-tab>
-                <uib-tab index="5" heading="{{::vm.translate.get('Cross-sell Products')}}">
+                <uib-tab index="7" heading="{{::vm.translate.get('Cross-sell Products')}}">
                     <product-selection-directive model-id="productCrossSellSelector" title="Add cross-sell products" is-visible-individually="true" selected-products="vm.product.crossSellProducts"></product-selection-directive>
                     <p><button type="button" class="btn btn-default" data-toggle="modal" data-target="#productCrossSellSelector">{{::vm.translate.get('Manage Cross-sell Products')}}</button></p>
                     <table class="table table-striped">

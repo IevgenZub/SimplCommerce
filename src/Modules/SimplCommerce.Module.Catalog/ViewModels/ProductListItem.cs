@@ -8,20 +8,32 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Name { get; set; }
 
+        public string FlightNumber { get; set; }
+
         public bool HasOptions { get; set; }
 
-        public bool IsVisibleIndividually { get; set; }
-
-        public DateTimeOffset CreatedOn { get; set; }
+        public string CreatedOn { get; set; }
 
         public bool IsPublished { get; set; }
+        
+        public string Seats { get; set; }
 
-        public bool IsFeatured { get; set; }
+        public string From { get; set; }
 
-        public bool IsCallForPricing { get; set; }
+        public string To { get; set; }
 
-        public bool IsAllowToOrder { get; set; }
+        public DateTimeOffset? DepartureDate { get; set; }
 
-        public int? StockQuantity { get; set; }
+        public DateTimeOffset? LandingDate { get; set; }
+
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
+    
+        public string Status { get; set; }
+
+        public string Operator { get; set; }
+
+        public string FlightClass { get; set; }
+
+        public string Price { get; set; }
     }
 }

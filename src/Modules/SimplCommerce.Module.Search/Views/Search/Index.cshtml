@@ -1,5 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using SimplCommerce.Module.Search.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @model SearchResult
 @{
@@ -8,30 +10,163 @@
 
 @section head {
     <link simpl-append-version="true" href="~/lib/nouislider/nouislider.min.css" rel="stylesheet" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/smoothproducts/css/smoothproducts.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/modules/catalog/product-detail.css" />
 }
 
-<div class="row">
+<div class="row form-container">
+    <form action="search" method="get" class="form-inline" accept-charset="utf-8">
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-12 btn-group" data-toggle="buttons">
+                    <label class="btn btn-radio btn-cift active">
+                        <input class="this-is-checked" name="TripType" id="round-trip" value="round-trip" type="radio" checked> @Localizer["Round Trip"]
+                    </label>
+                    <label class="btn btn-radio btn-one-way">
+                        <input class="this-is-checked" name="TripType" id="one-way" value="one-way" type="radio"> @Localizer["One Way"]
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0;">
+                        <label class="sr-only" for="departure">@Localizer["Departure"]</label>
+                        <input type="text" class="form-control" style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
+                        <label class="sr-only" for="landing">@Localizer["Landing"]</label>
+                        <input type="text" class="form-control date" style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                        <label class="sr-only" for="departure-date">@Localizer["Departure Date"]</label>
+                        <input type="text" class="form-control" style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                        <label class="sr-only" for="return-date">@Localizer["Return Date"]</label>
+                        <input type="text" class="form-control" style="width: 100%" id="return-date" name="ReturnDate" placeholder="@Localizer["Return Date"]">
+                    </div>
+                    <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;">
+                        <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
+                        <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
+                    </div>
+                    <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
+                        <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+            <div class="row-passengers" style="display: none;">
+                <div class="box-with-arrow">
+                    <div class="row selectors">
+                        <div class="select-list">
+                            <select id="flight-class" name="flight-class">
+                                <option value="0">Economic</option>
+                                <option value="1">Business</option>
+                                <option value="2">Comfort</option>
+                                <option value="3">First Class</option>
+                            </select>
+                        </div>
+                        <div class="passengers">
+                            <div class="row passenger-list valign-wrapper">
+                                <div class="col-lg-6 col-xs-12">
+                                    <p class="first-line">@Localizer["Adult"]</p>
+                                    <p class="second-line">(18+)</p>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-passenger" data-value="decrease" data-target="#adult-passenger" data-toggle="spinner">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" data-ride="spinner" id="adult-passenger" class="spinner-input form-control input-number" value="1" readonly="readonly">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-passenger" data-value="increase" data-target="#adult-passenger" data-toggle="spinner">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row passenger-list valign-wrapper">
+                                <div class="col-lg-6 col-xs-12">
+                                    <p class="first-line">@Localizer["Child"]</p>
+                                    <p class="second-line">(2-11)</p>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-passenger" data-value="decrease" data-target="#child-passenger" data-toggle="spinner">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" data-ride="spinner" id="child-passenger" class="spinner-input form-control input-number" value="0" readonly="readonly">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-passenger" data-value="increase" data-target="#child-passenger" data-toggle="spinner">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row passenger-list valign-wrapper">
+                                <div class="col-lg-6 col-xs-12">
+                                    <p class="first-line">@Localizer["Child"]</p>
+                                    <p class="second-line">(0-2)</p>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-passenger" data-value="decrease" data-target="#baby-passenger" data-toggle="spinner">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" data-ride="spinner" id="baby-passenger" class="spinner-input form-control input-number" value="0" readonly="readonly">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-passenger" data-value="increase" data-target="#baby-passenger" data-toggle="spinner">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit-icon">
+                            <a class="btn btn-success" style="width: 100%; border-radius: 0; margin-top: 10px;">@Localizer["Save"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+<div class="row" style="padding-left:15px; padding-right:15px">
     <div class="col-md-3 product-list-filters">
-        <h3>Filter by</h3>
-        <form id="productFilter" name="productFilter" method="GET" action="~/search">
-            <div class="panel-group" id="accordion-category">
+        <h3>@Localizer["Filter by"]</h3>
+        <form id = "productFilter" name = "productFilter" method = "GET" action = "~/search">
+            @if(Model.FilterOption.Categories.Count > 0)
+            {
+            <div  class="panel-group" id="accordion-category">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion-category" href="#collapse-category">
-                                Category
+                                @Localizer["Category"]
                                 <i class="fa fa-angle-down"></i>
                             </a>
                         </h2>
                     </div>
-                    <div id="collapse-category" class="panel-collapse collapse in">
+                    <div id = "collapse-category" class="panel-collapse collapse in">
                         <div class="panel-body">
                             <ul class="list-unstyled checkbox-list" style="padding-left:20px">
-                                @foreach (var category in Model.FilterOption.Categories)
-                                {
+                                @foreach(var category in Model.FilterOption.Categories)
+                {
                                     <li>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="@category.SeoTitle" name="category" checked="@Model.CurrentSearchOption.GetCategories().Contains(category.SeoTitle)">
+                                            <input type = "checkbox" value="@category.SeoTitle" name="category" checked="@Model.CurrentSearchOption.GetCategories().Contains(category.SeoTitle)">
                                             @category.Name
                                             <small>(@category.Count)</small>
                                         </label>
@@ -42,24 +177,27 @@
                     </div>
                 </div>
             </div>
+            }
+            @if (Model.FilterOption.Brands.Count > 0)
+            { 
             <div class="panel-group" id="accordion-brand">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion-brand" href="#collapse-brand">
-                                Brands
+                                @Localizer["Carriers"]
                                 <i class="fa fa-angle-down"></i>
                             </a>
                         </h2>
                     </div>
-                    <div id="collapse-brand" class="panel-collapse collapse in">
+                    <div id = "collapse-brand" class="panel-collapse collapse in">
                         <div class="panel-body">
                             <ul class="list-unstyled checkbox-list" style="padding-left:20px">
-                                @foreach (var brand in Model.FilterOption.Brands)
+                                @foreach(var brand in Model.FilterOption.Brands)
                                 {
                                     <li>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="@brand.SeoTitle" name="brand" checked="@Model.CurrentSearchOption.GetBrands().Contains(brand.SeoTitle)">
+                                            <input type = "checkbox" value="@brand.SeoTitle" name="brand" checked="@Model.CurrentSearchOption.GetBrands().Contains(brand.SeoTitle)">
                                             @brand.Name
                                             <small>(@brand.Count)</small>
                                         </label>
@@ -70,29 +208,31 @@
                     </div>
                 </div>
             </div>
-            @if (Model.FilterOption.Price.MaxPrice != Model.FilterOption.Price.MinPrice) {
+            }
+            @if (Model.FilterOption.Price.MaxPrice != Model.FilterOption.Price.MinPrice)
+            {
             <div class="panel-group" id="accordion-price">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion-price" href="#collapse-price">
-                                Price
+                                @Localizer["Price"]
                                 <i class="fa fa-angle-down"></i>
                             </a>
                         </h2>
                     </div>
-                    <div id="collapse-price" class="panel-collapse collapse in" style="padding:10px">
+                    <div id = "collapse-price" class="panel-collapse collapse in" style="padding:10px">
                         <div class="panel-body">
-                            <div id="priceSlider" ></div>
-                            <div style="padding:5px"> 
-                                <input type="hidden" id="originMinPrice" value="@Model.FilterOption.Price.MinPrice.ToString("F0")"/>
-                                <input type="hidden" id="originMaxPrice" value="@Model.FilterOption.Price.MaxPrice.ToString("F0")" />
-                                <span id="minPrice"></span>
+                            <div id = "priceSlider" ></div>
+                            <div style="padding:5px">
+                                <input type = "hidden" id="originMinPrice" value="@Model.FilterOption.Price.MinPrice.ToString("F0")"/>
+                                <input type = "hidden" id="originMaxPrice" value="@Model.FilterOption.Price.MaxPrice.ToString("F0")" />
+                                <span id = "minPrice" ></span>
                                 <span id="maxPrice"></span>
                             </div>
                             <div class="price-actions">
-                                <button id="reset-price" type="button" class="btn btn-default">Reset</button>
-                                <button id="apply-price" type="button" class="btn btn-default">Apply</button>
+                                <button id = "reset-price" type="button" class="btn btn-default">Reset</button>
+                                <button id = "apply-price" type="button" class="btn btn-default">Apply</button>
                             </div>
                         </div>
                     </div>
@@ -104,14 +244,14 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-7 category-result">
-                <h2>Search result for @Model.CurrentSearchOption.Query</h2>
+                <h2>@Localizer["Search results"]</h2>
                 <small class="badge-results">@Model.TotalProduct Results</small>
             </div>
             <div class="col-md-5">
                 <ul class="list-inline clear-both product-list-display-options">
                     <li class="show-option">
-                        <a href="#"><i class="fa fa-th-list"></i></a>
-                        <a href="#"><i class="fa fa-th"></i></a>
+                        <a href = "#"><i class="fa fa-th-list"></i></a>
+                        <a href = "#"><i class="fa fa-th"></i></a>
                     </li>
                     <li class="sort-by">
                         <label>Sort By :</label>
@@ -143,6 +283,7 @@
                     </div>
                 }
         </div>
+
         <div class="row">
             <div class="col-md-12 text-right">
                 <cs-pager cs-paging-pagesize="@Model.CurrentSearchOption.PageSize"
@@ -169,6 +310,78 @@
             currentMin: @((Model.CurrentSearchOption.MinPrice ?? Model.FilterOption.Price.MinPrice).ToString("F0")),
             currentMax: @((Model.CurrentSearchOption.MaxPrice ?? Model.FilterOption.Price.MaxPrice).ToString("F0"))
         };
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0].toLowerCase() === sParam.toLowerCase()) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        var departure = getUrlParameter('Departure');
+        if (departure) {
+            $("#departure").val(departure.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var landing = getUrlParameter('Landing');
+        if (landing) {
+            $("#landing").val(landing.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var departureDate = getUrlParameter('DepartureDate');
+        if (departureDate) {
+            $("#departure-date").val(departureDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var returnDate = getUrlParameter('ReturnDate');
+        if (returnDate) {
+            $("#return-date").val(returnDate.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var number = getUrlParameter('NumberOfPeople');
+        if (number) {
+            $("#number-of-people").val(number.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var tripType = getUrlParameter('TripType');
+        if (tripType) {
+            if (tripType === "one-way") {
+                $('#one-way').prop('checked', true).parent().addClass('active');
+            } else {
+                $('#round-trip').prop('checked', true).parent().addClass('active');
+            }
+        }
+
+        $(".moreDetails").click(function () {
+            $current = $(this);
+            $details = $current.parents(".my-thumbnail").find('.product-details').first();
+            $iconDown = $current.parent().find(".fa-angle-double-down");
+            $iconUp = $current.parent().find(".fa-angle-double-up");
+
+            $details.slideToggle(300, function () {
+                if($iconDown.is(':visible')) {
+                    $iconDown.hide();
+                    $iconUp.show();
+                    $('.btn-hide').hide();
+                } else {
+                    $iconUp.hide();
+                    $iconDown.show();
+                    $('.btn-hide').show();
+                }
+            });
+        });
+
     </script>
-    <script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
+<script simpl-append-version="true" src="~/modules/catalog/product-filter.js"></script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script simpl-append-version="true" src="~/lib/smoothproducts/js/smoothproducts.js"></script>
+    <script simpl-append-version="true" src="~/modules/catalog/product-detail.js"></script>
 }

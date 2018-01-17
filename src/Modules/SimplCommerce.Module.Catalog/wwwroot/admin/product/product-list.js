@@ -18,12 +18,13 @@
                 vm.products = result.data.items;
                 tableState.pagination.numberOfPages = result.data.numberOfPages;
                 vm.isLoading = false;
+                vm.userIsAdmin = window.userIsAdmin;
             });
         };
 
         vm.changeStatus = function changeStatus(product) {
             productService.changeStatus(product).then(function () {
-                product.isPublished = !product.isPublished;
+                product.status = product.status === "ACCEPTED" ? "PAUSE" : "ACCEPTED";
             });
         };
 

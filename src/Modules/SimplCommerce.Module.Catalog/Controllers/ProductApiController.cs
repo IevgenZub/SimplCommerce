@@ -87,14 +87,60 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SpecialPriceEnd = product.SpecialPriceEnd,
                 IsFeatured = product.IsFeatured,
                 IsPublished = product.IsPublished,
-                IsCallForPricing =  product.IsCallForPricing,
+                IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 IsOutOfStock = product.StockQuantity == 0,
                 CategoryIds = product.Categories.Select(x => x.CategoryId).ToList(),
                 ThumbnailImageUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage),
                 BrandId = product.BrandId,
-                TaxClassId = product.TaxClassId
+                TaxClassId = product.TaxClassId,
+                Baggage = product.DisplayOrder,
+                Seats = product.StockQuantity,
+                TerminalInfo = product.Sku,
+                Via = product.Via,
+                Currency = product.Currency,
+                ReturnFlightNumber = product.ReturnFlightNumber,
+                ReturnCarrierId = product.ReturnCarrierId,
+                ReturnDepartureDate = product.ReturnDepartureDate,
+                ReturnLandingDate = product.ReturnLandingDate,
+                IsRoundTrip = product.IsRoundTrip,
+                ReturnAircraftId = product.ReturnAircraftId,
+                ReturnTerminal = product.ReturnTerminal,
+                ReturnVia = product.ReturnVia,
+                FlightNumber = product.FlightNumber,
+                SoldSeats = product.SoldSeats,
+                SaleRtOnly = product.SaleRtOnly,
+                Status = product.Status,
+                ReservationNumber = product.ReservationNumber,
+                VendorId = product.VendorId,
+                FlightClass = product.FlightClass,
+                DepartureDate = product.DepartureDate,
+                LandingDate = product.LandingDate
             };
+
+            if (User.IsInRole("admin"))
+            {
+                productVm.AdminRoundTrip = product.AdminRoundTrip;
+                productVm.AdminRoundTripOperatorId = product.AdminRoundTripOperatorId;
+                productVm.AdminPayLater = product.AdminPayLater;
+                productVm.AdminPayLaterRule = product.AdminPayLaterRule;
+                productVm.AdminBlackList = product.AdminBlackList;
+                productVm.AdminPasExpirityRule = product.AdminPasExpirityRule;
+                productVm.AdminIsSpecialOffer = product.AdminIsSpecialOffer;
+                productVm.AdminNotifyAgencies = product.AdminNotifyAgencies;
+                productVm.AdminNotifyLastPassanger = product.AdminNotifyLastPassanger;
+                productVm.AdminIsLastMinute = product.AdminIsLastMinute;
+                productVm.AdminReturnPayLater = product.AdminReturnPayLater;
+                productVm.AdminReturnPayLaterRule = product.AdminReturnPayLaterRule;
+                productVm.AdminReturnBlackList = product.AdminReturnBlackList;
+                productVm.AdminReturnPasExpirityRule = product.AdminReturnPasExpirityRule;
+                productVm.AdminReturnIsSpecialOffer = product.AdminReturnIsSpecialOffer;
+                productVm.AdminReturnNotifyAgencies = product.AdminReturnNotifyAgencies;
+                productVm.AdminReturnNotifyLastPassanger = product.AdminReturnNotifyLastPassanger;
+                productVm.AdminReturnIsLastMinute = product.AdminReturnIsLastMinute;
+            }
+
+
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
             {
@@ -179,7 +225,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
         [HttpPost("grid")]
         public async Task<IActionResult> List([FromBody] SmartTableParam param)
         {
-            var query = _productRepository.Query().Where(x => !x.IsDeleted);
+            var query = _productRepository.Query().Include(x => x.Vendor).Where(x => !x.IsDeleted);
             var currentUser = await _workContext.GetCurrentUser();
             if (!User.IsInRole("admin"))
             {
@@ -189,10 +235,34 @@ namespace SimplCommerce.Module.Catalog.Controllers
             if (param.Search.PredicateObject != null)
             {
                 dynamic search = param.Search.PredicateObject;
-                if (search.Name != null)
+                if (search.FlightNumber != null)
                 {
-                    string name = search.Name;
+                    string name = search.FlightNumber;
                     query = query.Where(x => x.Name.Contains(name));
+                }
+
+                if (search.FlightClass != null)
+                {
+                    string flightClass = search.FlightClass;
+                    query = query.Where(x => x.FlightClass.Contains(flightClass));
+                }
+
+                if (search.Operator != null)
+                {
+                    string oper = search.Operator;
+                    query = query.Where(x => x.Vendor != null && x.Vendor.Name.Contains(oper));
+                }
+
+                if (search.From != null)
+                {
+                    string from = search.From;
+                    query = query.Where(x => x.ShortDescription.Contains(from));
+                }
+
+                if (search.To != null)
+                {
+                    string to = search.To;
+                    query = query.Where(x => x.Description.Contains(to));
                 }
 
                 if (search.HasOptions != null)
@@ -207,10 +277,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.IsVisibleIndividually == isVisibleIndividually);
                 }
 
-                if (search.IsPublished != null)
+                if (search.Status != null)
                 {
-                    bool isPublished = search.IsPublished;
-                    query = query.Where(x => x.IsPublished == isPublished);
+                    string status = search.Status;
+                    query = query.Where(x => x.Status.Contains(status));
                 }
 
                 if (search.CreatedOn != null)
@@ -234,15 +304,21 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 x => new ProductListItem
                 {
                     Id = x.Id,
+                    FlightNumber = x.FlightNumber,
                     Name = x.Name,
                     HasOptions = x.HasOptions,
-                    IsVisibleIndividually = x.IsVisibleIndividually,
-                    IsFeatured = x.IsFeatured,
-                    IsAllowToOrder = x.IsAllowToOrder,
-                    IsCallForPricing = x.IsCallForPricing,
-                    StockQuantity = x.StockQuantity,
-                    CreatedOn = x.CreatedOn,
-                    IsPublished = x.IsPublished
+                    Seats = x.SoldSeats + "/" + x.StockQuantity,
+                    CreatedOn = x.CreatedOn.Date.ToShortDateString(),
+                    IsPublished = x.IsPublished,
+                    From = x.ShortDescription.Split('(', ')')[1],
+                    To = x.Description.Split('(', ')')[1],
+                    DepartureDate = x.DepartureDate,
+                    ReturnDepartureDate = x.ReturnDepartureDate,
+                    LandingDate = x.LandingDate,
+                    Status = x.Status,
+                    Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
+                    FlightClass = x.FlightClass,
+                    Price = x.Price.ToString("0.0") + " " + x.Currency
                 });
 
             return Json(gridData);
@@ -278,22 +354,65 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 TaxClassId = model.Product.TaxClassId,
                 HasOptions = model.Product.Variations.Any() ? true : false,
                 IsVisibleIndividually = true,
-                CreatedBy = currentUser
+                CreatedBy = currentUser,
+                DisplayOrder = model.Product.Baggage,
+                StockQuantity = model.Product.Seats,
+                Sku = model.Product.TerminalInfo,
+                Via = model.Product.Via,
+                Currency = model.Product.Currency,
+                ReturnFlightNumber = model.Product.ReturnFlightNumber,
+                ReturnCarrierId = model.Product.ReturnCarrierId,
+                ReturnDepartureDate = model.Product.ReturnDepartureDate,
+                ReturnLandingDate = model.Product.ReturnLandingDate,
+                IsRoundTrip = model.Product.IsRoundTrip,
+                ReturnAircraftId = model.Product.ReturnAircraftId,
+                ReturnTerminal = model.Product.ReturnTerminal,
+                ReturnVia = model.Product.ReturnVia,
+                FlightNumber = model.Product.FlightNumber,
+                SoldSeats = 0,
+                SaleRtOnly = model.Product.SaleRtOnly,
+                Status = "INSERTED",
+                ReservationNumber = model.Product.ReservationNumber,
+                FlightClass = model.Product.FlightClass,
+                DepartureDate = model.Product.DepartureDate,
+                LandingDate = model.Product.LandingDate
             };
 
             if (!User.IsInRole("admin"))
             {
                 product.VendorId = currentUser.VendorId;
             }
+            else
+            {
+                product.VendorId = model.Product.VendorId;
+                product.AdminRoundTrip = model.Product.AdminRoundTrip;
+                product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
+                product.AdminPayLater = model.Product.AdminPayLater;
+                product.AdminPayLaterRule = model.Product.AdminPayLaterRule;
+                product.AdminBlackList = model.Product.AdminBlackList;
+                product.AdminPasExpirityRule = model.Product.AdminPasExpirityRule;
+                product.AdminIsSpecialOffer = model.Product.AdminIsSpecialOffer;
+                product.AdminNotifyAgencies = model.Product.AdminNotifyAgencies;
+                product.AdminNotifyLastPassanger = model.Product.AdminNotifyLastPassanger;
+                product.AdminIsLastMinute = model.Product.AdminIsLastMinute;
+                product.AdminReturnPayLater = model.Product.AdminReturnPayLater;
+                product.AdminReturnPayLaterRule = model.Product.AdminReturnPayLaterRule;
+                product.AdminReturnBlackList = model.Product.AdminReturnBlackList;
+                product.AdminReturnPasExpirityRule = model.Product.AdminReturnPasExpirityRule;
+                product.AdminReturnIsSpecialOffer = model.Product.AdminReturnIsSpecialOffer;
+                product.AdminReturnNotifyAgencies = model.Product.AdminReturnNotifyAgencies;
+                product.AdminReturnNotifyLastPassanger = model.Product.AdminReturnNotifyLastPassanger;
+                product.AdminReturnIsLastMinute = model.Product.AdminReturnIsLastMinute;
+            }
 
             if (model.Product.IsOutOfStock)
             {
                 product.StockQuantity = 0;
             }
-            else
-            {
-                product.StockQuantity = null;
-            }
+            //else
+            //{
+            //    product.StockQuantity = null;
+            //}
 
             var optionIndex = 0;
             foreach (var option in model.Product.Options)
@@ -383,15 +502,60 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.IsCallForPricing = model.Product.IsCallForPricing;
             product.IsAllowToOrder = model.Product.IsAllowToOrder;
             product.UpdatedBy = currentUser;
+            product.DisplayOrder = model.Product.Baggage;
+            product.StockQuantity = model.Product.Seats;
+            product.Sku = model.Product.TerminalInfo;
+            product.Via = model.Product.Via;
+            product.Currency = model.Product.Currency;
+            product.ReturnFlightNumber = model.Product.ReturnFlightNumber;
+            product.ReturnCarrierId = model.Product.ReturnCarrierId;
+            product.ReturnDepartureDate = model.Product.ReturnDepartureDate;
+            product.ReturnLandingDate = model.Product.ReturnLandingDate;
+            product.IsRoundTrip = model.Product.IsRoundTrip;
+            product.ReturnAircraftId = model.Product.ReturnAircraftId;
+            product.ReturnTerminal = model.Product.ReturnTerminal;
+            product.ReturnVia = model.Product.ReturnVia;
+            product.FlightNumber = model.Product.FlightNumber;
+            product.SaleRtOnly = model.Product.SaleRtOnly;
+            product.SoldSeats = model.Product.SoldSeats;
+            product.ReservationNumber = model.Product.ReservationNumber;
+            product.VendorId = model.Product.VendorId;
+            product.FlightClass = model.Product.FlightClass;
+            product.DepartureDate = model.Product.DepartureDate;
+            product.LandingDate = model.Product.LandingDate;
+
+            if (User.IsInRole("admin"))
+            {
+                product.VendorId = model.Product.VendorId;
+                product.Status = model.Product.Status;
+                product.AdminRoundTrip = model.Product.AdminRoundTrip;
+                product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
+                product.AdminPayLater = model.Product.AdminPayLater;
+                product.AdminPayLaterRule = model.Product.AdminPayLaterRule;
+                product.AdminBlackList = model.Product.AdminBlackList;
+                product.AdminPasExpirityRule = model.Product.AdminPasExpirityRule;
+                product.AdminIsSpecialOffer = model.Product.AdminIsSpecialOffer;
+                product.AdminNotifyAgencies = model.Product.AdminNotifyAgencies;
+                product.AdminNotifyLastPassanger = model.Product.AdminNotifyLastPassanger;
+                product.AdminIsLastMinute = model.Product.AdminIsLastMinute;
+                product.AdminReturnPayLater = model.Product.AdminReturnPayLater;
+                product.AdminReturnPayLaterRule = model.Product.AdminReturnPayLaterRule;
+                product.AdminReturnBlackList = model.Product.AdminReturnBlackList;
+                product.AdminReturnPasExpirityRule = model.Product.AdminReturnPasExpirityRule;
+                product.AdminReturnIsSpecialOffer = model.Product.AdminReturnIsSpecialOffer;
+                product.AdminReturnNotifyAgencies = model.Product.AdminReturnNotifyAgencies;
+                product.AdminReturnNotifyLastPassanger = model.Product.AdminReturnNotifyLastPassanger;
+                product.AdminReturnIsLastMinute = model.Product.AdminReturnIsLastMinute;
+            }
 
             if (model.Product.IsOutOfStock)
             {
                 product.StockQuantity = 0;
             }
-            else
-            {
-                product.StockQuantity = null;
-            }
+            //else
+            //{
+            //    product.StockQuantity = null;
+            //}
 
             await SaveProductMedias(model, product);
 
@@ -428,7 +592,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 return BadRequest(new { error = "You don't have permission to manage this product" });
             }
 
-            product.IsPublished = !product.IsPublished;
+            //product.IsPublished = !product.IsPublished;
+            product.Status = product.Status == "ACCEPTED" ? "PAUSE" : "ACCEPTED";
             await _productRepository.SaveChangesAsync();
 
             return Accepted();
@@ -473,6 +638,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productLink.LinkedProduct.HasOptions = false;
                 productLink.LinkedProduct.IsVisibleIndividually = false;
 
+                GenerateValues(productLink.LinkedProduct, product, variationVm);
+                
                 foreach (var combinationVm in variationVm.OptionCombinations)
                 {
                     productLink.LinkedProduct.AddOptionCombination(new ProductOptionCombination
@@ -486,6 +653,43 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productLink.LinkedProduct.ThumbnailImage = product.ThumbnailImage;
 
                 product.AddProductLinks(productLink);
+            }
+        }
+
+        private static void GenerateValues(Product linkedProduct, Product product, ProductVariationVm variation)
+        {
+            var departureDateOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
+            if (departureDateOption != null)
+            {
+                DateTimeOffset departureDate = DateTime.SpecifyKind(Convert.ToDateTime(departureDateOption.Value), DateTimeKind.Utc);
+
+                linkedProduct.DepartureDate = departureDate
+                        .AddHours(product.DepartureDate.Value.Hour)
+                        .AddMinutes(product.DepartureDate.Value.Minute);
+
+                linkedProduct.LandingDate = departureDate
+                        .AddHours(product.LandingDate.Value.Hour)
+                        .AddMinutes(product.LandingDate.Value.Minute);
+
+                var daysOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Package Days");
+                if (daysOption != null)
+                {
+                    var days = Convert.ToInt32(daysOption.Value);
+                    var returnDepartureTime = linkedProduct.ReturnDepartureDate.Value.TimeOfDay;
+                    var returnLandingTime = linkedProduct.ReturnLandingDate.Value.TimeOfDay;
+                    linkedProduct.ReturnDepartureDate = DateTime.SpecifyKind(linkedProduct.DepartureDate.Value.Date
+                        .AddDays(days)
+                        .Add(returnDepartureTime), DateTimeKind.Utc);
+                    linkedProduct.ReturnLandingDate = DateTime.SpecifyKind(linkedProduct.DepartureDate.Value.Date
+                        .AddDays(days)
+                        .Add(returnLandingTime), DateTimeKind.Utc);
+                }
+            }
+        
+            var flightClass = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Class");
+            if (flightClass != null)
+            {
+                linkedProduct.FlightClass = flightClass.Value;
             }
         }
 
@@ -600,7 +804,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     productLink.LinkedProduct.NormalizedName = productVariationVm.NormalizedName;
                     productLink.LinkedProduct.HasOptions = false;
                     productLink.LinkedProduct.IsVisibleIndividually = false;
-
+                    productLink.LinkedProduct.ThumbnailImage = product.ThumbnailImage;
+                   
                     foreach (var combinationVm in productVariationVm.OptionCombinations)
                     {
                         productLink.LinkedProduct.AddOptionCombination(new ProductOptionCombination

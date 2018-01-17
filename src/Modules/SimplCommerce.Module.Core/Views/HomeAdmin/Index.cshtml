@@ -28,6 +28,7 @@
     <link simpl-append-version="true" rel="stylesheet" href="~/modules/core/admin/admin-core.css" />
     <script>
         window.Global_AssetVersion = "@Config["Global.AssetVersion"]";
+        window.userIsAdmin = "@User.IsInRole("admin")" == "True";
     </script>
     <script simpl-append-version="true" src="~/lib/jquery/jquery.js"></script>
     <script simpl-append-version="true" src="~/lib/bootstrap/js/bootstrap.js"></script>
@@ -196,6 +197,8 @@
     <script simpl-append-version="true" src="~/modules/paymentPaypalExpress/admin/paypalExpress.module.js"></script>
     <script simpl-append-version="true" src="~/modules/paymentPaypalExpress/admin/config/paypalExpress-service.js"></script>
     <script simpl-append-version="true" src="~/modules/paymentPaypalExpress/admin/config/config-form.js"></script>
+    <script src="~/themes/AirlineTickets/js/jquery.easy-autocomplete.min.js"></script>
+    <link href="~/themes/AirlineTickets/css/easy-autocomplete.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="navbar navbar-inverse">
@@ -216,7 +219,7 @@
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Site"] <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a ui-sref="users">@Localizer["Users"]</a></li>
-                            <li><a ui-sref="vendors">@Localizer["Vendors"]</a></li>
+                            <li><a ui-sref="vendors">Tour Operators</a></li>
                             <li><a ui-sref="customergroups">@Localizer["Customer Groups"]</a></li>
                             <li><a ui-sref="reviews">@Localizer["Reviews"]</a></li>
                             <li><a ui-sref="contact-area">@Localizer["Manage Contact Area"]</a></li>
@@ -227,15 +230,15 @@
                     <li class="dropdown">
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Catalog"] <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a ui-sref="product">@Localizer["Products"]</a></li>
+                            <li><a ui-sref="product">Flights</a></li>
                             @if(User.IsInRole("admin"))
                             {
                                 <li><a ui-sref="category">@Localizer["Categories"]</a></li>
-                                <li><a ui-sref="brand">@Localizer["Brands"]</a></li>
-                                <li><a ui-sref="product-option">@Localizer["Product Options"]</a></li>
-                                <li><a ui-sref="product-attribute-group">@Localizer["Product Attribute Groups"]</a></li>
-                                <li><a ui-sref="product-attribute">@Localizer["Product Attributes"]</a></li>
-                                <li><a ui-sref="product-template">@Localizer["Product Templates"]</a></li>
+                                <li><a ui-sref="brand">Airlines</a></li>
+                                <li><a ui-sref="product-option">Flight Options</a></li>
+                                <li><a ui-sref="product-attribute-group">Flight Attribute Groups</a></li>
+                                <li><a ui-sref="product-attribute">Flight Attributes</a></li>
+                                <li><a ui-sref="product-template">Flight Templates</a></li>
                             }
                         </ul>
                     </li>
@@ -296,6 +299,7 @@
         <div ui-view></div>
         <hr />
         <footer>
+            
             <p class="pull-left">&copy; @DateTime.Now.Year - SimplCommerce</p>
             <p class="pull-right">Powered by <a href="http://www.SimplCommerce.com"><strong>SimplCommerce</strong></a></p>
         </footer>

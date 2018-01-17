@@ -5,7 +5,7 @@
         .controller('ProductFormCtrl', ProductFormCtrl);
 
     /* @ngInject */
-    function ProductFormCtrl($state, $timeout, $stateParams, $http, categoryService, productService, summerNoteService, brandService, translateService) {
+    function ProductFormCtrl($state, $timeout, $stateParams, $http, categoryService, productService, summerNoteService, brandService, translateService, userService) {
         var vm = this;
         vm.translate = translateService;
         // declare shoreDescription and description for summernote
@@ -30,12 +30,22 @@
         vm.addingVariation = { price: 0 };
         vm.brands = [];
         vm.taxClasses = [];
+        vm.vendors = [];
+        vm.userIsAdmin = false;       
 
         vm.datePickerSpecialPriceStart = {};
+
         vm.datePickerSpecialPriceEnd = {};
 
+        vm.datePickerDepartureDate = {};
+        vm.datePickerLandingDate = {};
+
+        vm.datePickerReturnDepartureDate = {};
+        vm.datePickerReturnLandingDate = {};
+        
         vm.updateSlug = function () {
-            vm.product.slug = slugify(vm.product.name);
+            vm.product.slug = slugify(vm.product.flightNumber);
+            vm.product.name = vm.product.flightNumber
         };
 
         vm.openCalendar = function (e, picker) {
@@ -67,6 +77,18 @@
             onModifyOption(function() {
                 vm.addingOption.values = [];
                 vm.addingOption.displayType = "text";
+
+                vm.addingOption.type = "text";
+                if (vm.addingOption.name.toLowerCase().includes('date')) {
+                    vm.addingOption.type =  "date";
+                }
+                if (vm.addingOption.name.toLowerCase().includes('number') || vm.addingOption.name.toLowerCase().includes('days')) {
+                    vm.addingOption.type = "number";
+                }
+                if (vm.addingOption.name.toLowerCase().includes('time')) {
+                    vm.addingOption.type = "time";
+                }
+
                 var index = vm.options.indexOf(vm.addingOption);
                 vm.product.options.push(vm.addingOption);
                 vm.options.splice(index, 1);
@@ -96,13 +118,50 @@
                     }, 1);
                 }
             });
-        }
+        };
 
-        vm.newOptionValue = function (chip) {
+        
+        vm.generateDepartureOptions = function () {
+            function generateRange(startDate, endDate) {
+                var retVal = [];
+                var current = new Date(startDate);
+                var end = new Date(endDate);
+
+                while (current <= end) {
+                    if ($('#' + current.getDay()).prop('checked')) {
+                        retVal.push(new Date(current));
+                    }
+                    current.setDate(current.getDate() + 1);
+                }
+
+                return retVal;
+            };
+
+            var departureDateOption = vm.product.options.filter(function (o) { return o.name === "Departure Date" })[0];
+            if (!departureDateOption) {
+                departureDateOption = vm.options.filter(function (o) { return o.name === "Departure Date" })[0];
+                vm.addingOption = departureDateOption;
+                vm.addOption();
+            }
+
+            var range = generateRange($('#chipStart').val(), $('#chipEnd').val());
+
+            angular.forEach(range, function (chipToAdd) {
+                departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value: '' });
+            });
+        };
+
+        vm.newOptionValue = function (chip) {   
+            var dateString = angular.copy(chip);
+            dateString = dateString.toString();
+            if (dateString.split('-').length == 3) {
+                chip = new Date(dateString).toLocaleDateString("en-US");
+            }
+
             return {
                 key: chip,
                 value: ''
-            };
+           };
         };
 
         vm.generateOptionCombination = function generateOptionCombination() {
@@ -131,7 +190,8 @@
                             name: vm.product.name + ' ' + optionCombinations.map(getItemValue).join(' '),
                             normalizedName : optionCombinations.map(getItemValue).join('-'),
                             optionCombinations: optionCombinations,
-                            price : vm.product.price
+                            price: vm.product.price,
+                            oldPrice: vm.product.oldPrice
                         };
                         vm.product.variations.push(variation);
                     } else {
@@ -197,7 +257,9 @@
                     return item.value;
                 }).join('-'),
                 optionCombinations: optionCombinations,
-                price: vm.addingVariation.price || vm.product.price
+                price: vm.addingVariation.price || vm.product.price,
+                oldPrice: vm.addingVariation.oldPrice || vm.pr.oldPrice
+
             };
 
             if (!vm.product.variations.find(function (item) { return item.name === variation.name; })) {
@@ -308,6 +370,39 @@
             vm.product.specialPrice = vm.product.specialPrice === null ? '' : vm.product.specialPrice;
             vm.product.specialPriceStart = vm.product.specialPriceStart === null ? '' : vm.product.specialPriceStart;
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
+            vm.product.returnDepartureDate = vm.product.returnDepartureDate === null ? '' : vm.product.returnDepartureDate;
+            vm.product.returnLandingDate = vm.product.returnLandingDate === null ? '' : vm.product.returnLandingDate;
+            vm.product.departureDate = vm.product.departureDate === null ? '' : vm.product.departureDate;
+            vm.product.landingDate = vm.product.landingDate === null ? '' : vm.product.landingDate;
+            vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
+            vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
+            vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
+            vm.product.saleRtOnly = vm.product.saleRtOnly === null ? '' : vm.product.saleRtOnly;
+            vm.product.adminPayLater = vm.product.adminPayLater === null ? '' : vm.product.adminPayLater;
+            vm.product.adminPayLaterRule = vm.product.adminPayLaterRule === null ? '' : vm.product.adminPayLaterRule;
+            vm.product.adminRoundTrip = vm.product.adminRoundTrip === null ? '' : vm.product.adminRoundTrip;
+            vm.product.adminIsLastMinute = vm.product.adminIsLastMinute === null ? '' : vm.product.adminIsLastMinute;
+            vm.product.adminIsSpecialOffer = vm.product.adminIsSpecialOffer === null ? '' : vm.product.adminIsSpecialOffer;
+            vm.product.adminNotifyAgencies = vm.product.adminNotifyAgencies === null ? '' : vm.product.adminNotifyAgencies;
+            vm.product.adminPasExpirityRule = vm.product.adminPasExpirityRule === null ? '' : vm.product.adminPasExpirityRule;
+            vm.product.adminReturnIsLastMinute = vm.product.adminReturnIsLastMinute === null ? '' : vm.product.adminReturnIsLastMinute;
+            vm.product.adminNotifyLastPassanger = vm.product.adminNotifyLastPassanger === null ? '' : vm.product.adminNotifyLastPassanger;
+            vm.product.adminRoundTripOperatorId = vm.product.adminRoundTripOperatorId === null ? '' : vm.product.adminRoundTripOperatorId;
+            vm.product.adminReturnIsSpecialOffer = vm.product.adminReturnIsSpecialOffer === null ? '' : vm.product.adminReturnIsSpecialOffer;
+            vm.product.adminReturnNotifyAgencies = vm.product.adminReturnNotifyAgencies === null ? '' : vm.product.adminReturnNotifyAgencies;
+            vm.product.adminReturnPasExpirityRule = vm.product.adminReturnPasExpirityRule === null ? '' : vm.product.adminReturnPasExpirityRule;
+            vm.product.adminReturnNotifyLastPassanger = vm.product.adminReturnNotifyLastPassanger === null ? '' : vm.product.adminReturnNotifyLastPassanger;
+            vm.product.adminReturnPayLater = vm.product.adminReturnPayLater === null ? '' : vm.product.adminReturnPayLater;
+            vm.product.adminReturnPayLaterRule = vm.product.adminReturnPayLaterRule === null ? '' : vm.product.adminReturnPayLaterRule;
+            vm.product.reservationNumber = vm.product.reservationNumber === null ? '' : vm.product.reservationNumber;
+            vm.product.adminBlackList = vm.product.adminBlackList === null ? '' : vm.product.adminBlackList;
+            vm.product.adminReturnBlackList = vm.product.adminReturnBlackList === null ? '' : vm.product.adminReturnBlackList;
+            vm.product.via = vm.product.via === null ? '' : vm.product.via;
+            vm.product.returnVia = vm.product.returnVia === null ? '' : vm.product.returnVia;
+            vm.product.vendorId = vm.product.vendorId === null ? '' : vm.product.vendorId;
+            vm.product.soldSeats = vm.product.soldSeats === null ? '' : vm.product.soldSeats;
+            vm.product.flightClass = vm.product.flightClass === null ? '' : vm.product.flightClass;
+
             vm.product.variations.forEach(function (item) {
                 item.oldPrice = item.oldPrice === null ? '' : item.oldPrice;
             });
@@ -351,12 +446,27 @@
                     attributeIds.splice(index, 1);
                     vm.attributes.splice(index, 1);
                 }
-
+                
                 if (vm.product.specialPriceStart) {
                     vm.product.specialPriceStart = new Date(vm.product.specialPriceStart);
                 }
                 if (vm.product.specialPriceEnd) {
                     vm.product.specialPriceEnd = new Date(vm.product.specialPriceEnd);
+                }
+
+                if (vm.product.returnDepartureDate) {
+                    vm.product.returnDepartureDate = new Date(vm.product.returnDepartureDate);
+                }
+                if (vm.product.returnLandingDate) {
+                    vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
+                }
+
+                if (vm.product.departureDate) {
+                    vm.product.departureDate = new Date(vm.product.departureDate);
+                }
+
+                if (vm.product.landingDate) {
+                    vm.product.landingDate = new Date(vm.product.landingDate);
                 }
             });
         }
@@ -364,6 +474,32 @@
         function getCategories() {
             categoryService.getCategories().then(function (result) {
                 vm.categories = result.data;
+
+                var options = {
+                    url: "themes/AirlineTickets/data/airports.json",
+
+                    getValue: function (element) {
+                        return element.city + ", " + element.name + " (" + element.code + "), " + element.country;
+                    },
+
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        },
+                        hideAnimation: {
+                            type: "slide", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        }
+                    }
+                };
+
+                $("#flightFrom, #flightTo").easyAutocomplete(options);
             });
         }
 
@@ -397,16 +533,27 @@
             });
         }
 
+        function getVendors() {
+            userService.getVendors().then(function (result) {
+                vm.vendors = result.data;
+            });
+        }
+
         function init() {
+
+            vm.userIsAdmin = window.userIsAdmin;
+
             if (vm.isEditMode) {
                 getProduct();
             }
+            getVendors();
             getProductOptions();
             getProductTemplates();
             getAttributes();
             getCategories();
             getBrands();
             getTaxClasses();
+            
         }
 
         function getParentCategoryIds(categoryId) {

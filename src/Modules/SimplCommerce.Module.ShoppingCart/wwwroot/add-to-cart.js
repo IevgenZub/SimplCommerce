@@ -1,13 +1,19 @@
 ﻿/*global $ */
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
-        var quantity,
-            $form = $(this).closest("form"),
+        var quantity, productId
+
+        if ($(this).hasClass('btn-hide')) {
+            productId = $(this).attr("id");
+            quantity = 1; 
+        }
+        else {
+            var $form = $(this).closest("form"),
             productId = $(this).closest("form").find('input[name=productId]').val(),
             $quantityInput = $form.find('.quantity-field');
-
-        quantity = $quantityInput.length === 1 ? $quantityInput.val() : 1;
-
+            quantity = $quantityInput.length === 1 ? $quantityInput.val() : 1;
+        }
+            
         $.ajax({
             type: 'POST',
             url: '/cart/addtocart',

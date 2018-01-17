@@ -24,6 +24,7 @@ using SimplCommerce.Module.Core.Data;
 using SimplCommerce.Module.Core.Extensions;
 using SimplCommerce.Module.Core.Models;
 using SimplCommerce.Infrastructure.Web.ModelBinders;
+using SimplCommerce.Infrastructure.Web;
 
 namespace SimplCommerce.WebHost.Extensions
 {
@@ -124,8 +125,8 @@ namespace SimplCommerce.WebHost.Extensions
                 
                 .AddFacebook(x =>
             {
-                x.AppId = "1716532045292977";
-                x.AppSecret = "dfece01ae919b7b8af23f962a1f87f95";
+                x.AppId = "130422180932529";
+                x.AppSecret = "540f3cb929fa626e800d766bce3db21c";
 
                 x.Events = new OAuthEvents
                 {
@@ -134,8 +135,8 @@ namespace SimplCommerce.WebHost.Extensions
             })
                 .AddGoogle(x =>
                 {
-                    x.ClientId = "583825788849-8g42lum4trd5g3319go0iqt6pn30gqlq.apps.googleusercontent.com";
-                    x.ClientSecret = "X8xIiuNEUjEYfiEfiNrWOfI4";
+                    x.ClientId = "558702492493-g2iq1q7j94dirnvam936kb0egl0plu6p.apps.googleusercontent.com";
+                    x.ClientSecret = "YVGjHOWYDEBXdRvDB5ph8cBM";
                     x.Events = new OAuthEvents
                     {
                         OnRemoteFailure = ctx => HandleRemoteLoginFailure(ctx)
@@ -160,6 +161,7 @@ namespace SimplCommerce.WebHost.Extensions
             var builder = new ContainerBuilder();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(RepositoryWithTypedId<,>)).As(typeof(IRepositoryWithTypedId<,>));
+            builder.RegisterType<RazorViewRenderer>().As<IRazorViewRenderer>();
 
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
             builder.RegisterType<SequentialMediator>().As<IMediator>();

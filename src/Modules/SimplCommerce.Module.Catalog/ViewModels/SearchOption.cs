@@ -8,6 +8,10 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 {
     public class SearchOption
     {
+        public string Reservation { get; set; }
+
+        public string TripType { get; set; }
+
         public string Departure { get; set; }
 
         public string Landing { get; set; }
@@ -40,6 +44,36 @@ namespace SimplCommerce.Module.Catalog.ViewModels
             if (!string.IsNullOrWhiteSpace(Query))
             {
                 dict.Add("query", Query);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Departure))
+            {
+                dict.Add("Departure", Departure);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Landing))
+            {
+                dict.Add("Landing", Landing);
+            }
+
+            if (!string.IsNullOrWhiteSpace(DepartureDate))
+            {
+                dict.Add("DepartureDate", DepartureDate);
+            }
+
+            if (!string.IsNullOrWhiteSpace(ReturnDate))
+            {
+                dict.Add("ReturnDate", ReturnDate);
+            }
+
+            if (!string.IsNullOrWhiteSpace(TripType))
+            {
+                dict.Add("TripType", TripType);
+            }
+
+            if (!string.IsNullOrWhiteSpace(NumberOfPeople))
+            {
+                dict.Add("NumberOfPeople", NumberOfPeople);
             }
 
             if (!string.IsNullOrWhiteSpace(Brand))
