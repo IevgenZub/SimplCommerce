@@ -42,8 +42,8 @@
                     });
                     $('.btn-order').prop('disabled', false);
                 } else {
-                    $shippingMethods.append("Sorry, this items can't be shipped to your selected address");
-                    $('.btn-order').prop('disabled', true);
+                    //$shippingMethods.append("Sorry, this items can't be shipped to your selected address");
+                    $('.btn-order').prop('disabled', false);
                 }
 
                 $('#orderSummaryTax').text(data.cart.taxAmountString);
