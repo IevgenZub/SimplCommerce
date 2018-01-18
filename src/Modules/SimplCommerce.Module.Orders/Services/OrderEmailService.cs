@@ -16,10 +16,11 @@ namespace SimplCommerce.Module.Orders.Services
             _viewRender = viewRender;
         }
 
-        public async Task SendEmailToUser(User user, Order order)
+        public async Task SendEmailToUser(User user, Order order, string template)
         {
-            var emailBody = await _viewRender.RenderViewToStringAsync("/Modules/SimplCommerce.Module.Orders/Views/EmailTemplates/TicketEmail.cshtml", order);
-            var emailSubject = $"Order information #{order.Id}";
+            var emailBody = await _viewRender.RenderViewToStringAsync($"/Modules/SimplCommerce.Module.Orders/Views/EmailTemplates/{template}.cshtml", order);
+
+            var emailSubject = $"{template} #{order.Id}";
             await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody, true);
         }
     }

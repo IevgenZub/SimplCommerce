@@ -6,6 +6,6 @@ namespace SimplCommerce.Module.Orders.Services
 {
     public interface IOrderEmailService
     {
-        Task SendEmailToUser(User user, Order order);
+        Task SendEmailToUser(User user, Order order, string template);
     }
 }
