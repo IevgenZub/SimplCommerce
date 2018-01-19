@@ -1,0 +1,48 @@
+@model SimplCommerce.Module.Catalog.ViewModels.ProductDetail
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div class="product-detail product-detail-ticket" style="padding-left:15px;padding-right:15px; padding-top:15px">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Passenger Information:</h2>
+            <form>
+                <div class="form-group">
+                    <label class="radio-inline">Sex</label>&nbsp;
+                    <label class="radio-inline">
+                          <input type="radio" name="sex" value="Male">Male
+                    </label>
+                    <label class="radio-inline">
+                          <input type="radio" name="Female">Female
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First name:</label>
+                    <input type="text" class="form-control" id="firstName" name="FirstName">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last name:</label>
+                    <input type="text" class="form-control" id="lastName" name="LastName">
+                </div>
+                <div class="form-group">
+                    <label for="birth">Date of birth:</label>
+                    <input type="date" class="form-control" id="birth" name="DateOfBirth">
+                </div>
+                <div class="form-group">
+                    <label for="document">Document no.:</label>
+                    <input type="text" class="form-control" id="document" name="DocumentNo">
+                </div>
+                <div class="form-group">
+                    <label for="expiry">Date of expiry:</label>
+                    <input type="date" class="form-control" id="expiry" name="DateOfExpiry">
+                </div>
+
+                <button type="submit" class="btn btn-default">Book Ticket</button>
+
+
+            </form>
+        </div>
+    </div>
+</div>
