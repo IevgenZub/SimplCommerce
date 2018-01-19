@@ -36,7 +36,7 @@
                 selectedproductOptions.push($(this).find('input[type=radio]:checked').val());
             });
             var current = $(this);
-            var details = current.parents(".thumbnail").find('.product-details').first();
+            var details = current.parents(".my-thumbnail").find('.product-details').first();
 
             variationName = selectedproductOptions.join('-');
             $variationDiv = details.find('div[data-variation-name="' + variationName + '"]');
