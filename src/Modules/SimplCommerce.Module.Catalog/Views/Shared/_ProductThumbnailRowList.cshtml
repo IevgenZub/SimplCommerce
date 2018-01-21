@@ -26,6 +26,11 @@
     }
 </style>
 
+@{ 
+
+    var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
+}
+
 <div class="my-thumbnail">
     <div class="row my-row">
         <div class="airlines col-sm-1">
@@ -35,7 +40,13 @@
             </figure>
         </div>
         <div class="flight-number col-sm-1">
+        @if (datesVisible) { 
             @Model.DepartureDate.Value.LocalDateTime.ToShortDateString()
+        }
+        else
+        {
+            <span style="color:green">Options</span>
+        }
         </div>
         <div class="flight-number col-sm-1">
             @Model.FlightNumber
@@ -84,7 +95,14 @@
                     </figure>
             </div>
             <div class="flight-number col-sm-1">
-                @Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()
+             @if(datesVisible)
+             {
+                 @Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()
+             }
+             else
+             {
+                <span style="color:green">Options</span>
+             }
             </div>
             <div class="flight-number col-sm-1">
                 @Model.ReturnFlightNumber
