@@ -272,6 +272,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.HasOptions == hasOptions);
                 }
 
+                if (search.IsRoundTrip != null)
+                {
+                    bool isRoundTrip = search.IsRoundTrip;
+                    query = query.Where(x => (
+                        (x.IsRoundTrip.HasValue && isRoundTrip == x.IsRoundTrip) ||
+                        (!x.IsRoundTrip.HasValue && !isRoundTrip)));
+                }
+
                 if (search.IsVisibleIndividually != null)
                 {
                     bool isVisibleIndividually = search.IsVisibleIndividually;
@@ -306,6 +314,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 {
                     Id = x.Id,
                     FlightNumber = x.FlightNumber,
+                    IsRoundTrip = x.IsRoundTrip ?? false,
                     Name = x.Name,
                     HasOptions = x.HasOptions,
                     Seats = x.SoldSeats + "/" + x.StockQuantity,

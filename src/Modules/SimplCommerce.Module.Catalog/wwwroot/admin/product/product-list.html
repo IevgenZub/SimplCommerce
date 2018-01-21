@@ -25,6 +25,7 @@
             <th>Seats</th>
             <th st-sort="Price" class="sortable">Price</th>
             <th class="text-center">{{::vm.translate.get('Has Options')}}</th>
+            <th class="text-center">Is RT</th>
             <th st-sort="Status" class="sortable">Status</th>
             <th st-sort="CreatedOn" class="text-center sortable">{{::vm.translate.get('Created On')}}</th>
             <th class="text-center">{{::vm.translate.get('Actions')}}</th>
@@ -79,6 +80,15 @@
             </th>
             <th>
                 <div class="form-group">
+                    <select st-search="IsRoundTrip">
+                        <option value="">{{::vm.translate.get('All')}}</option>
+                        <option value="true">{{::vm.translate.get('Yes')}}</option>
+                        <option value="false">{{::vm.translate.get('No')}}</option>
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
                     <select  st-search="Status">
                         <option value="">{{::vm.translate.get('All')}}</option>
                         <option value="INSERTED">Inserted</option>
@@ -108,6 +118,7 @@
             <td class="text-center">{{product.seats}}</td>
             <td class="text-center">{{product.price}}</td>
             <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
+            <td class="text-center"><i ng-attr-class="{{product.isRoundTrip && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td>{{product.status}}</td>
             <td class="text-center">{{product.createdOn | date:'shortDate'}}</td>
             <td>               
