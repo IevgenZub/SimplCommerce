@@ -7,6 +7,15 @@
             function ($scope, shoppingCartService) {
                 var vm = this;
                 vm.cart = {};
+                // TODO: Apply real model
+                vm.passengers = [{
+                    sex: "Male",
+                    firstName: "Alex",
+                    lastName: "Prokofiev",
+                    dateOfBirth: "02.03.1975",
+                    documentNo: "EN 758489",
+                    dateOfExpiry: "05.07.2030"
+                }];
 
                 function cartDataCallback(result) {
                     vm.cart = result.data;
