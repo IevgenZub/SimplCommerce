@@ -76,6 +76,7 @@
     <script simpl-append-version="true" src="~/modules/core/admin/themes/theme-list.js"></script>
     <script simpl-append-version="true" src="~/modules/core/admin/countries/country-service.js"></script>
     <script simpl-append-version="true" src="~/modules/core/admin/countries/country-list.js"></script>
+    <script simpl-append-version="true" src="~/modules/core/admin/countries/country-form.js"></script>
 
     <script simpl-append-version="true" src="~/modules/catalog/admin/catalog.module.js"></script>
     <script simpl-append-version="true" src="~/modules/catalog/admin/brand/brand-service.js"></script>
@@ -197,6 +198,15 @@
     <script simpl-append-version="true" src="~/modules/paymentPaypalExpress/admin/paypalExpress.module.js"></script>
     <script simpl-append-version="true" src="~/modules/paymentPaypalExpress/admin/config/paypalExpress-service.js"></script>
     <script simpl-append-version="true" src="~/modules/paymentPaypalExpress/admin/config/config-form.js"></script>
+
+    <script simpl-append-version="true" src="~/modules/inventory/admin/inventory.module.js"></script>
+    <script simpl-append-version="true" src="~/modules/inventory/admin/stock/stock-service.js"></script>
+    <script simpl-append-version="true" src="~/modules/inventory/admin/stock/stock-form.js"></script>
+
+    <script simpl-append-version="true" src="~/modules/shipments/admin/shipment.module.js"></script>
+    <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-service.js"></script>
+    <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-form.js"></script>
+    <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-list.js"></script>
     <script src="~/themes/AirlineTickets/js/jquery.easy-autocomplete.min.js"></script>
     <link href="~/themes/AirlineTickets/css/easy-autocomplete.min.css" rel="stylesheet">
 </head>
@@ -246,6 +256,8 @@
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Sales"] <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a ui-sref="order">@Localizer["Orders"]</a></li>
+                            <li><a ui-sref="stocks">@Localizer["Stocks"]</a></li>
+                            <li><a ui-sref="shipments">@Localizer["Shipments"]</a></li>
                         </ul>
                     </li>
                     @if (User.IsInRole("admin"))
