@@ -163,3 +163,5 @@ src/Modules/**/launchSettings.json
 
 #WebStorm
 .idea
+PublishProfiles/
+logs/
