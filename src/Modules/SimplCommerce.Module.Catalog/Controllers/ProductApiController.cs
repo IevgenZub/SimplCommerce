@@ -18,6 +18,7 @@ using SimplCommerce.Module.Catalog.ViewModels;
 using SimplCommerce.Module.Core.Models;
 using SimplCommerce.Module.Core.Services;
 using SimplCommerce.Module.Core.Extensions;
+using System.Globalization;
 
 namespace SimplCommerce.Module.Catalog.Controllers
 {
@@ -271,6 +272,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     query = query.Where(x => x.HasOptions == hasOptions);
                 }
 
+                if (search.IsRoundTrip != null)
+                {
+                    bool isRoundTrip = search.IsRoundTrip;
+                    query = query.Where(x => (
+                        (x.IsRoundTrip.HasValue && isRoundTrip == x.IsRoundTrip) ||
+                        (!x.IsRoundTrip.HasValue && !isRoundTrip)));
+                }
+
                 if (search.IsVisibleIndividually != null)
                 {
                     bool isVisibleIndividually = search.IsVisibleIndividually;
@@ -305,6 +314,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 {
                     Id = x.Id,
                     FlightNumber = x.FlightNumber,
+                    IsRoundTrip = x.IsRoundTrip ?? false,
                     Name = x.Name,
                     HasOptions = x.HasOptions,
                     Seats = x.SoldSeats + "/" + x.StockQuantity,
@@ -661,7 +671,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             var departureDateOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
             if (departureDateOption != null)
             {
-                DateTimeOffset departureDate = DateTime.SpecifyKind(Convert.ToDateTime(departureDateOption.Value), DateTimeKind.Utc);
+                DateTimeOffset departureDate = DateTime.SpecifyKind(Convert.ToDateTime(departureDateOption.Value, new CultureInfo("en-Us")), DateTimeKind.Utc);
 
                 linkedProduct.DepartureDate = departureDate
                         .AddHours(product.DepartureDate.Value.Hour)
@@ -824,6 +834,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     productLink.LinkedProduct.OldPrice = productVariationVm.OldPrice;
                     productLink.LinkedProduct.IsDeleted = false;
                 }
+
+                GenerateValues(productLink.LinkedProduct, product, productVariationVm);
             }
 
             foreach (var productLink in product.ProductLinks.Where(x => x.LinkType == ProductLinkType.Super))
