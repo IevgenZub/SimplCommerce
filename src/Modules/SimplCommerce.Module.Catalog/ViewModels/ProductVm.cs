@@ -74,7 +74,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public int Baggage { get; set; }
 
-        public int? Seats { get; set; }
+        public int Seats { get; set; }
 
         public string TerminalInfo { get; set; }
 

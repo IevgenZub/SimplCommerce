@@ -12,7 +12,7 @@ namespace SimplCommerce.WebHost.Migrations
             migrationBuilder.AlterColumn<DateTimeOffset>(
                 name: "UpdatedOn",
                 table: "Orders_Order",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(DateTimeOffset),
                 oldNullable: true);
 
