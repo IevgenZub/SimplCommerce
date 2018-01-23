@@ -39,9 +39,11 @@ namespace SimplCommerce.Module.Orders.Controllers
                 numRecords = 5;
             }
 
-            var query = _orderRepository
-                .Query()
-                .Where(x => x.OrderStatus == orderStatus);
+            var query = _orderRepository.Query();
+            if(orderStatus != 0)
+            {
+                query = query.Where(x => x.OrderStatus == orderStatus);
+            }
 
             var currentUser = await _workContext.GetCurrentUser();
             if (!User.IsInRole("admin"))
@@ -54,7 +56,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                 .Select(x => new
                 {
                     x.Id,
-                    CustomerName = x.CreatedBy.FullName, x.SubTotal,
+                    CustomerName = x.CreatedBy.FullName,
+                    x.OrderTotal,
+                    OrderTotalString = x.OrderTotal.ToString("C"),
                     OrderStatus = x.OrderStatus.ToString(), x.CreatedOn
                 });
 
@@ -185,6 +189,8 @@ namespace SimplCommerce.Module.Orders.Controllers
                 }).ToList()
             };
 
+            await _mediator.Publish(new OrderDetailGot { OrderDetailVm = model });
+
             return Json(model);
         }
 
@@ -205,16 +211,18 @@ namespace SimplCommerce.Module.Orders.Controllers
 
             if (Enum.IsDefined(typeof(OrderStatus), model.StatusId))
             {
+                var oldStatus = order.OrderStatus;
                 order.OrderStatus = (OrderStatus) model.StatusId;
                 await _orderRepository.SaveChangesAsync();
 
-                var orderStatusChanged = new OrderStatusChanged
+                var orderStatusChanged = new OrderChanged
                 {
                     OrderId = order.Id,
-                    OldStatus = OrderStatus.PendingPayment,
-                    NewStatus = OrderStatus.Canceled,
-                    UserId = 0,
-                    Note = "System cancel"
+                    OldStatus = oldStatus,
+                    NewStatus = order.OrderStatus,
+                    Order = order,
+                    UserId = currentUser.Id,
+                    Note = model.Note
                 };
 
                 await _mediator.Publish(orderStatusChanged);

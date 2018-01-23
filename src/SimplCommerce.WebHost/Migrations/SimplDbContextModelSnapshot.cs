@@ -2,7 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
+
 using SimplCommerce.Module.Core.Data;
+using SimplCommerce.Module.Core.Models;
 using System;
 
 namespace SimplCommerce.WebHost.Migrations
@@ -14,7 +19,7 @@ namespace SimplCommerce.WebHost.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -178,15 +183,59 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AdminBlackList");
+
+                    b.Property<bool?>("AdminIsLastMinute");
+
+                    b.Property<bool?>("AdminIsSpecialOffer");
+
+                    b.Property<bool?>("AdminNotifyAgencies");
+
+                    b.Property<bool?>("AdminNotifyLastPassanger");
+
+                    b.Property<int?>("AdminPasExpirityRule");
+
+                    b.Property<bool?>("AdminPayLater");
+
+                    b.Property<string>("AdminPayLaterRule");
+
+                    b.Property<string>("AdminReturnBlackList");
+
+                    b.Property<bool?>("AdminReturnIsLastMinute");
+
+                    b.Property<bool?>("AdminReturnIsSpecialOffer");
+
+                    b.Property<bool?>("AdminReturnNotifyAgencies");
+
+                    b.Property<bool?>("AdminReturnNotifyLastPassanger");
+
+                    b.Property<int?>("AdminReturnPasExpirityRule");
+
+                    b.Property<bool?>("AdminReturnPayLater");
+
+                    b.Property<string>("AdminReturnPayLaterRule");
+
+                    b.Property<bool?>("AdminRoundTrip");
+
+                    b.Property<long?>("AdminRoundTripOperatorId");
+
                     b.Property<long?>("BrandId");
 
                     b.Property<long?>("CreatedById");
 
                     b.Property<DateTimeOffset>("CreatedOn");
 
+                    b.Property<string>("Currency");
+
+                    b.Property<DateTimeOffset?>("DepartureDate");
+
                     b.Property<string>("Description");
 
                     b.Property<int>("DisplayOrder");
+
+                    b.Property<string>("FlightClass");
+
+                    b.Property<string>("FlightNumber");
 
                     b.Property<bool>("HasOptions");
 
@@ -200,7 +249,11 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<bool>("IsPublished");
 
+                    b.Property<bool?>("IsRoundTrip");
+
                     b.Property<bool>("IsVisibleIndividually");
+
+                    b.Property<DateTimeOffset?>("LandingDate");
 
                     b.Property<string>("MetaDescription");
 
@@ -216,17 +269,39 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<string>("Provider");
+
                     b.Property<DateTimeOffset?>("PublishedOn");
 
                     b.Property<double?>("RatingAverage");
 
+                    b.Property<string>("ReservationNumber");
+
+                    b.Property<long?>("ReturnAircraftId");
+
+                    b.Property<long?>("ReturnCarrierId");
+
+                    b.Property<DateTimeOffset?>("ReturnDepartureDate");
+
+                    b.Property<string>("ReturnFlightNumber");
+
+                    b.Property<DateTimeOffset?>("ReturnLandingDate");
+
+                    b.Property<string>("ReturnTerminal");
+
+                    b.Property<string>("ReturnVia");
+
                     b.Property<int>("ReviewsCount");
+
+                    b.Property<bool?>("SaleRtOnly");
 
                     b.Property<string>("SeoTitle");
 
                     b.Property<string>("ShortDescription");
 
                     b.Property<string>("Sku");
+
+                    b.Property<int?>("SoldSeats");
 
                     b.Property<decimal?>("SpecialPrice");
 
@@ -236,7 +311,9 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<string>("Specification");
 
-                    b.Property<int?>("StockQuantity");
+                    b.Property<string>("Status");
+
+                    b.Property<int>("StockQuantity");
 
                     b.Property<long?>("TaxClassId");
 
@@ -248,17 +325,25 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<long?>("VendorId");
 
+                    b.Property<string>("Via");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CreatedById");
 
+                    b.HasIndex("ReturnAircraftId");
+
+                    b.HasIndex("ReturnCarrierId");
+
                     b.HasIndex("TaxClassId");
 
                     b.HasIndex("ThumbnailImageId");
 
                     b.HasIndex("UpdatedById");
+
+                    b.HasIndex("VendorId");
 
                     b.ToTable("Catalog_Product");
                 });
@@ -934,11 +1019,25 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AccountNumber");
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("BankName");
+
+                    b.Property<string>("City");
+
+                    b.Property<long?>("CountryId");
+
                     b.Property<DateTimeOffset>("CreatedOn");
 
                     b.Property<string>("Description");
 
                     b.Property<string>("Email");
+
+                    b.Property<string>("Iban");
 
                     b.Property<bool>("IsActive");
 
@@ -946,9 +1045,27 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("Notes");
+
+                    b.Property<string>("Phone1");
+
+                    b.Property<string>("Phone2");
+
+                    b.Property<string>("Phone3");
+
+                    b.Property<string>("Phone4");
+
+                    b.Property<bool?>("SendEmails");
+
                     b.Property<string>("SeoTitle");
 
                     b.Property<DateTimeOffset>("UpdatedOn");
+
+                    b.Property<string>("VendorClass");
+
+                    b.Property<string>("VendorType");
+
+                    b.Property<string>("Website");
 
                     b.HasKey("Id");
 
@@ -1036,11 +1153,39 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<int>("Quantity");
 
+                    b.Property<int>("ReservedQuantity");
+
                     b.Property<long>("WarehouseId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("Inventory_Stock");
+                });
+
+            modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.StockHistory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("AdjustedQuantity");
+
+                    b.Property<long>("CreatedById");
+
+                    b.Property<DateTimeOffset>("CreatedOn");
+
+                    b.Property<string>("Note");
+
+                    b.Property<long>("ProductId");
+
+                    b.Property<long>("WareHouseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Inventory_StockHistory");
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.Warehouse", b =>
@@ -1208,7 +1353,7 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<decimal>("TaxAmount");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn");
+                    b.Property<DateTimeOffset>("UpdatedOn");
 
                     b.Property<long?>("VendorId");
 
@@ -1257,6 +1402,34 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasIndex("StateOrProvinceId");
 
                     b.ToTable("Orders_OrderAddress");
+                });
+
+            modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderHistory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("CreatedById");
+
+                    b.Property<DateTimeOffset>("CreatedOn");
+
+                    b.Property<int>("NewStatus");
+
+                    b.Property<string>("Note");
+
+                    b.Property<int?>("OldStatus");
+
+                    b.Property<long>("OrderId");
+
+                    b.Property<string>("OrderSnapshot");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Orders_OrderHistory");
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderItem", b =>
@@ -1588,6 +1761,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<long>("CreatedById");
+
                     b.Property<DateTimeOffset>("CreatedOn");
 
                     b.Property<long>("OrderId");
@@ -1596,11 +1771,15 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<DateTimeOffset>("UpdatedOn");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("WarehouseId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedById");
+
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("Shipments_Shipment");
                 });
@@ -1611,6 +1790,8 @@ namespace SimplCommerce.WebHost.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<long>("OrderItemId");
+
+                    b.Property<long>("ProductId");
 
                     b.Property<int>("Quantity");
 
@@ -1828,6 +2009,14 @@ namespace SimplCommerce.WebHost.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
+                    b.HasOne("SimplCommerce.Module.Tax.Models.TaxClass", "ReturnAircraft")
+                        .WithMany()
+                        .HasForeignKey("ReturnAircraftId");
+
+                    b.HasOne("SimplCommerce.Module.Catalog.Models.Brand", "ReturnCarrier")
+                        .WithMany()
+                        .HasForeignKey("ReturnCarrierId");
+
                     b.HasOne("SimplCommerce.Module.Tax.Models.TaxClass", "TaxClass")
                         .WithMany()
                         .HasForeignKey("TaxClassId");
@@ -1839,6 +2028,10 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
+
+                    b.HasOne("SimplCommerce.Module.Core.Models.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId");
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductAttribute", b =>
@@ -2086,6 +2279,22 @@ namespace SimplCommerce.WebHost.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.Stock", b =>
+                {
+                    b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.StockHistory", b =>
+                {
+                    b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.Warehouse", b =>
                 {
                     b.HasOne("SimplCommerce.Module.Core.Models.Address", "Address")
@@ -2167,6 +2376,19 @@ namespace SimplCommerce.WebHost.Migrations
                         .WithMany()
                         .HasForeignKey("StateOrProvinceId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderHistory", b =>
+                {
+                    b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SimplCommerce.Module.Orders.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderItem", b =>
@@ -2298,16 +2520,26 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Shipments.Models.Shipment", b =>
                 {
+                    b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("SimplCommerce.Module.Orders.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SimplCommerce.Module.Inventory.Models.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Shipments.Models.ShipmentItem", b =>
                 {
                     b.HasOne("SimplCommerce.Module.Shipments.Models.Shipment", "Shipment")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
