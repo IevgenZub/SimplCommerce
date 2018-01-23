@@ -12,7 +12,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
             IsPublished = true;
             IsCallForPricing = false;
             IsAllowToOrder = true;
-            IsOutOfStock = false;
             Price = 0;
             SoldSeats = 0;
         }
@@ -32,8 +31,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public bool IsCallForPricing { get; set; }
 
         public bool IsAllowToOrder { get; set; }
-
-        public bool IsOutOfStock { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -77,7 +74,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public int Baggage { get; set; }
 
-        public int? Seats { get; set; }
+        public int Seats { get; set; }
 
         public string TerminalInfo { get; set; }
 
