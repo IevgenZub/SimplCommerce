@@ -58,7 +58,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string ReturnTerminal { get; set; }
         public DateTimeOffset? ReturnDepartureDate { get; set; }
         public DateTimeOffset? ReturnLandingDate { get; set; }
-        public bool? IsRoundTrip { get; set; }
+        public bool IsRoundTrip { get; set; }
         public string Currency { get; set; }
 
         public ProductDetail Details { get; set; }

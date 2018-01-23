@@ -66,7 +66,7 @@
              @durationTime   
         </div>
         <div class="col-sm-1">
-            @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+            @if (Model.IsRoundTrip)
             {
                 <img src="~/themes/AirlineTickets/img/round-trip.png" />
             }
@@ -85,7 +85,7 @@
         <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
         <input type="hidden" name="productId" id="productId" value="@Model.Id">
     </div>
-    @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+    @if (Model.IsRoundTrip)
     {
         <div class="row my-row">
             <div class="airlines col-sm-1">
@@ -122,7 +122,7 @@
                 @returnDurationTime
             </div>
             <div class="col-sm-1">
-                @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+                @if (Model.IsRoundTrip)
                 {
                     <img src="~/themes/AirlineTickets/img/round-trip.png" />
                 }
@@ -150,7 +150,7 @@
                 <p><small>Via: @Model.Via</small></p>
             </div>
 
-           @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+           @if (Model.IsRoundTrip)
            {
             <div class="col-md-3 col-sm-3">
                 <p><small>Carrier: @Model.ReturnCarrier</small></p>

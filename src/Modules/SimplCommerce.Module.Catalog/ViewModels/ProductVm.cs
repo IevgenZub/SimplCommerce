@@ -94,7 +94,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public long? ReturnAircraftId { get; set; }
 
-        public bool? IsRoundTrip { get; set; }
+        public bool IsRoundTrip { get; set; }
 
         public string ReturnTerminal { get; set; }
 

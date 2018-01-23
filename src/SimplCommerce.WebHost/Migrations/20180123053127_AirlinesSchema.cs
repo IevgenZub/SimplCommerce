@@ -201,7 +201,8 @@ namespace SimplCommerce.WebHost.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "IsRoundTrip",
                 table: "Catalog_Product",
-                nullable: true);
+                nullable: false,
+                defaultValue:false);
 
             migrationBuilder.AddColumn<DateTimeOffset>(
                 name: "LandingDate",

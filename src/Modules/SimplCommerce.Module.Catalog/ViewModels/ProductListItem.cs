@@ -10,7 +10,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string FlightNumber { get; set; }
 
-        public bool? IsRoundTrip { get; set; }
+        public bool IsRoundTrip { get; set; }
 
         public bool HasOptions { get; set; }
 
