@@ -274,9 +274,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 if (search.IsRoundTrip != null)
                 {
                     bool isRoundTrip = search.IsRoundTrip;
-                    query = query.Where(x => (
-                        (x.IsRoundTrip.HasValue && isRoundTrip == x.IsRoundTrip) ||
-                        (!x.IsRoundTrip.HasValue && !isRoundTrip)));
+                    query = query.Where(x => x.IsRoundTrip);
                 }
 
                 if (search.IsVisibleIndividually != null)
@@ -313,11 +311,11 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 {
                     Id = x.Id,
                     FlightNumber = x.FlightNumber,
-                    IsRoundTrip = x.IsRoundTrip ?? false,
+                    IsRoundTrip = x.IsRoundTrip,
                     Name = x.Name,
                     HasOptions = x.HasOptions,
                     Seats = x.SoldSeats + "/" + x.StockQuantity,
-                    CreatedOn = x.CreatedOn.Date.ToShortDateString(),
+                    CreatedOn = x.CreatedOn,
                     IsPublished = x.IsPublished,
                     From = x.ShortDescription.Split('(', ')')[1],
                     To = x.Description.Split('(', ')')[1],
@@ -383,8 +381,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Status = "INSERTED",
                 ReservationNumber = model.Product.ReservationNumber,
                 FlightClass = model.Product.FlightClass,
-                DepartureDate = model.Product.DepartureDate,
-                LandingDate = model.Product.LandingDate
+                DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc),
+                LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc)
             };
 
             if (!User.IsInRole("admin"))
@@ -521,8 +519,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.ReservationNumber = model.Product.ReservationNumber;
             product.VendorId = model.Product.VendorId;
             product.FlightClass = model.Product.FlightClass;
-            product.DepartureDate = model.Product.DepartureDate;
-            product.LandingDate = model.Product.LandingDate;
+            product.DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc);
+            product.LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc);
 
             if (User.IsInRole("admin"))
             {

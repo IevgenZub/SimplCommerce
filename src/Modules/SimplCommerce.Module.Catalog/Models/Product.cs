@@ -70,7 +70,7 @@ namespace SimplCommerce.Module.Catalog.Models
         public string Via { get; set; }
         public string Currency { get; set; }
         public string Provider { get; set; }
-        public bool? IsRoundTrip { get; set; }
+        public bool IsRoundTrip { get; set; }
         public string FlightNumber { get; set; }
         public int? SoldSeats { get; set; }
         public bool? SaleRtOnly { get; set; }

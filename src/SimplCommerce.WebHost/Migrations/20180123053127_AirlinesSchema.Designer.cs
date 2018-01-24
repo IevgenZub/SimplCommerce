@@ -249,7 +249,7 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<bool>("IsPublished");
 
-                    b.Property<bool?>("IsRoundTrip");
+                    b.Property<bool>("IsRoundTrip");
 
                     b.Property<bool>("IsVisibleIndividually");
 

@@ -26,6 +26,11 @@
     }
 </style>
 
+@{ 
+
+    var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
+}
+
 <div class="my-thumbnail">
     <div class="row my-row">
         <div class="airlines col-sm-1">
@@ -35,16 +40,22 @@
             </figure>
         </div>
         <div class="flight-number col-sm-1">
+        @if (datesVisible) { 
             @Model.DepartureDate.Value.LocalDateTime.ToShortDateString()
+        }
+        else
+        {
+            <span style="color:green">Options</span>
+        }
         </div>
         <div class="flight-number col-sm-1">
             @Model.FlightNumber
         </div>
         <div class="from col-sm-2">
-            <span style="color:darkblue">@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString() </span> @Model.Departure 
+            <span style="color:darkblue">@Model.DepartureDate.Value.DateTime.ToShortTimeString() </span> @Model.Departure 
         </div>
         <div class="to col-sm-2">
-            <span style="color:darkblue">@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</span>  @Model.Landing 
+            <span style="color:darkblue">@Model.LandingDate.Value.DateTime.ToShortTimeString()</span>  @Model.Landing 
         </div>
         <div class="to col-sm-1">
             @{
@@ -55,7 +66,7 @@
              @durationTime   
         </div>
         <div class="col-sm-1">
-            @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+            @if (Model.IsRoundTrip)
             {
                 <img src="~/themes/AirlineTickets/img/round-trip.png" />
             }
@@ -74,7 +85,7 @@
         <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
         <input type="hidden" name="productId" id="productId" value="@Model.Id">
     </div>
-    @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+    @if (Model.IsRoundTrip)
     {
         <div class="row my-row">
             <div class="airlines col-sm-1">
@@ -84,16 +95,23 @@
                     </figure>
             </div>
             <div class="flight-number col-sm-1">
-                @Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()
+             @if(datesVisible)
+             {
+                 @Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()
+             }
+             else
+             {
+                <span style="color:green">Options</span>
+             }
             </div>
             <div class="flight-number col-sm-1">
                 @Model.ReturnFlightNumber
             </div>
             <div class="from col-sm-2">
-                <span style="color:darkblue">@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</span> @Model.Landing
+                <span style="color:darkblue">@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString()</span> @Model.Landing
             </div>
             <div class="to col-sm-2">
-                <span style="color:darkblue"> @Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</span> @Model.Departure
+                <span style="color:darkblue"> @Model.ReturnLandingDate.Value.DateTime.ToShortTimeString()</span> @Model.Departure
             </div>
             <div class="to col-sm-1">
                 @{
@@ -104,7 +122,7 @@
                 @returnDurationTime
             </div>
             <div class="col-sm-1">
-                @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+                @if (Model.IsRoundTrip)
                 {
                     <img src="~/themes/AirlineTickets/img/round-trip.png" />
                 }
@@ -132,7 +150,7 @@
                 <p><small>Via: @Model.Via</small></p>
             </div>
 
-           @if (Model.IsRoundTrip.HasValue && Model.IsRoundTrip.Value)
+           @if (Model.IsRoundTrip)
            {
             <div class="col-md-3 col-sm-3">
                 <p><small>Carrier: @Model.ReturnCarrier</small></p>

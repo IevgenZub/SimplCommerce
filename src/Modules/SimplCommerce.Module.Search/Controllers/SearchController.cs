@@ -75,7 +75,7 @@ namespace SimplCommerce.Module.Search.Controllers
 
                 if (searchOption.TripType == "round-trip")
                 {
-                    query = query.Where(x => x.IsRoundTrip.HasValue && x.IsRoundTrip.Value);
+                    query = query.Where(x => x.IsRoundTrip);
 
                     if (!string.IsNullOrEmpty(searchOption.ReturnDate))
                     {
