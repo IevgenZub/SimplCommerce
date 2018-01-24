@@ -14,7 +14,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public bool HasOptions { get; set; }
 
-        public string CreatedOn { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
 
         public bool IsPublished { get; set; }
         

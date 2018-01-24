@@ -120,7 +120,7 @@
             <td class="text-center"><i ng-attr-class="{{product.hasOptions && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td class="text-center"><i ng-attr-class="{{product.isRoundTrip && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td>{{product.status}}</td>
-            <td class="text-center">{{product.createdOn | date:'shortDate'}}</td>
+            <td class="text-center">{{product.createdOn | date:'dd.MM.yy'}}</td>
             <td>               
                     <button ng-if="vm.userIsAdmin && product.status == 'ACCEPTED'" title="Pause" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pause"></span></button>
                     <button ng-if="vm.userIsAdmin && product.status != 'ACCEPTED'" title="Accept" ng-click="vm.changeStatus(product)" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-play"></span></button>

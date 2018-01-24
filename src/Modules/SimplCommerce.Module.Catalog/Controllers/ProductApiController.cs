@@ -315,7 +315,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Name = x.Name,
                     HasOptions = x.HasOptions,
                     Seats = x.SoldSeats + "/" + x.StockQuantity,
-                    CreatedOn = x.CreatedOn.Date.ToShortDateString(),
+                    CreatedOn = x.CreatedOn,
                     IsPublished = x.IsPublished,
                     From = x.ShortDescription.Split('(', ')')[1],
                     To = x.Description.Split('(', ')')[1],
@@ -381,8 +381,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Status = "INSERTED",
                 ReservationNumber = model.Product.ReservationNumber,
                 FlightClass = model.Product.FlightClass,
-                DepartureDate = model.Product.DepartureDate,
-                LandingDate = model.Product.LandingDate
+                DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc),
+                LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc)
             };
 
             if (!User.IsInRole("admin"))
@@ -519,8 +519,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.ReservationNumber = model.Product.ReservationNumber;
             product.VendorId = model.Product.VendorId;
             product.FlightClass = model.Product.FlightClass;
-            product.DepartureDate = model.Product.DepartureDate;
-            product.LandingDate = model.Product.LandingDate;
+            product.DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc);
+            product.LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc);
 
             if (User.IsInRole("admin"))
             {

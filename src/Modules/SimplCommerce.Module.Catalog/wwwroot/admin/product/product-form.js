@@ -370,10 +370,10 @@
             vm.product.specialPrice = vm.product.specialPrice === null ? '' : vm.product.specialPrice;
             vm.product.specialPriceStart = vm.product.specialPriceStart === null ? '' : vm.product.specialPriceStart;
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
-            vm.product.returnDepartureDate = vm.product.returnDepartureDate === null ? '' : vm.product.returnDepartureDate;
-            vm.product.returnLandingDate = vm.product.returnLandingDate === null ? '' : vm.product.returnLandingDate;
-            vm.product.departureDate = vm.product.departureDate === null ? '' : vm.product.departureDate;
-            vm.product.landingDate = vm.product.landingDate === null ? '' : vm.product.landingDate;
+            vm.product.returnDepartureDate = vm.product.returnDepartureDate == null ? '' : new Date(vm.product.returnDepartureDate.valueOf() - vm.product.returnDepartureDate.getTimezoneOffset() * 60000);
+            vm.product.returnLandingDate = vm.product.returnLandingDate == null ? '' : new Date(vm.product.returnLandingDate.valueOf() - vm.product.returnLandingDate.getTimezoneOffset() * 60000);
+            vm.product.departureDate = vm.product.departureDate == null ? '' : new Date(vm.product.departureDate.valueOf() - vm.product.departureDate.getTimezoneOffset()*60000);
+            vm.product.landingDate = vm.product.landingDate == null ? '' : new Date(vm.product.landingDate.valueOf() - vm.product.landingDate.getTimezoneOffset() * 60000);
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
@@ -455,21 +455,32 @@
                 }
 
                 if (vm.product.returnDepartureDate) {
-                    vm.product.returnDepartureDate = new Date(vm.product.returnDepartureDate);
+                    vm.product.returnDepartureDate = getUtcDate(new Date(vm.product.returnDepartureDate));
                 }
                 if (vm.product.returnLandingDate) {
-                    vm.product.returnLandingDate = new Date(vm.product.returnLandingDate);
+                    vm.product.returnLandingDate = getUtcDate(new Date(vm.product.returnLandingDate));
                 }
 
                 if (vm.product.departureDate) {
-                    vm.product.departureDate = new Date(vm.product.departureDate);
+                    vm.product.departureDate = getUtcDate(new Date(vm.product.departureDate));
                 }
 
                 if (vm.product.landingDate) {
-                    vm.product.landingDate = new Date(vm.product.landingDate);
+                    vm.product.landingDate = getUtcDate(new Date(vm.product.landingDate));
                 }
             });
         }
+
+        function getUtcDate(date) {
+            return new Date(
+                date.getUTCFullYear(),
+                date.getUTCMonth(),
+                date.getUTCDate(),
+                date.getUTCHours(),
+                date.getUTCMinutes(),
+                date.getUTCSeconds());
+        }
+
 
         function getCategories() {
             categoryService.getCategories().then(function (result) {

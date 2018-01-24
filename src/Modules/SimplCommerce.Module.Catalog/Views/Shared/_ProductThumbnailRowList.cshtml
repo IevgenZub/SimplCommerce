@@ -52,10 +52,10 @@
             @Model.FlightNumber
         </div>
         <div class="from col-sm-2">
-            <span style="color:darkblue">@Model.DepartureDate.Value.LocalDateTime.ToShortTimeString() </span> @Model.Departure 
+            <span style="color:darkblue">@Model.DepartureDate.Value.DateTime.ToShortTimeString() </span> @Model.Departure 
         </div>
         <div class="to col-sm-2">
-            <span style="color:darkblue">@Model.LandingDate.Value.LocalDateTime.ToShortTimeString()</span>  @Model.Landing 
+            <span style="color:darkblue">@Model.LandingDate.Value.DateTime.ToShortTimeString()</span>  @Model.Landing 
         </div>
         <div class="to col-sm-1">
             @{
@@ -108,10 +108,10 @@
                 @Model.ReturnFlightNumber
             </div>
             <div class="from col-sm-2">
-                <span style="color:darkblue">@Model.ReturnDepartureDate.Value.LocalDateTime.ToShortTimeString()</span> @Model.Landing
+                <span style="color:darkblue">@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString()</span> @Model.Landing
             </div>
             <div class="to col-sm-2">
-                <span style="color:darkblue"> @Model.ReturnLandingDate.Value.LocalDateTime.ToShortTimeString()</span> @Model.Departure
+                <span style="color:darkblue"> @Model.ReturnLandingDate.Value.DateTime.ToShortTimeString()</span> @Model.Departure
             </div>
             <div class="to col-sm-1">
                 @{
