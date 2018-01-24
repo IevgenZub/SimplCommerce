@@ -107,13 +107,13 @@
         <tr ng-repeat="product in vm.products">
             <td>{{product.id}}</td>
             <td>{{product.operator}}</td>
-            <td>{{product.departureDate | date:'shortDate'}}</td>
-            <td>{{product.returnDepartureDate | date:'shortDate'}}</td>
+            <td>{{product.departureDate | date:'dd.MM.yy':'UTC'}}</td>
+            <td>{{product.returnDepartureDate | date:'dd.MM.yy':'UTC'}}</td>
             <td>{{product.flightNumber}}</td>
             <td>{{product.from}}</td>
             <td>{{product.to}}</td>
-            <td>{{product.departureDate | date:'shortTime' }}</td>
-            <td>{{product.landingDate | date:'shortTime'}}</td>
+            <td>{{product.departureDate | date:'HH:mm':'UTC'}}</td>
+            <td>{{product.landingDate | date:'HH:mm':'UTC'}}</td>
             <td>{{product.flightClass}}</td>
             <td class="text-center">{{product.seats}}</td>
             <td class="text-center">{{product.price}}</td>

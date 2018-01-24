@@ -75,8 +75,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Take Off</label>
                         <div class="col-sm-10">
-                            <p class="input-group simpl-datetime-picker">
-                                <input type="text" class="form-control" required datetime-picker="dd MMM yyyy HH:mm" ng-model-options="{timezone: 'utc'}" ng-model="vm.product.departureDate" is-open="vm.datePickerDepartureDate.open" datepicker-options="vm.datePickerDepartureDate.datepickerOptions" />
+                            <p class="input-group simpl-datetime-picker" ng-model-options="{timezone: 'UTC'}">
+                                <input type="text" class="form-control" required datetime-picker="dd MMM yyyy HH:mm"  ng-model="vm.product.departureDate" is-open="vm.datePickerDepartureDate.open" datepicker-options="vm.datePickerDepartureDate.datepickerOptions" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerDepartureDate')"><i class="fa fa-calendar"></i></button>
                                 </span>
@@ -87,7 +87,7 @@
                         <label class="col-sm-2 control-label">Landing</label>
                         <div class="col-sm-10">
                             <p class="input-group simpl-datetime-picker">
-                                <input type="text" class="form-control" required datetime-picker="dd MMM yyyy HH:mm" ng-model-options="{timezone: 'utc'}" ng-model="vm.product.landingDate" is-open="vm.datePickerLandingDate.open" datepicker-options="vm.datePickerLandingDate.datepickerOptions" />
+                                <input type="text" class="form-control" required datetime-picker="dd MMM yyyy HH:mm" ng-model-options="{timezone: 'UTC'}" ng-model="vm.product.landingDate" is-open="vm.datePickerLandingDate.open" datepicker-options="vm.datePickerLandingDate.datepickerOptions" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerLandingDate')"><i class="fa fa-calendar"></i></button>
                                 </span>

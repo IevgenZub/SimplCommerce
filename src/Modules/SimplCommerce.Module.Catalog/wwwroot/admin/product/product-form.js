@@ -34,7 +34,7 @@
         vm.userIsAdmin = false;       
 
         vm.datePickerSpecialPriceStart = {};
-
+        
         vm.datePickerSpecialPriceEnd = {};
 
         vm.datePickerDepartureDate = {};
