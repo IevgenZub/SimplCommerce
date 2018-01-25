@@ -12,9 +12,16 @@
                     sex: "Male",
                     firstName: "Alex",
                     lastName: "Prokofiev",
-                    dateOfBirth: "02.03.1975",
+                    dateOfBirth: new Date("02.03.1975"),
                     documentNo: "EN 758489",
-                    dateOfExpiry: "05.07.2030"
+                    dateOfExpiry: new Date("05.07.2030")
+                }, {
+                    sex: "Male",
+                    firstName: "Alex",
+                    lastName: "Prokofiev",
+                    dateOfBirth: new Date("02.03.1975"),
+                    documentNo: "EN 758489",
+                    dateOfExpiry: new Date("05.07.2030")
                 }];
 
                 function cartDataCallback(result) {
