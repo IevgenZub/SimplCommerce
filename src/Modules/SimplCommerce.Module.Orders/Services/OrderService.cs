@@ -205,12 +205,23 @@ namespace SimplCommerce.Module.Orders.Services
                 _orderRepository.Add(subOrder);
             }
 
-            foreach (var registrationAddress in shippingData.ExistingShippingAddresses.Where(esa => esa.Selected))
+            foreach (var registrationAddress in shippingData.ExistingShippingAddresses.Where(esa => esa.Selected).ToList())
             {
+                var address = _userAddressRepository.Query().Where(x => x.Id == registrationAddress.UserAddressId).Select(x => x.Address).First();
                 var orderRegistrationAddress = new OrderRegistrationAddress
                 {
                     Order = order,
-                    AddressId = registrationAddress.UserAddressId
+                    Address = new OrderAddress {
+                        ContactName = address.ContactName,
+                        AddressLine1 = address.AddressLine1,
+                        AddressLine2 = address.AddressLine2,
+                        City = address.City,
+                        CountryId = address.CountryId,
+                        Phone = address.Phone,
+                        PostalCode = address.PostalCode,
+                        DistrictId = address.DistrictId,
+                        StateOrProvinceId = address.StateOrProvinceId
+                    }
                 };
 
                 order.RegistrationAddress.Add(orderRegistrationAddress);

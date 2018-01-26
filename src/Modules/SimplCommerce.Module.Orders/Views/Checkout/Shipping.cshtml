@@ -27,13 +27,52 @@
                     @Localizer["Add another address"]
                 </label>
             </div>
+
             <div class="create-shipping-address collapse">
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["Contact name"]</label>
-                    <div class="col-sm-8">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label>Sex:</label>
+                        <div>
+                            <label class="radio-inline" style="font-size:16px;">
+                                <input type="radio" name="sex" value="Male" ng-model="passenger.sex">Male
+                            </label>
+                            <label class="radio-inline" style="font-size:16px;">
+                                <input type="radio" name="Female" ng-model="passenger.sex">Female
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="firstName">First name:</label>
                         <input asp-for="NewAddressForm.ContactName" type="text" class="form-control">
                     </div>
                 </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="lastName">Last name:</label>
+                        <input asp-for="NewAddressForm.AddressLine1" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="birth">Date of birth:</label>
+                        <input asp-for="NewAddressForm.City" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="document">Document no.:</label>
+                        <input asp-for="NewAddressForm.PostalCode" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="expiry">Date of expiry:</label>
+                        <input asp-for="NewAddressForm.Phone" type="text" class="form-control">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-sm-4 control-label">@Localizer["Country"]</label>
                     <div class="col-sm-8">
@@ -56,30 +95,6 @@
                         <select asp-for="NewAddressForm.DistrictId" asp-items="Model.NewAddressForm.Districts" class="form-control">
                             <option value=""></option>
                         </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["City"]</label>
-                    <div class="col-sm-8">
-                        <input asp-for="NewAddressForm.City" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["Postal Code"]</label>
-                    <div class="col-sm-8">
-                        <input asp-for="NewAddressForm.PostalCode" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["Address"]</label>
-                    <div class="col-sm-8">
-                        <input asp-for="NewAddressForm.AddressLine1" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["Phone"]</label>
-                    <div class="col-sm-8">
-                        <input asp-for="NewAddressForm.Phone" type="text" class="form-control">
                     </div>
                 </div>
             </div>
