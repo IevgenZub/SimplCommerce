@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SimplCommerce.Module.Core.Models;
 using SimplCommerce.Module.Orders.Models;
+using SimplCommerce.Module.Orders.ViewModels;
 
 namespace SimplCommerce.Module.Orders.Services
 {
@@ -13,7 +14,7 @@ namespace SimplCommerce.Module.Orders.Services
         /// <returns></returns>
         Task<Order> CreateOrder(User user, string paymentMethod, OrderStatus orderStatus = OrderStatus.New);
 
-        Task<Order> CreateOrder(User user, string paymentMethod, string shippingMethod, Address billingAddress, Address shippingAddress, OrderStatus orderStatus = OrderStatus.New);
+        Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, OrderStatus orderStatus = OrderStatus.New);
 
         Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId);
     }

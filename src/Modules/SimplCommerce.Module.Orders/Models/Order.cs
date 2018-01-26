@@ -64,6 +64,8 @@ namespace SimplCommerce.Module.Orders.Models
 
         public IList<Order> Children { get; protected set; } = new List<Order>();
 
+        public IList<OrderRegistrationAddress> RegistrationAddress { get; set; } = new List<OrderRegistrationAddress>();
+
         public void AddOrderItem(OrderItem item)
         {
             item.Order = this;
