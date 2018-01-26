@@ -17,5 +17,7 @@ namespace SimplCommerce.Module.Orders.ViewModels
         public string ShippingMethod { get; set; }
 
         public AddressFormVm NewAddressForm { get; set; }
+
+
     }
 }

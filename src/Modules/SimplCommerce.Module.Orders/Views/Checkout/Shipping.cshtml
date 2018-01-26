@@ -12,7 +12,8 @@
             {
                 <div class="radio">
                     <label>
-                        <input type="radio" name="shippingAddressId" value="@address.UserAddressId" checked="@(Model.ShippingAddressId == address.UserAddressId ? "checked" : null)">
+                        <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
+                        <input type="checkbox" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
                         <strong>@address.ContactName </strong><br />
                         @address.AddressLine1 <br />
                         @address.DistrictName, @address.StateOrProvinceName <br />

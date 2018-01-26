@@ -65,6 +65,11 @@ namespace SimplCommerce.Module.Orders.Controllers
         public async Task<IActionResult> Shipping(DeliveryInformationVm model)
         {
             var currentUser = await _workContext.GetCurrentUser();
+            if (model.ExistingShippingAddresses.Any(a => a.Selected))
+            {
+                model.ShippingAddressId = model.ExistingShippingAddresses.FirstOrDefault(a => a.Selected).UserAddressId;
+            }
+
             // TODO Handle error messages
             if (!ModelState.IsValid && (model.ShippingAddressId == 0))
             {
