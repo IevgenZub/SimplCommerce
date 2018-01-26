@@ -14,6 +14,7 @@ using SimplCommerce.Module.Orders.ViewModels;
 using SimplCommerce.Module.ShippingPrices.Services;
 using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.Services;
+using SimplCommerce.Module.Core.ViewModels;
 
 namespace SimplCommerce.Module.Orders.Controllers
 {
@@ -167,28 +168,7 @@ namespace SimplCommerce.Module.Orders.Controllers
 
             model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0;
 
-            model.NewAddressForm.ShipableContries = _countryRepository.Query()
-                .Where(x => x.IsShippingEnabled)
-                .OrderBy(x => x.Name)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-
-            if (model.NewAddressForm.ShipableContries.Count == 1)
-            {
-                var onlyShipableCountryId = long.Parse(model.NewAddressForm.ShipableContries.First().Value);
-                model.NewAddressForm.StateOrProvinces = _stateOrProvinceRepository
-                .Query()
-                .Where(x => x.CountryId == onlyShipableCountryId)
-                .OrderBy(x => x.Name)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-            }
+          
         }
     }
 }

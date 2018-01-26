@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SimplCommerce.Module.Core.ViewModels;
+using System.Collections.Generic;
 
 namespace SimplCommerce.Module.Orders.ViewModels
 {
@@ -6,7 +7,6 @@ namespace SimplCommerce.Module.Orders.ViewModels
     {
         public DeliveryInformationVm()
         {
-            NewAddressForm = new AddressFormVm();
         }
 
         public IList<ShippingAddressVm> ExistingShippingAddresses { get; set; } =
@@ -16,8 +16,6 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public string ShippingMethod { get; set; }
 
-        public AddressFormVm NewAddressForm { get; set; }
-
-
+        public UserAddressFormViewModel NewAddress { get; set; } = new UserAddressFormViewModel { RedirectUrl = "Shipping" };
     }
 }

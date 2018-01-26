@@ -1,3 +1,5 @@
+@using SimplCommerce.Module.Core.ViewModels
+
 @model SimplCommerce.Module.Orders.ViewModels.DeliveryInformationVm
 
 @{
@@ -31,83 +33,7 @@
                     <div class="col-sm-2">@address.Phone</div>
                </div>
             }
-            <div class="radio">
-                <label>
-                    <input type="radio" name="shippingAddressId" checked="@(Model.ShippingAddressId == 0 ? "checked" : null)" value="0" />
-                    @Localizer["Add another address"]
-                </label>
-            </div>
 
-            <div class="create-shipping-address collapse">
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <label>Sex:</label>
-                        <div>
-                            <label class="radio-inline" style="font-size:16px;">
-                                <input type="radio" name="sex" value="Male" ng-model="passenger.sex">Male
-                            </label>
-                            <label class="radio-inline" style="font-size:16px;">
-                                <input type="radio" name="Female" ng-model="passenger.sex">Female
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <label for="firstName">First name:</label>
-                        <input asp-for="NewAddressForm.ContactName" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <label for="lastName">Last name:</label>
-                        <input asp-for="NewAddressForm.AddressLine1" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <label for="birth">Date of birth:</label>
-                        <input asp-for="NewAddressForm.City" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <label for="document">Document no.:</label>
-                        <input asp-for="NewAddressForm.PostalCode" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <label for="expiry">Date of expiry:</label>
-                        <input asp-for="NewAddressForm.Phone" type="text" class="form-control">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["Country"]</label>
-                    <div class="col-sm-8">
-                        <select asp-for="NewAddressForm.CountryId" asp-items="Model.NewAddressForm.ShipableContries" class="form-control">
-                            <option value="">@Localizer["Choose one"]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["State or Province"]</label>
-                    <div class="col-sm-8">
-                        <select asp-for="NewAddressForm.StateOrProvinceId" asp-items="Model.NewAddressForm.StateOrProvinces" class="form-control">
-                            <option value="">@Localizer["Choose one"]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">@Localizer["District"]</label>
-                    <div class="col-sm-8">
-                        <select asp-for="NewAddressForm.DistrictId" asp-items="Model.NewAddressForm.Districts" class="form-control">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </div>
-            </div>
             <h3>@Localizer["Shipping methods"]</h3>
             <div id="shippingMethods">
                 <p>Please choose your shipping address</p>
@@ -118,6 +44,18 @@
                 </div>
             </div>
         </form>
+        <div class="radio">
+            <label>
+                <input type="radio" name="shippingAddressId" checked="@(Model.ShippingAddressId == 0 ? "checked" : null)" value="0" />
+                @Localizer["Add another address"]
+            </label>
+        </div>
+
+        <div class="create-shipping-address collapse">
+            <form asp-controller="UserAddress" asp-action="Create" method="POST" class="form-horizontal">
+                @Html.Partial("~/Modules/SimplCommerce.Module.Core/Views/UserAddress/_AddressForm.cshtml", Model.NewAddress)
+            </form>    
+        </div>
     </div>
     <div class="col-md-4">
         @await Component.InvokeAsync("OrderSummary")

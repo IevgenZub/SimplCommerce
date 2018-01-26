@@ -60,6 +60,7 @@ namespace SimplCommerce.Module.Orders.Services
             Address shippingAddress;
             if (shippingData.ShippingAddressId == 0)
             {
+                /*
                 var address = new Address
                 {
                     AddressLine1 = shippingData.NewAddressForm.AddressLine1,
@@ -81,8 +82,8 @@ namespace SimplCommerce.Module.Orders.Services
                 };
 
                 _userAddressRepository.Add(userAddress);
-
-                billingAddress = shippingAddress = address;
+                */
+                billingAddress = shippingAddress = null;
             }
             else
             {

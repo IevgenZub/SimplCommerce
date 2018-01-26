@@ -83,9 +83,9 @@ namespace SimplCommerce.Module.Core.Controllers
                     AddressLine1 = model.AddressLine1,
                     AddressLine2 = model.AddressLine2,
                     ContactName = model.ContactName,
-                    CountryId = model.CountryId,
-                    StateOrProvinceId = model.StateOrProvinceId,
-                    DistrictId = model.DistrictId,
+                    CountryId = 238,
+                    StateOrProvinceId = 1,
+                    DistrictId = 1,
                     City = model.City,
                     PostalCode = model.PostalCode,
                     Phone = model.Phone
@@ -100,6 +100,12 @@ namespace SimplCommerce.Module.Core.Controllers
 
                 _userAddressRepository.Add(userAddress);
                 _userAddressRepository.SaveChanges();
+
+                if (!string.IsNullOrEmpty(model.RedirectUrl))
+                {
+                    return RedirectToAction(model.RedirectUrl, "checkout");
+                }
+
                 return RedirectToAction("List");
             }
 

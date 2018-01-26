@@ -11,7 +11,7 @@
         <h2>@Localizer["Create Address"]</h2>
         <hr />
         <form asp-controller="UserAddress" asp-action="Create" method="POST" class="form-horizontal">
-            @Html.Partial("_AddressForm", Model)
+            @Html.Partial("~/Modules/SimplCommerce.Module.Core/Views/UserAddress/_AddressForm.cshtml", Model)
         </form>
     </div>
 </div>
