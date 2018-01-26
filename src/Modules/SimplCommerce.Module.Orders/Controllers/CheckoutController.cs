@@ -160,7 +160,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                     AddressLine2 = x.Address.AddressLine1,
                     DistrictName = x.Address.District.Name,
                     StateOrProvinceName = x.Address.StateOrProvince.Name,
-                    CountryName = x.Address.Country.Name
+                    CountryName = x.Address.Country.Name,
+                    CityName = x.Address.City,
+                    PostalCode = x.Address.PostalCode
                 }).ToList();
 
             model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0;
