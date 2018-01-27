@@ -594,3 +594,13 @@ section:last-child {
 /* Custom, iPhone Retina */
 
 @media only screen and (max-width: 320px) {}
+
+
+.cart-list .cart-list__passenger {
+   border-bottom: 1px solid #EDEDED;
+   margin-bottom: 30px;
+}
+
+.cart-list .cart-list__passenger:last-child {
+   border-bottom: none;
+}
