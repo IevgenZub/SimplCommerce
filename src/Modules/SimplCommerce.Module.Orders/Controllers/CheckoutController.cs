@@ -62,6 +62,45 @@ namespace SimplCommerce.Module.Orders.Controllers
             return View(model);
         }
 
+        [Route("add-address")]
+        [HttpPost]
+        public async Task<IActionResult> AddAddres(AddressFormVm model)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = await _workContext.GetCurrentUser();
+
+                var address = new Address
+                {
+                    ContactName = model.FirstName,
+                    AddressLine1 = model.LastName,
+                    AddressLine2 = model.DocumentExpiration,
+                    CountryId = 238,
+                    StateOrProvinceId = 1,
+                    DistrictId = 1,
+                    City = model.DocumentNumber,
+                    PostalCode = model.BirthDate,
+                    Phone = model.Sex
+                };
+
+                var userAddress = new UserAddress
+                {
+                    Address = address,
+                    AddressType = AddressType.Shipping,
+                    UserId = currentUser.Id
+                };
+
+                _userAddressRepository.Add(userAddress);
+                _userAddressRepository.SaveChanges();
+
+                model.Id = userAddress.Id;
+
+                return Ok(model);
+            }
+
+            return BadRequest();
+        }
+
         [HttpPost("shipping")]
         public async Task<IActionResult> Shipping(DeliveryInformationVm model)
         {
