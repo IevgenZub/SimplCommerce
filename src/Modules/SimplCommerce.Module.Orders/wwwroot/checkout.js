@@ -33,7 +33,7 @@
                     <div class="row">\
                     <div class="col-sm-2">\
                         <input type="hidden" data-val="true" data-val-required="The UserAddressId field is required." id="ExistingShippingAddresses_'+ nextIndex + '__UserAddressId" name="ExistingShippingAddresses[' + nextIndex + '].UserAddressId" value="' + data.id +'">\
-                        <input type="checkbox" data-val="true" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" value="true">\
+                        <input type="checkbox" data-val="true" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
                     ' + firstName + '\
                     </div >\
                     <div class="col-sm-2">'+ lastName +'</div>\

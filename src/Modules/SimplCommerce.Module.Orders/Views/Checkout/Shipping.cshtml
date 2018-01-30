@@ -3,14 +3,14 @@
 @model SimplCommerce.Module.Orders.ViewModels.DeliveryInformationVm
 
 @{
-    ViewBag.Title = "Shipping Information";
+    ViewBag.Title = "Passenger Information";
 }
 
 <div class="row">
     <div class="col-md-8">
         <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
             <h3>Passanger Registration Info</h3>
-            <div class="row">
+            <div class="row" >
                 <div class="col-sm-2">First Name </div>
                 <div class="col-sm-2">Last Name</div>
                 <div class="col-sm-2">Document no.:</div>
@@ -35,10 +35,6 @@
                     </div>
                 }
             </div>
-            <h3>@Localizer["Shipping methods"]</h3>
-            <div id="shippingMethods">
-                <p>Please choose your shipping address</p>
-            </div>
             <div class="form-group">
                 <div class="col-md-12 text-right">
                     <button type="submit" class="btn btn-order" disabled>@Localizer["Continue"]</button>
@@ -48,53 +44,56 @@
         <div class="radio">
             <label>
                 <input type="radio" name="shippingAddressId" checked="@(Model.ShippingAddressId == 0 ? "checked" : null)" value="0" />
-                @Localizer["Add another address"]
+                Add Passenger
             </label>
         </div>
 
         <div class="create-shipping-address collapse">
             <form action="add-address" method="POST" class="add-address-form form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">First Name</label>
-                    <div class="col-sm-10">
-                        <input name="firstName" type="text" class="form-control">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label>Sex:</label>
+                        <div>
+                            <label class="radio-inline" style="font-size:16px;">
+                                <input type="radio" name="sex" value="Male">Male
+                            </label>
+                            <label class="radio-inline" style="font-size:16px;">
+                                <input type="radio" name="sex" value="Female">Female
+                            </label>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Last Name</label>
-                    <div class="col-sm-10">
-                        <input name="lastName" type="text" class="form-control">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="firstName">First name:</label>
+                        <input type="text" class="form-control" id="firstName" name="FirstName" >
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Birth Date</label>
-                    <div class="col-sm-10">
-                        <input name="birthDate" type="text" class="form-control">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="lastName">Last name:</label>
+                        <input type="text" class="form-control" id="lastName" name="LastName" >
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Document No.</label>
-                    <div class="col-sm-10">
-                        <input name="documentNumber" type="text" class="form-control">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="birth">Date of birth:</label>
+                        <input type="date" class="form-control" id="birth" name="BirthDate" >
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Document Expiration</label>
-                    <div class="col-sm-10">
-                        <input name="documentExpiration" type="text" class="form-control">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="document">Document no.:</label>
+                        <input type="text" class="form-control" id="document" name="DocumentNumber" >
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Sex</label>
-                    <div class="col-sm-10">
-                        <input name="sex" type="text" class="form-control">
+                <div class="col-lg-2 col-md-4">
+                    <div class="form-group">
+                        <label for="expiry">Date of expiry:</label>
+                        <input type="date" class="form-control" id="expiry" name="DocumentExpiration" >
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
-                    </div>
-                </div>
+                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
             </form>    
         </div>
     </div>

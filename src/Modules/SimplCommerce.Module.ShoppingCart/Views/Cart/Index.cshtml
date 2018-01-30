@@ -70,69 +70,6 @@
             </div>
         </div>
     </div>
-
-
-    <div class="row">
-        <div class="col-md-12">
-            <h4>Passengers Information:</h4>
-        </div>
-    </div>
-
-    <div class="row" ng-repeat="passenger in vm.passengers">
-        <div class="col-md-12">
-            <form>
-            <div class="col-lg-2 col-md-4">
-                <div class="form-group">
-                    <label>Sex:</label>
-                    <div>
-                        <label class="radio-inline" style="font-size:16px;">
-                              <input type="radio" name="sex" value="Male" ng-model="passenger.sex">Male
-                        </label>
-                        <label class="radio-inline" style="font-size:16px;">
-                              <input type="radio" name="Female" ng-model="passenger.sex">Female
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <div class="form-group">
-                    <label for="firstName">First name:</label>
-                    <input type="text" class="form-control" id="firstName" name="FirstName" ng-model="passenger.firstName">
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <div class="form-group">
-                    <label for="lastName">Last name:</label>
-                    <input type="text" class="form-control" id="lastName" name="LastName" ng-model="passenger.lastName">
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <div class="form-group">
-                    <label for="birth">Date of birth:</label>
-                    <input type="date" class="form-control" id="birth" name="DateOfBirth" ng-model="passenger.dateOfBirth">
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <div class="form-group">
-                    <label for="document">Document no.:</label>
-                    <input type="text" class="form-control" id="document" name="DocumentNo" ng-model="passenger.documentNo">
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <div class="form-group">
-                    <label for="expiry">Date of expiry:</label>
-                    <input type="date" class="form-control" id="expiry" name="DateOfExpiry" ng-model="passenger.dateOfExpiry">
-                </div>
-            </div>
-
-
-            </form>
-        </div>
-    </div>
-
-
-
-    </div>
 </div>
 
 @section head{
