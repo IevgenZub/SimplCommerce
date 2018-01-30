@@ -64,7 +64,7 @@ namespace SimplCommerce.Module.Orders.Controllers
 
         [Route("add-address")]
         [HttpPost]
-        public async Task<IActionResult> AddAddres(AddressFormVm model)
+        public async Task<IActionResult> AddAddress(AddressFormVm model)
         {
             if (ModelState.IsValid)
             {
@@ -74,12 +74,12 @@ namespace SimplCommerce.Module.Orders.Controllers
                 {
                     ContactName = model.FirstName,
                     AddressLine1 = model.LastName,
-                    AddressLine2 = model.DocumentExpiration,
+                    AddressLine2 = model.BirthDate,
                     CountryId = 238,
                     StateOrProvinceId = 1,
                     DistrictId = 1,
                     City = model.DocumentNumber,
-                    PostalCode = model.BirthDate,
+                    PostalCode = model.DocumentExpiration,
                     Phone = model.Sex
                 };
 
@@ -197,7 +197,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                     ContactName = x.Address.ContactName,
                     Phone = x.Address.Phone,
                     AddressLine1 = x.Address.AddressLine1,
-                    AddressLine2 = x.Address.AddressLine1,
+                    AddressLine2 = x.Address.AddressLine2,
                     DistrictName = x.Address.District.Name,
                     StateOrProvinceName = x.Address.StateOrProvince.Name,
                     CountryName = x.Address.Country.Name,
