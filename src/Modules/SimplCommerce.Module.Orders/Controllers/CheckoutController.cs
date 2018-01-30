@@ -57,6 +57,16 @@ namespace SimplCommerce.Module.Orders.Controllers
             var model = new DeliveryInformationVm();
 
             var currentUser = await _workContext.GetCurrentUser();
+
+            var cart = await _cartRepository.Query().Include(c => c.Items).Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
+
+            if (cart == null)
+            {
+                throw new ApplicationException($"Cart of user {currentUser.Id} cannot be found");
+            }
+
+            model.NumberofPassengers = cart.Items[0].Quantity;
+
             PopulateShippingForm(model, currentUser);
 
             return View(model);

@@ -9,6 +9,8 @@ namespace SimplCommerce.Module.Orders.ViewModels
         {
         }
 
+        public int NumberofPassengers { get; set; }
+
         public IList<ShippingAddressVm> ExistingShippingAddresses { get; set; } =
             new List<ShippingAddressVm>();
 
