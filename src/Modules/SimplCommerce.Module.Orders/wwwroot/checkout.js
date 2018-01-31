@@ -34,10 +34,10 @@
             var nextIndex = $('.address-container > div').length;
             var newAddress = 
                 $('.address-container').append('\
-                    <div class="row">\
+                    <div class="row" style="border-bottom: 1px solid #eee; padding:5px">\
                     <div class="col-sm-2">\
                         <input type="hidden" data-val="true" data-val-required="The UserAddressId field is required." id="ExistingShippingAddresses_'+ nextIndex + '__UserAddressId" name="ExistingShippingAddresses[' + nextIndex + '].UserAddressId" value="' + data.id +'">\
-                        <input type="checkbox" data-val="true" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
+                        <input type="checkbox" data-val="true" class="registration-address-check" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
                     ' + firstName + '\
                     </div >\
                     <div class="col-sm-2">'+ lastName +'</div>\
@@ -46,6 +46,8 @@
                     <div class="col-sm-2">'+ birthDate + '</div>\
                     <div class="col-sm-2">'+ sex +'</div>\
                </div>');
+
+            checkIfContinueEnabled();
         });
     });
 
