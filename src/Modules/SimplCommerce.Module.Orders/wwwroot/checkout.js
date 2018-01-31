@@ -1,5 +1,9 @@
 ﻿$(function () {
 
+    $(".registration-address-check").click(function () {
+        checkIfContinueEnabled();
+    });
+
     $(".add-address-form").submit(function (event) {
 
         // Stop form from submitting normally
@@ -51,5 +55,14 @@
         $select.append($defaultOption);
     }
 
-    $('.btn-order').prop('disabled', false);
+    function checkIfContinueEnabled() {
+        var numberOfPassengers = $('#numberOfPassengers').val();
+        var numberOfCheckedPassengers = $('input[class="registration-address-check"]:checked').length;
+        var incorrectSelection = numberOfPassengers != numberOfCheckedPassengers;
+        $('.btn-order').prop('disabled', incorrectSelection);
+        $('#numberOfCheckedPassengers').text(numberOfCheckedPassengers + "/");
+        $('#selectionInfo').toggleClass('alert-danger', incorrectSelection);
+    }
+
+    checkIfContinueEnabled();
 });

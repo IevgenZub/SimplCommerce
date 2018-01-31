@@ -6,8 +6,15 @@
     ViewBag.Title = "Passenger Information";
 }
 
+<style>
+    .add-address-form {
+        border: 1px solid #eee;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-8">
+
         <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
             <h3>Passenger Registration</h3>
             <br />         
@@ -27,7 +34,7 @@
                     <div class="row" style="border-bottom: 1px solid #eee; padding:5px">
                         <div class="col-sm-2">
                             <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
-                            <input type="checkbox" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
+                            <input type="checkbox" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
                             @address.ContactName
                         </div>
                         <div class="col-sm-2">@address.AddressLine1</div>
@@ -41,58 +48,54 @@
             <br />
             <div class="form-group">
                 <div class="col-md-12 text-right">
-                    <small>Select @Model.NumberofPassengers passenger(s) &nbsp;</small>
+                    <small id="selectionInfo">Select <span id="numberOfCheckedPassengers"></span>@Model.NumberofPassengers passenger(s) &nbsp;</small>
+                    <input type="hidden" id="numberOfPassengers" value="@Model.NumberofPassengers" />
                     <button type="submit" class="btn btn-order" disabled>@Localizer["Continue"]</button>
                 </div>
             </div>
         </form>
-        <div class="radio">
-            <strong>
-                Add Passenger
-            </strong>
-        </div>
+
         <div class="create-shipping-address">
             <form action="add-address" method="POST" class="add-address-form form-horizontal">
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="text" placeholder="First Name" class="form-control" id="firstName" name="firstName" >
+                        <input type="text" placeholder="First Name" required class="form-control" id="firstName" name="firstName">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Last Name" id="lastName" name="lastName" >
+                        <input type="text" class="form-control" required placeholder="Last Name" id="lastName" name="lastName">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="date" class="form-control" id="birth" name="birthDate" >
+                        <input type="date" class="form-control" id="birth" name="birthDate">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Document No." id="document" name="documentNumber" >
+                        <input type="text" class="form-control" required placeholder="Document No." id="document" name="documentNumber">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="date" class="form-control" placeholder="Document Exp." id="expiry" name="documentExpiration" >
+                        <input type="date" class="form-control" required placeholder="Document Exp." id="expiry" name="documentExpiration">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <div>
+                    <div class="form-group" style="padding-top:5px">
                             <label class="radio-inline">
-                                <input type="radio" name="sex" value="Male">Male
+                                <input type="radio" name="sex" checked value="Male">Male
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="sex" value="Female">Female
                             </label>
-                        </div>
                     </div>
                 </div>
-                <button style="float:right" type="submit" class="btn btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
-            </form>    
+                <button style="float:right" type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Passenger</button>
+            </form>
         </div>
+
     </div>
     <div class="col-md-4">
         @await Component.InvokeAsync("OrderSummary")
