@@ -81,6 +81,12 @@
                                     <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
                                 }
                             }
+                            (@variant.FlightClass)
+                            @variant.DepartureDate.Value.DateTime.ToShortDateString() - 
+                            @if (variant.ReturnLandingDate.HasValue)
+                            {
+                                <span>@variant.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
+                            }
                         </div>
                         @if (variant.StockQuantity <= 0)
                         {
