@@ -1,9 +1,4 @@
 ﻿$(function () {
-
-    $(".registration-address-check").click(function () {
-        checkIfContinueEnabled();
-    });
-
     $(".add-address-form").submit(function (event) {
 
         // Stop form from submitting normally
@@ -37,7 +32,7 @@
                     <div class="row" style="border-bottom: 1px solid #eee; padding:5px">\
                     <div class="col-sm-2">\
                         <input type="hidden" data-val="true" data-val-required="The UserAddressId field is required." id="ExistingShippingAddresses_'+ nextIndex + '__UserAddressId" name="ExistingShippingAddresses[' + nextIndex + '].UserAddressId" value="' + data.id +'">\
-                        <input type="checkbox" data-val="true" class="registration-address-check" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
+                        <input type="checkbox" data-val="true" onclick="checkIfContinueEnabled()" class="registration-address-check" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
                     ' + firstName + '\
                     </div >\
                     <div class="col-sm-2">'+ lastName +'</div>\
@@ -51,20 +46,14 @@
         });
     });
 
-    function resetSelect($select) {
-        var $defaultOption = $select.find("option:first-child");
-        $select.empty();
-        $select.append($defaultOption);
-    }
-
-    function checkIfContinueEnabled() {
-        var numberOfPassengers = $('#numberOfPassengers').val();
-        var numberOfCheckedPassengers = $('input[class="registration-address-check"]:checked').length;
-        var incorrectSelection = numberOfPassengers != numberOfCheckedPassengers;
-        $('.btn-order').prop('disabled', incorrectSelection);
-        $('#numberOfCheckedPassengers').text(numberOfCheckedPassengers + "/");
-        $('#selectionInfo').toggleClass('alert-danger', incorrectSelection);
-    }
-
     checkIfContinueEnabled();
 });
+
+function checkIfContinueEnabled() {
+    var numberOfPassengers = $('#numberOfPassengers').val();
+    var numberOfCheckedPassengers = $('input[class="registration-address-check"]:checked').length;
+    var incorrectSelection = numberOfPassengers != numberOfCheckedPassengers;
+    $('.btn-order').prop('disabled', incorrectSelection);
+    $('#numberOfCheckedPassengers').text(numberOfCheckedPassengers + "/");
+    $('#selectionInfo').toggleClass('alert-danger', incorrectSelection);
+}

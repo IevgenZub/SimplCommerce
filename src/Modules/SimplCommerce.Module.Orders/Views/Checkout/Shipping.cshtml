@@ -34,7 +34,7 @@
                     <div class="row" style="border-bottom: 1px solid #eee; padding:5px">
                         <div class="col-sm-2">
                             <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
-                            <input type="checkbox" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
+                            <input type="checkbox" onclick="checkIfContinueEnabled()" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
                             @address.ContactName
                         </div>
                         <div class="col-sm-2">@address.AddressLine1</div>
