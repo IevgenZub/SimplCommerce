@@ -74,5 +74,6 @@ function checkIfContinueEnabled() {
     else
     {
         $('.btn-order').focus();
+        $('#addPassangerAlert').hide();
     }
 }
