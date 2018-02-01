@@ -56,4 +56,23 @@ function checkIfContinueEnabled() {
     $('.btn-order').prop('disabled', incorrectSelection);
     $('#numberOfCheckedPassengers').text(numberOfCheckedPassengers + "/");
     $('#selectionInfo').toggleClass('alert-danger', incorrectSelection);
+
+    if (incorrectSelection) {
+        var numberExistingPassengers = $('input[class="registration-address-check"]').length;
+        var diff = numberOfPassengers - numberExistingPassengers;
+
+        if (diff > 0) {
+            $('input[name=firstName]').focus();
+            $('#numberOfPassengersToAdd').text(diff);
+            $('#addPassangerAlert').show();
+        }
+        else
+        {
+            $('#addPassangerAlert').hide();
+        }
+    }
+    else
+    {
+        $('.btn-order').focus();
+    }
 }

@@ -9,6 +9,7 @@
 <style>
     .add-address-form {
         border: 1px solid #eee;
+        padding:5px;
     }
 </style>
 
@@ -92,7 +93,12 @@
                             </label>
                     </div>
                 </div>
-                <button style="float:right" type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Passenger</button>
+                <div class="form-group">
+                    <div class="col-md-12 text-right">
+                        <small class="alert-danger" hidden id="addPassangerAlert">Add <span id="numberOfPassengersToAdd"></span>&nbsp; passenger(s) &nbsp;</small>
+                        <button type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Passenger</button>
+                    </div>
+                </div>
             </form>
         </div>
 
