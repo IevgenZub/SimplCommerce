@@ -353,10 +353,13 @@
 
         var tripType = getUrlParameter('TripType');
         if (tripType) {
+
             if (tripType === "one-way") {
                 $('#one-way').prop('checked', true).parent().addClass('active');
+                $('#round-trip').prop('checked', false).parent().removeClass('active');
             } else {
                 $('#round-trip').prop('checked', true).parent().addClass('active');
+                $('#one-way').prop('checked', false).parent().removeClass('active');
             }
         }
 
