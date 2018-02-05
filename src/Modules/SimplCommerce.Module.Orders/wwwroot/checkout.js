@@ -4,6 +4,7 @@
         // Stop form from submitting normally
         event.preventDefault();
 
+        
         // Get some values from elements on the page:
         var $form = $(this),
             firstName = $form.find("input[name='firstName']").val(),
@@ -36,9 +37,9 @@
                     ' + firstName + '\
                     </div >\
                     <div class="col-sm-2">'+ lastName +'</div>\
+                    <div class="col-sm-2">'+ birthDate + '</div>\
                     <div class="col-sm-2">'+ documentNumber + '</div>\
                     <div class="col-sm-2">'+ documentExpiration + '</div>\
-                    <div class="col-sm-2">'+ birthDate + '</div>\
                     <div class="col-sm-2">'+ sex +'</div>\
                </div>');
 

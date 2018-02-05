@@ -33,14 +33,14 @@
                     var isChecked = Model.ExistingShippingAddresses.First() == address;
                     
                     <div class="row" style="border-bottom: 1px solid #eee; padding:5px">
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 first-name">
                             <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
                             <input type="checkbox" onclick="checkIfContinueEnabled()" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
                             @address.ContactName
                         </div>
-                        <div class="col-sm-2">@address.AddressLine1</div>
+                        <div class="col-sm-2 last-name">@address.AddressLine1</div>
                         <div class="col-sm-2">@address.AddressLine2</div>
-                        <div class="col-sm-2">@address.CityName</div>
+                        <div class="col-sm-2 document-no">@address.CityName</div>
                         <div class="col-sm-2">@address.PostalCode</div>
                         <div class="col-sm-2">@address.Phone</div>
                     </div>
@@ -60,22 +60,22 @@
             <form action="add-address" method="POST" class="add-address-form form-horizontal">
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="text" placeholder="First Name" required class="form-control" id="firstName" name="firstName">
+                        <input type="text" placeholder="First Name" pattern="[A-Za-z]+" required class="form-control" id="firstName" name="firstName">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="text" class="form-control" required placeholder="Last Name" id="lastName" name="lastName">
+                        <input type="text" class="form-control" pattern="[A-Za-z]+" required placeholder="Last Name" id="lastName" name="lastName">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="date" class="form-control" id="birth" name="birthDate">
+                        <input type="date" class="form-control" required placeholder="Birth Date" id="birth" name="birthDate">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <div class="form-group">
-                        <input type="text" class="form-control" required placeholder="Document No." id="document" name="documentNumber">
+                        <input type="text" class="form-control" required placeholder="Document No." pattern="[a-zA-Z0-9]+" id="document" name="documentNumber">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
