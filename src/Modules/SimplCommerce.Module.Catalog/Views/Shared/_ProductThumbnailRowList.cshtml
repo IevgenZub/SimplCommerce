@@ -34,18 +34,20 @@
 <div class="my-thumbnail">
     <div class="row my-row">
         <div class="airlines col-sm-1">
-            <figure>
-                <img  src="@Model.ThumbnailUrl" style="">
+            <figure style="padding-left:15px">
+                <img  src="@Model.ThumbnailUrl" >
                 <figcaption>@Model.Carrier</figcaption>
             </figure>
         </div>
         <div class="flight-number col-sm-1">
         @if (datesVisible) { 
-            @Model.DepartureDate.Value.LocalDateTime.ToShortDateString()
+            @Model.DepartureDate.Value.Date.ToShortDateString()
         }
         else
         {
-            <span style="color:green">Options</span>
+            <label style="padding-right:15px; color:green; font:smaller">
+                Options
+            </label>
         }
         </div>
         <div class="flight-number col-sm-1">
@@ -82,14 +84,25 @@
                 <a class="moreDetails" style="cursor: pointer;">@Localizer["Details"]</a>
             </small>
         </div>
-        <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
-        <input type="hidden" name="productId" id="productId" value="@Model.Id">
-    </div>
+        @if (!Model.Details.HasVariation)
+        { 
+            <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
+            <input type="hidden" name="productId" id="productId" value="@Model.Id">
+        }
+        else
+        {
+            <label class="pull-right" style="padding-right:15px; color:green;white-space:nowrap" >
+                <span>[@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price).ToString("C")</span>
+                <span>-</span>
+                <span>@Model.Details.Variations.Max(v => v.CalculatedProductPrice.Price).ToString("C")]</span>
+             </label>
+        }
+</div>
     @if (Model.IsRoundTrip)
     {
         <div class="row my-row">
             <div class="airlines col-sm-1">
-                    <figure>
+                    <figure style="padding-left:15px">
                         <img src="@Model.ThumbnailUrl">
                         <figcaption>@Model.ReturnCarrier</figcaption>
                     </figure>
@@ -97,11 +110,14 @@
             <div class="flight-number col-sm-1">
              @if(datesVisible)
              {
-                 @Model.ReturnDepartureDate.Value.LocalDateTime.ToShortDateString()
+                 @Model.ReturnLandingDate.Value.DateTime.ToShortDateString()
              }
              else
              {
-                <span style="color:green">Options</span>
+
+                <label style="padding-right:15px; color:green; font:smaller">
+                    Options
+                </label>
              }
             </div>
             <div class="flight-number col-sm-1">
