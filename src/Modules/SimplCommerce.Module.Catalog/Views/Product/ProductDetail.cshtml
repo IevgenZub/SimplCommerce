@@ -23,7 +23,7 @@
                                         
                                         @foreach (var value in valuesSorted)
                                         {
-                                            var shouldChecked = Model.Variations.First(v => v.StockQuantity > 0).Options.Any(x => x.Value == value);
+                                            var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
                                             var departureDate = Convert.ToDateTime(value, new System.Globalization.CultureInfo("en-US", true));
 
                                             <li>
@@ -32,28 +32,30 @@
                                             </li>
                                         }
                                     }
-                                    else
+                                    @if (option.OptionName == "Package Days")
                                     {
-                                        @foreach (var value in option.Values.OrderBy(o => o))
+                                        var valuesSorted = option.Values.OrderBy(o => Convert.ToInt32(o));
+                                        
+                                        @foreach (var value in valuesSorted)
                                         {
                                             var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
+                                            
+                                            <li>
+                                                <input type="radio" value="@value" data-return="@value" checked="@shouldChecked" name="@option.OptionName" />
+                                                <label style="font-size:unset; height:28px">@value</label>
+                                            </li>
+                                        }
+                                    }
+                                   
+                                    @if (option.OptionName == "Class")
+                                    {
+                                        foreach (var value in option.Values)
+                                        {
+                                            var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
+
                                             <li>
                                                 <input type="radio" value="@value" checked="@shouldChecked" name="@option.OptionName" />
-                                                @if (Model.OptionDisplayValues.ContainsKey(value) && !String.IsNullOrWhiteSpace(Model.OptionDisplayValues[value].Value))
-                                                {
-                                                    if (Model.OptionDisplayValues[value].DisplayType == "color")
-                                                    {
-                                                        <label title="@value" class="color" style="background-color:@Model.OptionDisplayValues[value].Value"></label>
-                                                    }
-                                                    else
-                                                    {
-                                                        <label style="font-size:unset; height:28px">@Model.OptionDisplayValues[value].Value</label>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <label>@value</label>
-                                                }
+                                                <label style="font-size:unset; height:28px">@value</label>
                                             </li>
                                         }
                                     }

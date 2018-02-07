@@ -41,10 +41,7 @@
             }
         });
 
-        var departureDate = $('#departure-date').val();
-        var selectedDepartureDate = $('input[type=radio][data-departure="' + departureDate + '"]');
-        if (selectedDepartureDate) {
-            selectedDepartureDate.parent('li').click();
-        }
+
+
     });
 })(jQuery);
