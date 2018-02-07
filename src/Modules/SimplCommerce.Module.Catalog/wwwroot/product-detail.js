@@ -3,26 +3,6 @@
     $(window).load(function () {
         $('.sp-wrap').smoothproducts();
 
-        var departrueDateVal = $("#departure-date").val();
-        if (departrueDateVal.length > 0) {
-
-            var day, month, year, selected;
-            var splitChar = departrueDateVal.includes('.') ? '.' : '/'
-
-            day = splitChar == '.' ? departrueDateVal.split(splitChar)[0] : departrueDateVal.split(splitChar)[1];
-            month = splitChar == '.' ? departrueDateVal.split(splitChar)[1] : departrueDateVal.split(splitChar)[0];
-            year = departrueDateVal.split(splitChar)[2];
-            
-            selected = $('input[value="' +
-                    parseInt(month, 10) + '/' +
-                    parseInt(day, 10) + '/' +
-                    parseInt(year, 10) + '"]');
-            
-            if (selected) {
-                selected.prop('checked', true);
-            }
-        }
-
         $('.product-attrs li').on('click', function () {
             var $variationDiv,
                 selectedproductOptions = [],
@@ -61,20 +41,10 @@
             }
         });
 
-        $('#addreview').on('click', '#btn-addreview', function (e) {
-            e.preventDefault();
-            var $form = $('#form-addreview');
-            if (!$form.valid || $form.valid()) {
-                $.post($form.attr('action'), $form.serializeArray())
-                    .done(function (result) {
-                        $('#addreview').html(result);
-                        $('input.rating-loading').rating({
-                            language: window.simplGlobalSetting.lang,
-                            filledStar: '<i class="fa fa-star"></i>',
-                            emptyStar: '<i class="fa fa-star-o"></i>'
-                        });
-                    });
-            }
-        });
+        var departureDate = $('#departure-date').val();
+        var selectedDepartureDate = $('input[type=radio][data-departure="' + departureDate + '"]');
+        if (selectedDepartureDate) {
+            selectedDepartureDate.parent('li').click();
+        }
     });
 })(jQuery);

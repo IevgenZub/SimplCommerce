@@ -17,17 +17,17 @@
                             <div>
                                 <h5>@option.OptionName </h5>
                                 <ul class="list-inline product-attr-options" style="font:smaller">
-                                    
                                     @if (option.OptionName == "Departure Date")
                                     {
                                         var valuesSorted = option.Values.OrderBy(o => Convert.ToDateTime(o, new System.Globalization.CultureInfo("en-US", true)));
-
+                                        
                                         @foreach (var value in valuesSorted)
                                         {
-                                            var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
+                                            var shouldChecked = Model.Variations.First(v => v.StockQuantity > 0).Options.Any(x => x.Value == value);
                                             var departureDate = Convert.ToDateTime(value, new System.Globalization.CultureInfo("en-US", true));
+
                                             <li>
-                                                <input type="radio" value="@value" checked="@shouldChecked" name="@option.OptionName" />
+                                                <input type="radio" value="@value" data-departure="@departureDate.ToShortDateString()" checked="@shouldChecked" name="@option.OptionName" />
                                                 <label style="font-size:unset; height:28px">@departureDate.ToShortDateString()</label>
                                             </li>
                                         }
