@@ -69,7 +69,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     departureDate = Convert.ToDateTime(searchOption.DepartureDate);
                     query = query.Where(x =>
                         (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
-                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(departureDate.Month + "/" + departureDate.Day + "/" + departureDate.Year))));
+                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(searchOption.DepartureDate))));
                 }
 
                 if (searchOption.TripType == "round-trip")
