@@ -650,7 +650,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             var departureDateOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Departure Date");
             if (departureDateOption != null)
             {
-                DateTimeOffset departureDate = DateTime.SpecifyKind(Convert.ToDateTime(departureDateOption.Value, new CultureInfo("en-Us")), DateTimeKind.Utc);
+                DateTimeOffset departureDate = DateTime.SpecifyKind(Convert.ToDateTime(departureDateOption.Value, new CultureInfo("ru-RU")), DateTimeKind.Utc);
 
                 linkedProduct.DepartureDate = departureDate
                         .AddHours(product.DepartureDate.Value.Hour)

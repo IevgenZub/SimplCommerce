@@ -147,7 +147,7 @@
             var range = generateRange($('#chipStart').val(), $('#chipEnd').val());
 
             angular.forEach(range, function (chipToAdd) {
-                departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("en-US"), value: '' });
+                departureDateOption.values.push({ key: chipToAdd.toLocaleDateString("ru-RU"), value: '' });
             });
         };
 
@@ -155,7 +155,7 @@
             var dateString = angular.copy(chip);
             dateString = dateString.toString();
             if (dateString.split('-').length == 3) {
-                chip = new Date(dateString).toLocaleDateString("en-US");
+                chip = moment(dateString, 'DD.MM.YYYY').toDate().toLocaleDateString("ru-RU");
             }
 
             return {

@@ -3,12 +3,6 @@
     'use strict';
 
     angular.module('simplAdmin.catalog', [])
-        .filter('turkishDate', function () {
-            return function (input) {
-                var inputDate = new Date(input);
-                return inputDate.getDate() + "." + (inputDate.getMonth() + 1) + "." + inputDate.getUTCFullYear();
-            };
-        })
         .config(['$stateProvider', function ($stateProvider) {
             $stateProvider
                 .state('brand', {
