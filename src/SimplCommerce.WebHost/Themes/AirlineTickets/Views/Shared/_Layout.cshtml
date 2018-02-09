@@ -29,7 +29,15 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-register">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i class="fa fa-check"></i><span class="currency">@Localizer["Check reservation"]</span></a></li>
+                        <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i>₴</i><span class="currency">@Localizer["Check reservation"]</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle no-border" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hrn">₴</i><span class="currency">Currency</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-hrn">₴</i><span class="currency">HRN</span></a></li>
+                                <li><a href="#"><i class="fa fa-usd"></i><span class="currency">USD</span></a></li>
+                                <li><a href="#"><i class="fa fa-rub"></i><span class="currency">RUB</span></a></li>
+                            </ul>
+                        </li>
                         @await Html.PartialAsync("_SelectLanguagePartial")
                         @await Html.PartialAsync("_LoginPartial")
                     </ul>
@@ -268,6 +276,20 @@
                     }
                 };
                 $("#departure, #landing, #flightFrom, #flightTo").easyAutocomplete(options);
+
+                $.getJSON("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json", function (data) {
+                    var items = [];
+                    $.each(data, function (key, val) {
+                        if (val.txt == "Долар США") {
+                            $('.priceToConvert').each(function () { 
+                                var price = parseFloat($(this).text());
+                                var rate = parseFloat(val.rate);
+                                var convertedPrice = Math.round(price * rate);
+                                $(this).text(convertedPrice);
+                            })
+                        }
+                    });
+                });
             });
     </script>
 
