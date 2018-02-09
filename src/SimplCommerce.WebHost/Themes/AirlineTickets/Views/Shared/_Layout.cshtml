@@ -29,7 +29,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-register">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i>₴</i><span class="currency">@Localizer["Check reservation"]</span></a></li>
+                        <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i class="fa fa-check"></i><span class="currency">@Localizer["Check reservation"]</span></a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle no-border" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hrn">₴</i><span class="currency">Currency</span></a>
                             <ul class="dropdown-menu">
@@ -277,19 +277,38 @@
                 };
                 $("#departure, #landing, #flightFrom, #flightTo").easyAutocomplete(options);
 
-                $.getJSON("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json", function (data) {
-                    var items = [];
-                    $.each(data, function (key, val) {
-                        if (val.txt == "Долар США") {
-                            $('.priceToConvert').each(function () { 
-                                var price = parseFloat($(this).text());
-                                var rate = parseFloat(val.rate);
-                                var convertedPrice = Math.round(price * rate);
-                                $(this).text(convertedPrice);
-                            })
-                        }
-                    });
+                $(".currency").click(function () {
+                    recalculatePrices($(this).text());
                 });
+
+                function recalculatePrices(selectedCurrency) {
+                    var rate = 1;
+                    if (selectedCurrency == "HRN") {
+                        $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                            $.each(data, function (key, val) {
+                                if (val.ccy == "USD") {
+                                    rate = val.sale;
+                                }
+                            });
+
+                            drawNewPrices(rate);
+                        });
+                    }
+                    else if (selectedCurrency == "RUB") {
+                        alert("Not ready yet");
+                    }
+                    else if (selectedCurrency == "USD") {
+                        drawNewPrices(rate);
+                    }
+
+                    function drawNewPrices(newRate) {
+                        $('.priceToConvert').each(function () {
+                            var price = parseFloat($(this).text());
+                            var convertedPrice = Math.round(price * newRate);
+                            $(this).text(convertedPrice);
+                        })
+                    }
+                }
             });
     </script>
 
