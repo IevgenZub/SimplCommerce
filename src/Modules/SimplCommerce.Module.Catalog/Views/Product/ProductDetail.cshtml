@@ -76,7 +76,7 @@
                             }
                             else
                             {
-                                <label>@variant.CalculatedProductPrice.Price.ToString("C")</label>
+                                <label><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></label>
                                 if (variant.CalculatedProductPrice.PercentOfSaving > 0)
                                 {
                                     <p class="product-price-regular">@variant.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
@@ -122,7 +122,7 @@
                     }
                     else
                     {
-                        <label>@Model.CalculatedProductPrice.Price.ToString("C")</label>
+                        <label><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></label>
                         if (Model.CalculatedProductPrice.PercentOfSaving > 0)
                         {
                             <p class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>

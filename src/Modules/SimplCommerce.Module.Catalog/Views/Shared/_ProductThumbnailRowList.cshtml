@@ -86,7 +86,7 @@
         </div>
         @if (!Model.Details.HasVariation)
         { 
-            <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide">@Model.Price.ToString("C") >></button>
+            <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span> >></button>
             <input type="hidden" name="productId" id="productId" value="@Model.Id">
         }
         else

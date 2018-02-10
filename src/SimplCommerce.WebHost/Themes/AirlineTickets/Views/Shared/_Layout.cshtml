@@ -31,11 +31,11 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i class="fa fa-check"></i><span class="currency">@Localizer["Check reservation"]</span></a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle no-border" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-hrn">₴</i><span class="currency">Currency</span></a>
+                            <a href="#" class="dropdown-toggle no-border" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="selected-currency-sign">$</i><span class="currency">Currency</span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-hrn">₴</i><span class="currency">HRN</span></a></li>
-                                <li><a href="#"><i class="fa fa-usd"></i><span class="currency">USD</span></a></li>
-                                <li><a href="#"><i class="fa fa-rub"></i><span class="currency">RUB</span></a></li>
+                                <li class="currency-selector"><a href="#"><i>₴</i><span class="currency">HRN</span></a></li>
+                                <li class="currency-selector"><a href="#"><i>$</i><span class="currency">USD</span></a></li>
+                                <li class="currency-selector"><a href="#"><i>₽</i><span class="currency">RUB</span></a></li>
                             </ul>
                         </li>
                         @await Html.PartialAsync("_SelectLanguagePartial")
@@ -277,8 +277,13 @@
                 };
                 $("#departure, #landing, #flightFrom, #flightTo").easyAutocomplete(options);
 
-                $(".currency").click(function () {
-                    recalculatePrices($(this).text());
+                $('.priceToConvert').each(function () {
+                    var price = parseFloat($(this).text());
+                    $(this).attr("data-usd-price", price);
+                })
+
+                $(".currency-selector").click(function () {
+                    recalculatePrices($(this).find("span").text());
                 });
 
                 function recalculatePrices(selectedCurrency) {
@@ -291,24 +296,35 @@
                                 }
                             });
 
-                            drawNewPrices(rate);
+                            drawNewPrices(rate, selectedCurrency);
                         });
                     }
                     else if (selectedCurrency == "RUB") {
                         alert("Not ready yet");
                     }
                     else if (selectedCurrency == "USD") {
-                        drawNewPrices(rate);
+                        drawNewPrices(rate, selectedCurrency);
                     }
 
-                    function drawNewPrices(newRate) {
-                        $('.priceToConvert').each(function () {
-                            var price = parseFloat($(this).text());
+                    function drawNewPrices(newRate, selectedCurrency) {
+                        $('.priceToConvert').each(function () { 
+                            var sign = "$";
+                            var price = parseFloat($(this).attr("data-usd-price"));
                             var convertedPrice = Math.round(price * newRate);
+
                             $(this).text(convertedPrice);
+
+                            if (selectedCurrency != "USD") {
+                                sign = selectedCurrency == "HRN" ? "₴" : "₽";
+                            }
+
+                            $(this).text($(this).text() + sign);
+                            $('.selected-currency-sign').text(sign);
                         })
                     }
                 }
+
+                recalculatePrices("USD");
             });
     </script>
 
