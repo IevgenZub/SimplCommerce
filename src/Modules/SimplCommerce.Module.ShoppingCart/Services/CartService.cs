@@ -25,7 +25,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
             _mediaService = mediaService;
         }
 
-        public async Task AddToCart(long userId, long productId, int quantity)
+        public async Task AddToCart(long userId, long productId, int quantity, int quantityChild, int quaintyBaby)
         {
             var cart = _cartRepository.Query().Include(x => x.Items).FirstOrDefault(x => x.UserId == userId && x.IsActive);
             if (cart == null)
@@ -45,6 +45,8 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Cart = cart,
                     ProductId = productId,
                     Quantity = quantity,
+                    QuantityChild = quantityChild,
+                    QuantityBaby = quaintyBaby,
                     CreatedOn = DateTimeOffset.Now
                 };
 
@@ -153,6 +155,8 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                             Cart = cartTo,
                             ProductId = fromItem.ProductId,
                             Quantity = fromItem.Quantity,
+                            QuantityChild = fromItem.QuantityChild,
+                            QuantityBaby = fromItem.QuantityBaby,
                             CreatedOn = DateTimeOffset.Now
                         };
                         cartTo.Items.Add(toItem);
