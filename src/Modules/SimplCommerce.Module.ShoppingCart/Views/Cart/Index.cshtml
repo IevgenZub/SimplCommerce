@@ -31,7 +31,15 @@
                         <td class="text-center">
                             <button type="button" class="quantity-button" ng-click="vm.decreaseQuantity(cartItem)" name="subtract" value="-">-</button>
                             <input type="text" class="quantity-field" ng-model="cartItem.quantity" readonly="readonly" />
-                            <button type="button" class="quantity-button" ng-click="vm.increaseQuantity(cartItem)" name="subtract" value="+">+</button>
+                            <button type="button" class="quantity-button" ng-click="vm.increaseQuantity(cartItem)" name="subtract" value="+">+ (18+)</button>
+                            
+                            <button type="button" class="quantity-button" ng-click="vm.decreaseQuantityChild(cartItem)" name="subtract" value="-">-</button>
+                            <input type="text" class="quantity-field" ng-model="cartItem.quantityChild" readonly="readonly" />
+                            <button type="button" class="quantity-button" ng-click="vm.increaseQuantityChild(cartItem)" name="subtract" value="+">+ (2-11)</button>
+                            
+                            <button type="button" class="quantity-button" ng-click="vm.decreaseQuantityBaby(cartItem)" name="subtract" value="-">-</button>
+                            <input type="text" class="quantity-field" ng-model="cartItem.quantityBaby" readonly="readonly" />
+                            <button type="button" class="quantity-button" ng-click="vm.increaseQuantityBaby(cartItem)" name="subtract" value="+">+ (0-2)</button>
                         </td>
                         <td class="text-right"><button class="btn btn-link" ng-click="vm.removeShoppingCartItem(cartItem)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
                     </tr>

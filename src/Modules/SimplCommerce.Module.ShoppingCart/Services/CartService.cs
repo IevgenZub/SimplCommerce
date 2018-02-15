@@ -88,8 +88,11 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
                     ProductPrice = x.Product.Price,
+                    ChildPrice = x.Product.OldPrice.Value,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
                     Quantity = x.Quantity,
+                    QuantityChild = x.QuantityChild,
+                    QuantityBaby = x.QuantityBaby,
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 

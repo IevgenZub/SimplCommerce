@@ -58,6 +58,9 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             model.ProductImage = addedProduct.ProductImage;
             model.ProductPrice = addedProduct.ProductPrice;
             model.Quantity = addedProduct.Quantity;
+            model.QuantityChild = addedProduct.QuantityChild;
+            model.QuantityBaby = addedProduct.QuantityBaby;
+            model.ChildPrice = addedProduct.ChildPrice;
 
             return PartialView(model);
         }
@@ -87,6 +90,9 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             }
 
             cartItem.Quantity = model.Quantity;
+            cartItem.QuantityChild = model.QuantityChild;
+            cartItem.QuantityBaby = model.QuantityBaby;
+
             _cartItemRepository.SaveChanges();
 
             return await List();

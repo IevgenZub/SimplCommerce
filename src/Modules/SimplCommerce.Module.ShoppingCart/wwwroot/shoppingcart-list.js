@@ -37,17 +37,38 @@
                     shoppingCartService.removeShoppingCartItem(item.id).then(cartDataCallback);
                 };
 
-                vm.increaseQuantity = function increaseQuantity(item) {
-                    item.quantity += 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity).then(cartDataCallback);
-                };
-
                 vm.decreaseQuantity = function decreaseQuantity(item) {
                     if (item.quantity <= 1) {
                         return;
                     }
                     item.quantity -= 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity).then(cartDataCallback);
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.increaseQuantityChild = function increaseQuantityChild(item) {
+                    item.quantityChild += 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.decreaseQuantityChild = function decreaseQuantityChild(item) {
+                    if (item.quantityChild <= 1) {
+                        return;
+                    }
+                    item.quantityChild -= 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.increaseQuantityBaby = function increaseQuantityBaby(item) {
+                    item.quantityBaby += 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.decreaseQuantityBaby = function decreaseQuantityBaby(item) {
+                    if (item.quantityBaby <= 1) {
+                        return;
+                    }
+                    item.quantityBaby -= 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.applyCoupon = function applyCoupon() {
