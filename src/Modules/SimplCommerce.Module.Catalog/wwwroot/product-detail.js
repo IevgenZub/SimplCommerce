@@ -30,8 +30,8 @@
             }
         });
 
-        $('.quantity-button').on('click', function () {
-            var quantityInput = $(this).closest("form").find('.quantity-field');
+        $('.quantity-button-adult').on('click', function () {
+            var quantityInput = $(this).closest("form").find('.quantity-field-adult');
             if ($(this).val() === '+')
             {
                 quantityInput.val(parseInt(quantityInput.val(), 10) + 1);
@@ -41,7 +41,25 @@
             }
         });
 
+        $('.quantity-button-child').on('click', function () {
+            var quantityInput = $(this).closest("form").find('.quantity-field-child');
+            if ($(this).val() === '+') {
+                quantityInput.val(parseInt(quantityInput.val(), 10) + 1);
+            }
+            else if (quantityInput.val() > 1) {
+                quantityInput.val(quantityInput.val() - 1);
+            }
+        });
 
+        $('.quantity-button-baby').on('click', function () {
+            var quantityInput = $(this).closest("form").find('.quantity-field-baby');
+            if ($(this).val() === '+') {
+                quantityInput.val(parseInt(quantityInput.val(), 10) + 1);
+            }
+            else if (quantityInput.val() > 1) {
+                quantityInput.val(quantityInput.val() - 1);
+            }
+        });
 
     });
 })(jQuery);

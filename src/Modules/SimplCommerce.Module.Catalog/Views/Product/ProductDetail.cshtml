@@ -100,9 +100,19 @@
                             <form class="inline">
                                 <input type="hidden" name="productId" value="@variant.Id" />
                                 <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" class="quantity-button" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" class="quantity-field" readonly="readonly" name="qty" value="1">
-                                    <button type="button" class="quantity-button" style="font-size:smaller" name="add" value="+">+</button>
+                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
+                                    <button type="button" class="quantity-button quantity-button-adult" style="font-size:smaller" name="add" value="+">+ (18+)</button>
+                                </div>
+                                <div class="product-quantity">
+                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="1">
+                                    <button type="button" class="quantity-button quantity-button-child" style="font-size:smaller" name="add" value="+">+ (2-11)</button>
+                                </div>
+                                <div class="product-quantity">
+                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="1">
+                                    <button type="button" class="quantity-button quantity-button-baby" style="font-size:smaller" name="add" value="+">+ (0-2)</button>
                                 </div>
                                 <button type="button" style="font-size:smaller"  disabled="@(!variant.IsAllowToOrder || variant.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
                             </form>
@@ -139,10 +149,20 @@
                 <div class="add-to-cart">
                     <form class="inline">
                         <input type="hidden" name="productId" value="@Model.Id" />
-                        <div class="product-quantity" style="margin-top: 3px;">
-                            <button type="button" class="quantity-button" style="font-size:smaller" name="subtract" value="-">-</button>
-                            <input type="text"  class="quantity-field" style="font-size:smaller" readonly="readonly" name="qty" value="1">
-                            <button type="button" style="font-size:smaller" class="quantity-button" name="add" value="+">+</button>
+                        <div class="product-quantity">
+                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
+                            <input type="text" style="font-size:smaller" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
+                            <button type="button" class="quantity-button quantity-button-adult" style="font-size:smaller" name="add" value="+">+ (18+)</button>
+                        </div>
+                        <div class="product-quantity">
+                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
+                            <input type="text" style="font-size:smaller" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="1">
+                            <button type="button" class="quantity-button quantity-button-child" style="font-size:smaller" name="add" value="+">+ (2-11)</button>
+                        </div>
+                        <div class="product-quantity">
+                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
+                            <input type="text" style="font-size:smaller" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="1">
+                            <button type="button" class="quantity-button quantity-button-baby" style="font-size:smaller" name="add" value="+">+ (0-2)</button>
                         </div>
                         <button type="button" style="font-size:smaller" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
                     </form>
