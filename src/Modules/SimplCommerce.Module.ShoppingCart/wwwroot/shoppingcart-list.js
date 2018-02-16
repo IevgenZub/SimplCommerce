@@ -37,6 +37,11 @@
                     shoppingCartService.removeShoppingCartItem(item.id).then(cartDataCallback);
                 };
 
+                vm.increaseQuantity = function increaseQuantity(item) {
+                    item.quantity += 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
                 vm.decreaseQuantity = function decreaseQuantity(item) {
                     if (item.quantity <= 1) {
                         return;

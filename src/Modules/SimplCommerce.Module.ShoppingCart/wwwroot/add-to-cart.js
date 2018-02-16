@@ -1,11 +1,13 @@
 ﻿/*global $ */
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
-        var quantity, productId
+        var quantity, quantityChild, quantityBaby, productId
 
         if ($(this).hasClass('btn-hide')) {
             productId = $(this).attr("id");
             quantity = 1; 
+            quantityChild = 0;
+            quantityBaby = 0;
         }
         else {
             var $form = $(this).closest("form"),
