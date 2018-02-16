@@ -96,7 +96,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 
-            cartVm.SubTotal = cartVm.Items.Sum(x => x.Quantity * x.ProductPrice);
+            cartVm.SubTotal = cartVm.Items.Sum(x => x.Quantity * x.ProductPrice + x.QuantityChild * x.ChildPrice + x.QuantityBaby * x.ChildPrice);
             if (!string.IsNullOrWhiteSpace(cartVm.CouponCode))
             {
                 var cartInfoForCoupon = new CartInfoForCoupon

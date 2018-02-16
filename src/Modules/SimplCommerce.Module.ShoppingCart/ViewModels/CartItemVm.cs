@@ -26,7 +26,7 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
 
         public int QuantityBaby { get; set; }
 
-        public decimal Total => Quantity * ProductPrice;
+        public decimal Total => Quantity * ProductPrice + QuantityChild * ChildPrice + QuantityBaby * ChildPrice;
 
         public string TotalString => Total.ToString("C");
 
