@@ -22,13 +22,20 @@
                     </ul>
                 }
             </td>
-            <td class="text-center">@item.Quantity</td>
-            <td class="text-right">@item.ProductPriceString</td>
+            <td class="text-center">
+                <p>@item.Quantity (18+)</p> 
+                <p>@item.QuantityChild (2-11)</p> 
+                <p>@item.QuantityBaby (0-2)</p>
+            </td>
+            <td class="text-right">
+                <p><span class="priceToConvert">@item.ProductPrice</span> adult</p>
+                <p><span class="priceToConvert">@item.ChildPrice</span> child</p>
+            </td>
         </tr>
     }
     <tr>
         <td>@Localizer["Subtotal"]</td>
-        <td colspan="2" class="text-right">@Model.SubTotal.ToString("C")<input type="hidden" id="orderSubtotal" value="@Model.SubTotal" /></td>
+        <td colspan="2" class="text-right"><span class="priceToConvert">@Model.SubTotal</span><input type="hidden" id="orderSubtotal" value="@Model.SubTotal" /></td>
     </tr>
     <tr>
         <td>@Localizer["Shipping"]</td>
@@ -47,6 +54,6 @@
     </tr>
     <tr>
         <td><strong>@Localizer["Order Total"]</strong>@if (Model.IsTaxIncludedInProductPrice) { @Localizer["VAT included"] }</td>
-        <td colspan="2" class="text-right"><strong id="orderTotal">@Model.OrderTotal.ToString("C")</strong></td>
+        <td colspan="2" class="text-right"><strong id="orderTotal"><span class="priceToConvert">@Model.OrderTotal</span></strong></td>
     </tr>
 </table>

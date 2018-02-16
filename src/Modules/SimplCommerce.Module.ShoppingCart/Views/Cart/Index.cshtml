@@ -99,7 +99,7 @@
                     <dt>@Localizer["Discount"] {{vm.cart.couponCode}}</dt>
                     <dd>{{vm.cart.discountString}}</dd>
                     <dt>@Localizer["Order Total"]</dt>
-                    <dd><strong>{{vm.cart.orderTotalString}}</strong></dd>
+                    <dd><strong><span class="priceToConvert">{{vm.cart.orderTotal}}</span></strong></dd>
                 </dl>
                 <p class="text-right"><a href="~/checkout/shipping" class="btn btn-primary">@Localizer["Process to Checkout"]</a></p>
             </div>

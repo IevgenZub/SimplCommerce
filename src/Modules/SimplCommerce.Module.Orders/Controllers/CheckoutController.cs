@@ -65,7 +65,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                 throw new ApplicationException($"Cart of user {currentUser.Id} cannot be found");
             }
 
-            model.NumberofPassengers = cart.Items[0].Quantity;
+            model.NumberofPassengers = cart.Items[0].Quantity + cart.Items[0].QuantityChild + cart.Items[0].QuantityBaby;
 
             PopulateShippingForm(model, currentUser);
 
