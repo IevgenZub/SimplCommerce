@@ -26,9 +26,10 @@ $(function () {
             data: JSON.stringify({ productId: productId, quantity: quantity, quantityChild : quantityChild, quantityBaby: quantityBaby }),
             contentType: "application/json"
         }).done(function (data) {
-            $('#shopModal').find('.modal-content').html(data);
-            $('#shopModal').modal('show');
-            $('.cart-badge .badge').text($('#shopModal').find('.cart-item-count').text());
+            //$('#shopModal').find('.modal-content').html(data);
+            //$('#shopModal').modal('show');
+            //$('.cart-badge .badge').text($('#shopModal').find('.cart-item-count').text());
+            window.location = "cart";
         }).fail(function () {
             /*jshint multistr: true */
             $('#shopModal').find('.modal-content').html(' \
