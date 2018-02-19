@@ -43,6 +43,8 @@
                     <div class="col-sm-2">'+ sex +'</div>\
                </div>');
 
+            $form[0].reset();
+
             checkIfContinueEnabled();
         });
     });

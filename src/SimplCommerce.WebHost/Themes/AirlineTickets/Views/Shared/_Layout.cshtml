@@ -278,52 +278,56 @@
                 $('.priceToConvert').each(function () {
                     var price = parseFloat($(this).text());
                     $(this).attr("data-usd-price", price);
-                })
-
-                $(".currency-selector").click(function () {
-                    recalculatePrices($(this).find("span").text());
                 });
 
-                function recalculatePrices(selectedCurrency) {
-                    var rate = 1;
-                    if (selectedCurrency == "HRN") {
-                        $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
-                            $.each(data, function (key, val) {
-                                if (val.ccy == "USD") {
-                                    rate = val.sale;
-                                }
-                            });
+                $(".currency-selector").click(function () {
+                    localStorage.setItem("selectedCurrency", $(this).find("span").text());
+                    recalculatePrices();
+                });
 
-                            drawNewPrices(rate, selectedCurrency);
-                        });
-                    }
-                    else if (selectedCurrency == "RUB") {
-                        alert("Not ready yet");
-                    }
-                    else if (selectedCurrency == "USD") {
-                        drawNewPrices(rate, selectedCurrency);
-                    }
+                recalculatePrices();
+            });
 
-                    function drawNewPrices(newRate, selectedCurrency) {
-                        $('.priceToConvert').each(function () { 
-                            var sign = "$";
-                            var price = parseFloat($(this).attr("data-usd-price"));
-                            var convertedPrice = Math.round(price * newRate);
-
-                            $(this).text(convertedPrice);
-
-                            if (selectedCurrency != "USD") {
-                                sign = selectedCurrency == "HRN" ? "₴" : "₽";
+            function recalculatePrices() {
+                var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
+                var rate = 1;
+                if (selectedCurrency == "HRN") {
+                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                        $.each(data, function (key, val) {
+                            if (val.ccy == "USD") {
+                                rate = val.sale;
                             }
+                        });
 
-                            $(this).text($(this).text() + sign);
-                            $('.selected-currency-sign').text(sign);
-                        })
-                    }
+                        drawNewPrices(rate, selectedCurrency);
+                    });
+                }
+                else if (selectedCurrency == "RUB") {
+                    alert("Not ready yet");
+                }
+                else if (selectedCurrency == "USD") {
+                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                        drawNewPrices(rate, selectedCurrency);
+                    });
                 }
 
-                recalculatePrices("USD");
-            });
+                function drawNewPrices(newRate, selectedCurrency) {
+                    $('.priceToConvert').each(function () {
+                        var sign = "$";
+                        var price = parseFloat($(this).attr("data-usd-price"));
+                        var convertedPrice = Math.round(price * newRate);
+
+                        $(this).text(convertedPrice);
+
+                        if (selectedCurrency != "USD") {
+                            sign = selectedCurrency == "HRN" ? "₴" : "₽";
+                        }
+
+                        $(this).text($(this).text() + sign);
+                        $('.selected-currency-sign').text(sign);
+                    })
+                }
+            };
     </script>
 
     @RenderSection("scripts", required: false)

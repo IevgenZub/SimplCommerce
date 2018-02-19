@@ -60,7 +60,10 @@
                                 </li>
                             </ul>
                         </td>
-                        <td class="text-right">{{cartItem.productPriceString}}</td>
+                        <td class="text-right">
+                            <p><span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span> adult</p>
+                            <p><span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}" >{{cartItem.childPrice}}</span> child</p>
+                        </td>
                         <td class="text-center" style="width:300px">
                             <div class="add-to-cart ">
                                 <div class="product-quantity">
@@ -95,11 +98,11 @@
                 <h4>@Localizer["Order summary"]</h4>
                 <dl class="dl-horizontal">
                     <dt>@Localizer["Subtotal"]</dt>
-                    <dd>{{vm.cart.subTotalString}}</dd>
+                    <dd><span class="priceToConvert" data-usd-price="{{vm.cart.subTotal}}">{{vm.cart.subTotal}}</span></dd>
                     <dt>@Localizer["Discount"] {{vm.cart.couponCode}}</dt>
-                    <dd>{{vm.cart.discountString}}</dd>
+                    <dd><span class="priceToConvert" data-usd-price="{{vm.cart.discount}}">{{vm.cart.discount}}</span></dd>
                     <dt>@Localizer["Order Total"]</dt>
-                    <dd><strong><span class="priceToConvert">{{vm.cart.orderTotal}}</span></strong></dd>
+                    <dd><strong><span class="priceToConvert" data-usd-price="{{vm.cart.orderTotal}}">{{vm.cart.orderTotal}}</span></strong></dd>
                 </dl>
                 <p class="text-right"><a href="~/checkout/shipping" class="btn btn-primary">@Localizer["Process to Checkout"]</a></p>
             </div>

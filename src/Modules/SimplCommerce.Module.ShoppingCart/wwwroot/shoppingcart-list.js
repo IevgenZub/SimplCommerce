@@ -7,26 +7,13 @@
             function ($scope, shoppingCartService) {
                 var vm = this;
                 vm.cart = {};
-                // TODO: Apply real model
-                vm.passengers = [{
-                    sex: "Male",
-                    firstName: "Alex",
-                    lastName: "Prokofiev",
-                    dateOfBirth: new Date("02.03.1975"),
-                    documentNo: "EN 758489",
-                    dateOfExpiry: new Date("05.07.2030")
-                }, {
-                    sex: "Male",
-                    firstName: "Alex",
-                    lastName: "Prokofiev",
-                    dateOfBirth: new Date("02.03.1975"),
-                    documentNo: "EN 758489",
-                    dateOfExpiry: new Date("05.07.2030")
-                }];
+
 
                 function cartDataCallback(result) {
                     vm.cart = result.data;
                     $('.cart-badge .badge').text(vm.cart.items.length);
+
+                    recalculatePrices();
                 }
 
                 function getShoppingCartItems() {
@@ -46,32 +33,35 @@
                     if (item.quantity <= 1) {
                         return;
                     }
+
                     item.quantity -= 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
-                vm.increaseQuantityChild = function increaseQuantityChild(item) {
+                vm.increaseQuantityChild = function increaseQuantityChild(item) {                    
                     item.quantityChild += 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.decreaseQuantityChild = function decreaseQuantityChild(item) {
-                    if (item.quantityChild <= 1) {
+                    if (item.quantityChild == 0) {
                         return;
                     }
+
                     item.quantityChild -= 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.increaseQuantityBaby = function increaseQuantityBaby(item) {
+                    if (item.quantityBaby == 0) {
+                        return;
+                    }
+
                     item.quantityBaby += 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.decreaseQuantityBaby = function decreaseQuantityBaby(item) {
-                    if (item.quantityBaby <= 1) {
-                        return;
-                    }
                     item.quantityBaby -= 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
@@ -87,7 +77,7 @@
                     });
                 };
 
-                 getShoppingCartItems();
+                getShoppingCartItems();
             }
         ]);
 })();
