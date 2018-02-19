@@ -27,6 +27,10 @@
 
         // Put the results in a div
         posting.done(function (data) {
+            if (data.includes("Error")) {
+                alert(data);
+                return;
+            }
             var nextIndex = $('.address-container > div').length;
             var newAddress = 
                 $('.address-container').append('\

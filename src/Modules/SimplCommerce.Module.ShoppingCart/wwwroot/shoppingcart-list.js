@@ -53,15 +53,15 @@
                 };
 
                 vm.increaseQuantityBaby = function increaseQuantityBaby(item) {
-                    if (item.quantityBaby == 0) {
-                        return;
-                    }
-
                     item.quantityBaby += 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.decreaseQuantityBaby = function decreaseQuantityBaby(item) {
+                    if (item.quantityBaby == 0) {
+                        return;
+                    }
+
                     item.quantityBaby -= 1;
                     shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };

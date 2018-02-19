@@ -50,7 +50,7 @@
     }
     <tr>
         <td>@Localizer["Discount"]</td>
-        <td colspan="2" class="text-right">@Model.Discount.ToString("C")</td>
+        <td colspan="2" class="text-right"><span class="priceToConvert">@Model.Discount</span></td>
     </tr>
     <tr>
         <td><strong>@Localizer["Order Total"]</strong>@if (Model.IsTaxIncludedInProductPrice) { @Localizer["VAT included"] }</td>

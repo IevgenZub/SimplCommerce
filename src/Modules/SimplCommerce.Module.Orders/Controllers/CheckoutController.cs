@@ -80,6 +80,17 @@ namespace SimplCommerce.Module.Orders.Controllers
             {
                 var currentUser = await _workContext.GetCurrentUser();
 
+                var existing = _userAddressRepository.Query().Where(ua => ua.UserId == currentUser.Id);
+                if (existing.Any(ua => ua.Address.ContactName == model.FirstName && ua.Address.AddressLine1 == model.LastName))
+                {
+                    return Ok("Error. Name already exists");
+                }
+
+                if (existing.Any(ua => ua.Address.City == model.DocumentNumber))
+                {
+                    return Ok("Error. Document number already exists");
+                }
+
                 var address = new Address
                 {
                     ContactName = model.FirstName,
