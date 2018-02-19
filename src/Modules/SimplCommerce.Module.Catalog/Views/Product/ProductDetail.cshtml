@@ -15,8 +15,8 @@
                         @foreach (var option in Model.AvailableOptions)
                         {
                             <div>
-                                <h5>@option.OptionName </h5>
-                                <ul class="list-inline product-attr-options" style="font:smaller">
+                                <h5 style="margin-bottom:0;">@option.OptionName </h5>
+                                <ul class="list-inline product-attr-options" style="font:smaller; margin-bottom: 20px;">
                                     @if (option.OptionName == "Departure Date")
                                     {
                                         var valuesSorted = option.Values.OrderBy(o => Convert.ToDateTime(o, new System.Globalization.CultureInfo("ru-RU", true)));
