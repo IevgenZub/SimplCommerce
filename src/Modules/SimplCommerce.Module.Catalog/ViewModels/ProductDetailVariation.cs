@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SimplCommerce.Module.Catalog.Models;
+using System;
 
 namespace SimplCommerce.Module.Catalog.ViewModels
 {
@@ -8,6 +9,14 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public long Id { get; set; }
 
         public string Name { get; set; }
+
+        public DateTimeOffset? DepartureDate { get; set; }
+
+        public decimal? InfantPrice { get; set; }
+
+        public DateTimeOffset? ReturnLandingDate { get; set; }
+
+        public string FlightClass { get; set; }
 
         public string NormalizedName { get; set; }
 

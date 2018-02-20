@@ -19,7 +19,7 @@
                 <h4>@Localizer["Find cheapest tickets like million people"]</h4>
             </div>
         </div>
-        <div class="row form-container">
+        <div class="row form-container" style="margin-right: 15px;">
             <form action="search" method="get" class="form-inline" accept-charset="utf-8">
                 <fieldset>
                     <div class="row">
@@ -38,15 +38,15 @@
                         <div class="col-sm-12 form-group">
                             <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0;">
                                 <label class="sr-only" for="departure">@Localizer["Departure"]</label>
-                                <input type="text" class="form-control" style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
+                                <input type="text" class="form-control" required style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
                             </div>
                             <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
                                 <label class="sr-only" for="landing">@Localizer["Landing"]</label>
-                                <input type="text" class="form-control date" style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
+                                <input type="text" class="form-control date" required style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
                             </div>
                             <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
                                 <label class="sr-only" for="departure-date">@Localizer["Departure Date"]</label>
-                                <input type="text" class="form-control" style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
+                                <input type="text" class="form-control" required style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
                             </div>
                             <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
                                 <label class="sr-only" for="return-date">@Localizer["Return Date"]</label>
@@ -155,6 +155,10 @@
 
 @await Html.PartialAsync("_WidgetInstances", Model.WidgetInstances.Where(x => x.WidgetZoneId == WidgetZoneIds.HomeAfterMainContent))
 
+<br />
+<br />
+
+
 @section scripts {
     <script simpl-append-version="true" src="~/lib/wnumb/wNumb.js"></script>
     <script simpl-append-version="true" src="~/lib/nouislider/nouislider.min.js"></script>
@@ -202,10 +206,13 @@
 
         var tripType = getUrlParameter('TripType');
         if (tripType) {
+
             if (tripType === "one-way") {
                 $('#one-way').prop('checked', true).parent().addClass('active');
+                $('#round-trip').prop('checked', false).parent().removeClass('active');
             } else {
                 $('#round-trip').prop('checked', true).parent().addClass('active');
+                $('#one-way').prop('checked', false).parent().removeClass('active');
             }
         }
 
@@ -220,6 +227,33 @@
                     $iconDown.hide();
                     $iconUp.show();
                     $('.btn-hide').hide();
+
+                    var departureDate = $('#departure-date').val();
+                    var selectedDepartureDate = $('input[type=radio][data-departure="' + departureDate + '"]:visible');
+                    if (selectedDepartureDate) {
+                        selectedDepartureDate.parent('li').click();
+                    }
+
+                    var returnDate = $('#return-date').val();
+                    var days = daysdifference(new Date(returnDate), new Date(departureDate));
+                    var selectedReturnDate = $('input[type=radio][data-return="' + days + '"]:visible');
+                    if (selectedReturnDate) {
+                        selectedReturnDate.parent('li').click();
+                    }
+
+                    function daysdifference(date1, date2) {
+                        // The number of milliseconds in one day
+                        var ONEDAY = 1000 * 60 * 60 * 24;
+                        // Convert both dates to milliseconds
+                        var date1_ms = date1.getTime();
+                        var date2_ms = date2.getTime();
+                        // Calculate the difference in milliseconds
+                        var difference_ms = Math.abs(date1_ms - date2_ms);
+
+                        // Convert back to days and return
+                        return Math.round(difference_ms / ONEDAY);
+                    }
+
                 } else {
                     $iconUp.hide();
                     $iconDown.show();

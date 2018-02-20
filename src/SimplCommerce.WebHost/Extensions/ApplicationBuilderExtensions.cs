@@ -85,7 +85,7 @@ namespace SimplCommerce.WebHost.Extensions
             };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture("en-US", "en-US"),
+                DefaultRequestCulture = new RequestCulture("ru-RU", "ru-RU"),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
             });

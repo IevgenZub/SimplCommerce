@@ -12,10 +12,12 @@
                     return $http.post('Cart/Remove', itemId);
                 }
 
-                function updateQuantity(itemId, quantity) {
+                function updateQuantity(itemId, quantity, quantityChild, quantityBaby) {
                     return $http.post('Cart/UpdateQuantity', {
                         cartItemId: itemId,
-                        quantity: quantity
+                        quantity: quantity,
+                        quantityChild: quantityChild,
+                        quantityBaby: quantityBaby
                     });
                 }
 

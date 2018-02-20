@@ -9,12 +9,18 @@
         <div class="col-md-3">
             <img alt="@Model.ProductName" class="img-responsive" src="@Model.ProductImage">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <h4>@Model.ProductName</h4>
             <h6>@Model.VariationName</h6>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             @Model.Quantity x @Model.ProductPrice.ToString("C")
+        </div>
+        <div class="col-md-2">
+            @Model.QuantityChild x @Model.ChildPrice.ToString("C")
+        </div>
+        <div class="col-md-2">
+            @Model.QuantityBaby x @Model.ChildPrice.ToString("C")
         </div>
     </div>
     <div class="row">

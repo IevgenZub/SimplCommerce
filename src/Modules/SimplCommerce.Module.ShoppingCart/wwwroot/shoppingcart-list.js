@@ -7,19 +7,13 @@
             function ($scope, shoppingCartService) {
                 var vm = this;
                 vm.cart = {};
-                // TODO: Apply real model
-                vm.passengers = [{
-                    sex: "Male",
-                    firstName: "Alex",
-                    lastName: "Prokofiev",
-                    dateOfBirth: "02.03.1975",
-                    documentNo: "EN 758489",
-                    dateOfExpiry: "05.07.2030"
-                }];
+
 
                 function cartDataCallback(result) {
                     vm.cart = result.data;
                     $('.cart-badge .badge').text(vm.cart.items.length);
+
+                    recalculatePrices();
                 }
 
                 function getShoppingCartItems() {
@@ -32,15 +26,44 @@
 
                 vm.increaseQuantity = function increaseQuantity(item) {
                     item.quantity += 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity).then(cartDataCallback);
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.decreaseQuantity = function decreaseQuantity(item) {
                     if (item.quantity <= 1) {
                         return;
                     }
+
                     item.quantity -= 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity).then(cartDataCallback);
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.increaseQuantityChild = function increaseQuantityChild(item) {                    
+                    item.quantityChild += 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.decreaseQuantityChild = function decreaseQuantityChild(item) {
+                    if (item.quantityChild == 0) {
+                        return;
+                    }
+
+                    item.quantityChild -= 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.increaseQuantityBaby = function increaseQuantityBaby(item) {
+                    item.quantityBaby += 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                };
+
+                vm.decreaseQuantityBaby = function decreaseQuantityBaby(item) {
+                    if (item.quantityBaby == 0) {
+                        return;
+                    }
+
+                    item.quantityBaby -= 1;
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
                 };
 
                 vm.applyCoupon = function applyCoupon() {
@@ -54,7 +77,7 @@
                     });
                 };
 
-                 getShoppingCartItems();
+                getShoppingCartItems();
             }
         ]);
 })();

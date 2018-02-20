@@ -1,28 +1,35 @@
 ﻿/*global $ */
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
-        var quantity, productId
+        var quantity, quantityChild, quantityBaby, productId
 
         if ($(this).hasClass('btn-hide')) {
             productId = $(this).attr("id");
             quantity = 1; 
+            quantityChild = 0;
+            quantityBaby = 0;
         }
         else {
             var $form = $(this).closest("form"),
             productId = $(this).closest("form").find('input[name=productId]').val(),
-            $quantityInput = $form.find('.quantity-field');
-            quantity = $quantityInput.length === 1 ? $quantityInput.val() : 1;
+            $quantityAdultInput = $form.find('.quantity-field-adult');
+            $quantityChildInput = $form.find('.quantity-field-child');
+            $quantityBabyInput = $form.find('.quantity-field-baby');
+            quantity = $quantityAdultInput.length === 1 ? $quantityAdultInput.val() : 1;
+            quantityChild = $quantityChildInput.length === 1 ? $quantityChildInput.val() : 0;
+            quantityBaby = $quantityBabyInput.length === 1 ? $quantityBabyInput.val() : 0;
         }
             
         $.ajax({
             type: 'POST',
             url: '/cart/addtocart',
-            data: JSON.stringify({ productId: productId, quantity: quantity }),
+            data: JSON.stringify({ productId: productId, quantity: quantity, quantityChild : quantityChild, quantityBaby: quantityBaby }),
             contentType: "application/json"
         }).done(function (data) {
-            $('#shopModal').find('.modal-content').html(data);
-            $('#shopModal').modal('show');
-            $('.cart-badge .badge').text($('#shopModal').find('.cart-item-count').text());
+            //$('#shopModal').find('.modal-content').html(data);
+            //$('#shopModal').modal('show');
+            //$('.cart-badge .badge').text($('#shopModal').find('.cart-item-count').text());
+            window.location = "cart";
         }).fail(function () {
             /*jshint multistr: true */
             $('#shopModal').find('.modal-content').html(' \

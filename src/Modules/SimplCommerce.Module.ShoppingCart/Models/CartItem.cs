@@ -14,6 +14,10 @@ namespace SimplCommerce.Module.ShoppingCart.Models
 
         public int Quantity { get; set; }
 
+        public int QuantityChild { get; set; }
+
+        public int QuantityBaby { get; set; }
+
         public long CartId { get; set; }
 
         public Cart Cart { get; set; }

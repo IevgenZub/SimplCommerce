@@ -142,6 +142,10 @@ namespace SimplCommerce.Module.Catalog.Components
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
+                    DepartureDate = variation.DepartureDate,
+                    InfantPrice = variation.OldPrice,
+                    ReturnLandingDate = variation.ReturnLandingDate,
+                    FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation)
                 };
 

@@ -60,6 +60,7 @@ namespace SimplCommerce.Module.Orders.Services
             Address shippingAddress;
             if (shippingData.ShippingAddressId == 0)
             {
+                /*
                 var address = new Address
                 {
                     AddressLine1 = shippingData.NewAddressForm.AddressLine1,
@@ -81,18 +82,18 @@ namespace SimplCommerce.Module.Orders.Services
                 };
 
                 _userAddressRepository.Add(userAddress);
-
-                billingAddress = shippingAddress = address;
+                */
+                billingAddress = shippingAddress = null;
             }
             else
             {
                 billingAddress = shippingAddress = _userAddressRepository.Query().Where(x => x.Id == shippingData.ShippingAddressId).Select(x => x.Address).First();
             }
 
-            return await CreateOrder(user, paymentMethod, shippingData.ShippingMethod, billingAddress, shippingAddress);
+            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress);
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, string shippingMethodName, Address billingAddress, Address shippingAddress, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = _cartRepository
                 .Query()
@@ -105,7 +106,7 @@ namespace SimplCommerce.Module.Orders.Services
             }
 
             var discount = await ApplyDiscount(user, cart);
-            var shippingMethod = await ValidateShippingMethod(shippingMethodName, shippingAddress, cart);
+            var shippingMethod = await ValidateShippingMethod(shippingData.ShippingMethod, shippingAddress, cart);
 
             var orderBillingAddress = new OrderAddress()
             {
@@ -205,7 +206,30 @@ namespace SimplCommerce.Module.Orders.Services
                 _orderRepository.Add(subOrder);
             }
 
+            foreach (var registrationAddress in shippingData.ExistingShippingAddresses.Where(esa => esa.Selected).ToList())
+            {
+                var address = _userAddressRepository.Query().Where(x => x.Id == registrationAddress.UserAddressId).Select(x => x.Address).First();
+                var orderRegistrationAddress = new OrderRegistrationAddress
+                {
+                    Order = order,
+                    Address = new OrderAddress {
+                        ContactName = address.ContactName,
+                        AddressLine1 = address.AddressLine1,
+                        AddressLine2 = address.AddressLine2,
+                        City = address.City,
+                        CountryId = address.CountryId,
+                        Phone = address.Phone,
+                        PostalCode = address.PostalCode,
+                        DistrictId = address.DistrictId,
+                        StateOrProvinceId = address.StateOrProvinceId
+                    }
+                };
+
+                order.RegistrationAddress.Add(orderRegistrationAddress);
+            }
+
             _orderRepository.SaveChanges();
+
             await _orderEmailService.SendEmailToUser(user, order, "OrderEmailToCustomer");
             await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
 

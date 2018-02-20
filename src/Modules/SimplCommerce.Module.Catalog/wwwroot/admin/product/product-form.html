@@ -560,12 +560,7 @@
                                                       secondary-placeholder="+{{option.name}}">
                                                 <input  type="{{option.type}}">
                                                 <md-chip-template>
-                                                    <span ng-if="option.name == 'Departure Date'">
-                                                        {{$chip.key | turkishDate}}
-                                                    </span>
-                                                    <span ng-if="option.name != 'Departure Date'">
-                                                        {{$chip.key }}
-                                                    </span>
+                                                        {{$chip.key}}
                                                 </md-chip-template>
                                             </md-chips>
                                         </div>

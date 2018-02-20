@@ -36,7 +36,13 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> AddToCart([FromBody] AddToCartModel model)
         {
             var currentUser = await _workContext.GetCurrentUser();
-            await _cartService.AddToCart(currentUser.Id, model.ProductId, model.Quantity);
+            var cart = await _cartService.GetCart(currentUser.Id);
+            var cartItems = _cartItemRepository.Query().Where(x => x.CartId == cart.Id);
+
+            cartItems.ToList().ForEach(ci => _cartItemRepository.Remove(ci));
+            _cartItemRepository.SaveChanges();
+
+            await _cartService.AddToCart(currentUser.Id, model.ProductId, model.Quantity, model.QuantityChild, model.QuantityBaby);
 
             return RedirectToAction("AddToCartResult", new { productId = model.ProductId });
         }
@@ -58,6 +64,9 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             model.ProductImage = addedProduct.ProductImage;
             model.ProductPrice = addedProduct.ProductPrice;
             model.Quantity = addedProduct.Quantity;
+            model.QuantityChild = addedProduct.QuantityChild;
+            model.QuantityBaby = addedProduct.QuantityBaby;
+            model.ChildPrice = addedProduct.ChildPrice;
 
             return PartialView(model);
         }
@@ -87,6 +96,9 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             }
 
             cartItem.Quantity = model.Quantity;
+            cartItem.QuantityChild = model.QuantityChild;
+            cartItem.QuantityBaby = model.QuantityBaby;
+
             _cartItemRepository.SaveChanges();
 
             return await List();

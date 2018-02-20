@@ -14,6 +14,7 @@ using SimplCommerce.Module.Orders.ViewModels;
 using SimplCommerce.Module.ShippingPrices.Services;
 using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.Services;
+using SimplCommerce.Module.Core.ViewModels;
 
 namespace SimplCommerce.Module.Orders.Controllers
 {
@@ -56,15 +57,80 @@ namespace SimplCommerce.Module.Orders.Controllers
             var model = new DeliveryInformationVm();
 
             var currentUser = await _workContext.GetCurrentUser();
+
+            var cart = await _cartRepository.Query().Include(c => c.Items).Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
+
+            if (cart == null)
+            {
+                throw new ApplicationException($"Cart of user {currentUser.Id} cannot be found");
+            }
+
+            model.NumberofPassengers = cart.Items[0].Quantity + cart.Items[0].QuantityChild + cart.Items[0].QuantityBaby;
+
             PopulateShippingForm(model, currentUser);
 
             return View(model);
+        }
+
+        [Route("add-address")]
+        [HttpPost]
+        public async Task<IActionResult> AddAddress(AddressFormVm model)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = await _workContext.GetCurrentUser();
+
+                var existing = _userAddressRepository.Query().Where(ua => ua.UserId == currentUser.Id);
+                if (existing.Any(ua => ua.Address.ContactName == model.FirstName && ua.Address.AddressLine1 == model.LastName))
+                {
+                    return Ok("Error. Name already exists");
+                }
+
+                if (existing.Any(ua => ua.Address.City == model.DocumentNumber))
+                {
+                    return Ok("Error. Document number already exists");
+                }
+
+                var address = new Address
+                {
+                    ContactName = model.FirstName,
+                    AddressLine1 = model.LastName,
+                    AddressLine2 = model.BirthDate,
+                    CountryId = 238,
+                    StateOrProvinceId = 1,
+                    DistrictId = 1,
+                    City = model.DocumentNumber,
+                    PostalCode = model.DocumentExpiration,
+                    Phone = model.Sex
+                };
+
+                var userAddress = new UserAddress
+                {
+                    Address = address,
+                    AddressType = AddressType.Shipping,
+                    UserId = currentUser.Id
+                };
+
+                _userAddressRepository.Add(userAddress);
+                _userAddressRepository.SaveChanges();
+
+                model.Id = userAddress.Id;
+
+                return Ok(model);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost("shipping")]
         public async Task<IActionResult> Shipping(DeliveryInformationVm model)
         {
             var currentUser = await _workContext.GetCurrentUser();
+            if (model.ExistingShippingAddresses.Any(a => a.Selected))
+            {
+                model.ShippingAddressId = model.ExistingShippingAddresses.FirstOrDefault(a => a.Selected).UserAddressId;
+            }
+
             // TODO Handle error messages
             if (!ModelState.IsValid && (model.ShippingAddressId == 0))
             {
@@ -152,36 +218,17 @@ namespace SimplCommerce.Module.Orders.Controllers
                     ContactName = x.Address.ContactName,
                     Phone = x.Address.Phone,
                     AddressLine1 = x.Address.AddressLine1,
-                    AddressLine2 = x.Address.AddressLine1,
+                    AddressLine2 = x.Address.AddressLine2,
                     DistrictName = x.Address.District.Name,
                     StateOrProvinceName = x.Address.StateOrProvince.Name,
-                    CountryName = x.Address.Country.Name
+                    CountryName = x.Address.Country.Name,
+                    CityName = x.Address.City,
+                    PostalCode = x.Address.PostalCode
                 }).ToList();
 
             model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0;
 
-            model.NewAddressForm.ShipableContries = _countryRepository.Query()
-                .Where(x => x.IsShippingEnabled)
-                .OrderBy(x => x.Name)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-
-            if (model.NewAddressForm.ShipableContries.Count == 1)
-            {
-                var onlyShipableCountryId = long.Parse(model.NewAddressForm.ShipableContries.First().Value);
-                model.NewAddressForm.StateOrProvinces = _stateOrProvinceRepository
-                .Query()
-                .Where(x => x.CountryId == onlyShipableCountryId)
-                .OrderBy(x => x.Name)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-            }
+          
         }
     }
 }

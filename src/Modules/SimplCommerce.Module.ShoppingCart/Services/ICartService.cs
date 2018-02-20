@@ -6,7 +6,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
 {
     public interface ICartService
     {
-        Task AddToCart(long userId, long productId, int quantity);
+        Task AddToCart(long userId, long productId, int quantity, int quantityChild, int quantityBaby);
 
         Task<CartVm> GetCart(long userId);
 

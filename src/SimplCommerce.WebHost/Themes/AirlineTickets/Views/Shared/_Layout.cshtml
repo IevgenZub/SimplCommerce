@@ -28,8 +28,16 @@
                     <a href="/"><img class="navbar-brand" src="~/themes/AirlineTickets/img/logo-white.png" /></a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-register">
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" style="margin-bottom: 8px;">
                         <li><a href="#" class="no-border" data-toggle="modal" data-target="#rezKontrol"><i class="fa fa-check"></i><span class="currency">@Localizer["Check reservation"]</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle no-border" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="selected-currency-sign">$</i><span class="currency">Currency</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="currency-selector"><a href="#"><i>&#8372;</i><span class="currency">UAH</span></a></li>
+                                <li class="currency-selector"><a href="#"><i>&dollar;</i><span class="currency">USD</span></a></li>
+                                <li class="currency-selector"><a href="#"><i>&#8381;</i><span class="currency">RUB</span></a></li>
+                            </ul>
+                        </li>
                         @await Html.PartialAsync("_SelectLanguagePartial")
                         @await Html.PartialAsync("_LoginPartial")
                     </ul>
@@ -63,9 +71,7 @@
     <main>
         <section id="promotions" >
             <div class="container" >
-                <div class="row">
-                    @RenderBody()
-                </div>
+                @RenderBody()
             </div>
         </section>
         <!--
@@ -208,7 +214,6 @@
     </script>
     <script simpl-append-version="true" src="~/lib/jquery/jquery.js"></script>
     <script simpl-append-version="true" src="~/lib/bootstrap/js/bootstrap.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular/angular.js"></script>
     <script simpl-append-version="true" src="~/lib/matchheight/jquery.matchHeight.js"></script>
     <script simpl-append-version="true" src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
     @if (CultureInfo.CurrentCulture.Name == "vi-VN")
@@ -269,7 +274,60 @@
                     }
                 };
                 $("#departure, #landing, #flightFrom, #flightTo").easyAutocomplete(options);
+
+                $('.priceToConvert').each(function () {
+                    var price = parseFloat($(this).text());
+                    $(this).attr("data-usd-price", price);
+                });
+
+                $(".currency-selector").click(function () {
+                    localStorage.setItem("selectedCurrency", $(this).find("span").text());
+                    recalculatePrices();
+                });
+
+                recalculatePrices();
             });
+
+            function recalculatePrices() {
+                var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
+                var rate = 1;
+                if (selectedCurrency == "HRN") {
+                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                        $.each(data, function (key, val) {
+                            if (val.ccy == "USD") {
+                                rate = val.sale;
+                            }
+                        });
+
+                        drawNewPrices(rate, selectedCurrency);
+                    });
+                }
+                else if (selectedCurrency == "RUB") {
+                    alert("Not ready yet");
+                }
+                else if (selectedCurrency == "USD") {
+                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                        drawNewPrices(rate, selectedCurrency);
+                    });
+                }
+
+                function drawNewPrices(newRate, selectedCurrency) {
+                    $('.priceToConvert').each(function () {
+                        var sign = "$";
+                        var price = parseFloat($(this).attr("data-usd-price"));
+                        var convertedPrice = Math.round(price * newRate);
+
+                        $(this).text(convertedPrice);
+
+                        if (selectedCurrency != "USD") {
+                            sign = selectedCurrency == "HRN" ? "₴" : "₽";
+                        }
+
+                        $(this).text($(this).text() + sign);
+                        $('.selected-currency-sign').text(sign);
+                    })
+                }
+            };
     </script>
 
     @RenderSection("scripts", required: false)

@@ -1,9 +1,42 @@
 @{
     ViewData["Title"] = "Shopping Cart";
 }
+<style>
 
+    .product-detail .product-quantity {
+        margin-right: 30px;
+    }
 
-<div class="cart-list" ng-app="simpl.shoppingCart" ng-controller="shoppingCartListCtrl as vm" ng-cloak>
+    .product-detail .quantity-button {
+        color: #555;
+        width: 55px;
+        height: 30px;
+        padding: 5px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 20px;
+        background: #eee;
+        text-align: center;
+        font-weight: normal;
+        white-space: nowrap;
+        display: inline-block;
+        background-image: none;
+    }
+
+    .product-detail .quantity-field {
+        width: 55px;
+        height: 30px;
+        outline: none;
+        margin: 0 -4px;
+        font-size: 20px;
+        text-align: center;
+        border: 1px solid #eee;
+    }
+
+</style>
+
+<div class="cart-list product-detail" ng-app="simpl.shoppingCart" ng-controller="shoppingCartListCtrl as vm" ng-cloak>
 
     <div class="row">
         <div class="col-md-8">
@@ -27,11 +60,28 @@
                                 </li>
                             </ul>
                         </td>
-                        <td class="text-right">{{cartItem.productPriceString}}</td>
-                        <td class="text-center">
-                            <button type="button" class="quantity-button" ng-click="vm.decreaseQuantity(cartItem)" name="subtract" value="-">-</button>
-                            <input type="text" class="quantity-field" ng-model="cartItem.quantity" readonly="readonly" />
-                            <button type="button" class="quantity-button" ng-click="vm.increaseQuantity(cartItem)" name="subtract" value="+">+</button>
+                        <td class="text-right">
+                            <p><span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span> adult</p>
+                            <p><span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}" >{{cartItem.childPrice}}</span> child</p>
+                        </td>
+                        <td class="text-center" style="width:300px">
+                            <div class="add-to-cart ">
+                                <div class="product-quantity">
+                                    <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantity(cartItem)" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" ng-model="cartItem.quantity"  class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
+                                    <button type="button" class="quantity-button quantity-button-adult" ng-click="vm.increaseQuantity(cartItem)" style="font-size:smaller;text-align:left" name="add" value="+">+ (18+)</button>
+                                </div>
+                                <div class="product-quantity">
+                                    <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantityChild(cartItem)" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" ng-model="cartItem.quantityChild" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
+                                    <button type="button" ng-click="vm.increaseQuantityChild(cartItem)" class="quantity-button quantity-button-child" style="font-size:smaller;text-align:left" name="add" value="+">+ (2-11)</button>
+                                </div>
+                                <div class="product-quantity">
+                                    <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantityBaby(cartItem)" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
+                                    <input type="text" style="font-size:smaller" ng-model="cartItem.quantityBaby" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
+                                    <button type="button" ng-click="vm.increaseQuantityBaby(cartItem)"  class="quantity-button quantity-button-baby" style="font-size:smaller; text-align:left" name="add" value="+">+ (0-2)</button>
+                                </div>
+                            </div>
                         </td>
                         <td class="text-right"><button class="btn btn-link" ng-click="vm.removeShoppingCartItem(cartItem)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
                     </tr>
@@ -48,11 +98,11 @@
                 <h4>@Localizer["Order summary"]</h4>
                 <dl class="dl-horizontal">
                     <dt>@Localizer["Subtotal"]</dt>
-                    <dd>{{vm.cart.subTotalString}}</dd>
+                    <dd><span class="priceToConvert" data-usd-price="{{vm.cart.subTotal}}">{{vm.cart.subTotal}}</span></dd>
                     <dt>@Localizer["Discount"] {{vm.cart.couponCode}}</dt>
-                    <dd>{{vm.cart.discountString}}</dd>
+                    <dd><span class="priceToConvert" data-usd-price="{{vm.cart.discount}}">{{vm.cart.discount}}</span></dd>
                     <dt>@Localizer["Order Total"]</dt>
-                    <dd><strong>{{vm.cart.orderTotalString}}</strong></dd>
+                    <dd><strong><span class="priceToConvert" data-usd-price="{{vm.cart.orderTotal}}">{{vm.cart.orderTotal}}</span></strong></dd>
                 </dl>
                 <p class="text-right"><a href="~/checkout/shipping" class="btn btn-primary">@Localizer["Process to Checkout"]</a></p>
             </div>
@@ -69,51 +119,6 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    <div class="row" ng-repeat="passenger in vm.passengers">
-        <div class="col-md-12">
-            <h5>Passenger Information:</h5>
-            <form>
-                <div class="form-group">
-                    <label class="radio-inline">Sex</label>&nbsp;
-                    <label class="radio-inline">
-                          <input type="radio" name="sex" value="Male" ng-model="passenger.sex">Male
-                    </label>
-                    <label class="radio-inline">
-                          <input type="radio" name="Female" ng-model="passenger.sex">Female
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label for="firstName">First name:</label>
-                    <input type="text" class="form-control" id="firstName" name="FirstName" ng-model="passenger.firstName">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last name:</label>
-                    <input type="text" class="form-control" id="lastName" name="LastName" ng-model="passenger.lastName">
-                </div>
-                <div class="form-group">
-                    <label for="birth">Date of birth:</label>
-                    <input type="date" class="form-control" id="birth" name="DateOfBirth" ng-model="passenger.dateOfBirth">
-                </div>
-                <div class="form-group">
-                    <label for="document">Document no.:</label>
-                    <input type="text" class="form-control" id="document" name="DocumentNo" ng-model="passenger.documentNo">
-                </div>
-                <div class="form-group">
-                    <label for="expiry">Date of expiry:</label>
-                    <input type="date" class="form-control" id="expiry" name="DateOfExpiry" ng-model="passenger.dateOfExpiry">
-                </div>
-
-                <button type="submit" class="btn btn-default">Book Ticket</button>
-
-
-            </form>
-        </div>
-    </div>
-
-
-
     </div>
 </div>
 

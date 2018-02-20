@@ -54,7 +54,6 @@ namespace SimplCommerce.Module.Search.Controllers
             {
                 query = query.Where(x => x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper());
             }
-
             else
             {
                 query = query.Where(x =>
@@ -70,7 +69,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     departureDate = Convert.ToDateTime(searchOption.DepartureDate);
                     query = query.Where(x =>
                         (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
-                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(departureDate.Month + "/" + departureDate.Day + "/" + departureDate.Year))));
+                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(searchOption.DepartureDate))));
                 }
 
                 if (searchOption.TripType == "round-trip")
@@ -86,6 +85,10 @@ namespace SimplCommerce.Module.Search.Controllers
                             (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
                     }
                 }
+                else
+                {
+                    query = query.Where(x => !x.IsRoundTrip);
+                }
 
 
                 if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
@@ -93,14 +96,8 @@ namespace SimplCommerce.Module.Search.Controllers
                     var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
                     var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
                     query = query.Where(x =>
-                        x.FlightClass == flightClass &&
-                        (x.StockQuantity - x.SoldSeats) >= numberOfPeople);
-                }
-
-                var brand = _brandRepository.Query().FirstOrDefault(x => x.Name == searchOption.Query && x.IsPublished);
-                if (brand != null)
-                {
-                    return Redirect(string.Format("~/{0}", brand.SeoTitle));
+                        //x.FlightClass == flightClass &&
+                        x.StockQuantity >= numberOfPeople);
                 }
             }
 
@@ -278,6 +275,10 @@ namespace SimplCommerce.Module.Search.Controllers
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
+                    DepartureDate = variation.DepartureDate,
+                    InfantPrice = variation.OldPrice,
+                    ReturnLandingDate = variation.ReturnLandingDate,
+                    FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation)
                 };
 

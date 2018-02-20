@@ -16,11 +16,17 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
 
         public decimal ProductPrice { get; set; }
 
+        public decimal ChildPrice { get; set; }
+
         public string ProductPriceString => ProductPrice.ToString("C");
 
         public int Quantity { get; set; }
 
-        public decimal Total => Quantity * ProductPrice;
+        public int QuantityChild { get; set; }
+
+        public int QuantityBaby { get; set; }
+
+        public decimal Total => Quantity * ProductPrice + QuantityChild * ChildPrice + QuantityBaby * ChildPrice;
 
         public string TotalString => Total.ToString("C");
 

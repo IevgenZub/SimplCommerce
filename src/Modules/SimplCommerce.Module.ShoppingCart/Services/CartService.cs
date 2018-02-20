@@ -25,7 +25,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
             _mediaService = mediaService;
         }
 
-        public async Task AddToCart(long userId, long productId, int quantity)
+        public async Task AddToCart(long userId, long productId, int quantity, int quantityChild, int quaintyBaby)
         {
             var cart = _cartRepository.Query().Include(x => x.Items).FirstOrDefault(x => x.UserId == userId && x.IsActive);
             if (cart == null)
@@ -45,6 +45,8 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Cart = cart,
                     ProductId = productId,
                     Quantity = quantity,
+                    QuantityChild = quantityChild,
+                    QuantityBaby = quaintyBaby,
                     CreatedOn = DateTimeOffset.Now
                 };
 
@@ -86,12 +88,15 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
                     ProductPrice = x.Product.Price,
+                    ChildPrice = x.Product.OldPrice.Value,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
                     Quantity = x.Quantity,
+                    QuantityChild = x.QuantityChild,
+                    QuantityBaby = x.QuantityBaby,
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 
-            cartVm.SubTotal = cartVm.Items.Sum(x => x.Quantity * x.ProductPrice);
+            cartVm.SubTotal = cartVm.Items.Sum(x => x.Quantity * x.ProductPrice + x.QuantityChild * x.ChildPrice + x.QuantityBaby * x.ChildPrice);
             if (!string.IsNullOrWhiteSpace(cartVm.CouponCode))
             {
                 var cartInfoForCoupon = new CartInfoForCoupon
@@ -153,6 +158,8 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                             Cart = cartTo,
                             ProductId = fromItem.ProductId,
                             Quantity = fromItem.Quantity,
+                            QuantityChild = fromItem.QuantityChild,
+                            QuantityBaby = fromItem.QuantityBaby,
                             CreatedOn = DateTimeOffset.Now
                         };
                         cartTo.Items.Add(toItem);
