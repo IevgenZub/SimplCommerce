@@ -105,9 +105,7 @@
                 else
                 {
                     <label class="pull-right" style="padding-right:15px; color:green;white-space:nowrap" >
-                        <span class="priceToConvert">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</span>
-                        <span>-</span>
-                        <span class="priceToConvert">@Model.Details.Variations.Max(v => v.CalculatedProductPrice.Price)</span>
+                        From <span class="priceToConvert">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</span>
                      </label>
                 }
             }
@@ -182,9 +180,7 @@
                             else
                             {
                                 <label class="pull-right" style="padding-right:15px; color:green;white-space:nowrap" >
-                                    <span class="priceToConvert">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</span>
-                                    <span>-</span>
-                                    <span class="priceToConvert">@Model.Details.Variations.Max(v => v.CalculatedProductPrice.Price)</span>
+                                    From <span class="priceToConvert">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</span>
                                  </label>
                             }
 
