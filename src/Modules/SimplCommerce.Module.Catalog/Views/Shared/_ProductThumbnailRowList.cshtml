@@ -54,14 +54,14 @@
         }
         </div>
         <div class="flight-number col-xs-12 col-sm-6 col-md-2 col-lg-1">
-            <label class="visible-sm visible-xs hidden-label">Flight Number:&nbsp;</label>@Model.FlightNumber
+            <label class="visible-sm visible-xs hidden-label">Flight #:&nbsp;</label>@Model.FlightNumber
         </div>
         <div class="from col-xs-12 col-sm-6 col-md-4 col-lg-2">
-            <label class="visible-sm visible-xs hidden-label">Departure Time:&nbsp;</label>
+            <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
             <span style="color:darkblue">@Model.DepartureDate.Value.DateTime.ToShortTimeString() </span> @Model.Departure
         </div>
         <div class="to col-xs-12 col-xs-12 col-sm-6 col-md-4 col-lg-2">
-            <label class="visible-sm visible-xs hidden-label">Landing Time:&nbsp;</label>
+            <label class="visible-sm visible-xs hidden-label">Landing:&nbsp;</label>
             <span style="color:darkblue">@Model.LandingDate.Value.DateTime.ToShortTimeString()</span>  @Model.Landing
         </div>
         <div class="to col-xs-12 col-sm-6 col-md-2 col-lg-1">
@@ -135,14 +135,14 @@
              }
             </div>
             <div class="flight-number col-xs-12 col-sm-6 col-md-2 col-lg-1">
-                 <label class="visible-sm visible-xs hidden-label">Return Flight Number:&nbsp;</label>@Model.ReturnFlightNumber
+                 <label class="visible-sm visible-xs hidden-label">Return Flight #:&nbsp;</label>@Model.ReturnFlightNumber
             </div>
             <div class="from col-xs-12 col-sm-6 col-md-4 col-lg-2">
-                <label class="visible-sm visible-xs hidden-label">Landing:&nbsp;</label>
+                <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
                 <span style="color:darkblue">@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString()</span> @Model.Landing
             </div>
             <div class="to col-xs-12 col-sm-6 col-md-4 col-lg-2">
-                <label class="visible-sm visible-xs hidden-label">Departure Time:&nbsp;</label>
+                <label class="visible-sm visible-xs hidden-label">Landing:&nbsp;</label>
                 <span style="color:darkblue"> @Model.ReturnLandingDate.Value.DateTime.ToShortTimeString()</span> @Model.Departure
             </div>
             <div class="to col-xs-12 col-sm-6 col-md-2 col-lg-1">
