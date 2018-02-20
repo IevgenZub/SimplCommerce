@@ -275,10 +275,10 @@
                 </ul>
             </div>
         </div>
-        <div class="row product-list">
+        <div class="product-list">
             @foreach (var product in Model.Products)
                 {
-                    <div class="row">
+                    <div>
                         @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
                     </div>
                 }
