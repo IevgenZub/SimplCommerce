@@ -19,7 +19,7 @@
         <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
             <h3>Passenger Registration</h3>
             <br />         
-            <div class="row" style="border-bottom: 1px solid #eee;" >
+            <div class="row hidden-xs" style="border-bottom: 1px solid #eee;" >
                 <div class="col-sm-2"><strong>First Name</strong></div>
                 <div class="col-sm-2"><strong>Last Name</strong></div>
                 <div class="col-sm-2"><strong>Birth Date</strong></div>
@@ -36,13 +36,23 @@
                         <div class="col-sm-2 first-name">
                             <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
                             <input type="checkbox" onclick="checkIfContinueEnabled()" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
-                            @address.ContactName
+                            <label class="visible-xs hidden-label">First Name:&nbsp;</label>@address.ContactName
                         </div>
-                        <div class="col-sm-2 last-name">@address.AddressLine1</div>
-                        <div class="col-sm-2">@address.AddressLine2</div>
-                        <div class="col-sm-2 document-no">@address.CityName</div>
-                        <div class="col-sm-2">@address.PostalCode</div>
-                        <div class="col-sm-2">@address.Phone</div>
+                        <div class="col-sm-2 last-name">
+                            <label class="visible-xs hidden-label">Last Name:&nbsp;</label>@address.AddressLine1
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="visible-xs hidden-label">Birth Date:&nbsp;</label>@address.AddressLine2
+                        </div>
+                        <div class="col-sm-2 document-no">
+                            <label class="visible-xs hidden-label">Document No.:&nbsp;</label>@address.CityName
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="visible-xs hidden-label">Expiration:&nbsp;</label>@address.PostalCode
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="visible-xs hidden-label">Sex:&nbsp;</label>@address.Phone
+                        </div>
                     </div>
                 }
             </div>

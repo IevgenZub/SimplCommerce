@@ -590,6 +590,11 @@ section:last-child {
    }
 }
 
+@media (max-width: 767px) {
+   .address-container .visible-xs {
+      display: inline-block !important;
+   }
+}
 
 /* Custom, iPhone Retina */
 
