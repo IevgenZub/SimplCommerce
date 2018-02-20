@@ -291,7 +291,7 @@
             function recalculatePrices() {
                 var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
                 var rate = 1;
-                if (selectedCurrency == "HRN") {
+                if (selectedCurrency == "UAH") {
                     $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
                         $.each(data, function (key, val) {
                             if (val.ccy == "USD") {
@@ -320,7 +320,7 @@
                         $(this).text(convertedPrice);
 
                         if (selectedCurrency != "USD") {
-                            sign = selectedCurrency == "HRN" ? "₴" : "₽";
+                            sign = selectedCurrency == "UAH" ? "₴" : "₽";
                         }
 
                         $(this).text($(this).text() + sign);
