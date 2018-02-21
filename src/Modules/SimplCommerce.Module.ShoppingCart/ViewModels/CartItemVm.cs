@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SimplCommerce.Module.Catalog.Models;
+using System;
 
 namespace SimplCommerce.Module.ShoppingCart.ViewModels
 {
@@ -11,6 +12,16 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
         public long ProductId { get; set; }
 
         public string ProductName { get; set; }
+
+        public string Departure { get; set; }
+
+        public string Landing { get; set; }
+
+        public DateTimeOffset? DepartureDate { get; set; }
+
+        public DateTimeOffset? LandingDate { get; set; }
+
+        public DateTimeOffset? ReturnDepartureDate { get; set; }
 
         public string ProductImage { get; set; }
 

@@ -54,6 +54,8 @@
                         <td class="product-image"><img ng-src="{{cartItem.productImage}}" /></td>
                         <td>
                             <h4>{{cartItem.productName}}</h4>
+                            <p>{{cartItem.departureDate | date:'HH:mm':'UTC'}} {{cartItem.departure}}</p>
+                            <p>{{cartItem.landingDate | date:'HH:mm':'UTC'}} {{cartItem.landing}}</p>
                             <ul class="list-unstyled">
                                 <li ng-repeat="opt in cartItem.variationOptions">
                                     <span>{{opt.optionName}}:</span> {{opt.value}}

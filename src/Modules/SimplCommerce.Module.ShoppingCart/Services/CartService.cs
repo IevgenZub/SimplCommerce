@@ -93,6 +93,11 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Quantity = x.Quantity,
                     QuantityChild = x.QuantityChild,
                     QuantityBaby = x.QuantityBaby,
+                    Departure = x.Product.ShortDescription,
+                    Landing = x.Product.Description,
+                    DepartureDate = x.Product.DepartureDate,
+                    LandingDate = x.Product.LandingDate,
+                    ReturnDepartureDate = x.Product.ReturnDepartureDate,
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 
