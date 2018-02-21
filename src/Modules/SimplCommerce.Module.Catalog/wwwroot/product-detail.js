@@ -46,7 +46,7 @@
             if ($(this).val() === '+') {
                 quantityInput.val(parseInt(quantityInput.val(), 10) + 1);
             }
-            else if (quantityInput.val() > 1) {
+            else if (quantityInput.val() > 0) {
                 quantityInput.val(quantityInput.val() - 1);
             }
         });
@@ -56,7 +56,7 @@
             if ($(this).val() === '+') {
                 quantityInput.val(parseInt(quantityInput.val(), 10) + 1);
             }
-            else if (quantityInput.val() > 1) {
+            else if (quantityInput.val() > 0) {
                 quantityInput.val(quantityInput.val() - 1);
             }
         });
