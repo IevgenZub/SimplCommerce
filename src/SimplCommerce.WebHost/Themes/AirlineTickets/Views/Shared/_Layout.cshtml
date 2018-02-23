@@ -286,6 +286,17 @@
                 });
 
                 recalculatePrices();
+
+                if ($("input[name='bill_amount']")) {
+                    var bill_amount = parseFloat($("input[name='bill_amount']").val());
+                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                        $.each(data, function (key, val) {
+                            if (val.ccy == "USD") {
+                                $("input[name='bill_amount']").val(Math.round(bill_amount * val.sale));
+                            }
+                        });
+                    });
+                }
             });
 
             function recalculatePrices() {

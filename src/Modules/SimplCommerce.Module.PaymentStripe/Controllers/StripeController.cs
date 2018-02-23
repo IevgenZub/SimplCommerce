@@ -14,6 +14,8 @@ using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.Payments.Models;
 using SimplCommerce.Module.PaymentStripe.ViewModels;
 using SimplCommerce.Module.PaymentStripe.Models;
+using SimplCommerce.Module.Core.Models;
+using System.Linq;
 
 namespace SimplCommerce.Module.PaymentStripe.Controllers
 {
@@ -21,6 +23,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
     public class StripeController : Controller
     {
         private readonly IRepository<Cart> _cartRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly IOrderService _orderService;
         private readonly IWorkContext _workContext;
         private readonly IRepository<PaymentProvider> _paymentProviderRepository;
@@ -31,13 +34,15 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             IOrderService orderService,
             IWorkContext workContext,
             IRepository<PaymentProvider> paymentProviderRepository,
-            IRepository<Payment> paymentRepository)
+            IRepository<Payment> paymentRepository,
+            IRepository<User> userRepository)
         {
             _cartRepository = cartRepository;
             _orderService = orderService;
             _workContext = workContext;
             _paymentProviderRepository = paymentProviderRepository;
             _paymentRepository = paymentRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<IActionResult> Charge(string stripeEmail, string stripeToken)
@@ -89,38 +94,30 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             return Redirect("~/checkout/congratulation");
         }
 
-        [HttpGet("success-callback")]
-        public async Task<IActionResult> PortmoneSuccessGetCallback()
-        {
-            // TODO: Create Order and save payment
-
-            return Redirect("~/checkout/congratulation");
-        }
-
         [HttpPost("success-callback")]
         public async Task<IActionResult> PortmoneSuccessPostCallback([FromForm] PortmoneCallback portmoneCallback)
         {
-            // TODO: Create Order and save payment
+            var userId = portmoneCallback.SHOPORDERNUMBER.Split('-')[0];
+            var currentUser = _userRepository.Query().First(u => u.Id.ToString() == userId);
+            var order = await _orderService.CreateOrder(currentUser, "Portmone", OrderStatus.PendingPayment);
+
+            order.OrderStatus = OrderStatus.PaymentReceived;
+
+            var payment = new Payment()
+            {
+                OrderId = order.Id,
+                Amount = order.OrderTotal,
+                PaymentMethod = "Portmone",
+                CreatedOn = DateTimeOffset.UtcNow,
+                GatewayTransactionId = portmoneCallback.SHOPORDERNUMBER
+            };
+
+            order.OrderStatus = OrderStatus.PaymentReceived;
+            order.CouponRuleName = portmoneCallback.SHOPORDERNUMBER;
+            _paymentRepository.Add(payment);
+            await _paymentRepository.SaveChangesAsync();
 
             return Redirect("~/checkout/congratulation");
         }
-
-
-    }
-
-    public class PortmoneCallback
-    {
-        public string BILL_AMOUNT { get; set; }
-        public string SHOPORDERNUMBER { get; set; }
-        public string APPROVALCODE { get; set; }
-        public string RECEIPT_URL { get; set; }
-        public string TOKEN { get; set; }
-        public string CARD_PAYMENT_SYSTEM { get; set; }
-        public string CARD_LAST_DIGITS { get; set; }
-        public string CARD_MASK { get; set; }
-        public string DESCRIPTION { get; set; }
-        public string ATTRIBUTE1 { get; set; }
-        public string ATTRIBUTE2 { get; set; }
-        public string RESULT { get; set; }
     }
 }
