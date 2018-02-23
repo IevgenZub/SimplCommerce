@@ -7,5 +7,7 @@
         public int Amount { get; set; }
 
         public string ISOCurrencyCode { get; set; }
+
+        public string OrderNumber { get; set; }
     }
 }

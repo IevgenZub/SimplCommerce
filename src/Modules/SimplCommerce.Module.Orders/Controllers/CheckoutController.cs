@@ -207,6 +207,12 @@ namespace SimplCommerce.Module.Orders.Controllers
             return View();
         }
 
+        [HttpGet("payment-failed")]
+        public IActionResult PaymentFailed()
+        {
+            return View();
+        }
+
         private void PopulateShippingForm(DeliveryInformationVm model, User currentUser)
         {
             model.ExistingShippingAddresses = _userAddressRepository
