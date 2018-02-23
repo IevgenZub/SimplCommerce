@@ -17,6 +17,7 @@ using SimplCommerce.Module.PaymentStripe.Models;
 
 namespace SimplCommerce.Module.PaymentStripe.Controllers
 {
+    [Route("portmone")]
     public class StripeController : Controller
     {
         private readonly IRepository<Cart> _cartRepository;
@@ -47,7 +48,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             var customers = new StripeCustomerService(stripeSetting.PrivateKey);
             var charges = new StripeChargeService(stripeSetting.PrivateKey);
             var currentUser = await _workContext.GetCurrentUser();
-            var order = await _orderService.CreateOrder(currentUser, "Stripe", OrderStatus.PendingPayment);
+            var order = await _orderService.CreateOrder(currentUser, "Portmone", OrderStatus.PendingPayment);
 
             var customer = customers.Create(new StripeCustomerCreateOptions
             {
@@ -87,5 +88,39 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
 
             return Redirect("~/checkout/congratulation");
         }
+
+        [HttpGet("success-callback")]
+        public async Task<IActionResult> PortmoneSuccessGetCallback()
+        {
+            // TODO: Create Order and save payment
+
+            return Redirect("~/checkout/congratulation");
+        }
+
+        [HttpPost("success-callback")]
+        public async Task<IActionResult> PortmoneSuccessPostCallback([FromForm] PortmoneCallback portmoneCallback)
+        {
+            // TODO: Create Order and save payment
+
+            return Redirect("~/checkout/congratulation");
+        }
+
+
+    }
+
+    public class PortmoneCallback
+    {
+        public string BILL_AMOUNT { get; set; }
+        public string SHOPORDERNUMBER { get; set; }
+        public string APPROVALCODE { get; set; }
+        public string RECEIPT_URL { get; set; }
+        public string TOKEN { get; set; }
+        public string CARD_PAYMENT_SYSTEM { get; set; }
+        public string CARD_LAST_DIGITS { get; set; }
+        public string CARD_MASK { get; set; }
+        public string DESCRIPTION { get; set; }
+        public string ATTRIBUTE1 { get; set; }
+        public string ATTRIBUTE2 { get; set; }
+        public string RESULT { get; set; }
     }
 }

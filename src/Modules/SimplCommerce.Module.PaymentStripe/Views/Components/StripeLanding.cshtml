@@ -6,9 +6,9 @@
     <input type="hidden" name="bill_amount" value="@Model.Amount" />
     <input type="hidden" name="description" value="Charterwing.com customer [x] order #@Model.OrderNumber" />
     <input type="hidden" name="success_url"
-           value="https://charterwing.com/checkout/congratulation" />
+           value="http://localhost:49209/portmone/success-callback" />
     <input type="hidden" name="failure_url"
-           value="https://charterwing.com/checkout/payment-failed" />
+           value="http://localhost:49209/portmone/failure-callback" />
     <input type="hidden" name="lang" value="Язык интерфейса" />
     <input type="submit" class="btn btn-primary" value="Оплатить @Model.Amount через Portmone" />
 </form>
