@@ -154,10 +154,12 @@ namespace SimplCommerce.Module.Orders.Services
                     TaxPercent = taxPercent,
                     TaxAmount = cartItem.Quantity * (cartItem.Product.Price * taxPercent / 100)
                 };
+
                 order.AddOrderItem(orderItem);
                 cartItem.Product.StockQuantity = cartItem.Product.StockQuantity - cartItem.Quantity;
             }
 
+            order.VendorId = order.OrderItems[0].Product.VendorId;
             order.OrderStatus = orderStatus;
             order.CouponCode = cart.CouponCode;
             order.CouponRuleName = cart.CouponRuleName;
@@ -171,7 +173,7 @@ namespace SimplCommerce.Module.Orders.Services
             _orderRepository.Add(order);
 
             cart.IsActive = false;
-
+            /*
             var vendorIds = cart.Items.Where(x => x.Product.VendorId.HasValue).Select(x => x.Product.VendorId.Value).Distinct();
             foreach (var vendorId in vendorIds)
             {
@@ -205,6 +207,7 @@ namespace SimplCommerce.Module.Orders.Services
                 subOrder.OrderTotal = subOrder.SubTotal + subOrder.TaxAmount + subOrder.ShippingAmount - subOrder.Discount;
                 _orderRepository.Add(subOrder);
             }
+            */
 
             foreach (var registrationAddress in shippingData.ExistingShippingAddresses.Where(esa => esa.Selected).ToList())
             {

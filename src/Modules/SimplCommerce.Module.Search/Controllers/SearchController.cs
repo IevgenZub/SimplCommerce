@@ -52,7 +52,9 @@ namespace SimplCommerce.Module.Search.Controllers
 
             if (!string.IsNullOrEmpty(searchOption.Reservation))
             {
-                query = query.Where(x => x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper());
+                query = query.Where(x => 
+                    x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper() && 
+                    x.Status == "ACCEPTED");
             }
             else
             {
@@ -62,41 +64,35 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.Status == "ACCEPTED" &&
                     x.IsVisibleIndividually);
 
-                DateTime departureDate = new DateTime();
-
+                
                 if (!string.IsNullOrEmpty(searchOption.DepartureDate))
                 {
-                    departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-                    query = query.Where(x =>
-                        (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
-                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(searchOption.DepartureDate))));
+                    var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                    var departureDateMin = departureDate.AddDays(-7);
+                    var departureDateMax = departureDate.AddDays(7);
+                    query = query.Where(x => 
+                        x.DepartureDate.Value.Date >= departureDateMin && 
+                        x.DepartureDate.Value.Date < departureDateMax);
                 }
 
                 if (searchOption.TripType == "round-trip")
                 {
-                    query = query.Where(x => x.IsRoundTrip);
-
                     if (!string.IsNullOrEmpty(searchOption.ReturnDate))
                     {
                         var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
-                        var packageDays = (returnDate - departureDate).TotalDays;
-                        query = query.Where(x =>
-                            (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
-                            (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
+                        var returnDateMin = returnDate.AddDays(-7);
+                        var returnDateMax = returnDate.AddDays(7);
+                        query = query.Where(x => 
+                            x.ReturnDepartureDate.Value.Date >= returnDateMin && 
+                            x.ReturnDepartureDate.Value.Date < returnDateMax);
                     }
                 }
-                else
-                {
-                    query = query.Where(x => !x.IsRoundTrip);
-                }
-
 
                 if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
                 {
                     var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
                     var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
                     query = query.Where(x =>
-                        //x.FlightClass == flightClass &&
                         x.StockQuantity >= numberOfPeople);
                 }
             }

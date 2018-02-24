@@ -54,10 +54,9 @@ namespace SimplCommerce.Module.PaymentStripe.Components
         private static string GenerateUniqueCode(int length)
         {
             string alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            string small_alphabets = "abcdefghijklmnopqrstuvwxyz";
             string numbers = "1234567890";
 
-            string characters = alphabets + small_alphabets + numbers;
+            string characters = alphabets + numbers;
 
             string otp = string.Empty;
             for (int i = 0; i < length; i++)
@@ -70,7 +69,7 @@ namespace SimplCommerce.Module.PaymentStripe.Components
                 } while (otp.IndexOf(character) != -1);
                 otp += character;
             }
-            return otp;
+            return otp.ToUpper();
         }
     }
 }

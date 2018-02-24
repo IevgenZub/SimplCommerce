@@ -71,7 +71,7 @@
              }
              <label class="visible-sm visible-xs hidden-label">Duration:&nbsp;</label>
 
-             @durationTime
+            <span class="text-nowrap">@durationTime</span>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-1 col-lg-1">
             @if (Model.IsRoundTrip)
@@ -151,7 +151,7 @@
                     var returnDurationTime = duration.Hours + "h " + duration.Minutes + "m";
                 }
                 <label class="visible-sm visible-xs hidden-label">Duration:&nbsp;</label>
-                @returnDurationTime
+                <span class="text-nowrap">@returnDurationTime</span>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-1 col-lg-1">
                 @if (Model.IsRoundTrip)
