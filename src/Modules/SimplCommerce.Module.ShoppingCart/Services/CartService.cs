@@ -154,13 +154,10 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                 }
                 else
                 {
-                    if (cartFrom.Items.Any())
+                    if (cartFrom.Items.Any() && cartTo.Items.Any())
                     {
-                        foreach (var item in cartTo.Items)
-                        {
-                            _cartItemRepository.Remove(item);
-                            cartTo.Items.Clear();
-                        }
+
+                        _cartItemRepository.Remove(cartTo.Items[0]);
                     }
                 }
 

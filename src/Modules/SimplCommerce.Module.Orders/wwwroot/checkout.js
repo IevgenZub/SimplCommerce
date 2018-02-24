@@ -27,7 +27,7 @@
 
         // Put the results in a div
         posting.done(function (data) {
-            if (data.includes("Error")) {
+            if (typeof data === 'string' || data instanceof String) {
                 alert(data);
                 return;
             }
