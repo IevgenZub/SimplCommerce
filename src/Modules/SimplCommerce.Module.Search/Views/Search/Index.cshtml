@@ -276,12 +276,60 @@
             </div>
         </div>
         <div class="product-list">
-            @foreach (var product in Model.Products)
-                {
-                    <div>
-                        @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                    </div>
-                }
+            @{
+                var ow = Model.Products.Where(p => !p.IsRoundTrip);
+                var rt = Model.Products.Where(p => p.IsRoundTrip);
+
+                var owBlock = ow.Where(p => p.Details.HasVariation);
+                var owSingle = ow.Where(p => !p.Details.HasVariation);
+
+                var rtBlock = rt.Where(p => p.Details.HasVariation);
+                var rtSingle = rt.Where(p => !p.Details.HasVariation);
+
+            }
+            <div>
+                <h4 class="text-center">Daily</h4>
+            </div>
+            <div >
+                <h5>Round Trip</h5>
+            </div>
+            @foreach (var product in rtBlock)
+            {
+                <div>
+                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                </div>
+            }
+            <div>
+                <h5>One Way</h5>
+            </div>
+            @foreach (var product in owBlock)
+            {
+                <div >
+                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                </div>
+            }
+
+            <div>
+                <h4 class="text-center">One Time</h4>
+            </div>
+            <div>
+                <h5>Round Trip</h5>
+            </div>
+            @foreach (var product in rtSingle)
+            {
+                <div>
+                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                </div>
+            }
+            <div>
+                <h5>One Way</h5>
+            </div>
+            @foreach (var product in owSingle)
+            {
+                <div>
+                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                </div>
+            }
         </div>
 
         <div class="row">

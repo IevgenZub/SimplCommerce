@@ -2,7 +2,55 @@
 
 <h2 class="page-header">@Localizer[Model.WidgetName]</h2>
 <div class="row product-list">
-    @foreach (var product in Model.Products)
+    @{
+        var ow = Model.Products.Where(p => !p.IsRoundTrip);
+        var rt = Model.Products.Where(p => p.IsRoundTrip);
+
+        var owBlock = ow.Where(p => p.Details.HasVariation);
+        var owSingle = ow.Where(p => !p.Details.HasVariation);
+
+        var rtBlock = rt.Where(p => p.Details.HasVariation);
+        var rtSingle = rt.Where(p => !p.Details.HasVariation);
+
+    }
+    <div class="col-xs-12 col-md-12">
+        <h4 class="text-center">Daily</h4>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <h5>Round Trip</h5>
+    </div>
+    @foreach (var product in rtBlock)
+    {
+        <div class="col-xs-12 col-md-12">
+            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+        </div>
+    }
+    <div class="col-xs-12 col-md-12">
+        <h5>One Way</h5>
+    </div>
+    @foreach (var product in owBlock)
+    {
+        <div class="col-xs-12 col-md-12">
+            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+        </div>
+    }
+
+    <div class="col-xs-12 col-md-12">
+        <h4 class="text-center">One Time</h4>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <h5>Round Trip</h5>
+    </div>
+    @foreach (var product in rtSingle)
+    {
+        <div class="col-xs-12 col-md-12">
+            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+        </div>
+    }
+    <div class="col-xs-12 col-md-12">
+        <h5>One Way</h5>
+    </div>
+    @foreach (var product in owSingle)
     {
         <div class="col-xs-12 col-md-12">
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
