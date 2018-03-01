@@ -13,7 +13,13 @@ namespace SimplCommerce.Module.Orders.Models
 
         public decimal ProductPrice { get; set; }
 
+        public decimal ChildPrice { get; set; }
+
         public int Quantity { get; set; }
+
+        public int QuantityChild { get; set; }
+
+        public int QuantityBaby { get; set; }
 
         public decimal TaxAmount { get; set; }
 

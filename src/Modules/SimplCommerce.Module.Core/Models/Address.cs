@@ -9,6 +9,10 @@ namespace SimplCommerce.Module.Core.Models
 
         public string Phone { get; set; }
 
+        public string Mobile { get; set; }
+
+        public string Email { get; set; }
+
         public string AddressLine1 { get; set; }
 
         public string AddressLine2 { get; set; }

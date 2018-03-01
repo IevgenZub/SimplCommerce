@@ -35,6 +35,8 @@ namespace SimplCommerce.Module.Core.Models
 
         public long? DefaultBillingAddressId { get; set; }
 
+        public decimal DiscountPercent { get; set; }
+
         public IList<UserRole> Roles { get; set; } =  new List<UserRole>();
 
         public IList<UserCustomerGroup> CustomerGroups { get; set; } = new List<UserCustomerGroup>();
