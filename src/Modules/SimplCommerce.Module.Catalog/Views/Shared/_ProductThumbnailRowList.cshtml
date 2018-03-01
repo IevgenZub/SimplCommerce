@@ -6,7 +6,6 @@
         display: block;
         padding: 4px;
         overflow: hidden;
-        white-space: nowrap;
     }
 
     .my-thumbnail img {
@@ -59,11 +58,11 @@
         </div>
         <div class="from col-xs-12 col-sm-6 col-md-4 col-lg-2">
             <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
-            <span style="color:darkblue">@Model.DepartureDate.Value.DateTime.ToShortTimeString() </span> @Model.Departure
+            <span style="white-space:nowrap"><span style="color:darkblue">@Model.DepartureDate.Value.DateTime.ToShortTimeString() </span> @Model.Departure</span>
         </div>
         <div class="to col-xs-12 col-xs-12 col-sm-6 col-md-4 col-lg-2">
             <label class="visible-sm visible-xs hidden-label">Landing:&nbsp;</label>
-            <span style="color:darkblue">@Model.LandingDate.Value.DateTime.ToShortTimeString()</span>  @Model.Landing
+            <span style="white-space:nowrap"><span style="color:darkblue">@Model.LandingDate.Value.DateTime.ToShortTimeString()</span>  @Model.Landing </span>
         </div>
         <div class="to col-xs-12 col-sm-6 col-md-2 col-lg-1">
             @{
@@ -140,11 +139,11 @@
             </div>
             <div class="from col-xs-12 col-sm-6 col-md-4 col-lg-2">
                 <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
-                <span style="color:darkblue">@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString()</span> @Model.Landing
+                <span style="white-space:nowrap"><span style="color:darkblue">@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString()</span> @Model.Landing </span>
             </div>
             <div class="to col-xs-12 col-sm-6 col-md-4 col-lg-2">
                 <label class="visible-sm visible-xs hidden-label">Landing:&nbsp;</label>
-                <span style="color:darkblue"> @Model.ReturnLandingDate.Value.DateTime.ToShortTimeString()</span> @Model.Departure
+                <span style="white-space:nowrap"><span style="color:darkblue"> @Model.ReturnLandingDate.Value.DateTime.ToShortTimeString()</span> @Model.Departure</span>
             </div>
             <div class="to col-xs-12 col-sm-6 col-md-2 col-lg-1">
                 @{
