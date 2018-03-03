@@ -15,6 +15,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public decimal Price { get; set; }
 
+        public decimal ChildPrice { get; set; }
+
         public decimal? OldPrice { get; set; }
 
         public decimal? SpecialPrice { get; set; }
@@ -70,6 +72,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 Id = product.Id,
                 Name = product.Name,
                 SeoTitle = product.SeoTitle,
+                ChildPrice = product.ChildPrice,
                 Price = product.Price,
                 OldPrice = product.OldPrice,
                 SpecialPrice = product.SpecialPrice,

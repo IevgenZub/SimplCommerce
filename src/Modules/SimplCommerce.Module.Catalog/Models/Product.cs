@@ -235,6 +235,11 @@ namespace SimplCommerce.Module.Catalog.Models
             product.SoldSeats = 0;
             product.DepartureDate = DepartureDate;
             product.LandingDate = LandingDate;
+            product.PassengerChildPrice = product.PassengerChildPrice;
+            product.PassengerPrice = product.PassengerPrice;
+            product.ChildPrice = product.ChildPrice;
+            product.AgencyChildPrice = product.AgencyChildPrice;
+            product.AgencyPrice = product.AgencyPrice;
 
             foreach (var attribute in AttributeValues)
             {

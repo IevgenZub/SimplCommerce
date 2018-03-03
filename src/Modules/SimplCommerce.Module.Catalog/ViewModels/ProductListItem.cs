@@ -37,5 +37,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string FlightClass { get; set; }
 
         public string Price { get; set; }
+
+        public decimal ChildPrice { get; set; }
     }
 }

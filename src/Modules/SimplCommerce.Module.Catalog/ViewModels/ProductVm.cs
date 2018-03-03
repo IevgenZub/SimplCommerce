@@ -19,9 +19,15 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public long Id { get; set; }
 
         public decimal Price { get; set; }
+        public decimal ChildPrice { get; set; }
 
+        public decimal PassengerPrice { get; set; }
+        public decimal PassengerChildPrice { get; set; }
+
+        public decimal AgencyChildPrice { get; set; }
+        public decimal AgencyPrice { get; set; }
+        
         public decimal? OldPrice { get; set; }
-
         public decimal? SpecialPrice { get; set; }
 
         public DateTimeOffset? SpecialPriceStart { get; set; }
