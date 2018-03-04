@@ -208,8 +208,8 @@
                         <label class="col-sm-2 control-label">Infant Price</label>
                         <div class="col-sm-10">
                             <div class="input-number">
-                                <input id="productOldPrice" type="text" decimal maxlength="10" name="oldPrice" ng-model="vm.product.oldPrice" class="form-control" />
-                                <label class="form-control" for="productOldPrice">{{vm.product.oldPrice | number}}</label>
+                                <input id="productChildPrice" type="text" decimal maxlength="10" name="childPrice" ng-model="vm.product.childPrice" class="form-control" />
+                                <label class="form-control" for="productChildPrice">{{vm.product.childPrice | number}}</label>
                             </div>
                         </div>
                     </div>
@@ -284,6 +284,15 @@
                                     <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'datePickerSpecialPriceEnd')"><i class="fa fa-calendar"></i></button>
                                 </span>
                             </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Old Price</label>
+                        <div class="col-sm-10">
+                            <div class="input-number">
+                                <input id="productOldPrice" type="text" decimal maxlength="10" name="oldPrice" ng-model="vm.product.oldPrice" class="form-control" />
+                                <label class="form-control" for="productOldPrice">{{vm.product.oldPrice | number}}</label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -382,7 +391,42 @@
                     </div>
                 </uib-tab>
                 <uib-tab index="1" ng-show="vm.userIsAdmin" heading="Admin Rules: Departure">
-
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Passenger Sales Price</label>
+                        <div class="col-sm-10">
+                            <div class="input-number">
+                                <input id="productPassengerPrice" type="text" decimal maxlength="10" name="passengerPrice" ng-model="vm.product.passengerPrice" class="form-control" />
+                                <label class="form-control" for="productPassengerPrice">{{vm.product.passengerPrice | number}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Passenger Sales Infant Price</label>
+                        <div class="col-sm-10">
+                            <div class="input-number">
+                                <input id="productPassengerChildPrice" type="text" decimal maxlength="10" name="passengerChildPrice" ng-model="vm.product.passengerChildPrice" class="form-control" />
+                                <label class="form-control" for="productPassengerChildPrice">{{vm.product.passengerChildPrice | number}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Agency Sales Price</label>
+                        <div class="col-sm-10">
+                            <div class="input-number">
+                                <input id="productAgencyPrice" type="text" decimal maxlength="10" name="agencyPrice" ng-model="vm.product.agencyPrice" class="form-control" />
+                                <label class="form-control" for="productAgencyPrice">{{vm.product.agencyPrice | number}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Agency Sales Infant Price</label>
+                        <div class="col-sm-10">
+                            <div class="input-number">
+                                <input id="productAgencyChildPrice" type="text" decimal maxlength="10" name="agencyChildPrice" ng-model="vm.product.agencyChildPrice" class="form-control" />
+                                <label class="form-control" for="productAgencyChildPrice">{{vm.product.agencyChildPrice | number}}</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">

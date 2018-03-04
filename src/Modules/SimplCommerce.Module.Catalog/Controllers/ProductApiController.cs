@@ -115,11 +115,17 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 VendorId = product.VendorId,
                 FlightClass = product.FlightClass,
                 DepartureDate = product.DepartureDate,
-                LandingDate = product.LandingDate
+                LandingDate = product.LandingDate,
+                ChildPrice = product.ChildPrice
             };
 
             if (User.IsInRole("admin"))
             {
+                productVm.PassengerChildPrice = product.PassengerChildPrice;
+                productVm.PassengerPrice = product.PassengerPrice;
+                productVm.AgencyChildPrice = product.AgencyChildPrice;
+                productVm.AgencyPrice = product.AgencyPrice;
+
                 productVm.AdminRoundTrip = product.AdminRoundTrip;
                 productVm.AdminRoundTripOperatorId = product.AdminRoundTripOperatorId;
                 productVm.AdminPayLater = product.AdminPayLater;
@@ -139,8 +145,6 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 productVm.AdminReturnNotifyLastPassanger = product.AdminReturnNotifyLastPassanger;
                 productVm.AdminReturnIsLastMinute = product.AdminReturnIsLastMinute;
             }
-
-
 
             foreach (var productMedia in product.Medias.Where(x => x.Media.MediaType == MediaType.Image))
             {
@@ -382,7 +386,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReservationNumber = model.Product.ReservationNumber,
                 FlightClass = model.Product.FlightClass,
                 DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc),
-                LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc)
+                LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc),
+                ChildPrice = model.Product.ChildPrice
             };
 
             if (!User.IsInRole("admin"))
@@ -391,6 +396,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
             }
             else
             {
+                product.PassengerPrice = model.Product.PassengerPrice;
+                product.PassengerChildPrice = model.Product.PassengerChildPrice;
+                product.AgencyPrice = model.Product.AgencyPrice;
+                product.AgencyChildPrice = model.Product.AgencyChildPrice;
                 product.VendorId = model.Product.VendorId;
                 product.AdminRoundTrip = model.Product.AdminRoundTrip;
                 product.AdminRoundTripOperatorId = model.Product.AdminRoundTripOperatorId;
@@ -521,9 +530,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.FlightClass = model.Product.FlightClass;
             product.DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc);
             product.LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc);
+            product.ChildPrice = model.Product.ChildPrice;
 
             if (User.IsInRole("admin"))
             {
+                product.AgencyChildPrice = model.Product.AgencyChildPrice;
+                product.AgencyPrice = model.Product.AgencyPrice;
+                product.PassengerChildPrice = model.Product.PassengerChildPrice;
+                product.PassengerPrice = model.Product.PassengerPrice;
                 product.VendorId = model.Product.VendorId;
                 product.Status = model.Product.Status;
                 product.AdminRoundTrip = model.Product.AdminRoundTrip;
