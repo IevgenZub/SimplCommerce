@@ -176,7 +176,7 @@ namespace SimplCommerce.Module.Orders.Controllers
             }
 
             var orderTaxAndShippingPrice = new OrderTaxAndShippingPriceVm();
-            orderTaxAndShippingPrice.Cart = await _cartService.GetCart(currentUser.Id);
+            orderTaxAndShippingPrice.Cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
 
             var cart = await _cartRepository.Query().Where(x => x.Id == orderTaxAndShippingPrice.Cart.Id).FirstOrDefaultAsync();
             cart.TaxAmount = orderTaxAndShippingPrice.Cart.TaxAmount = await _orderService.GetTax(currentUser.Id, address.CountryId, address.StateOrProvinceId);

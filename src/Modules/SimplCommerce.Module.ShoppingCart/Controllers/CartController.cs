@@ -36,7 +36,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> AddToCart([FromBody] AddToCartModel model)
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
             var cartItems = _cartItemRepository.Query().Where(x => x.CartId == cart.Id);
 
             cartItems.ToList().ForEach(ci => _cartItemRepository.Remove(ci));
@@ -51,7 +51,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> AddToCartResult(long productId)
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, User.IsInRole("vendor"));
 
             var model = new AddToCartResult
             {
@@ -81,7 +81,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> List()
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
 
             return Json(cart);
         }
@@ -111,7 +111,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             var validationResult =  await _cartService.ApplyCoupon(currentUser.Id, model.CouponCode);
             if (validationResult.Succeeded)
             {
-                var cart = await _cartService.GetCart(currentUser.Id);
+                var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
                 return Json(cart);
             }
 

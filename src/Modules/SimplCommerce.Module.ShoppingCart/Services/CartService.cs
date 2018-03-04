@@ -61,7 +61,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
         }
 
         // TODO separate getting product thumbnail, varation options from here
-        public async Task<CartVm> GetCart(long userId)
+        public async Task<CartVm> GetCart(long userId, bool isVendor)
         {
             var cart = _cartRepository.Query().FirstOrDefault(x => x.UserId == userId && x.IsActive);
             if (cart == null)
@@ -87,8 +87,8 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Id = x.Id,
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
-                    ProductPrice = x.Product.Price,
-                    ChildPrice = x.Product.OldPrice.Value,
+                    ProductPrice = isVendor ? x.Product.AgencyPrice : x.Product.PassengerPrice,
+                    ChildPrice = isVendor ? x.Product.AgencyChildPrice : x.Product.PassengerChildPrice,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
                     Quantity = x.Quantity,
                     QuantityChild = x.QuantityChild,

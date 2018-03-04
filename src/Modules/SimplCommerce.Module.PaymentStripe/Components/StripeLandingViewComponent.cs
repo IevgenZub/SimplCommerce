@@ -36,7 +36,7 @@ namespace SimplCommerce.Module.PaymentStripe.Components
             var stripeProvider = await _paymentProviderRepository.Query().FirstOrDefaultAsync(x => x.Id == PaymentProviderHelper.StripeProviderId);
             var stripeSetting = JsonConvert.DeserializeObject<StripeConfigForm>(stripeProvider.AdditionalSettings);
             var curentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(curentUser.Id);
+            var cart = await _cartService.GetCart(curentUser.Id, HttpContext.User.IsInRole("vendor"));
 
             var currentUser = await _workContext.GetCurrentUser();
 

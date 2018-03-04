@@ -48,7 +48,7 @@ namespace SimplCommerce.Module.PaymentPaypalExpress.Controllers
         {
             var accessToken = await GetAccessToken();
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
             var regionInfo = new RegionInfo(CultureInfo.CurrentCulture.LCID);
 
             if (string.IsNullOrWhiteSpace(_setting.Value.ExperienceProfileId))

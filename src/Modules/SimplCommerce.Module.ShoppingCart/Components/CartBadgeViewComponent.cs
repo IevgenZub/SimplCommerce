@@ -19,7 +19,7 @@ namespace SimplCommerce.Module.ShoppingCart.Components
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
             return View("/Modules/SimplCommerce.Module.ShoppingCart/Views/Components/CartBadge.cshtml", cart.Items.Count);
         }
     }
