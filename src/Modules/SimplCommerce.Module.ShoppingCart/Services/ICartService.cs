@@ -12,6 +12,8 @@ namespace SimplCommerce.Module.ShoppingCart.Services
 
         Task<CouponValidationResult> ApplyCoupon(long userId, string couponCode);
 
+        void ApplyFee(long userId, decimal feeAmount);
+
         Task MigrateCart(long fromUserId, long toUserId);
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace SimplCommerce.Module.ShoppingCart.ViewModels
 {
-    public class ApplyCouponForm
+    public class ApplyFeeForm
     {
-        public string CouponCode { get; set; }
+        public decimal FeeAmount { get; set; }
     }
 }

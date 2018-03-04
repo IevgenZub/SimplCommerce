@@ -38,8 +38,8 @@
         <td colspan="2" class="text-right"><span class="priceToConvert">@Model.SubTotal</span><input type="hidden" id="orderSubtotal" value="@Model.SubTotal" /></td>
     </tr>
     <tr>
-        <td>@Localizer["Shipping"]</td>
-        <td colspan="2" id="orderSummaryShipping" class="text-right">@Model.ShippingAmountString</td>
+        <td>Agency Fee</td>
+        <td colspan="2" id="orderSummaryShipping" class="text-right"><span class="priceToConvert">@Model.ShippingAmount</span></td>
     </tr>
     @if (!Model.IsTaxIncludedInProductPrice)
     {

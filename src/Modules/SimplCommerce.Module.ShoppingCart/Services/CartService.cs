@@ -60,7 +60,6 @@ namespace SimplCommerce.Module.ShoppingCart.Services
            await  _cartRepository.SaveChangesAsync();
         }
 
-        // TODO separate getting product thumbnail, varation options from here
         public async Task<CartVm> GetCart(long userId, bool isVendor)
         {
             var cart = _cartRepository.Query().FirstOrDefault(x => x.UserId == userId && x.IsActive);
@@ -135,6 +134,14 @@ namespace SimplCommerce.Module.ShoppingCart.Services
             }
 
             return couponValidationResult;
+        }
+
+        public void ApplyFee(long userId, decimal feeAmount)
+        {
+            var cart = _cartRepository.Query().Include(x => x.Items).FirstOrDefault(x => x.UserId == userId && x.IsActive);
+
+            cart.ShippingAmount = feeAmount;
+            _cartItemRepository.SaveChanges();
         }
 
         public async Task MigrateCart(long fromUserId, long toUserId)
