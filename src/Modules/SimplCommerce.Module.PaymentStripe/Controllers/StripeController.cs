@@ -53,7 +53,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             var customers = new StripeCustomerService(stripeSetting.PrivateKey);
             var charges = new StripeChargeService(stripeSetting.PrivateKey);
             var currentUser = await _workContext.GetCurrentUser();
-            var order = await _orderService.CreateOrder(currentUser, "Portmone", OrderStatus.PendingPayment);
+            var order = await _orderService.CreateOrder(currentUser, "Portmone", User.IsInRole("vendor"), OrderStatus.PendingPayment);
 
             var customer = customers.Create(new StripeCustomerCreateOptions
             {
@@ -99,7 +99,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
         {
             var userId = portmoneCallback.SHOPORDERNUMBER.Split('-')[0];
             var currentUser = _userRepository.Query().First(u => u.Id.ToString() == userId);
-            var order = await _orderService.CreateOrder(currentUser, "Portmone", OrderStatus.PendingPayment);
+            var order = await _orderService.CreateOrder(currentUser, "Portmone", User.IsInRole("vendor"), OrderStatus.PendingPayment);
 
             order.OrderStatus = OrderStatus.PaymentReceived;
 

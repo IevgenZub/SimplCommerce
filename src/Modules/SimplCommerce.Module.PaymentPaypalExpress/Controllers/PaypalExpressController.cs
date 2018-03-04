@@ -104,10 +104,10 @@ namespace SimplCommerce.Module.PaymentPaypalExpress.Controllers
         {
             var accessToken = await GetAccessToken();
             var currentUser = await _workContext.GetCurrentUser();
-            var order = await _orderService.CreateOrder(currentUser, "PaypalExpress", OrderStatus.PendingPayment);
+            var order = await _orderService.CreateOrder(currentUser, "PaypalExpress", User.IsInRole("vendor"), OrderStatus.PendingPayment);
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var paymentExecuteRequest = new PaymentExecuteRequest
+            var paymentExecuteRequest = new PaymentExecuteRequest 
             {
                 payer_id = model.payerID
             };

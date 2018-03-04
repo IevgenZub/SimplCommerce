@@ -44,7 +44,7 @@ namespace SimplCommerce.Module.Orders.Services
             _orderEmailService = orderEmailService;
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, bool isVendor, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = await _cartRepository
                .Query()
@@ -90,10 +90,10 @@ namespace SimplCommerce.Module.Orders.Services
                 billingAddress = shippingAddress = _userAddressRepository.Query().Where(x => x.Id == shippingData.ShippingAddressId).Select(x => x.Address).First();
             }
 
-            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress);
+            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor);
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, bool isVendor, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = _cartRepository
                 .Query()
@@ -149,14 +149,17 @@ namespace SimplCommerce.Module.Orders.Services
                 var orderItem = new OrderItem
                 {
                     Product = cartItem.Product,
-                    ProductPrice = cartItem.Product.Price,
+                    ProductPrice = isVendor ? cartItem.Product.AgencyPrice : cartItem.Product.PassengerPrice,
+                    ChildPrice = isVendor ? cartItem.Product.AgencyChildPrice : cartItem.Product.PassengerChildPrice,
                     Quantity = cartItem.Quantity,
+                    QuantityChild = cartItem.QuantityChild,
+                    QuantityBaby = cartItem.QuantityBaby,
                     TaxPercent = taxPercent,
                     TaxAmount = cartItem.Quantity * (cartItem.Product.Price * taxPercent / 100)
                 };
 
                 order.AddOrderItem(orderItem);
-                cartItem.Product.StockQuantity = cartItem.Product.StockQuantity - cartItem.Quantity;
+                cartItem.Product.StockQuantity = cartItem.Product.StockQuantity - cartItem.Quantity - cartItem.QuantityChild;
             }
 
             order.VendorId = order.OrderItems[0].Product.VendorId;
@@ -167,7 +170,7 @@ namespace SimplCommerce.Module.Orders.Services
             order.ShippingAmount = shippingMethod.Price;
             order.ShippingMethod = shippingMethod.Name;
             order.TaxAmount = order.OrderItems.Sum(x => x.TaxAmount);
-            order.SubTotal = order.OrderItems.Sum(x => x.ProductPrice * x.Quantity);
+            order.SubTotal = order.OrderItems.Sum(x => (x.ProductPrice * x.Quantity) + (x.ChildPrice * x.QuantityChild));
             order.SubTotalWithDiscount = order.SubTotal - discount;
             order.OrderTotal = order.SubTotal + order.TaxAmount + order.ShippingAmount - order.Discount;
             _orderRepository.Add(order);
