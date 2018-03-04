@@ -61,7 +61,7 @@ namespace SimplCommerce.Module.ProductComparison.Controllers
                 {
                     ProductName = x.Product.Name,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
-                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(x.Product),
+                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(x.Product, HttpContext.User.IsInRole("vendor")),
                     ProductId = x.ProductId
                 }
                 ).ToList();
@@ -109,7 +109,7 @@ namespace SimplCommerce.Module.ProductComparison.Controllers
             {
                 ProductName = x.Product.Name,
                 ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
-                CalculatedProductPrice = _productPricingService.CalculateProductPrice(x.Product),
+                CalculatedProductPrice = _productPricingService.CalculateProductPrice(x.Product, HttpContext.User.IsInRole("vendor")),
                 ProductId = x.ProductId,
                 AttributeValues = x.Product.AttributeValues.Select(a => new AttributeValueVm { AttributeId = a.AttributeId, Value = a.Value }).ToList()
             }).ToList();

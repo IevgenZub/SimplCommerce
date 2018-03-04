@@ -51,7 +51,7 @@ namespace SimplCommerce.Module.Catalog.Components
 
               .OrderByDescending(x => x.CreatedOn)
               .Take(model.Setting.NumberOfProducts)
-              .Select(x => ProductThumbnail.FromProduct(x)).ToList();
+              .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"))).ToList();
 
             foreach (var product in model.Products)
             {
@@ -82,7 +82,7 @@ namespace SimplCommerce.Module.Catalog.Components
             {
                 Id = product.Id,
                 Name = product.Name,
-                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product),
+                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product, HttpContext.User.IsInRole("vendor")),
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
@@ -146,7 +146,7 @@ namespace SimplCommerce.Module.Catalog.Components
                     InfantPrice = variation.OldPrice,
                     ReturnLandingDate = variation.ReturnLandingDate,
                     FlightClass = variation.FlightClass,
-                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation)
+                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
@@ -170,10 +170,10 @@ namespace SimplCommerce.Module.Catalog.Components
             foreach (var productLink in publishedProductLinks)
             {
                 var linkedProduct = productLink.LinkedProduct;
-                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct);
+                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct, HttpContext.User.IsInRole("vendor"));
 
                 productThumbnail.ThumbnailUrl = _mediaService.GetThumbnailUrl(linkedProduct.ThumbnailImage);
-                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct);
+                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct, HttpContext.User.IsInRole("vendor"));
 
                 if (productLink.LinkType == ProductLinkType.Related)
                 {

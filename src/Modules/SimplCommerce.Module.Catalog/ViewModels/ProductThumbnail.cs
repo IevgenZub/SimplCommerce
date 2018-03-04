@@ -65,15 +65,15 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public ProductDetail Details { get; set; }
 
-        public static ProductThumbnail FromProduct(Product product)
+        public static ProductThumbnail FromProduct(Product product, bool isVendor)
         {
             var productThumbnail = new ProductThumbnail
             {
                 Id = product.Id,
                 Name = product.Name,
                 SeoTitle = product.SeoTitle,
-                ChildPrice = product.ChildPrice,
-                Price = product.Price,
+                Price = isVendor ? product.AgencyPrice : product.PassengerPrice,
+                ChildPrice = isVendor ? product.AgencyChildPrice : product.PassengerChildPrice,
                 OldPrice = product.OldPrice,
                 SpecialPrice = product.SpecialPrice,
                 SpecialPriceStart = product.SpecialPriceStart,

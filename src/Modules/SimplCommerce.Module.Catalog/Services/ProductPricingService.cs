@@ -1,6 +1,7 @@
 ﻿using System;
 using SimplCommerce.Module.Catalog.Models;
 using SimplCommerce.Module.Catalog.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace SimplCommerce.Module.Catalog.Services
 {
@@ -11,9 +12,9 @@ namespace SimplCommerce.Module.Catalog.Services
             return CalculateProductPrice(productThumbnail.Price, productThumbnail.OldPrice, productThumbnail.SpecialPrice, productThumbnail.SpecialPriceStart, productThumbnail.SpecialPriceEnd);
         }
 
-        public CalculatedProductPrice CalculateProductPrice(Product product)
+        public CalculatedProductPrice CalculateProductPrice(Product product, bool isVendor)
         {
-            return CalculateProductPrice(product.Price, product.OldPrice, product.SpecialPrice, product.SpecialPriceStart, product.SpecialPriceEnd);
+            return CalculateProductPrice(isVendor ? product.AgencyPrice : product.PassengerPrice, product.OldPrice, product.SpecialPrice, product.SpecialPriceStart, product.SpecialPriceEnd);
         }
 
         public CalculatedProductPrice CalculateProductPrice(decimal price, decimal? oldPrice, decimal? specialPrice, DateTimeOffset? specialPriceStart, DateTimeOffset? specialPriceEnd)

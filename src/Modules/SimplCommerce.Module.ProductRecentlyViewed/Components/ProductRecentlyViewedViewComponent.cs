@@ -37,7 +37,7 @@ namespace SimplCommerce.Module.ProductRecentlyViewed.Components
             }
             
             var model = query.Take(5)
-                .Select(x => ProductThumbnail.FromProduct(x)).ToList();
+                .Select(x => ProductThumbnail.FromProduct(x, HttpContext.User.IsInRole("vendor"))).ToList();
 
             foreach (var product in model)
             {
