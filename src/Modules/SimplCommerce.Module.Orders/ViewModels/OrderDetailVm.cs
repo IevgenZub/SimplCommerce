@@ -35,17 +35,17 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public string PaymentMethod { get; set; }
 
-        public string SubtotalString { get { return Subtotal.ToString("C"); } }
+        public string SubtotalString { get { return Subtotal + "$"; } }
 
-        public string DiscountString { get { return Discount.ToString("C"); } }
+        public string DiscountString { get { return Discount + "$"; } }
 
-        public string SubtotalWithDiscountString { get { return SubTotalWithDiscount.ToString("C"); } }
+        public string SubtotalWithDiscountString { get { return SubTotalWithDiscount + "$"; } }
 
-        public string TaxAmountString { get { return TaxAmount.ToString("C"); } }
+        public string TaxAmountString { get { return TaxAmount + "$"; } }
 
-        public string ShippingAmountString { get { return ShippingAmount.ToString("C"); } }
+        public string ShippingAmountString { get { return ShippingAmount + "$"; } }
 
-        public string OrderTotalString { get { return OrderTotal.ToString("C"); } }
+        public string OrderTotalString { get { return OrderTotal + "$"; } }
 
         public ShippingAddressVm ShippingAddress { get; set; }
 

@@ -94,9 +94,14 @@
                             </li>
                         </ul>
                     </td>
-                    <td class="text-right">{{item.productPriceString}}</td>
                     <td class="text-right">
-                        Ordered {{item.quantity}}<span ng-if="item.shippedQuantity"><br />Shipped {{item.shippedQuantity}}</span>
+                        <p>{{item.productPriceString}} adult</p>
+                        <p>{{item.productChildPriceString}} child</p>
+                    </td>
+                    <td class="text-right">
+                        <p>{{item.quantity}} adult</p>
+                        <p>{{item.quantityChild}} child</p>
+                        <p>{{item.quantityBaby}} baby</p>
                     </td>
                     <td class="text-right">{{item.totalString}}</td>
                     <td class="text-right">{{item.taxAmountString}}</td>

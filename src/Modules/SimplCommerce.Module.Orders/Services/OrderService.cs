@@ -60,29 +60,6 @@ namespace SimplCommerce.Module.Orders.Services
             Address shippingAddress;
             if (shippingData.ShippingAddressId == 0)
             {
-                /*
-                var address = new Address
-                {
-                    AddressLine1 = shippingData.NewAddressForm.AddressLine1,
-                    AddressLine2 = shippingData.NewAddressForm.AddressLine2,
-                    ContactName = shippingData.NewAddressForm.ContactName,
-                    CountryId = shippingData.NewAddressForm.CountryId,
-                    StateOrProvinceId = shippingData.NewAddressForm.StateOrProvinceId,
-                    DistrictId = shippingData.NewAddressForm.DistrictId,
-                    City = shippingData.NewAddressForm.City,
-                    PostalCode = shippingData.NewAddressForm.PostalCode,
-                    Phone = shippingData.NewAddressForm.Phone
-                };
-
-                var userAddress = new UserAddress
-                {
-                    Address = address,
-                    AddressType = AddressType.Shipping,
-                    UserId = user.Id
-                };
-
-                _userAddressRepository.Add(userAddress);
-                */
                 billingAddress = shippingAddress = null;
             }
             else
@@ -176,42 +153,7 @@ namespace SimplCommerce.Module.Orders.Services
             _orderRepository.Add(order);
 
             cart.IsActive = false;
-            /*
-            var vendorIds = cart.Items.Where(x => x.Product.VendorId.HasValue).Select(x => x.Product.VendorId.Value).Distinct();
-            foreach (var vendorId in vendorIds)
-            {
-                var subOrder = new Order
-                {
-                    CreatedOn = DateTimeOffset.Now,
-                    CreatedById = user.Id,
-                    BillingAddress = orderBillingAddress,
-                    ShippingAddress = orderShippingAddress,
-                    VendorId = vendorId,
-                    Parent = order
-                };
-
-                foreach (var cartItem in cart.Items.Where(x => x.Product.VendorId == vendorId))
-                {
-                    var taxPercent = await _taxService.GetTaxPercent(cartItem.Product.TaxClassId, shippingAddress.CountryId, shippingAddress.StateOrProvinceId);
-                    var orderItem = new OrderItem
-                    {
-                        Product = cartItem.Product,
-                        ProductPrice = cartItem.Product.Price,
-                        Quantity = cartItem.Quantity,
-                        TaxPercent = taxPercent,
-                        TaxAmount = cartItem.Quantity * (cartItem.Product.Price * taxPercent / 100)
-                    };
-
-                    subOrder.AddOrderItem(orderItem);
-                }
-
-                subOrder.SubTotal = subOrder.OrderItems.Sum(x => x.ProductPrice * x.Quantity);
-                subOrder.TaxAmount = subOrder.OrderItems.Sum(x => x.TaxAmount);
-                subOrder.OrderTotal = subOrder.SubTotal + subOrder.TaxAmount + subOrder.ShippingAmount - subOrder.Discount;
-                _orderRepository.Add(subOrder);
-            }
-            */
-
+          
             foreach (var registrationAddress in shippingData.ExistingShippingAddresses.Where(esa => esa.Selected).ToList())
             {
                 var address = _userAddressRepository.Query().Where(x => x.Id == registrationAddress.UserAddressId).Select(x => x.Address).First();
@@ -298,20 +240,6 @@ namespace SimplCommerce.Module.Orders.Services
 
         private async Task<ShippingPrice> ValidateShippingMethod(string shippingMethodName, Address shippingAddress, Cart cart)
         {
-            //var applicableShippingPrices = await _shippingPriceService.GetApplicableShippingPrices(new GetShippingPriceRequest
-            //{
-            //    OrderAmount = cart.Items.Sum(x => x.Product.Price * x.Quantity),
-            //    ShippingAddress = shippingAddress
-            //});
-
-            //var shippingMethod = applicableShippingPrices.FirstOrDefault(x => x.Name == shippingMethodName);
-            //if (shippingMethod == null)
-            //{
-            //    throw new ApplicationException($"Invalid shipping method {shippingMethod}");
-            //}
-
-            //return shippingMethod;
-
             return new ShippingPrice() { Name = "Default", Price = 0, Description = "Default" };
         }
     }
