@@ -287,48 +287,67 @@
                 var rtSingle = rt.Where(p => !p.Details.HasVariation);
 
             }
-            <div>
-                <h4 class="text-center">Daily</h4>
-            </div>
-            <div >
-                <h5>Round Trip</h5>
-            </div>
-            @foreach (var product in rtBlock)
+            @if (rtBlock.Any() || owBlock.Any())
             {
                 <div>
-                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                    <h3 class="text-center">Daily</h3>
                 </div>
-            }
-            <div>
-                <h5>One Way</h5>
-            </div>
-            @foreach (var product in owBlock)
-            {
-                <div >
-                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                </div>
+                if (rtBlock.Any())
+                {
+                    <div>
+                        <h4>Round Trip</h4>
+                    </div>
+                    @foreach (var product in rtBlock)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
+                if (owBlock.Any())
+                {
+                    <div>
+                        <h4>One Way</h4>
+                    </div>
+                    @foreach (var product in owBlock)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
             }
 
-            <div>
-                <h4 class="text-center">One Time</h4>
-            </div>
-            <div>
-                <h5>Round Trip</h5>
-            </div>
-            @foreach (var product in rtSingle)
+            @if (rtSingle.Any() || owSingle.Any())
             {
                 <div>
-                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                    <h3 class="text-center">One Time</h3>
                 </div>
-            }
-            <div>
-                <h5>One Way</h5>
-            </div>
-            @foreach (var product in owSingle)
-            {
-                <div>
-                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                </div>
+                @if (rtSingle.Any())
+                {
+                    <div>
+                        <h4>Round Trip</h4>
+                    </div>
+                    @foreach (var product in rtSingle)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
+
+                @if (owSingle.Any())
+                {
+                    <div>
+                        <h4>One Way</h4>
+                    </div>
+                    @foreach (var product in owSingle)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
             }
         </div>
 

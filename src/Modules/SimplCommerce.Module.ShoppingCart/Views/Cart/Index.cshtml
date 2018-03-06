@@ -51,7 +51,7 @@
                 </thead>
                 <tbody>
                     <tr ng-if="vm.cart.items.length" ng-repeat="cartItem in vm.cart.items">
-                        <td class="product-image"><img ng-src="{{cartItem.productImage}}" /></td>
+                        <td class="product-image"><img style="max-height:50px; max-width:50px" ng-src="{{cartItem.productImage}}" /></td>
                         <td>
                             <h4>{{cartItem.productName}}</h4>
                             <p>{{cartItem.departureDate | date:'HH:mm':'UTC'}} {{cartItem.departure}}</p>
