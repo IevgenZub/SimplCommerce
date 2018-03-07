@@ -26,6 +26,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public int? StockQuantity { get; set; }
 
+        public int? SoldSeats { get; set; }
+
         public CalculatedProductPrice CalculatedProductPrice { get; set; }
 
         public IList<ProductDetailVariationOption> Options { get; protected set; } = new List<ProductDetailVariationOption>();

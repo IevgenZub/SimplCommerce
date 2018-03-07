@@ -271,6 +271,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
+                    SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
                     InfantPrice = variation.OldPrice,
                     ReturnLandingDate = variation.ReturnLandingDate,

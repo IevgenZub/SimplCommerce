@@ -136,7 +136,14 @@ namespace SimplCommerce.Module.Orders.Services
                 };
 
                 order.AddOrderItem(orderItem);
+
                 cartItem.Product.StockQuantity = cartItem.Product.StockQuantity - cartItem.Quantity - cartItem.QuantityChild;
+                if (cartItem.Product.StockQuantity < 0)
+                {
+                    throw new ApplicationException("Can't order more seats that currently available");
+                }
+
+                cartItem.Product.SoldSeats = cartItem.Quantity + cartItem.QuantityChild;
             }
 
             order.VendorId = order.OrderItems[0].Product.VendorId;

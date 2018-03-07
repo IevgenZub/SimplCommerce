@@ -25,6 +25,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public int? StockQuantity { get; set; }
 
+        public int? SoldSeats { get; set; }
+
         public int ReviewsCount { get; set; }
 
         public double? RatingAverage { get; set; }

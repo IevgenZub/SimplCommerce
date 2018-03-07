@@ -109,6 +109,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
+                    SoldSeats = variation.SoldSeats,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
 

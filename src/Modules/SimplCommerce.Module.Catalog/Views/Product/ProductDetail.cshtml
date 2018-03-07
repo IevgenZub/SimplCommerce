@@ -94,6 +94,10 @@
                             {
                                     <span class="label label-danger ">@Localizer["Out of stock"]</span>
                             }
+                            else
+                            {
+                                <span class="label label-info pull-right">Seats available @variant.StockQuantity sold @variant.SoldSeats</span>
+                            }
                         </div>
 
                         <div class="add-to-cart">
@@ -144,6 +148,11 @@
                     {
                         <span class="label label-danger">@Localizer["Out of stock"]</span>
                     }
+                    else
+                    {
+                        <span class="label label-info pull-right">Seats available @Model.StockQuantity sold @Model.SoldSeats</span>
+                    }
+
                 </div>
                 <div class="add-to-cart">
                     <form class="inline">
