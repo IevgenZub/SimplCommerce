@@ -89,13 +89,13 @@
                             {
                                 <span> - @variant.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
                             }
+
+                            @if (variant.StockQuantity <= 0)
+                            {
+                                    <span class="label label-danger ">@Localizer["Out of stock"]</span>
+                            }
                         </div>
-                        @if (variant.StockQuantity <= 0)
-                        {
-                            <div class="out-of-stock">
-                                <span class="label label-danger">@Localizer["Out of stock"]</span>
-                            </div>
-                        }
+
                         <div class="add-to-cart">
                             <form class="inline">
                                 <input type="hidden" name="productId" value="@variant.Id" />
@@ -139,13 +139,12 @@
                             <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
                         }
                     }
-                </div>
-                if (Model.StockQuantity <= 0)
-                {
-                    <div class="out-of-stock">
+
+                    @if (Model.StockQuantity <= 0)
+                    {
                         <span class="label label-danger">@Localizer["Out of stock"]</span>
-                    </div>
-                }
+                    }
+                </div>
                 <div class="add-to-cart">
                     <form class="inline">
                         <input type="hidden" name="productId" value="@Model.Id" />
