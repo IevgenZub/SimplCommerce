@@ -144,7 +144,7 @@ namespace SimplCommerce.Module.Orders.Services
             order.CouponCode = cart.CouponCode;
             order.CouponRuleName = cart.CouponRuleName;
             order.Discount = discount;
-            order.ShippingAmount = shippingMethod.Price;
+            order.ShippingAmount = cart.ShippingAmount.HasValue ? cart.ShippingAmount.Value : 0;
             order.ShippingMethod = shippingMethod.Name;
             order.TaxAmount = order.OrderItems.Sum(x => x.TaxAmount);
             order.SubTotal = order.OrderItems.Sum(x => (x.ProductPrice * x.Quantity) + (x.ChildPrice * x.QuantityChild));

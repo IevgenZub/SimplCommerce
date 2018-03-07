@@ -98,10 +98,16 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
         public async Task<IActionResult> PortmoneSuccessPostCallback([FromForm] PortmoneCallback portmoneCallback)
         {
             var userId = portmoneCallback.SHOPORDERNUMBER.Split('-')[0];
-            var currentUser = _userRepository.Query().First(u => u.Id.ToString() == userId);
-            var order = await _orderService.CreateOrder(currentUser, "Portmone", User.IsInRole("vendor"), OrderStatus.PendingPayment);
 
-            order.OrderStatus = OrderStatus.PaymentReceived;
+            var currentUser = _userRepository.Query()
+                .Include(u => u.Roles).ThenInclude(r => r.Role)
+                .First(u => u.Id.ToString() == userId);
+
+            var order = await _orderService.CreateOrder(
+                currentUser, 
+                "Portmone", 
+                currentUser.Roles.Any(r => r.Role.Name == "vendor"), 
+                OrderStatus.PaymentReceived);
 
             var payment = new Payment()
             {
@@ -112,8 +118,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
                 GatewayTransactionId = portmoneCallback.SHOPORDERNUMBER
             };
 
-            order.OrderStatus = OrderStatus.PaymentReceived;
-            order.CouponRuleName = portmoneCallback.SHOPORDERNUMBER;
+            order.ExternalNumber = portmoneCallback.SHOPORDERNUMBER;
             _paymentRepository.Add(payment);
             await _paymentRepository.SaveChangesAsync();
 

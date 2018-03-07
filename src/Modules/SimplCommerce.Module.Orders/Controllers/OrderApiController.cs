@@ -58,8 +58,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                     x.Id,
                     CustomerName = x.CreatedBy.FullName,
                     x.OrderTotal,
-                    OrderTotalString = x.OrderTotal.ToString("C"),
-                    OrderStatus = x.OrderStatus.ToString(), x.CreatedOn
+                    OrderTotalString = x.OrderTotal + "$",
+                    OrderStatus = x.OrderStatus.ToString(),
+                    x.CreatedOn
                 });
 
             return Json(model);
@@ -119,8 +120,11 @@ namespace SimplCommerce.Module.Orders.Controllers
                 order => new
                 {
                     order.Id,
-                    CustomerName = order.CreatedBy.FullName, order.SubTotal,
-                    OrderStatus = order.OrderStatus.ToString(), order.CreatedOn
+                    CustomerName = order.CreatedBy.FullName,
+                    order.SubTotal,
+                    OrderStatus = order.OrderStatus.ToString(),
+                    order.CreatedOn,
+                    order.ShippingAmount
                 });
 
             return Json(orders);
