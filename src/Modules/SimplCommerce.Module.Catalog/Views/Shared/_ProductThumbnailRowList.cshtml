@@ -200,30 +200,5 @@
         <div class="col-md-12 col-sm-12" >
             @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Product/ProductDetail.cshtml", Model.Details)
         </div>
-        <div class="col-md-12 col-sm-12">
-            <div style="border-bottom: 1px solid #ddd; margin: 5px 15px; "></div>
-            <div class="col-md-3 col-sm-3">
-                <p><small>Carrier: @Model.Carrier</small></p>
-                <p><small>Flight #: @Model.FlightNumber</small></p>
-            </div>
-            <div class="col-md-3 col-sm-3">
-                <p><small>Terminal: @Model.Terminal</small></p>
-                <p><small>Aircraft: @Model.Aircraft</small></p>
-                <p><small>Via: @Model.Via</small></p>
-            </div>
-
-           @if (Model.IsRoundTrip)
-           {
-            <div class="col-md-3 col-sm-3">
-                <p><small>Carrier: @Model.ReturnCarrier</small></p>
-                <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
-            </div>
-            <div class="col-md-3 col-sm-3">
-                <p><small>Terminal: @Model.ReturnTerminal</small></p>
-                <p><small>Aircraft: @Model.ReturnAircraft</small></p>
-                <p><small>Via: @Model.ReturnVia</small></p>
-            </div>
-           }
-        </div>
     </div>
 </div>

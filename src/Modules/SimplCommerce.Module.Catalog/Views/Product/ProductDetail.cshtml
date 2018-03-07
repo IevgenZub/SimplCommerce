@@ -70,35 +70,70 @@
                     var hidden = variant != Model.Variations.First() ? "collapse" : "";
                     <div class="product-variation @hidden" data-variation-name="@variant.NormalizedName">
                         <div class="product-price">
-                            @if (variant.IsCallForPricing)
-                            {
-                                <span class="label label-info">@Localizer["Call for pricing"]</span>
-                            }
-                            else
-                            {
-                                <h3><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></h3>
-                                if (variant.CalculatedProductPrice.PercentOfSaving > 0)
+                            <div class="col-md-2 col-sm-2">
+                                @if (variant.IsCallForPricing)
                                 {
-                                    <p class="product-price-regular"><span class="priceToConvert">@variant.CalculatedProductPrice.OldPrice.Value</span></p>
-                                    <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
+                                    <span class="label label-info">@Localizer["Call for pricing"]</span>
                                 }
-                            }
-                            (@variant.FlightClass)
-                            @variant.DepartureDate.Value.DateTime.ToShortDateString() 
-                            @if (variant.ReturnLandingDate.HasValue)
-                            {
-                                <span> - @variant.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
-                            }
+                                else
+                                {
+                                    <h3><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></h3>
+                                    if (variant.CalculatedProductPrice.PercentOfSaving > 0)
+                                    {
+                                        <p class="product-price-regular"><span class="priceToConvert">@variant.CalculatedProductPrice.OldPrice.Value</span></p>
+                                        <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
+                                    }
+                                }
+                            </div>
+                            <div class="col-md-2 col-sm-2">
+                                <p>
+                                    <span class="label label-default">@variant.FlightClass</span>
+                                </p>
+                                <p>
+                                    <span class="label label-primary">
+                                        @variant.DepartureDate.Value.DateTime.ToShortDateString()
+                                        @if (variant.ReturnLandingDate.HasValue)
+                                        {
+                                            @variant.ReturnLandingDate.Value.DateTime.ToShortDateString()
+                                        }
+                                    </span>
+                                </p>
+                                <p>
+                                    @if (variant.StockQuantity <= 0)
+                                    {
+                                        <span class="label label-danger ">@Localizer["Out of stock"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-info">Seats available <span class="badge">@variant.StockQuantity</span> sold <span class="badge">@variant.SoldSeats </span></span>
+                                    }
+                                </p>
+                            </div>
+                                <div class="col-md-8 col-sm-8">
+                                    <div class="col-md-3 col-sm-3">
+                                        <p><small>Carrier: @Model.Carrier</small></p>
+                                        <p><small>Flight #: @Model.FlightNumber</small></p>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3">
+                                        <p><small>Terminal: @Model.Terminal</small></p>
+                                        <p><small>Aircraft: @Model.Aircraft</small></p>
+                                        <p><small>Via: @Model.Via</small></p>
+                                    </div>
 
-                            @if (variant.StockQuantity <= 0)
-                            {
-                                    <span class="label label-danger ">@Localizer["Out of stock"]</span>
-                            }
-                            else
-                            {
-                                <span class="label label-info pull-right">Seats available @variant.StockQuantity sold @variant.SoldSeats</span>
-                            }
-                        </div>
+                                    @if (Model.IsRoundTrip)
+                                    {
+                                        <div class="col-md-3 col-sm-3">
+                                            <p><small>Carrier: @Model.ReturnCarrier</small></p>
+                                            <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3">
+                                            <p><small>Terminal: @Model.ReturnTerminal</small></p>
+                                            <p><small>Aircraft: @Model.ReturnAircraft</small></p>
+                                            <p><small>Via: @Model.ReturnVia</small></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
 
                         <div class="add-to-cart">
                             <form class="inline">
@@ -130,29 +165,53 @@
             else
             {
                 <div class="product-price">
-                    @if (Model.IsCallForPricing)
-                    {
-                        <span class="label label-info">@Localizer["Call for pricing"]</span>
-                    }
-                    else
-                    {
-                        <h3><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></h3>
-                        if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                    <div class="col-md-2 col-sm-2">
+                        @if (Model.IsCallForPricing)
                         {
-                            <p class="product-price-regular"><span class="priceToConvert">@Model.CalculatedProductPrice.OldPrice.Value</span></p>
-                            <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
+                            <span class="label label-info">@Localizer["Call for pricing"]</span>
                         }
-                    }
+                        else
+                        {
+                            <h3><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></h3>
+                            if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                            {
+                                <p class="product-price-regular"><span class="priceToConvert">@Model.CalculatedProductPrice.OldPrice.Value</span></p>
+                                <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
+                            }
+                        }
+                            @if (Model.StockQuantity <= 0)
+                            {
+                                <span class="label label-danger">@Localizer["Out of stock"]</span>
+                            }
+                            else
+                            {
+                                <span class="label label-info">Seats available <span class="badge">@Model.StockQuantity</span> sold <span class="badge">@Model.SoldSeats</span></span>
+                            }
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="col-md-3 col-sm-3">
+                            <p><small>Carrier: @Model.Carrier</small></p>
+                            <p><small>Flight #: @Model.FlightNumber</small></p>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <p><small>Terminal: @Model.Terminal</small></p>
+                            <p><small>Aircraft: @Model.Aircraft</small></p>
+                            <p><small>Via: @Model.Via</small></p>
+                        </div>
 
-                    @if (Model.StockQuantity <= 0)
-                    {
-                        <span class="label label-danger">@Localizer["Out of stock"]</span>
-                    }
-                    else
-                    {
-                        <span class="label label-info pull-right">Seats available @Model.StockQuantity sold @Model.SoldSeats</span>
-                    }
-
+                        @if (Model.IsRoundTrip)
+                        {
+                            <div class="col-md-3 col-sm-3">
+                                <p><small>Carrier: @Model.ReturnCarrier</small></p>
+                                <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                <p><small>Terminal: @Model.ReturnTerminal</small></p>
+                                <p><small>Aircraft: @Model.ReturnAircraft</small></p>
+                                <p><small>Via: @Model.ReturnVia</small></p>
+                            </div>
+                        }
+                    </div>
                 </div>
                 <div class="add-to-cart">
                     <form class="inline">

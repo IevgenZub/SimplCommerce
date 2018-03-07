@@ -184,6 +184,10 @@ namespace SimplCommerce.Module.Search.Controllers
                 .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.ThumbnailImage)
                 .Include(x => x.ThumbnailImage)
                 .Include(x => x.Medias).ThenInclude(m => m.Media)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
+                .Include(x => x.Brand)
+                .Include(x => x.TaxClass)
                 .FirstOrDefault(x => x.Id == id && x.IsPublished);
 
             if (product == null)
@@ -204,6 +208,16 @@ namespace SimplCommerce.Module.Search.Controllers
                 Specification = product.Specification,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
+                Terminal = product.Sku,
+                ReturnTerminal = product.ReturnTerminal,
+                IsRoundTrip = product.IsRoundTrip,
+                FlightNumber = product.FlightNumber,
+                Carrier = product.Brand == null ? "" : product.Brand.Name,
+                ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
+                Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
+                Via = product.Via,
+                ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
+                ReturnVia = product.ReturnVia,
                 Attributes = product.AttributeValues.Select(x => new ProductDetailAttribute { Name = x.Attribute.Name, Value = x.Value }).ToList(),
                 Categories = product.Categories.Select(x => new ProductDetailCategory { Id = x.CategoryId, Name = x.Category.Name, SeoTitle = x.Category.SeoTitle }).ToList()
             };
