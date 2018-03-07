@@ -76,18 +76,18 @@
                             }
                             else
                             {
-                                <label><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></label>
+                                <h3><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></h3>
                                 if (variant.CalculatedProductPrice.PercentOfSaving > 0)
                                 {
-                                    <p class="product-price-regular">@variant.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
+                                    <p class="product-price-regular"><span class="priceToConvert">@variant.CalculatedProductPrice.OldPrice.Value</span></p>
                                     <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
                                 }
                             }
                             (@variant.FlightClass)
-                            @variant.DepartureDate.Value.DateTime.ToShortDateString() - 
+                            @variant.DepartureDate.Value.DateTime.ToShortDateString() 
                             @if (variant.ReturnLandingDate.HasValue)
                             {
-                                <span>@variant.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
+                                <span> - @variant.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
                             }
                         </div>
                         @if (variant.StockQuantity <= 0)
@@ -132,10 +132,10 @@
                     }
                     else
                     {
-                        <label><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></label>
+                        <h3><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></h3>
                         if (Model.CalculatedProductPrice.PercentOfSaving > 0)
                         {
-                            <p class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
+                            <p class="product-price-regular"><span class="priceToConvert">@Model.CalculatedProductPrice.OldPrice.Value</span></p>
                             <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
                         }
                     }
