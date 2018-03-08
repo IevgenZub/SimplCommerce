@@ -13,7 +13,7 @@ using SimplCommerce.Module.ShoppingCart.Models;
 namespace SimplCommerce.Module.Payments.Controllers
 {
     [Route("checkout")]
-    [Authorize]
+    //[Authorize]
     public class CheckoutController : Controller
     {
         private readonly IRepository<PaymentProvider> _paymentProviderRepository;

@@ -35,7 +35,7 @@ namespace SimplCommerce.Module.Catalog.Components
             };
 
             var query = _productRepository.Query()
-              .Where(x => x.IsPublished && x.IsVisibleIndividually);
+              .Where(x => x.IsPublished && x.IsVisibleIndividually && x.StockQuantity > 0);
 
             if (model.Setting.FeaturedOnly)
             {

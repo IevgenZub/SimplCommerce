@@ -18,7 +18,7 @@ using SimplCommerce.Module.Core.ViewModels;
 
 namespace SimplCommerce.Module.Orders.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("checkout")]
     public class CheckoutController : Controller
     {
