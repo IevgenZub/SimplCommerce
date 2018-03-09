@@ -14,7 +14,7 @@
 </style>
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
             <h3>Passenger Registration</h3>
@@ -22,10 +22,13 @@
             <div class="row hidden-xs" style="border-bottom: 1px solid #eee;" >
                 <div class="col-sm-2"><strong>First Name</strong></div>
                 <div class="col-sm-2"><strong>Last Name</strong></div>
-                <div class="col-sm-2"><strong>Birth Date</strong></div>
-                <div class="col-sm-2"><strong>Document No.</strong></div>
-                <div class="col-sm-2"><strong>Expiration</strong></div>
-                <div class="col-sm-2"><strong>Sex</strong></div>
+                <div class="col-sm-1"><strong>Birth Date</strong></div>
+                <div class="col-sm-1"><strong>Document #</strong></div>
+                <div class="col-sm-1"><strong>Expiration</strong></div>
+                <div class="col-sm-2"><strong>Email</strong></div>
+                <div class="col-sm-1"><strong>Phone</strong></div>
+                <div class="col-sm-1"><strong>Country</strong></div>
+                <div class="col-sm-1"><strong>Sex</strong></div>
             </div>
             <div class="address-container">
                 @foreach (var address in Model.ExistingShippingAddresses)
@@ -41,16 +44,25 @@
                         <div class="col-sm-2 last-name">
                             <label class="visible-xs hidden-label">Last Name:&nbsp;</label>@address.AddressLine1
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <label class="visible-xs hidden-label">Birth Date:&nbsp;</label>@address.AddressLine2
                         </div>
-                        <div class="col-sm-2 document-no">
-                            <label class="visible-xs hidden-label">Document No.:&nbsp;</label>@address.CityName
+                        <div class="col-sm-1 document-no">
+                            <label class="visible-xs hidden-label">Document #:&nbsp;</label>@address.CityName
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <label class="visible-xs hidden-label">Expiration:&nbsp;</label>@address.PostalCode
                         </div>
                         <div class="col-sm-2">
+                            <label class="visible-xs hidden-label">Email:&nbsp;</label>@address.Email
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="visible-xs hidden-label">Phone:&nbsp;</label>@address.Mobile
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="visible-xs hidden-label">Country:&nbsp;</label>@address.CountryName
+                        </div>
+                        <div class="col-sm-1">
                             <label class="visible-xs hidden-label">Sex:&nbsp;</label>@address.Phone
                         </div>
                     </div>
@@ -65,57 +77,77 @@
                 </div>
             </div>
         </form>
-
-        <div class="create-shipping-address">
-            <form action="add-address" method="POST" class="add-address-form form-horizontal">
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <input type="text" placeholder="First Name" pattern="[A-Za-z]+" required class="form-control" id="firstName" name="firstName">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <input type="text" class="form-control" pattern="[A-Za-z]+" required placeholder="Last Name" id="lastName" name="lastName">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <input type="date" class="form-control" required placeholder="Birth Date" id="birth" name="birthDate">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <input type="text" class="form-control" required placeholder="Document No." pattern="[a-zA-Z0-9]+" id="document" name="documentNumber">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group">
-                        <input type="date" class="form-control" required placeholder="Document Exp." id="expiry" name="documentExpiration">
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="form-group" style="padding-top:5px">
-                            <label class="radio-inline">
-                                <input type="radio" name="sex" checked value="Male">Male
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="sex" value="Female">Female
-                            </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12 text-right">
-                        <small class="alert-danger" hidden id="addPassangerAlert">Add <span id="numberOfPassengersToAdd"></span>&nbsp; passenger(s) &nbsp;</small>
-                        <button type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Passenger</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
     </div>
+
+    <div class="create-shipping-address col-md-8">
+        <form action="add-address" method="POST" class="add-address-form form-horizontal">
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input type="text" placeholder="First Name" pattern="[A-Za-z]+" required class="form-control" id="firstName" name="firstName">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" pattern="[A-Za-z]+" required placeholder="Last Name" id="lastName" name="lastName">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input placeholder="Birth Date" type="text" onfocus="(this.type='date')" onchange="this.blur()"  class="form-control" required id="birth" name="birthDate">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" required placeholder="Document No." pattern="[a-zA-Z0-9]+" id="document" name="documentNumber">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input placeholder="Document Exp." type="text" onfocus="(this.type='date')" onchange="this.blur()"  class="form-control" required id="expiry" name="documentExpiration">
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" required placeholder="Email" id="email" name="email">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" required placeholder="Phone" id="phone" name="phone">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" required placeholder="Country" id="expiry" name="country">
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group" style="padding-top:5px">
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" checked value="Male">Male
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" value="Female">Female
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 text-right">
+                    <small class="alert-danger" hidden id="addPassangerAlert">Add <span id="numberOfPassengersToAdd"></span>&nbsp; passenger(s) &nbsp;</small>
+                    <button type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Passenger</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
     <div class="col-md-4">
         @await Component.InvokeAsync("OrderSummary")
     </div>
+
+
 
 </div>
 <br />

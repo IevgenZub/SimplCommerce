@@ -24,5 +24,12 @@ namespace SimplCommerce.Module.Orders.ViewModels
         public string BirthDate { get; set; }
         
         public string Sex { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Phone { get; set; }
+        [Required]
+        public string Country { get; set; }
     }
 }

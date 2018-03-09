@@ -13,6 +13,9 @@
             documentExpiration = $form.find("input[name='documentExpiration']").val(),
             birthDate = $form.find("input[name='birthDate']").val(),
             sex = $form.find("input[name='sex']:checked").val(),
+            phone = $form.find("input[name='phone']").val(),
+            email = $form.find("input[name='email']").val(),
+            country = $form.find("input[name='country']").val(),
             url = $form.attr("action");
 
         // Send the data using post
@@ -22,7 +25,10 @@
             DocumentNumber: documentNumber,
             BirthDate: birthDate,
             DocumentExpiration: documentExpiration,
-            Sex: sex
+            Sex: sex,
+            Phone: phone,
+            Email: email,
+            Country: country
         });
 
         // Put the results in a div
@@ -41,13 +47,18 @@
                     ' + firstName + '\
                     </div >\
                     <div class="col-sm-2">'+ lastName +'</div>\
-                    <div class="col-sm-2">'+ birthDate + '</div>\
-                    <div class="col-sm-2">'+ documentNumber + '</div>\
-                    <div class="col-sm-2">'+ documentExpiration + '</div>\
-                    <div class="col-sm-2">'+ sex +'</div>\
+                    <div class="col-sm-1">'+ birthDate + '</div>\
+                    <div class="col-sm-1">'+ documentNumber + '</div>\
+                    <div class="col-sm-1">'+ documentExpiration + '</div>\
+                    <div class="col-sm-2">'+ email + '</div>\
+                    <div class="col-sm-1"> '+ phone + '</div>\
+                    <div class="col-sm-1">'+ country + '</div>\
+                    <div class="col-sm-1">'+ sex +'</div>\
                </div>');
 
             $form[0].reset();
+            $('#birth').blur();
+            $('expiry').blur();
 
             checkIfContinueEnabled();
         });

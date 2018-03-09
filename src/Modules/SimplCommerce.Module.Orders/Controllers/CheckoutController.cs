@@ -101,7 +101,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                     DistrictId = 1,
                     City = model.DocumentNumber,
                     PostalCode = model.DocumentExpiration,
-                    Phone = model.Sex
+                    Phone = model.Sex,
+                    Email = model.Email,
+                    Mobile = model.Phone
                 };
 
                 var userAddress = new UserAddress
@@ -229,12 +231,12 @@ namespace SimplCommerce.Module.Orders.Controllers
                     StateOrProvinceName = x.Address.StateOrProvince.Name,
                     CountryName = x.Address.Country.Name,
                     CityName = x.Address.City,
-                    PostalCode = x.Address.PostalCode
+                    PostalCode = x.Address.PostalCode,
+                    Mobile = x.Address.Mobile,
+                    Email = x.Address.Email
                 }).ToList();
 
-            model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0;
-
-          
+            model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0; 
         }
     }
 }

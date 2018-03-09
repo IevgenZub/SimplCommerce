@@ -95,7 +95,9 @@ namespace SimplCommerce.Module.Orders.Services
                 DistrictId = billingAddress.DistrictId,
                 City = billingAddress.City,
                 PostalCode = billingAddress.PostalCode,
-                Phone = billingAddress.Phone
+                Phone = billingAddress.Phone,
+                Email = billingAddress.Email,
+                Mobile = billingAddress.Mobile
             };
 
             var orderShippingAddress = new OrderAddress()
@@ -108,7 +110,9 @@ namespace SimplCommerce.Module.Orders.Services
                 DistrictId = shippingAddress.DistrictId,
                 City = shippingAddress.City,
                 PostalCode = shippingAddress.PostalCode,
-                Phone = shippingAddress.Phone
+                Phone = shippingAddress.Phone,
+                Email = shippingAddress.Email,
+                Mobile = shippingAddress.Mobile
             };
 
             var order = new Order
@@ -176,7 +180,9 @@ namespace SimplCommerce.Module.Orders.Services
                         Phone = address.Phone,
                         PostalCode = address.PostalCode,
                         DistrictId = address.DistrictId,
-                        StateOrProvinceId = address.StateOrProvinceId
+                        StateOrProvinceId = address.StateOrProvinceId,
+                        Email = address.Email,
+                        Mobile = address.Mobile
                     }
                 };
 
