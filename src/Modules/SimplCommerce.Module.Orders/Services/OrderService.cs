@@ -44,7 +44,7 @@ namespace SimplCommerce.Module.Orders.Services
             _orderEmailService = orderEmailService;
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, bool isVendor, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = await _cartRepository
                .Query()
@@ -67,10 +67,10 @@ namespace SimplCommerce.Module.Orders.Services
                 billingAddress = shippingAddress = _userAddressRepository.Query().Where(x => x.Id == shippingData.ShippingAddressId).Select(x => x.Address).First();
             }
 
-            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor);
+            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, bool isVendor, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = _cartRepository
                 .Query()
@@ -189,10 +189,24 @@ namespace SimplCommerce.Module.Orders.Services
                 order.RegistrationAddress.Add(orderRegistrationAddress);
             }
 
+            if (isGuest)
+            {
+                user.Email = order.RegistrationAddress.First().Address.Email;
+            }
+
             _orderRepository.SaveChanges();
 
             await _orderEmailService.SendEmailToUser(user, order, "OrderEmailToCustomer");
             await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
+
+            foreach (var registrationAddress in order.RegistrationAddress)
+            {
+                var email = user.Email;
+                if (email != registrationAddress.Address.Email) { 
+                    user.Email = registrationAddress.Address.Email;
+                    await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
+                }
+            }
 
             return order;
         }
