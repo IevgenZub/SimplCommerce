@@ -73,7 +73,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                 Id = cart.Id,
                 CouponCode = cart.CouponCode,
                 TaxAmount = cart.TaxAmount,
-                ShippingAmount = cart.ShippingAmount
+                ShippingAmount = cart.ShippingAmount.HasValue ? cart.ShippingAmount : 0
             };
 
             cartVm.Items = _cartItemRepository
