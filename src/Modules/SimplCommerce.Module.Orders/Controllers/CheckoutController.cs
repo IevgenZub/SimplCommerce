@@ -67,7 +67,18 @@ namespace SimplCommerce.Module.Orders.Controllers
 
             model.NumberofPassengers = cart.Items[0].Quantity + cart.Items[0].QuantityChild + cart.Items[0].QuantityBaby;
 
+            
             PopulateShippingForm(model, currentUser);
+
+            model.NewAddress = new UserAddressFormViewModel();
+            model.NewAddress.Countries = _countryRepository.Query()
+                .Where(x => x.IsShippingEnabled)
+                .OrderBy(x => x.Name)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
 
             return View(model);
         }
@@ -96,7 +107,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                     ContactName = model.FirstName,
                     AddressLine1 = model.LastName,
                     AddressLine2 = model.BirthDate,
-                    CountryId = 238,
+                    CountryId = model.CountryId,
                     StateOrProvinceId = 1,
                     DistrictId = 1,
                     City = model.DocumentNumber,
@@ -237,6 +248,8 @@ namespace SimplCommerce.Module.Orders.Controllers
                 }).ToList();
 
             model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0; 
+
+            
         }
     }
 }

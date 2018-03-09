@@ -119,7 +119,9 @@
             </div>
             <div class="col-lg-4 col-md-4">
                 <div class="form-group">
-                    <input type="text" class="form-control" required placeholder="Country" id="expiry" name="country">
+                    <select asp-items="Model.NewAddress.Countries" id="countryId" required name="countryId" class="form-control">
+                        <option value="">Country</option>
+                    </select>
                 </div>
             </div>
 

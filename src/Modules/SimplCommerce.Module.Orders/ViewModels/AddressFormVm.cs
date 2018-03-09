@@ -30,6 +30,6 @@ namespace SimplCommerce.Module.Orders.ViewModels
         [Required]
         public string Phone { get; set; }
         [Required]
-        public string Country { get; set; }
+        public int CountryId { get; set; }
     }
 }

@@ -1,4 +1,15 @@
 ﻿$(function () {
+
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
+
+    function isPhone(phone) {
+        var regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+        return regex.test(phone);
+    }
+
     $(".add-address-form").submit(function (event) {
 
         // Stop form from submitting normally
@@ -15,8 +26,23 @@
             sex = $form.find("input[name='sex']:checked").val(),
             phone = $form.find("input[name='phone']").val(),
             email = $form.find("input[name='email']").val(),
-            country = $form.find("input[name='country']").val(),
+            countryId = $form.find("select[name='countryId']").val(),
             url = $form.attr("action");
+
+        if (!isEmail(email)) {
+            alert("Email format is not correct");
+            return;
+        }
+
+        if (!isPhone(phone)) {
+            alert("Phone format is not correct");
+            return;
+        }
+
+        if (!countryId || countryId == "") {
+            alert("Select Country");
+            return;
+        }
 
         // Send the data using post
         var posting = $.post(url, {
@@ -28,7 +54,7 @@
             Sex: sex,
             Phone: phone,
             Email: email,
-            Country: country
+            CountryId: countryId
         });
 
         // Put the results in a div
@@ -44,21 +70,25 @@
                     <div class="col-sm-2">\
                         <input type="hidden" data-val="true" data-val-required="The UserAddressId field is required." id="ExistingShippingAddresses_'+ nextIndex + '__UserAddressId" name="ExistingShippingAddresses[' + nextIndex + '].UserAddressId" value="' + data.id +'">\
                         <input type="checkbox" data-val="true" onclick="checkIfContinueEnabled()" class="registration-address-check" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
+                    <label class="visible-xs hidden-label">First Name:&nbsp;</label>\
                     ' + firstName + '\
                     </div >\
-                    <div class="col-sm-2">'+ lastName +'</div>\
-                    <div class="col-sm-1">'+ birthDate + '</div>\
-                    <div class="col-sm-1">'+ documentNumber + '</div>\
-                    <div class="col-sm-1">'+ documentExpiration + '</div>\
-                    <div class="col-sm-2">'+ email + '</div>\
-                    <div class="col-sm-1"> '+ phone + '</div>\
-                    <div class="col-sm-1">'+ country + '</div>\
-                    <div class="col-sm-1">'+ sex +'</div>\
+                    <div class="col-sm-2"><label class="visible-xs hidden-label">Last Name:&nbsp;</label>'+ lastName +'</div>\
+                    <div class="col-sm-1"><label class="visible-xs hidden-label">Birth Date:&nbsp;</label>'+ birthDate + '</div>\
+                    <div class="col-sm-1"><label class="visible-xs hidden-label">Document #:&nbsp;</label>'+ documentNumber + '</div>\
+                    <div class="col-sm-1"><label class="visible-xs hidden-label">Expiration:&nbsp;</label>'+ documentExpiration + '</div>\
+                    <div class="col-sm-2"><label class="visible-xs hidden-label">Email:&nbsp;</label>'+ email + '</div>\
+                    <div class="col-sm-1"><label class="visible-xs hidden-label">Phone:&nbsp;</label>'+ phone + '</div>\
+                    <div class="col-sm-1"><label class="visible-xs hidden-label">Country:&nbsp;</label>'+ $form.find("select[name='countryId'] option:selected").text() + '</div>\
+                    <div class="col-sm-1"><label class="visible-xs hidden-label">Sex:&nbsp;</label>'+ sex +'</div>\
                </div>');
 
             $form[0].reset();
+            $('#birth').attr("type", "text");
             $('#birth').blur();
-            $('expiry').blur();
+
+            $('#expiry').attr("type", "text");
+            $('#expiry').blur();
 
             checkIfContinueEnabled();
         });
