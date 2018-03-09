@@ -12,6 +12,7 @@ using SimplCommerce.WebHost.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace SimplCommerce.WebHost
 {
@@ -41,6 +42,7 @@ namespace SimplCommerce.WebHost
             services.Configure<RazorViewEngineOptions>(
                 options => { options.ViewLocationExpanders.Add(new ModuleViewLocationExpander()); });
 
+            services.Configure<FormOptions>(x => x.ValueCountLimit = 5000);
             services.AddCustomizedMvc(GlobalConfiguration.Modules);
 
             var sp = services.BuildServiceProvider();
