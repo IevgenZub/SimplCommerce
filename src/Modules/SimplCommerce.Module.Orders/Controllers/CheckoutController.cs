@@ -58,7 +58,7 @@ namespace SimplCommerce.Module.Orders.Controllers
 
             var currentUser = await _workContext.GetCurrentUser();
 
-            var cart = await _cartRepository.Query().Include(c => c.Items).Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
+            var cart = await _cartRepository.Query().Include(c => c.Items).ThenInclude(i => i.Product).Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
 
             if (cart == null)
             {
@@ -66,19 +66,20 @@ namespace SimplCommerce.Module.Orders.Controllers
             }
 
             model.NumberofPassengers = cart.Items[0].Quantity + cart.Items[0].QuantityChild + cart.Items[0].QuantityBaby;
-
+            model.PassportExpRule = cart.Items[0].Product.AdminPasExpirityRule.HasValue ? cart.Items[0].Product.AdminPasExpirityRule.Value : 0;
             
             PopulateShippingForm(model, currentUser);
 
-            model.NewAddress = new UserAddressFormViewModel();
-            model.NewAddress.Countries = _countryRepository.Query()
-                .Where(x => x.IsShippingEnabled)
+            model.NewAddress = new UserAddressFormViewModel
+            {
+                Countries = _countryRepository.Query()
                 .OrderBy(x => x.Name)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
-                }).ToList();
+                }).ToList()
+            };
 
             return View(model);
         }

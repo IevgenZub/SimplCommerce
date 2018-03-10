@@ -9,6 +9,8 @@ namespace SimplCommerce.Module.Orders.ViewModels
         {
         }
 
+        public int PassportExpRule { get; set; }
+
         public int NumberofPassengers { get; set; }
 
         public IList<ShippingAddressVm> ExistingShippingAddresses { get; set; } =

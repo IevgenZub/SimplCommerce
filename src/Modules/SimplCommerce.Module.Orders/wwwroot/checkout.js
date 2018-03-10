@@ -1,21 +1,21 @@
 ﻿$(function () {
 
-    function isEmail(email) {
-        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email);
-    }
+    var today = new Date();
+    $("#birth").attr("max", moment(today).format("YYYY-MM-DD"));
+    $("#birth").attr("min", "1900-01-01");
+    $("#expiry").attr("min", moment(today).format("YYYY-MM-DD"));
 
-    function isPhone(phone) {
-        var regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
-        return regex.test(phone);
+    var ruleDays = parseInt($("#expiry").attr("data-exp-rule"));
+    if (ruleDays && ruleDays > 0) {
+        today.setDate(today.getDate() + ruleDays);
+        $("#expiry").attr("max", moment(today).format("YYYY-MM-DD"));
     }
 
     $(".add-address-form").submit(function (event) {
 
         // Stop form from submitting normally
         event.preventDefault();
-
-        
+    
         // Get some values from elements on the page:
         var $form = $(this),
             firstName = $form.find("input[name='firstName']").val(),
@@ -29,13 +29,8 @@
             countryId = $form.find("select[name='countryId']").val(),
             url = $form.attr("action");
 
-        if (!isEmail(email)) {
-            alert("Email format is not correct");
-            return;
-        }
-
-        if (!isPhone(phone)) {
-            alert("Phone format is not correct");
+        if (!countryId || countryId == "") {
+            alert("Select Country");
             return;
         }
 
@@ -43,6 +38,7 @@
             alert("Select Country");
             return;
         }
+
 
         // Send the data using post
         var posting = $.post(url, {
