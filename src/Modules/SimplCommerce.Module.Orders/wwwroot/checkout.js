@@ -8,7 +8,7 @@
     var ruleDays = parseInt($("#expiry").attr("data-exp-rule"));
     if (ruleDays && ruleDays > 0) {
         today.setDate(today.getDate() + ruleDays);
-        $("#expiry").attr("max", moment(today).format("YYYY-MM-DD"));
+        $("#expiry").attr("min", moment(today).format("YYYY-MM-DD"));
     }
 
     $(".add-address-form").submit(function (event) {
