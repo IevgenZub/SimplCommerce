@@ -12,9 +12,14 @@
             {
                 <form>
                     <div class="product-attrs">
+                        @{
+                            var optionsCount = Model.AvailableOptions.Count();
+                            var columns = 12 / optionsCount;
+                        }
+
                         @foreach (var option in Model.AvailableOptions)
                         {
-                            <div>
+                            <div class="col-sm-@columns">
                                 <h5 style="margin-bottom:0;">@option.OptionName </h5>
                                 <ul class="list-inline product-attr-options" style="font:smaller; margin-bottom: 20px;">
                                     @if (option.OptionName == "Departure Date")
@@ -68,8 +73,8 @@
                 foreach (var variant in Model.Variations)
                 {
                     var hidden = variant != Model.Variations.First() ? "collapse" : "";
-                    <div class="product-variation @hidden" data-variation-name="@variant.NormalizedName">
-                        <div class="product-price">
+                    <div class="product-variation col-sm-12 @hidden" data-variation-name="@variant.NormalizedName">
+                        <div class="product-price col-sm-12">
                             <div class="col-md-2 col-sm-2">
                                 @if (variant.IsCallForPricing)
                                 {
@@ -135,7 +140,7 @@
                                 </div>
                             </div>
 
-                        <div class="add-to-cart">
+                        <div class="add-to-cart col-sm-12">
                             <form class="inline">
                                 <input type="hidden" name="productId" value="@variant.Id" />
                                 <div class="product-quantity">
