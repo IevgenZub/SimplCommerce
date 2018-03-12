@@ -123,7 +123,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             _paymentRepository.Add(payment);
             await _paymentRepository.SaveChangesAsync();
 
-            return Redirect("~/checkout/congratulation");
+            return Redirect($"~/checkout/congratulation?pnr={order.PnrNumber}");
         }
     }
 }

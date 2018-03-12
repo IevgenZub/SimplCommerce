@@ -7,6 +7,10 @@ namespace SimplCommerce.Module.Orders.ViewModels
     {
         public long Id { get; set; }
 
+        public string PnrNumber { get; set; }
+
+        public string ConfirmationNumber { get; set; }
+
         public long CustomerId { get; set; }
 
         public string CustomerName { get; set; }

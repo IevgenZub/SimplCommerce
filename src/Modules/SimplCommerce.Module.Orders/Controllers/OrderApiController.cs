@@ -124,7 +124,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                     order.SubTotal,
                     OrderStatus = order.OrderStatus.ToString(),
                     order.CreatedOn,
-                    order.ShippingAmount
+                    order.ShippingAmount,
+                    order.PnrNumber,
+                    order.AgencyReservationNumber
                 });
 
             return Json(orders);
@@ -171,6 +173,8 @@ namespace SimplCommerce.Module.Orders.Controllers
                 TaxAmount = order.TaxAmount,
                 ShippingAmount = order.ShippingAmount,
                 OrderTotal = order.OrderTotal,
+                PnrNumber = order.PnrNumber,
+                ConfirmationNumber = order.AgencyReservationNumber,
                 ShippingAddress = new ShippingAddressVm
                 {
                     AddressLine1 = order.ShippingAddress.AddressLine1,
@@ -220,6 +224,18 @@ namespace SimplCommerce.Module.Orders.Controllers
             {
                 var oldStatus = order.OrderStatus;
                 order.OrderStatus = (OrderStatus) model.StatusId;
+
+
+                if (order.OrderStatus == OrderStatus.Complete)
+                {
+                    if (string.IsNullOrEmpty(model.Note))
+                    {
+                        return BadRequest(new { Error = "Invalid Agency Confirmation Number" });
+                    }
+
+                    order.AgencyReservationNumber = model.Note;
+                }
+
                 await _orderRepository.SaveChangesAsync();
 
                 var orderStatusChanged = new OrderChanged

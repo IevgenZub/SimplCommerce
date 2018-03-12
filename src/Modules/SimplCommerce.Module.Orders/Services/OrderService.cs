@@ -196,6 +196,16 @@ namespace SimplCommerce.Module.Orders.Services
 
             _orderRepository.SaveChanges();
 
+            var prefix = "E"; // Default
+            var flightClass = cart.Items[0].Product.FlightClass;
+            if (string.IsNullOrEmpty(flightClass))
+            {
+                prefix = flightClass[0].ToString();
+            }
+
+            order.PnrNumber = prefix + order.Id.ToString("000000.##");
+            _orderRepository.SaveChanges();
+
             await _orderEmailService.SendEmailToUser(user, order, "OrderEmailToCustomer");
             await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
 

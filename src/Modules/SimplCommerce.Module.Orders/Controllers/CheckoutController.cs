@@ -218,6 +218,7 @@ namespace SimplCommerce.Module.Orders.Controllers
         [HttpGet("congratulation")]
         public IActionResult OrderConfirmation()
         {
+            ViewData["pnr"] = HttpContext.Request.Query["pnr"].ToString();
             return View();
         }
 
