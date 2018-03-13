@@ -1,14 +1,14 @@
 ﻿$(function () {
 
-    var today = new Date();
-    $("#birth").attr("max", moment(today).format("YYYY-MM-DD"));
+    var departureDate = new Date($("#expiry").attr("data-departure-date"));
+    $("#birth").attr("max", moment(departureDate).format("YYYY-MM-DD"));
     $("#birth").attr("min", "1900-01-01");
-    $("#expiry").attr("min", moment(today).format("YYYY-MM-DD"));
+    $("#expiry").attr("min", moment(departureDate).format("YYYY-MM-DD"));
 
     var ruleDays = parseInt($("#expiry").attr("data-exp-rule"));
     if (ruleDays && ruleDays > 0) {
-        today.setDate(today.getDate() + ruleDays);
-        $("#expiry").attr("min", moment(today).format("YYYY-MM-DD"));
+        departureDate.setDate(departureDate.getDate() + ruleDays);
+        $("#expiry").attr("min", moment(departureDate).format("YYYY-MM-DD"));
     }
 
     $(".add-address-form").submit(function (event) {

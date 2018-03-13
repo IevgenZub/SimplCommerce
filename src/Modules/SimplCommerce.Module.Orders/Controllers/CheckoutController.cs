@@ -67,7 +67,8 @@ namespace SimplCommerce.Module.Orders.Controllers
 
             model.NumberofPassengers = cart.Items[0].Quantity + cart.Items[0].QuantityChild + cart.Items[0].QuantityBaby;
             model.PassportExpRule = cart.Items[0].Product.AdminPasExpirityRule.HasValue ? cart.Items[0].Product.AdminPasExpirityRule.Value : 0;
-            
+            model.DepartureDate = cart.Items[0].Product.DepartureDate;
+
             PopulateShippingForm(model, currentUser);
 
             model.NewAddress = new UserAddressFormViewModel
