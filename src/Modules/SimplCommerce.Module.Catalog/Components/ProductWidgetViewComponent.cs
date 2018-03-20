@@ -144,7 +144,7 @@ namespace SimplCommerce.Module.Catalog.Components
                 .Query()
                 .Include(x => x.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.LinkedProductLinks.Any(link => link.ProductId == product.Id && link.LinkType == ProductLinkType.Super))
-                .Where(x => x.IsPublished && x.StockQuantity > 0)
+                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED")
                 .ToList();
 
             foreach (var variation in variations)

@@ -13,11 +13,16 @@
         var rtSingle = rt.Where(p => !p.Details.HasVariation);
 
     }
+
+    @if (rtBlock.Any() || owBlock.Any())
+    {
     <div class="col-xs-12 col-md-12">
-        <h3 class="text-center" style="margin:0px">Daily</h3>
+        <h3 class="text-center flight-category" style="margin-top:0px">Daily</h3>
     </div>
+    @if (rtBlock.Any())
+    {
     <div class="col-xs-12 col-md-12">
-        <h4>Round Trip</h4>
+        <h4 class="flight-type">Round Trip</h4>
     </div>
     @foreach (var product in rtBlock)
     {
@@ -25,8 +30,11 @@
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
         </div>
     }
+    }
+    @if (owBlock.Any())
+    {
     <div class="col-xs-12 col-md-12">
-        <h4>One Way</h4>
+        <h4 class="flight-type">One Way</h4>
     </div>
     @foreach (var product in owBlock)
     {
@@ -34,12 +42,21 @@
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
         </div>
     }
+    }
+    }
 
+    @if (owSingle.Any() || rtSingle.Any())
+    {
     <div class="col-xs-12 col-md-12">
-        <h3 class="text-center">One Time</h3>
+        <h3 class="text-center flight-category">One Time</h3>
     </div>
+
+    @if (rtSingle.Any())
+    {
+
+    
     <div class="col-xs-12 col-md-12">
-        <h4>Round Trip</h4>
+        <h4 class="flight-type">Round Trip</h4>
     </div>
     @foreach (var product in rtSingle)
     {
@@ -47,13 +64,18 @@
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
         </div>
     }
+    }
+    @if (owSingle.Any())
+    { 
     <div class="col-xs-12 col-md-12">
-        <h4>One Way</h4>
+        <h4 class="flight-type">One Way</h4>
     </div>
     @foreach (var product in owSingle)
     {
         <div class="col-xs-12 col-md-12">
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
         </div>
+    }
+    }
     }
 </div>

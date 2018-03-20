@@ -56,6 +56,7 @@
     margin: 0;
     float: left;
     padding-right: 20px;
+    margin-bottom: 5px;
 }
 
 .product-attrs input {
@@ -77,14 +78,14 @@
 }
 
 .product-attrs label {
-	-ms-transition: color 0.3s;
-	-moz-transition: color 0.3s;
-	-webkit-transition: color 0.3s;
+    -ms-transition: color 0.3s;
+    -moz-transition: color 0.3s;
+    -webkit-transition: color 0.3s;
 }
 
 .product-attrs label:hover {
-	cursor: pointer;
-	border: 2px solid #18ba9b;
+    cursor: pointer;
+    border: 2px solid #18ba9b;
 }
 
 .product-attrs input:checked ~ label {
@@ -101,11 +102,14 @@
 
 .product-detail .add-to-cart {
     margin-top: 10px;
+    text-align: center;
 }
 
 .product-detail .product-quantity {
-    float: left;
-    margin-right: 30px;
+ /*   float: left;
+    margin-right: 30px;*/
+    width: 165px;
+    margin: 0 auto 10px;
 }
 
 .product-detail .quantity-button {
@@ -123,6 +127,7 @@
     white-space: nowrap;
     display: inline-block;
     background-image: none;
+    vertical-align: top;
 }
 
  .product-detail .quantity-field {
@@ -138,6 +143,7 @@
 .btn-add-cart {
     background: #18ba9b;
     font-size: smaller;
+    margin: 0 auto 20px;
     padding: 10px 25px;
     border: 0;
     color: #fff;
@@ -220,3 +226,69 @@
 .review-item-list .review-title {
     font-weight: 700;
 }
+
+
+/*custom new*/
+.product-details {
+    display: none; 
+    transition: max-height 0.3s;
+}
+.product-detail {
+    padding: 5px 15px;
+    /*padding-left:15px;padding-right:15px; padding-top:15px*/
+}
+.product-attrs h5 {
+
+}
+.product-attrs .list-inline {
+    font:smaller; 
+    margin-bottom: 20px;
+}
+.product-attrs label {
+    float: none;
+    display: block;
+    margin: 0;
+}
+
+.product-attr-options li {
+    height: auto;
+    margin: 0 5px 10px;
+    padding: 0;
+}
+
+.product-variation {}
+.product-variation-notavailable {
+    margin: 0 0 20px;
+}
+
+@media (min-width:768px){
+    .product-detail .product-quantity {
+        display: inline-block;
+        margin: 0 5px 25px;
+        vertical-align: top;
+        /*float: left;*/
+        /*margin-right: 30px;*/
+    }
+    .product-detail .btn-add-cart {
+        /*display: block;*/
+    }
+    .flight-main-details p {
+        float: left;
+        margin: 15px 10px 10px 0;
+    }
+}
+@media (min-width:992px){
+    .product-detail .btn-add-cart {
+        margin-top: -3px;
+    }
+    .flight-main-details p {
+        float: none;
+        margin: 0 0 10px;
+    }
+    div.product-price {
+        padding: 15px;
+        margin-top: 0;
+    }
+}
+
+

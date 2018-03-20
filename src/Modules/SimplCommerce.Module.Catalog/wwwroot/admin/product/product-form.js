@@ -128,7 +128,7 @@
                 var end = new Date(endDate);
 
                 while (current <= end) {
-                    if ($('#' + (current.getDay() + 1)).prop('checked')) {
+                    if ($('#' + (current.getDay())).prop('checked')) {
                         retVal.push(new Date(current));
                     }
                     current.setDate(current.getDate() + 1);
