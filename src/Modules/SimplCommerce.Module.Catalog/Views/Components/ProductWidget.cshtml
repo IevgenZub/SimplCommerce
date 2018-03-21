@@ -1,6 +1,6 @@
 ﻿@model SimplCommerce.Module.Catalog.ViewModels.ProductWidgetComponentVm
 
-<h2 class="page-header" style="border:none">@Localizer[Model.WidgetName]</h2>
+<h2 style="border:none">@Localizer[Model.WidgetName]</h2>
 <div class="row product-list">
     @{
         var ow = Model.Products.Where(p => !p.IsRoundTrip);
@@ -17,12 +17,12 @@
     @if (rtBlock.Any() || owBlock.Any())
     {
     <div class="col-xs-12 col-md-12">
-        <h3 class="text-center flight-category" style="margin-top:0px">Daily</h3>
+        <h3 class="text-center flight-category" style="margin-top:0px">@Localizer["Daily"]</h3>
     </div>
     @if (rtBlock.Any())
     {
     <div class="col-xs-12 col-md-12">
-        <h4 class="flight-type">Round Trip</h4>
+        <h4 class="flight-type">@Localizer["Round Trip"]</h4>
     </div>
     @foreach (var product in rtBlock)
     {
@@ -34,7 +34,7 @@
     @if (owBlock.Any())
     {
     <div class="col-xs-12 col-md-12">
-        <h4 class="flight-type">One Way</h4>
+        <h4 class="flight-type">@Localizer["One Way"]</h4>
     </div>
     @foreach (var product in owBlock)
     {
@@ -48,7 +48,7 @@
     @if (owSingle.Any() || rtSingle.Any())
     {
     <div class="col-xs-12 col-md-12">
-        <h3 class="text-center flight-category">One Time</h3>
+        <h3 class="text-center flight-category">@Localizer["One Time"]</h3>
     </div>
 
     @if (rtSingle.Any())
@@ -56,7 +56,7 @@
 
     
     <div class="col-xs-12 col-md-12">
-        <h4 class="flight-type">Round Trip</h4>
+        <h4 class="flight-type">@Localizer["Round Trip"]</h4>
     </div>
     @foreach (var product in rtSingle)
     {
@@ -68,7 +68,7 @@
     @if (owSingle.Any())
     { 
     <div class="col-xs-12 col-md-12">
-        <h4 class="flight-type">One Way</h4>
+        <h4 class="flight-type">@Localizer["One Way"]</h4>
     </div>
     @foreach (var product in owSingle)
     {

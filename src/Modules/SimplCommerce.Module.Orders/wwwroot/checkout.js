@@ -90,8 +90,23 @@
         });
     });
 
+    $("#search-txt").on("change paste keyup", function () {
+        var filter = $(this).val().toLowerCase();
+        if (filter.length > 0) {
+            $(".passenger-row").hide();
+            $("div[data-first-name*='" + filter + "']").show();
+            $("div[data-last-name*='" + filter + "']").show();
+            $("div[data-email*='" + filter + "']").show();
+            $("div[data-document*='" + filter + "']").show();
+        }
+        else {
+            $(".passenger-row").show();
+        }
+    });
+
     checkIfContinueEnabled();
 });
+
 
 function checkIfContinueEnabled() {
     var numberOfPassengers = $('#numberOfPassengers').val();

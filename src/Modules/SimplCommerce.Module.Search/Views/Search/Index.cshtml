@@ -290,12 +290,12 @@
             @if (rtBlock.Any() || owBlock.Any())
             {
                 <div>
-                    <h3 class="text-center">Daily</h3>
+                    <h3 class="text-center">@Localizer["Daily"]</h3>
                 </div>
                 if (rtBlock.Any())
                 {
                     <div>
-                        <h4>Round Trip</h4>
+                        <h4>@Localizer["Round Trip"]</h4>
                     </div>
                     @foreach (var product in rtBlock)
                     {
@@ -307,7 +307,7 @@
                 if (owBlock.Any())
                 {
                     <div>
-                        <h4>One Way</h4>
+                        <h4>@Localizer["One Way"]</h4>
                     </div>
                     @foreach (var product in owBlock)
                     {
@@ -321,12 +321,12 @@
             @if (rtSingle.Any() || owSingle.Any())
             {
                 <div>
-                    <h3 class="text-center">One Time</h3>
+                    <h3 class="text-center">@Localizer["One Time"]</h3>
                 </div>
                 @if (rtSingle.Any())
                 {
                     <div>
-                        <h4>Round Trip</h4>
+                        <h4>@Localizer["Round Trip"]</h4>
                     </div>
                     @foreach (var product in rtSingle)
                     {
@@ -339,7 +339,7 @@
                 @if (owSingle.Any())
                 {
                     <div>
-                        <h4>One Way</h4>
+                        <h4>@Localizer["One Way"]</h4>
                     </div>
                     @foreach (var product in owSingle)
                     {
