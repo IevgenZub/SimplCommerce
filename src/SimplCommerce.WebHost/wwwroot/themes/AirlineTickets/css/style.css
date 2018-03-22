@@ -726,6 +726,27 @@ section:last-child {
    .flight-duration {
       margin-top: 10px;
    }
+
+   /*product-list SEARCH*/
+   .product-list__search .my-thumbnail {
+      padding: 0;
+   }
+   .product-list__search .my-thumbnail .airlines {
+      padding: 0;
+   }
+   .product-list__search .my-thumbnail .airlines figure {
+      padding: 0;
+   }
+   .product-list__search .flight-detail {
+      clear: both;
+      width: 50%;
+   }
+   .product-list__search .flight-price {
+      width: 50%;
+   }
+   .product-list__search .btn-add-cart {
+      margin-bottom: 0;
+   }
 }
 
 /*lg*/
@@ -742,6 +763,36 @@ section:last-child {
    }
    .flight-price {
       margin-top: 0;
+   }
+
+   /*product-list SEARCH*/
+   .product-list__search .flight-date {
+      width: 16.6666%;
+   }
+   .product-list__search .flight-number-2 {
+      width: 16.6666%;
+   }
+   .product-list__search .flight-duration {
+      width: 16.6666%;
+   }
+}
+@media (min-width: 1400px){
+   /*product-list SEARCH*/
+   .product-list__search .flight-date {
+      width: 8.33333333%;
+   }
+   .product-list__search .flight-number-2 {
+      width: 8.33333333%;
+   }
+   .product-list__search .flight-duration {
+      width: 8.33333333%;
+   }
+   .product-list__search .flight-detail {
+      clear: none;
+      width: 16.6666%;
+   }
+   .product-list__search .flight-price {
+      width: 8.33333333%;
    }
 }
 

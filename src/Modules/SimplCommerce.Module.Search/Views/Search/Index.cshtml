@@ -275,7 +275,7 @@
                 </ul>
             </div>
         </div>
-        <div class="product-list">
+        <div class="product-list product-list__search">
             @{
                 var ow = Model.Products.Where(p => !p.IsRoundTrip);
                 var rt = Model.Products.Where(p => p.IsRoundTrip);
