@@ -80,12 +80,6 @@
                </div>');
 
             $form[0].reset();
-            $('#birth').attr("type", "text");
-            $('#birth').blur();
-
-            $('#expiry').attr("type", "text");
-            $('#expiry').blur();
-
             checkIfContinueEnabled();
         });
     });
