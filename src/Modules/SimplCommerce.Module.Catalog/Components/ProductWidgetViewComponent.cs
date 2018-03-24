@@ -9,6 +9,7 @@ using SimplCommerce.Module.Catalog.ViewModels;
 using SimplCommerce.Module.Core.Services;
 using SimplCommerce.Module.Core.ViewModels;
 using System.Collections.Generic;
+using System;
 
 namespace SimplCommerce.Module.Catalog.Components
 {
@@ -35,8 +36,8 @@ namespace SimplCommerce.Module.Catalog.Components
             };
 
             var query = _productRepository.Query()
-              .Where(x => x.IsPublished && x.IsVisibleIndividually && x.StockQuantity > 0);
-
+              .Where(x => x.IsPublished && x.IsVisibleIndividually && x.StockQuantity > 0 && x.DepartureDate >= DateTime.Now);
+            
             if (model.Setting.FeaturedOnly)
             {
                 query = query.Where(x => x.IsFeatured);
@@ -44,11 +45,10 @@ namespace SimplCommerce.Module.Catalog.Components
 
             model.Products = query
               .Include(x => x.ThumbnailImage)
-                .Include(x => x.ReturnAircraft)
-                .Include(x => x.ReturnCarrier)
-                .Include(x => x.Brand)
-                .Include(x => x.TaxClass)
-
+              .Include(x => x.ReturnAircraft)
+              .Include(x => x.ReturnCarrier)
+              .Include(x => x.Brand)
+              .Include(x => x.TaxClass)
               .OrderByDescending(x => x.CreatedOn)
               .Take(model.Setting.NumberOfProducts)
               .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"))).ToList();
@@ -144,8 +144,13 @@ namespace SimplCommerce.Module.Catalog.Components
                 .Query()
                 .Include(x => x.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.LinkedProductLinks.Any(link => link.ProductId == product.Id && link.LinkType == ProductLinkType.Super))
-                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED")
-                .ToList();
+                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED");
+
+            var departureDateMin = DateTime.Now;
+            var departureDateMax = DateTime.Now.AddDays(30);
+            variations = variations.Where(x =>
+                    x.DepartureDate.Value.Date >= departureDateMin &&
+                    x.DepartureDate.Value.Date < departureDateMax);
 
             foreach (var variation in variations)
             {

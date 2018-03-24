@@ -62,7 +62,8 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.ShortDescription.Contains(searchOption.Departure) &&
                     x.Description.Contains(searchOption.Landing) &&
                     x.Status == "ACCEPTED" &&
-                    x.IsVisibleIndividually);
+                    x.IsVisibleIndividually &&
+                    x.DepartureDate >= DateTime.Now);
 
                 
                 if (!string.IsNullOrEmpty(searchOption.DepartureDate))
@@ -70,9 +71,9 @@ namespace SimplCommerce.Module.Search.Controllers
                     var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
                     var departureDateMin = departureDate.AddDays(-7);
                     var departureDateMax = departureDate.AddDays(7);
-                    query = query.Where(x => 
-                        x.DepartureDate.Value.Date >= departureDateMin && 
-                        x.DepartureDate.Value.Date < departureDateMax);
+                    query = query.Where(x =>
+                        (x.DepartureDate.Value.Date >= departureDateMin && 
+                        x.DepartureDate.Value.Date < departureDateMax) || x.HasOptions);
                 }
 
                 if (searchOption.TripType == "round-trip")
@@ -166,17 +167,17 @@ namespace SimplCommerce.Module.Search.Controllers
             {
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
-                product.Details = GetProductDetails(product.Id);
+                product.Details = GetProductDetails(product.Id, searchOption);
             }
 
-            model.Products = products;
+            model.Products = products.Where(p => !p.Details.HasVariation || (p.Details.HasVariation && p.Details.Variations.Count > 0)).ToList();
             model.CurrentSearchOption.PageSize = _pageSize;
             model.CurrentSearchOption.Page = currentPageNum;
 
             return View(model);
         }
 
-        private ProductDetail GetProductDetails(long id)
+        private ProductDetail GetProductDetails(long id, SearchOption searchOption)
         {
             var product = _productRepository.Query()
                 .Include(x => x.OptionValues)
@@ -222,7 +223,7 @@ namespace SimplCommerce.Module.Search.Controllers
                 Categories = product.Categories.Select(x => new ProductDetailCategory { Id = x.CategoryId, Name = x.Category.Name, SeoTitle = x.Category.SeoTitle }).ToList()
             };
 
-            MapProductVariantToProductVm(product, model);
+            MapProductVariantToProductVm(product, model, searchOption);
             MapRelatedProductToProductVm(product, model);
 
             foreach (var item in product.OptionValues)
@@ -266,14 +267,23 @@ namespace SimplCommerce.Module.Search.Controllers
             return query;
         }
 
-        private void MapProductVariantToProductVm(Product product, ProductDetail model)
+        private void MapProductVariantToProductVm(Product product, ProductDetail model, SearchOption searchOption)
         {
             var variations = _productRepository
                 .Query()
                 .Include(x => x.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.LinkedProductLinks.Any(link => link.ProductId == product.Id && link.LinkType == ProductLinkType.Super))
-                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED")
-                .ToList();
+                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED");
+
+            if (!string.IsNullOrEmpty(searchOption.DepartureDate))
+            {
+                var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                var departureDateMin = departureDate.AddDays(-3);
+                var departureDateMax = departureDate.AddDays(3);
+                variations = variations.Where(x =>
+                    x.DepartureDate.Value.Date >= departureDateMin &&
+                    x.DepartureDate.Value.Date <= departureDateMax);
+            }
 
             foreach (var variation in variations)
             {

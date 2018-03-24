@@ -244,6 +244,11 @@
                     useCurrent: false, //Important! See issue #1075
                     format: 'L'
                 });
+
+                var today = new Date();
+                $('#return-date').data("DateTimePicker").minDate(today);
+                $('#departure-date').data("DateTimePicker").minDate(today);
+
                 $("#departure-date").on("dp.change", function (e) {
                     $('#return-date').data("DateTimePicker").minDate(e.date);
                 });
