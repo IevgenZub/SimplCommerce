@@ -37,7 +37,7 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
 
         public int QuantityBaby { get; set; }
 
-        public decimal Total => Quantity * ProductPrice + QuantityChild * ChildPrice + QuantityBaby * ChildPrice;
+        public decimal Total => Quantity * ProductPrice + QuantityChild * ProductPrice + QuantityBaby * ChildPrice;
 
         public string TotalString => Total.ToString("C");
 

@@ -158,7 +158,10 @@ namespace SimplCommerce.Module.Orders.Services
             order.ShippingAmount = cart.ShippingAmount.HasValue ? cart.ShippingAmount.Value : 0;
             order.ShippingMethod = shippingMethod.Name;
             order.TaxAmount = order.OrderItems.Sum(x => x.TaxAmount);
-            order.SubTotal = order.OrderItems.Sum(x => (x.ProductPrice * x.Quantity) + (x.ChildPrice * x.QuantityChild));
+
+            order.SubTotal = order.OrderItems.Sum(
+                x => (x.ProductPrice * x.Quantity) + (x.ChildPrice * x.ProductPrice) + (x.QuantityBaby * x.ChildPrice));
+
             order.SubTotalWithDiscount = order.SubTotal - discount;
             order.OrderTotal = order.SubTotal + order.TaxAmount + order.ShippingAmount - order.Discount;
             _orderRepository.Add(order);

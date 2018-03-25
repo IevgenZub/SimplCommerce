@@ -162,6 +162,21 @@ input[type="radio"]:checked+label {
    border-bottom: 4px solid #e62a23;
 }
 
+.btn-switch {
+    border-radius: 0;
+    border: 0;
+    height: 44px;
+    background-color:cornflowerblue;
+    font-size: 20px;
+    transition: 0.2s ease all;
+}
+
+.btn-switch:hover {
+        background-color:darkturquoise;
+        transition: 0.2s ease all;
+}
+
+
 .btn-submit {
    border-radius: 0;
    border: 0;

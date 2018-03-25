@@ -54,8 +54,8 @@
                         <td class="product-image"><img style="max-height:50px; max-width:50px" ng-src="{{cartItem.productImage}}" /></td>
                         <td>
                             <h4>{{cartItem.productName}}</h4>
-                            <p>{{cartItem.departureDate | date:'HH:mm':'UTC'}} {{cartItem.departure}}</p>
-                            <p>{{cartItem.landingDate | date:'HH:mm':'UTC'}} {{cartItem.landing}}</p>
+                            <p>{{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.departure}}</p>
+                            <p>{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.landing}}</p>
                             <ul class="list-unstyled">
                                 <li ng-repeat="opt in cartItem.variationOptions">
                                     <span>{{opt.optionName}}:</span> {{opt.value}}
@@ -64,7 +64,8 @@
                         </td>
                         <td class="text-right">
                             <p><span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span> adult</p>
-                            <p><span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}" >{{cartItem.childPrice}}</span> child</p>
+                            <p><span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span> child</p>
+                            <p><span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}">{{cartItem.childPrice}}</span> infant</p>
                         </td>
                         <td class="text-center" style="width:300px">
                             <div class="add-to-cart ">

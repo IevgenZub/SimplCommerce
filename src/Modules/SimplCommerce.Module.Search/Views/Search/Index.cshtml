@@ -35,19 +35,22 @@
                         <label class="sr-only" for="departure">@Localizer["Departure"]</label>
                         <input type="text" class="form-control" required style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
                     </div>
+                    <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
+                        <button type="button" class="btn btn-switch" style="width: 100%"><span class="glyphicon glyphicon-retweet"></span></button>
+                    </div>
                     <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
                         <label class="sr-only" for="landing">@Localizer["Landing"]</label>
                         <input type="text" class="form-control date" required style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
                     </div>
-                    <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                    <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0;">
                         <label class="sr-only" for="departure-date">@Localizer["Departure Date"]</label>
                         <input type="text" class="form-control" required style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
                     </div>
-                    <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                    <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0;">
                         <label class="sr-only" for="return-date">@Localizer["Return Date"]</label>
                         <input type="text" class="form-control" style="width: 100%" id="return-date" name="ReturnDate" placeholder="@Localizer["Return Date"]">
                     </div>
-                    <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;">
+                    <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
                         <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
                         <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
                     </div>
@@ -429,6 +432,13 @@
                 $('#one-way').prop('checked', false).parent().removeClass('active');
             }
         }
+
+        $(".btn-switch").click(function () {
+            var temp = $("#departure").val();
+            $("#departure").val($("#landing").val());
+            $("#landing").val(temp);
+        });
+
 
         $(".moreDetails").click(function () {
             $current = $(this);

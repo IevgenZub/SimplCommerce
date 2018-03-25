@@ -19,6 +19,9 @@
                         }
                     </ul>
                 }
+
+                <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
+                <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
             </td>
             <td class="text-center">
                 <p>@item.Quantity (18+)</p> 
@@ -27,7 +30,8 @@
             </td>
             <td class="text-right">
                 <p><span class="priceToConvert">@item.ProductPrice</span> adult</p>
-                <p><span class="priceToConvert">@item.ChildPrice</span> child</p>
+                <p><span class="priceToConvert">@item.ProductPrice</span> child</p>
+                <p><span class="priceToConvert">@item.ChildPrice</span> infant</p>
             </td>
         </tr>
     }
