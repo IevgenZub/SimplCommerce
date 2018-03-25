@@ -165,19 +165,20 @@ input[type="radio"]:checked+label {
 .font-smaller {
     font-weight:normal;
     font-size:smaller;
+    white-space:nowrap;
 }
 
 .btn-switch {
     border-radius: 0;
     border: 0;
     height: 44px;
-    background-color: cornflowerblue;
+    background-color:gainsboro;
     font-size: 20px;
     transition: 0.2s ease all;
 }
 
 .btn-switch:hover {
-        background-color:darkturquoise;
+        background-color:darkgray;
         transition: 0.2s ease all;
 }
 
