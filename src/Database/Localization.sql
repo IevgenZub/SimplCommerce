@@ -26,4 +26,6 @@ INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'
 
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Best Selling', N'Лидеры продаж')
 
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Available', N'Доступно')
+
 
