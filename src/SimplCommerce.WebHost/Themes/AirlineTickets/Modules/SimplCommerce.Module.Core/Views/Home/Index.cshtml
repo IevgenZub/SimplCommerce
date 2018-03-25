@@ -220,6 +220,11 @@
             }
         }
 
+        $(".btn-switch").click(function () {
+            var temp = $("#departure").val();
+            $("#departure").val($("#landing").val());
+            $("#landing").val(temp);
+        });
 
         $(".moreDetails").click(function () {
             $current = $(this);
