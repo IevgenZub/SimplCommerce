@@ -231,7 +231,6 @@
                 if($iconDown.is(':visible')) {
                     $iconDown.hide();
                     $iconUp.show();
-                    $('.btn-hide').hide();
 
                     var departureDate = $('#departure-date').val();
                     var selectedDepartureDate = $('input[type=radio][data-departure="' + departureDate + '"]:visible');
@@ -262,7 +261,6 @@
                 } else {
                     $iconUp.hide();
                     $iconDown.show();
-                    $('.btn-hide').show();
                 }
             });
         });

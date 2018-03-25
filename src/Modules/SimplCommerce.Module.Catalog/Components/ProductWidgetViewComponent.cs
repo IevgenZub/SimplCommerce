@@ -94,6 +94,7 @@ namespace SimplCommerce.Module.Catalog.Components
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,
+                ReturnFlightNumber = product.ReturnFlightNumber,
                 Carrier = product.Brand == null ? "" : product.Brand.Name,
                 ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,

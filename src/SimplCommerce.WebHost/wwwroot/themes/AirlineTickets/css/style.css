@@ -162,11 +162,16 @@ input[type="radio"]:checked+label {
    border-bottom: 4px solid #e62a23;
 }
 
+.font-smaller {
+    font-weight:normal;
+    font-size:smaller;
+}
+
 .btn-switch {
     border-radius: 0;
     border: 0;
     height: 44px;
-    background-color:cornflowerblue;
+    background-color: cornflowerblue;
     font-size: 20px;
     transition: 0.2s ease all;
 }

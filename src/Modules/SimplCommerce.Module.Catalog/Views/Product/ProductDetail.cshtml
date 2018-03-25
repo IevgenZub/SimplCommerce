@@ -25,7 +25,7 @@
                                     @if (option.OptionName == "Departure Date")
                                     {
                                         var valuesSorted = option.Values.OrderBy(o => Convert.ToDateTime(o, new System.Globalization.CultureInfo("ru-RU", true)));
-                                        
+
                                         @foreach (var value in valuesSorted)
                                         {
                                             var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
@@ -40,11 +40,11 @@
                                     @if (option.OptionName == "Package Days")
                                     {
                                         var valuesSorted = option.Values.OrderBy(o => Convert.ToInt32(o));
-                                        
+
                                         @foreach (var value in valuesSorted)
                                         {
                                             var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
-                                            
+
                                             <li>
                                                 <input type="radio" value="@value" data-return="@value" checked="@shouldChecked" name="@option.OptionName" />
                                                 <label style="font-size:unset; height:28px">@value</label>
@@ -70,9 +70,9 @@
                     </div>
                 </form>
 
-                foreach (var variant in Model.Variations)
-                {
-                    var hidden = variant != Model.Variations.First() ? "collapse" : "";
+                            foreach (var variant in Model.Variations)
+                            {
+                                var hidden = variant != Model.Variations.First() ? "collapse" : "";
                     <div class="product-variation row @hidden" data-variation-name="@variant.NormalizedName">
                         <div class="product-price col-sm-12">
                             <div class="row">
@@ -91,55 +91,69 @@
                                         }
                                     }
                                 </div>
-                                <div class="col-xs-12 col-md-3 col-sm-9 flight-main-details">
-                                    <p>
+                                <div class="col-xs-12 col-md-3 col-sm-9">
                                         <span class="label label-default">@variant.FlightClass</span>
-                                    </p>
-                                    <p>
-                                        <span class="label label-primary">
-                                            @variant.DepartureDate.Value.DateTime.ToShortDateString()
-                                            @if (variant.ReturnLandingDate.HasValue)
+                                        @{
+                                            var dateOptionsString = variant.DepartureDate.Value.DateTime.ToShortDateString();
+                                            if (variant.ReturnLandingDate.HasValue)
                                             {
-                                                @variant.ReturnLandingDate.Value.DateTime.ToShortDateString()
+                                                dateOptionsString = variant.ReturnLandingDate.Value.DateTime.ToShortDateString();
                                             }
-                                        </span>
-                                    </p>
-                                    <p>
+                                         }
+                                        <span class="label label-primary">@dateOptionsString</span>
                                         @if (variant.StockQuantity <= 0)
                                         {
-                                            <p><span class="label label-danger ">@Localizer["Out of stock"]</span></p>
+                                            <span class="label label-danger ">@Localizer["Out of stock"]</span>
                                         }
                                         else
                                         {
-                                            <p><span class="label label-info">Seats available <span class="badge">@variant.StockQuantity</span></span></p>
+                                            <span class="label label-info">Seats available <span class="badge">@variant.StockQuantity</span></span>
                                         }
-                                    </p>
                                 </div>
-                                <div class="col-xs-12 col-md-7 col-sm-12">
+                                <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
                                     <div class="row">
-                                        <div class="col-md-3 col-sm-3">
-                                            <p><small>Carrier: @Model.Carrier</small></p>
-                                            <p><small>Flight #: @Model.FlightNumber</small></p>
+                                        <div class="col-sm-3">
+                                            Carrier: @Model.Carrier
                                         </div>
-                                        <div class="col-md-3 col-sm-3">
-                                            <p><small>Terminal: @Model.Terminal</small></p>
-                                            <p><small>Aircraft: @Model.Aircraft</small></p>
-                                            <p><small>Via: @Model.Via</small></p>
+                                        <div class="col-sm-3">
+                                            Flight #: @Model.FlightNumber
                                         </div>
-
-                                        @if (Model.IsRoundTrip)
+                                        <div class="col-sm-2">
+                                            Aircraft: @Model.Aircraft
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Terminal: @Model.Terminal
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(Model.Via))
                                         {
-                                            <div class="col-md-3 col-sm-3">
-                                                <p><small>Carrier: @Model.ReturnCarrier</small></p>
-                                                <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
-                                            </div>
-                                            <div class="col-md-3 col-sm-3">
-                                                <p><small>Terminal: @Model.ReturnTerminal</small></p>
-                                                <p><small>Aircraft: @Model.ReturnAircraft</small></p>
-                                                <p><small>Via: @Model.ReturnVia</small></p>
+                                            <div class="col-sm-2">
+                                                Via: @Model.Via
                                             </div>
                                         }
                                     </div>
+                                    @if (Model.IsRoundTrip)
+                                    {
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                Carrier: @Model.ReturnCarrier
+                                            </div>
+                                            <div class="col-sm-3">
+                                                Flight #: @Model.ReturnFlightNumber
+                                            </div>
+                                            <div class="col-sm-2">
+                                                Aircraft: @Model.ReturnAircraft
+                                            </div>
+                                            <div class="col-sm-2">
+                                                Terminal: @Model.ReturnTerminal
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(Model.ReturnVia))
+                                            {
+                                                <div class="col-sm-2">
+                                                    Via: @Model.ReturnVia
+                                                </div>
+                                            }                                        
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -166,18 +180,18 @@
                             </form>
                         </div>
                     </div>
-                }
+                                            }
                 <div class="product-variation-notavailable collapse">
                     <span class="label label-danger">Not available</span>
                 </div>
-            }
-            else
-            {
+                                            }
+                                            else
+                                            {
                 <div class="product-price col-sm-12">
                     <div class="row">
                         <div class="col-xs-12 col-md-2 col-sm-3">
                             @if (Model.IsCallForPricing)
-                            {   
+                            {
                                 <p><span class="label label-info">@Localizer["Call for pricing"]</span></p>
                             }
                             else
@@ -200,33 +214,50 @@
                                 <p><span class="label label-info">Seats available <span class="badge">@Model.StockQuantity</span></span></p>
                             }
                         </div>
-                        <!-- <div class="col-md-2 col-sm-2">
-                        </div> -->
-                        <div class="col-xs-12 col-md-7 col-sm-12">
+                        <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
                             <div class="row">
-                                <div class="col-md-3 col-sm-3">
-                                    <p><small>Carrier: @Model.Carrier</small></p>
-                                    <p><small>Flight #: @Model.FlightNumber</small></p>
+                                <div class="col-sm-3">
+                                    Carrier: @Model.Carrier
                                 </div>
-                                <div class="col-md-3 col-sm-3">
-                                    <p><small>Terminal: @Model.Terminal</small></p>
-                                    <p><small>Aircraft: @Model.Aircraft</small></p>
-                                    <p><small>Via: @Model.Via</small></p>
+                                <div class="col-sm-3">
+                                    Flight #: @Model.FlightNumber
                                 </div>
-
-                                @if (Model.IsRoundTrip)
+                                <div class="col-sm-2">
+                                    Aircraft: @Model.Aircraft
+                                </div>
+                                <div class="col-sm-2">
+                                    Terminal: @Model.Terminal
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.Via))
                                 {
-                                    <div class="col-md-3 col-sm-3">
-                                        <p><small>Carrier: @Model.ReturnCarrier</small></p>
-                                        <p><small>Flight #: @Model.ReturnFlightNumber</small></p>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3">
-                                        <p><small>Terminal: @Model.ReturnTerminal</small></p>
-                                        <p><small>Aircraft: @Model.ReturnAircraft</small></p>
-                                        <p><small>Via: @Model.ReturnVia</small></p>
+                                    <div class="col-sm-2">
+                                        Via: @Model.Via
                                     </div>
                                 }
                             </div>
+                            @if (Model.IsRoundTrip)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        Carrier: @Model.ReturnCarrier
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Flight #: @Model.ReturnFlightNumber
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Aircraft: @Model.ReturnAircraft
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Terminal: @Model.ReturnTerminal
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(Model.ReturnVia))
+                                    {
+                                        <div class="col-sm-2">
+                                            Via: @Model.ReturnVia
+                                        </div>
+                                    }                                
+                                </div>                            
+                            }
                         </div>
                     </div>
                 </div>
