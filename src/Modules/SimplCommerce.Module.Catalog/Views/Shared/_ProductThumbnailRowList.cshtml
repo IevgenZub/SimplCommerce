@@ -13,18 +13,11 @@
                 <figcaption>@Model.Carrier</figcaption>
             </figure>
         </div>
-        <div class="flight-number flight-date col-xs-6 col-sm-6 col-md-2 col-lg-1">
-        @if (datesVisible) {
-            <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
-            <span class="flight-date__text">@Model.DepartureDate.Value.Date.ToShortDateString()</span>
-        }
-        else
-        {
-            <span class="flight-date__hidden">
-                <span>Starting </span>
-                @Model.DepartureDate.Value.Date.ToShortDateString()
+        <div class="flight-date col-xs-6 col-sm-6 col-md-2 col-lg-1">
+            <span class="flight-number">
+                <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
+                <span class="flight-date__text">@Model.DepartureDate.Value.Date.ToShortDateString()</span>
             </span>
-        }
         </div>
         <!-- airlines flight-way icon /// hidden-md -->
         <div class="flight-way col-xs-6 col-sm-6 col-md-1 col-lg-1 hidden-sm hidden-md hidden-lg">
@@ -107,20 +100,9 @@
                     </figure>
             </div>
             <div class="flight-number flight-date col-xs-6 col-sm-6 col-md-2 col-lg-1">
-             @if(datesVisible)
-             {
                  <label class="visible-sm visible-xs hidden-label">Return:&nbsp;</label>
                  <span class="flight-date__text">
                  @Model.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
-             }
-             else
-             {
-
-                <span style="padding-right:15px; color:green; font:smaller">
-                    <span style="font-size:10px;">Starting </span>
-                    @Model.ReturnLandingDate.Value.Date.ToShortDateString()
-                </span>
-             }
             </div>
             <!-- airlines flight-way icon /// hidden-md -->
             <div class="flight-way col-xs-6 col-sm-6 col-md-1 col-lg-1 hidden-sm hidden-md hidden-lg">

@@ -634,8 +634,8 @@ section:last-child {
 }
 
 .my-thumbnail img {
-  max-height: 40px;
-  max-width: 40px;
+  max-height: 30px;
+  max-width: 30px;
 }
 
 .my-thumbnail figcaption {
