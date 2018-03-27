@@ -152,6 +152,7 @@ input[type="radio"]:checked+label {
 .form-control {
    border-radius: 0;
    border: 0;
+   border-bottom: 1px solid rgba(0,0,0,.045);
    font-size: 16px;
    height: 44px;
    padding: 6px 10px;
@@ -725,6 +726,23 @@ section:last-child {
 }
 .flight-landing {}
 .flight-duration {}
+
+
+/*regiter form*/
+.btn-default[value="Facebook"]{
+    background: #3b5998;
+    color: #fff;
+}
+.btn-default[value="Google"]{
+    background: #dd4c39;
+    color: #fff;
+}
+
+
+/*passenger-registraion-panel*/
+.passenger-registraion-panel .panel {
+   margin-bottom: 20px;
+}
 
 /*sm*/
 @media (min-width:768px){
