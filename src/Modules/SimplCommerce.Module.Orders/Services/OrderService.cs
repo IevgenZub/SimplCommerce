@@ -160,7 +160,7 @@ namespace SimplCommerce.Module.Orders.Services
             order.TaxAmount = order.OrderItems.Sum(x => x.TaxAmount);
 
             order.SubTotal = order.OrderItems.Sum(
-                x => (x.ProductPrice * x.Quantity) + (x.ChildPrice * x.ProductPrice) + (x.QuantityBaby * x.ChildPrice));
+                x => (x.ProductPrice * x.Quantity) + (x.ProductPrice * x.QuantityChild) + (x.QuantityBaby * x.ChildPrice));
 
             order.SubTotalWithDiscount = order.SubTotal - discount;
             order.OrderTotal = order.SubTotal + order.TaxAmount + order.ShippingAmount - order.Discount;

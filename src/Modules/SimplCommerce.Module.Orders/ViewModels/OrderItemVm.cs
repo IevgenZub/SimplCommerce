@@ -34,7 +34,7 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public decimal DiscountAmount { get; set; }
 
-        public decimal Total => (Quantity * ProductPrice) + (QuantityChild * ChildPrice);
+        public decimal Total => (Quantity * ProductPrice) + (QuantityChild * ProductPrice) + (QuantityBaby * ChildPrice);
 
         public decimal RowTotal => Total + TaxAmount - DiscountAmount;
 
