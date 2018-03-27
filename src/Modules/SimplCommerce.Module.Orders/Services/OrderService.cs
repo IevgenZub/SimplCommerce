@@ -44,7 +44,7 @@ namespace SimplCommerce.Module.Orders.Services
             _orderEmailService = orderEmailService;
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = await _cartRepository
                .Query()
@@ -60,29 +60,6 @@ namespace SimplCommerce.Module.Orders.Services
             Address shippingAddress;
             if (shippingData.ShippingAddressId == 0)
             {
-                /*
-                var address = new Address
-                {
-                    AddressLine1 = shippingData.NewAddressForm.AddressLine1,
-                    AddressLine2 = shippingData.NewAddressForm.AddressLine2,
-                    ContactName = shippingData.NewAddressForm.ContactName,
-                    CountryId = shippingData.NewAddressForm.CountryId,
-                    StateOrProvinceId = shippingData.NewAddressForm.StateOrProvinceId,
-                    DistrictId = shippingData.NewAddressForm.DistrictId,
-                    City = shippingData.NewAddressForm.City,
-                    PostalCode = shippingData.NewAddressForm.PostalCode,
-                    Phone = shippingData.NewAddressForm.Phone
-                };
-
-                var userAddress = new UserAddress
-                {
-                    Address = address,
-                    AddressType = AddressType.Shipping,
-                    UserId = user.Id
-                };
-
-                _userAddressRepository.Add(userAddress);
-                */
                 billingAddress = shippingAddress = null;
             }
             else
@@ -90,10 +67,10 @@ namespace SimplCommerce.Module.Orders.Services
                 billingAddress = shippingAddress = _userAddressRepository.Query().Where(x => x.Id == shippingData.ShippingAddressId).Select(x => x.Address).First();
             }
 
-            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress);
+            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
         }
 
-        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, OrderStatus orderStatus = OrderStatus.New)
+        public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
         {
             var cart = _cartRepository
                 .Query()
@@ -118,7 +95,9 @@ namespace SimplCommerce.Module.Orders.Services
                 DistrictId = billingAddress.DistrictId,
                 City = billingAddress.City,
                 PostalCode = billingAddress.PostalCode,
-                Phone = billingAddress.Phone
+                Phone = billingAddress.Phone,
+                Email = billingAddress.Email,
+                Mobile = billingAddress.Mobile
             };
 
             var orderShippingAddress = new OrderAddress()
@@ -131,7 +110,9 @@ namespace SimplCommerce.Module.Orders.Services
                 DistrictId = shippingAddress.DistrictId,
                 City = shippingAddress.City,
                 PostalCode = shippingAddress.PostalCode,
-                Phone = shippingAddress.Phone
+                Phone = shippingAddress.Phone,
+                Email = shippingAddress.Email,
+                Mobile = shippingAddress.Mobile
             };
 
             var order = new Order
@@ -149,63 +130,44 @@ namespace SimplCommerce.Module.Orders.Services
                 var orderItem = new OrderItem
                 {
                     Product = cartItem.Product,
-                    ProductPrice = cartItem.Product.Price,
+                    ProductPrice = isVendor ? cartItem.Product.AgencyPrice : cartItem.Product.PassengerPrice,
+                    ChildPrice = isVendor ? cartItem.Product.AgencyChildPrice : cartItem.Product.PassengerChildPrice,
                     Quantity = cartItem.Quantity,
+                    QuantityChild = cartItem.QuantityChild,
+                    QuantityBaby = cartItem.QuantityBaby,
                     TaxPercent = taxPercent,
                     TaxAmount = cartItem.Quantity * (cartItem.Product.Price * taxPercent / 100)
                 };
+
                 order.AddOrderItem(orderItem);
-                cartItem.Product.StockQuantity = cartItem.Product.StockQuantity - cartItem.Quantity;
+
+                cartItem.Product.StockQuantity = cartItem.Product.StockQuantity - cartItem.Quantity - cartItem.QuantityChild;
+                if (cartItem.Product.StockQuantity < 0)
+                {
+                    throw new ApplicationException("Can't order more seats that currently available");
+                }
+
+                cartItem.Product.SoldSeats = cartItem.Quantity + cartItem.QuantityChild;
             }
 
+            order.VendorId = order.OrderItems[0].Product.VendorId;
             order.OrderStatus = orderStatus;
             order.CouponCode = cart.CouponCode;
             order.CouponRuleName = cart.CouponRuleName;
             order.Discount = discount;
-            order.ShippingAmount = shippingMethod.Price;
+            order.ShippingAmount = cart.ShippingAmount.HasValue ? cart.ShippingAmount.Value : 0;
             order.ShippingMethod = shippingMethod.Name;
             order.TaxAmount = order.OrderItems.Sum(x => x.TaxAmount);
-            order.SubTotal = order.OrderItems.Sum(x => x.ProductPrice * x.Quantity);
+
+            order.SubTotal = order.OrderItems.Sum(
+                x => (x.ProductPrice * x.Quantity) + (x.ProductPrice * x.QuantityChild) + (x.QuantityBaby * x.ChildPrice));
+
             order.SubTotalWithDiscount = order.SubTotal - discount;
             order.OrderTotal = order.SubTotal + order.TaxAmount + order.ShippingAmount - order.Discount;
             _orderRepository.Add(order);
 
             cart.IsActive = false;
-
-            var vendorIds = cart.Items.Where(x => x.Product.VendorId.HasValue).Select(x => x.Product.VendorId.Value).Distinct();
-            foreach (var vendorId in vendorIds)
-            {
-                var subOrder = new Order
-                {
-                    CreatedOn = DateTimeOffset.Now,
-                    CreatedById = user.Id,
-                    BillingAddress = orderBillingAddress,
-                    ShippingAddress = orderShippingAddress,
-                    VendorId = vendorId,
-                    Parent = order
-                };
-
-                foreach (var cartItem in cart.Items.Where(x => x.Product.VendorId == vendorId))
-                {
-                    var taxPercent = await _taxService.GetTaxPercent(cartItem.Product.TaxClassId, shippingAddress.CountryId, shippingAddress.StateOrProvinceId);
-                    var orderItem = new OrderItem
-                    {
-                        Product = cartItem.Product,
-                        ProductPrice = cartItem.Product.Price,
-                        Quantity = cartItem.Quantity,
-                        TaxPercent = taxPercent,
-                        TaxAmount = cartItem.Quantity * (cartItem.Product.Price * taxPercent / 100)
-                    };
-
-                    subOrder.AddOrderItem(orderItem);
-                }
-
-                subOrder.SubTotal = subOrder.OrderItems.Sum(x => x.ProductPrice * x.Quantity);
-                subOrder.TaxAmount = subOrder.OrderItems.Sum(x => x.TaxAmount);
-                subOrder.OrderTotal = subOrder.SubTotal + subOrder.TaxAmount + subOrder.ShippingAmount - subOrder.Discount;
-                _orderRepository.Add(subOrder);
-            }
-
+          
             foreach (var registrationAddress in shippingData.ExistingShippingAddresses.Where(esa => esa.Selected).ToList())
             {
                 var address = _userAddressRepository.Query().Where(x => x.Id == registrationAddress.UserAddressId).Select(x => x.Address).First();
@@ -221,17 +183,43 @@ namespace SimplCommerce.Module.Orders.Services
                         Phone = address.Phone,
                         PostalCode = address.PostalCode,
                         DistrictId = address.DistrictId,
-                        StateOrProvinceId = address.StateOrProvinceId
+                        StateOrProvinceId = address.StateOrProvinceId,
+                        Email = address.Email,
+                        Mobile = address.Mobile
                     }
                 };
 
                 order.RegistrationAddress.Add(orderRegistrationAddress);
             }
 
+            if (isGuest)
+            {
+                user.Email = order.RegistrationAddress.First().Address.Email;
+            }
+
+            _orderRepository.SaveChanges();
+
+            var prefix = "E"; // Default
+            var flightClass = cart.Items[0].Product.FlightClass;
+            if (string.IsNullOrEmpty(flightClass))
+            {
+                prefix = flightClass[0].ToString();
+            }
+
+            order.PnrNumber = prefix + order.Id.ToString("000000.##");
             _orderRepository.SaveChanges();
 
             await _orderEmailService.SendEmailToUser(user, order, "OrderEmailToCustomer");
             await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
+
+            foreach (var registrationAddress in order.RegistrationAddress)
+            {
+                var email = user.Email;
+                if (email != registrationAddress.Address.Email) { 
+                    user.Email = registrationAddress.Address.Email;
+                    await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
+                }
+            }
 
             return order;
         }
@@ -292,20 +280,6 @@ namespace SimplCommerce.Module.Orders.Services
 
         private async Task<ShippingPrice> ValidateShippingMethod(string shippingMethodName, Address shippingAddress, Cart cart)
         {
-            //var applicableShippingPrices = await _shippingPriceService.GetApplicableShippingPrices(new GetShippingPriceRequest
-            //{
-            //    OrderAmount = cart.Items.Sum(x => x.Product.Price * x.Quantity),
-            //    ShippingAddress = shippingAddress
-            //});
-
-            //var shippingMethod = applicableShippingPrices.FirstOrDefault(x => x.Name == shippingMethodName);
-            //if (shippingMethod == null)
-            //{
-            //    throw new ApplicationException($"Invalid shipping method {shippingMethod}");
-            //}
-
-            //return shippingMethod;
-
             return new ShippingPrice() { Name = "Default", Price = 0, Description = "Default" };
         }
     }

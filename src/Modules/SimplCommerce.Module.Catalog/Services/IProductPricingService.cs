@@ -8,7 +8,7 @@ namespace SimplCommerce.Module.Catalog.Services
     {
         CalculatedProductPrice CalculateProductPrice(ProductThumbnail productThumbnail);
 
-        CalculatedProductPrice CalculateProductPrice(Product product);
+        CalculatedProductPrice CalculateProductPrice(Product product, bool isVendor);
 
         CalculatedProductPrice CalculateProductPrice(decimal price, decimal? oldPrice, decimal? specialPrice, DateTimeOffset? specialPriceStart, DateTimeOffset? specialPriceEnd);
     }

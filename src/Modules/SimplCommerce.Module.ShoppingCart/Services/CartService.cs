@@ -60,8 +60,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
            await  _cartRepository.SaveChangesAsync();
         }
 
-        // TODO separate getting product thumbnail, varation options from here
-        public async Task<CartVm> GetCart(long userId)
+        public async Task<CartVm> GetCart(long userId, bool isVendor)
         {
             var cart = _cartRepository.Query().FirstOrDefault(x => x.UserId == userId && x.IsActive);
             if (cart == null)
@@ -74,7 +73,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                 Id = cart.Id,
                 CouponCode = cart.CouponCode,
                 TaxAmount = cart.TaxAmount,
-                ShippingAmount = cart.ShippingAmount
+                ShippingAmount = cart.ShippingAmount.HasValue ? cart.ShippingAmount : 0
             };
 
             cartVm.Items = _cartItemRepository
@@ -87,16 +86,21 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Id = x.Id,
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
-                    ProductPrice = x.Product.Price,
-                    ChildPrice = x.Product.OldPrice.Value,
+                    ProductPrice = isVendor ? x.Product.AgencyPrice : x.Product.PassengerPrice,
+                    ChildPrice = isVendor ? x.Product.AgencyChildPrice : x.Product.PassengerChildPrice,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
                     Quantity = x.Quantity,
                     QuantityChild = x.QuantityChild,
                     QuantityBaby = x.QuantityBaby,
+                    Departure = x.Product.ShortDescription,
+                    Landing = x.Product.Description,
+                    DepartureDate = x.Product.DepartureDate,
+                    LandingDate = x.Product.LandingDate,
+                    ReturnDepartureDate = x.Product.ReturnDepartureDate,
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 
-            cartVm.SubTotal = cartVm.Items.Sum(x => x.Quantity * x.ProductPrice + x.QuantityChild * x.ChildPrice + x.QuantityBaby * x.ChildPrice);
+            cartVm.SubTotal = cartVm.Items.Sum(x => x.Quantity * x.ProductPrice + x.QuantityChild * x.ProductPrice + x.QuantityBaby * x.ChildPrice);
             if (!string.IsNullOrWhiteSpace(cartVm.CouponCode))
             {
                 var cartInfoForCoupon = new CartInfoForCoupon
@@ -132,6 +136,14 @@ namespace SimplCommerce.Module.ShoppingCart.Services
             return couponValidationResult;
         }
 
+        public void ApplyFee(long userId, decimal feeAmount)
+        {
+            var cart = _cartRepository.Query().Include(x => x.Items).FirstOrDefault(x => x.UserId == userId && x.IsActive);
+
+            cart.ShippingAmount = feeAmount;
+            _cartItemRepository.SaveChanges();
+        }
+
         public async Task MigrateCart(long fromUserId, long toUserId)
         {
             var cartFrom = _cartRepository.Query().Include(x => x.Items).FirstOrDefault(x => x.UserId == fromUserId && x.IsActive);
@@ -147,13 +159,21 @@ namespace SimplCommerce.Module.ShoppingCart.Services
 
                     _cartRepository.Add(cartTo);
                 }
+                else
+                {
+                    if (cartFrom.Items.Any() && cartTo.Items.Any())
+                    {
+
+                        _cartItemRepository.Remove(cartTo.Items[0]);
+                    }
+                }
 
                 foreach (var fromItem in cartFrom.Items)
                 {
-                    var toItem = cartTo.Items.FirstOrDefault(x => x.ProductId == fromItem.ProductId);
-                    if(toItem == null)
-                    {
-                        toItem = new CartItem
+                    //var toItem = cartTo.Items.FirstOrDefault(x => x.ProductId == fromItem.ProductId);
+                    //if(toItem == null)
+                    //{
+                        var toItem = new CartItem
                         {
                             Cart = cartTo,
                             ProductId = fromItem.ProductId,
@@ -162,12 +182,13 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                             QuantityBaby = fromItem.QuantityBaby,
                             CreatedOn = DateTimeOffset.Now
                         };
+
                         cartTo.Items.Add(toItem);
-                    }
-                    else
-                    {
-                        toItem.Quantity = toItem.Quantity + fromItem.Quantity;
-                    }
+                    //}
+                    //else
+                    //{
+                    ///    toItem.Quantity = toItem.Quantity + fromItem.Quantity;
+                    ///}
                 }
 
                await _cartRepository.SaveChangesAsync();

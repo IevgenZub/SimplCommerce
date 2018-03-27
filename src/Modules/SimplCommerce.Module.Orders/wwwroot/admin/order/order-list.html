@@ -16,6 +16,9 @@
             <th>{{::vm.translate.get('Customer')}}</th>
             <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
             <th st-sort="SubTotal" class="sortable">{{::vm.translate.get('SubTotal')}}</th>
+            <th st-sort="ShippingAmount" class="sortable">Agency Fee</th>
+            <th st-sort="PnrNumber" class="sortable">PNR</th>
+            <th st-sort="AgencyReservationNumber" class="sortable">Confirmation</th>
             <th>Actions</th>
         </tr>
         <tr>
@@ -48,7 +51,10 @@
             <td>{{order.orderStatus}}</td>
             <td>{{order.customerName}}</td>
             <td>{{order.createdOn | date:'medium'}}</td>
-            <td>{{order.subTotal | currency }}</td>
+            <td>{{order.subTotal}}$</td>
+            <td>{{order.shippingAmount}}$</td>
+            <td>{{order.pnrNumber}}</td>
+            <td>{{order.agencyReservationNumber}}</td>
             <td><a ui-sref="order-detail({id: order.id})" title="View" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-eye-open"></span></a></td>
         </tr>
     </tbody>

@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using SimplCommerce.Module.Core.Data;
 using System;
 
 namespace SimplCommerce.WebHost.Migrations
 {
     [DbContext(typeof(SimplDbContext))]
-    partial class SimplDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180301060407_OrderUpdates")]
+    partial class OrderUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,13 +216,7 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<long?>("AdminRoundTripOperatorId");
 
-                    b.Property<decimal>("AgencyChildPrice");
-
-                    b.Property<decimal>("AgencyPrice");
-
                     b.Property<long?>("BrandId");
-
-                    b.Property<decimal>("ChildPrice");
 
                     b.Property<long?>("CreatedById");
 
@@ -271,10 +267,6 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<string>("NormalizedName");
 
                     b.Property<decimal?>("OldPrice");
-
-                    b.Property<decimal>("PassengerChildPrice");
-
-                    b.Property<decimal>("PassengerPrice");
 
                     b.Property<decimal>("Price");
 

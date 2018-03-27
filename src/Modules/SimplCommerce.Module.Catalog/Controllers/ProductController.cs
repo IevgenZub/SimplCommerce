@@ -50,7 +50,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 Id = product.Id,
                 Name = product.Name,
-                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product),
+                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product, HttpContext.User.IsInRole("vendor")),
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
@@ -109,7 +109,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
-                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation)
+                    SoldSeats = variation.SoldSeats,
+                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
@@ -133,10 +134,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
             foreach(var productLink in publishedProductLinks)
             {
                 var linkedProduct = productLink.LinkedProduct;
-                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct);
+                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct, User.IsInRole("vendor"));
 
                 productThumbnail.ThumbnailUrl = _mediaService.GetThumbnailUrl(linkedProduct.ThumbnailImage);
-                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct);
+                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct, HttpContext.User.IsInRole("vendor"));
 
                 if(productLink.LinkType == ProductLinkType.Related)
                 {

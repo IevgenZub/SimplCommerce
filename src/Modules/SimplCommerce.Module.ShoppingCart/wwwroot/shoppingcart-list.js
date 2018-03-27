@@ -77,6 +77,13 @@
                     });
                 };
 
+                vm.applyFee = function applyFee() {
+                    vm.couponErrorMessage = '';
+                    shoppingCartService.applyFee(vm.feeAmount).then(function (result) {
+                        getShoppingCartItems();
+                    });
+                };
+
                 getShoppingCartItems();
             }
         ]);

@@ -1,12 +1,21 @@
 ﻿@model SimplCommerce.Module.PaymentStripe.ViewModels.StripeCheckoutForm
+<div>
 
-<form asp-controller="Stripe" asp-action="Charge" method="POST">
-    <script src="//checkout.stripe.com/v2/checkout.js"
-            class="stripe-button"
-            data-key="@Model.PublicKey"
-            data-locale="auto"
-            data-currency="@Model.ISOCurrencyCode"
-            data-description="Payment with Stripe"
-            data-amount="@Model.Amount">
-    </script>
-</form>
+
+    <form id="portmoneForm" action="https://www.portmone.com.ua/gateway/" method="post">
+        <input type="hidden" name="payee_id" value="@Model.PublicKey" />
+        <input type="hidden" name="shop_order_number" value="@Model.OrderNumber" />
+        <input type="hidden" name="bill_amount" value="@Model.Amount" />
+        <input type="hidden" name="description" value="Charterwing.com user id @Model.OrderNumber.Split('-')[0] order #@Model.OrderNumber" />
+        <input type="hidden" name="success_url"
+               value="https://charterwing.com/portmone/success-callback" />
+        <input type="hidden" name="failure_url"
+               value="https://charterwing.com/portmone/failure-callback" />
+        <input type="hidden" name="lang" value="Язык интерфейса" />
+        <button type="submit" class="btn btn-primary" style="width:100px;height:40px; background: url(../themes/AirlineTickets/img/portmone-logo.png); background-size:100% auto" />
+    </form>
+</div>
+<br />
+<div>
+    <img style="max-height:200px;max-width:300px;" src="../themes/AirlineTickets/img/portmone.jpg" />
+</div>

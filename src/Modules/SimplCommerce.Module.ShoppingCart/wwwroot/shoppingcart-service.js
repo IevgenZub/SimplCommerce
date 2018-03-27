@@ -25,11 +25,16 @@
                     return $http.post('Cart/ApplyCoupon', { couponCode: couponCode });
                 }
 
+                function applyFee(feeAmount) {
+                    return $http.post('Cart/ApplyFee', { feeAmount: feeAmount });
+                }
+
                 return {
                     getShoppingCartItems: getShoppingCartItems,
                     removeShoppingCartItem: removeShoppingCartItem,
                     updateQuantity: updateQuantity,
-                    applyCoupon: applyCoupon
+                    applyCoupon: applyCoupon,
+                    applyFee: applyFee
                 };
             }
         ]);

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Airticket</title>
+    <title>Charterwing</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&amp;subset=latin-ext" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="~/themes/AirlineTickets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
                         <span class="sr-only">Toggle navigation</span>
                         <i class="fa fa-2x fa-bars"></i>
                     </button>
-                    <a href="/"><img class="navbar-brand" src="~/themes/AirlineTickets/img/logo-white.png" /></a>
+                    <a href="/"><img class="navbar-brand" src="~/themes/AirlineTickets/img/charter-wing-logo.png" /> </a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-register">
                     <ul class="nav navbar-nav navbar-right" style="margin-bottom: 8px;">
@@ -94,10 +94,11 @@
             <div class="col-xs-6 col-md-3">
                 <h3>About Us</h3>
                 <ul class="list-unstyled list-widget">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Blog</a></li>
+                    <li><a href="~/about">About</a></li>
+                    <li><a href="~/faq">FAQ</a></li>
+                    <li><a href="~/contact">Contact</a></li>
+                    <li><a href="~/agreements">Agreements</a></li>
+                    <li><a href="~/policy">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="col-xs-6 col-md-3">
@@ -243,6 +244,14 @@
                     useCurrent: false, //Important! See issue #1075
                     format: 'L'
                 });
+
+
+                if ($('#return-date').data("DateTimePicker")) {
+                    var today = new Date();
+                    $('#return-date').data("DateTimePicker").minDate(today);
+                    $('#departure-date').data("DateTimePicker").minDate(today);
+                }
+
                 $("#departure-date").on("dp.change", function (e) {
                     $('#return-date').data("DateTimePicker").minDate(e.date);
                 });
@@ -286,6 +295,17 @@
                 });
 
                 recalculatePrices();
+
+                if ($("input[name='bill_amount']")) {
+                    var bill_amount = parseFloat($("input[name='bill_amount']").val());
+                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
+                        $.each(data, function (key, val) {
+                            if (val.ccy == "USD") {
+                                $("input[name='bill_amount']").val(Math.round(bill_amount * val.sale));
+                            }
+                        });
+                    });
+                }
             });
 
             function recalculatePrices() {

@@ -2,6 +2,8 @@
 using SimplCommerce.Infrastructure.Data;
 using SimplCommerce.Module.Catalog.Models;
 using SimplCommerce.Module.Core.Services;
+using SimplCommerce.Module.Core.Models;
+using System.Linq;
 
 namespace SimplCommerce.Module.Catalog.Services
 {
@@ -10,11 +12,15 @@ namespace SimplCommerce.Module.Catalog.Services
         private const long ProductEntityTypeId = 3;
 
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Vendor> _vendorRepository;
+
         private readonly IEntityService _entityService;
 
-        public ProductService(IRepository<Product> productRepository, IEntityService entityService)
+        public ProductService(IRepository<Product> productRepository, IRepository<Vendor> vendorRepository, IEntityService entityService)
         {
             _productRepository = productRepository;
+            _vendorRepository = vendorRepository;
+
             _entityService = entityService;
         }
 
@@ -25,6 +31,15 @@ namespace SimplCommerce.Module.Catalog.Services
                 product.SeoTitle = _entityService.ToSafeSlug(product.SeoTitle, product.Id, ProductEntityTypeId);
                 _productRepository.Add(product);
                 _productRepository.SaveChanges();
+
+                var prefix = "CO"; // Default
+                var vendor = _vendorRepository.Query().FirstOrDefault(v => v.Id == product.VendorId);
+                if (vendor != null)
+                {
+                    prefix = vendor.Name[0].ToString().ToUpper() + vendor.Name[1].ToString().ToUpper();
+                }
+
+                product.ReservationNumber = prefix + product.Id.ToString("000000.##");
 
                 _entityService.Add(product.Name, product.SeoTitle, product.Id, ProductEntityTypeId);
                 _productRepository.SaveChanges();

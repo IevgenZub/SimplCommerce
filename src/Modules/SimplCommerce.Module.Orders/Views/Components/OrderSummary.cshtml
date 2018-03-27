@@ -1,17 +1,15 @@
 ﻿@model SimplCommerce.Module.ShoppingCart.ViewModels.CartVm
-
-<h3>@Localizer["Order summary"] (@Model.Items.Count() @Localizer["products"]) </h3>
 <table class="table table-striped">
     <tr>
-        <th>@Localizer["Product"]</th>
-        <th class="text-center">@Localizer["Quantity"]</th>
+        <th>@Localizer["Flight"]</th>
+        <th class="text-left">@Localizer["Quantity"]</th>
         <th class="text-right">@Localizer["Price"]</th>
     </tr>
     @foreach (var item in Model.Items)
     {
         <tr>
             <td>
-                @item.ProductName
+                <h4>@item.ProductName</h4>
                 @if (item.VariationOptions.Any())
                 {
                     <ul class="list-unstyled">
@@ -21,15 +19,19 @@
                         }
                     </ul>
                 }
+
+                <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
+                <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
             </td>
-            <td class="text-center">
+            <td class="text-left">
                 <p>@item.Quantity (18+)</p> 
                 <p>@item.QuantityChild (2-11)</p> 
                 <p>@item.QuantityBaby (0-2)</p>
             </td>
             <td class="text-right">
-                <p><span class="priceToConvert">@item.ProductPrice</span> adult</p>
-                <p><span class="priceToConvert">@item.ChildPrice</span> child</p>
+                <p><span class="priceToConvert">@item.ProductPrice</span></p>
+                <p><span class="priceToConvert">@item.ProductPrice</span></p>
+                <p><span class="priceToConvert">@item.ChildPrice</span></p>
             </td>
         </tr>
     }
@@ -38,8 +40,8 @@
         <td colspan="2" class="text-right"><span class="priceToConvert">@Model.SubTotal</span><input type="hidden" id="orderSubtotal" value="@Model.SubTotal" /></td>
     </tr>
     <tr>
-        <td>@Localizer["Shipping"]</td>
-        <td colspan="2" id="orderSummaryShipping" class="text-right">@Model.ShippingAmountString</td>
+        <td>Agency Fee</td>
+        <td colspan="2" id="orderSummaryShipping" class="text-right"><span class="priceToConvert">@Model.ShippingAmount</span></td>
     </tr>
     @if (!Model.IsTaxIncludedInProductPrice)
     {

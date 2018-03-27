@@ -26,6 +26,12 @@ namespace SimplCommerce.Module.Orders.Models
 
         public long? VendorId { get; set; }
 
+        public string ExternalNumber { get; set; }
+
+        public string PnrNumber { get; set; }
+
+        public string AgencyReservationNumber { get; set; }
+
         public string CouponCode { get; set; }
 
         public string CouponRuleName { get; set; }

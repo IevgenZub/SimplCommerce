@@ -14,12 +14,16 @@ using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.Payments.Models;
 using SimplCommerce.Module.PaymentStripe.ViewModels;
 using SimplCommerce.Module.PaymentStripe.Models;
+using SimplCommerce.Module.Core.Models;
+using System.Linq;
 
 namespace SimplCommerce.Module.PaymentStripe.Controllers
 {
+    [Route("portmone")]
     public class StripeController : Controller
     {
         private readonly IRepository<Cart> _cartRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly IOrderService _orderService;
         private readonly IWorkContext _workContext;
         private readonly IRepository<PaymentProvider> _paymentProviderRepository;
@@ -30,13 +34,15 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             IOrderService orderService,
             IWorkContext workContext,
             IRepository<PaymentProvider> paymentProviderRepository,
-            IRepository<Payment> paymentRepository)
+            IRepository<Payment> paymentRepository,
+            IRepository<User> userRepository)
         {
             _cartRepository = cartRepository;
             _orderService = orderService;
             _workContext = workContext;
             _paymentProviderRepository = paymentProviderRepository;
             _paymentRepository = paymentRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<IActionResult> Charge(string stripeEmail, string stripeToken)
@@ -47,7 +53,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             var customers = new StripeCustomerService(stripeSetting.PrivateKey);
             var charges = new StripeChargeService(stripeSetting.PrivateKey);
             var currentUser = await _workContext.GetCurrentUser();
-            var order = await _orderService.CreateOrder(currentUser, "Stripe", OrderStatus.PendingPayment);
+            var order = await _orderService.CreateOrder(currentUser, "Portmone", User.IsInRole("vendor"), User.IsInRole("vendor"), OrderStatus.PendingPayment);
 
             var customer = customers.Create(new StripeCustomerCreateOptions
             {
@@ -86,6 +92,38 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
             await _paymentRepository.SaveChangesAsync();
 
             return Redirect("~/checkout/congratulation");
+        }
+
+        [HttpPost("success-callback")]
+        public async Task<IActionResult> PortmoneSuccessPostCallback([FromForm] PortmoneCallback portmoneCallback)
+        {
+            var userId = portmoneCallback.SHOPORDERNUMBER.Split('-')[0];
+
+            var currentUser = _userRepository.Query()
+                .Include(u => u.Roles).ThenInclude(r => r.Role)
+                .First(u => u.Id.ToString() == userId);
+
+            var order = await _orderService.CreateOrder(
+                currentUser, 
+                "Portmone", 
+                currentUser.Roles.Any(r => r.Role.Name == "vendor"),
+                currentUser.Roles.Any(r => r.Role.Name == "guest"),
+                OrderStatus.PaymentReceived);
+
+            var payment = new Payment()
+            {
+                OrderId = order.Id,
+                Amount = order.OrderTotal,
+                PaymentMethod = "Portmone",
+                CreatedOn = DateTimeOffset.UtcNow,
+                GatewayTransactionId = portmoneCallback.SHOPORDERNUMBER
+            };
+
+            order.ExternalNumber = portmoneCallback.SHOPORDERNUMBER;
+            _paymentRepository.Add(payment);
+            await _paymentRepository.SaveChangesAsync();
+
+            return Redirect($"~/checkout/congratulation?pnr={order.PnrNumber}");
         }
     }
 }

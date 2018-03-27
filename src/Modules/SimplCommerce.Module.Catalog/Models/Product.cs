@@ -15,6 +15,16 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public decimal Price { get; set; }
 
+        public decimal ChildPrice { get; set; }
+
+        public decimal PassengerPrice { get; set; }
+
+        public decimal PassengerChildPrice { get; set; }
+
+        public decimal AgencyPrice { get; set; }
+
+        public decimal AgencyChildPrice { get; set; }
+
         public decimal? OldPrice { get; set; }
 
         public decimal? SpecialPrice { get; set; }
@@ -28,6 +38,10 @@ namespace SimplCommerce.Module.Catalog.Models
         public bool IsVisibleIndividually { get; set; }
 
         public bool IsFeatured { get; set; }
+
+        public bool IsLastMinute { get; set; }
+
+        public bool IsFirstSellThenBuy { get; set; }
 
         public bool IsCallForPricing { get; set; }
 
@@ -221,6 +235,11 @@ namespace SimplCommerce.Module.Catalog.Models
             product.SoldSeats = 0;
             product.DepartureDate = DepartureDate;
             product.LandingDate = LandingDate;
+            product.PassengerChildPrice = product.PassengerChildPrice;
+            product.PassengerPrice = product.PassengerPrice;
+            product.ChildPrice = product.ChildPrice;
+            product.AgencyChildPrice = product.AgencyChildPrice;
+            product.AgencyPrice = product.AgencyPrice;
 
             foreach (var attribute in AttributeValues)
             {

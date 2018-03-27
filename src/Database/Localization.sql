@@ -21,3 +21,11 @@ INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Search results', N'Результаты поиска')
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Newest Flights', N'Новые рейсы')
 
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Daily', N'Каждый день')
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'One Time', N'Единоразовые')
+
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Best Selling', N'Лидеры продаж')
+
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Available', N'Доступно')
+
+

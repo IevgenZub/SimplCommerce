@@ -9,6 +9,7 @@ using SimplCommerce.Module.Core.Services;
 using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.Services;
 using SimplCommerce.Module.ShoppingCart.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SimplCommerce.Module.ShoppingCart.Controllers
 {
@@ -36,7 +37,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> AddToCart([FromBody] AddToCartModel model)
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
             var cartItems = _cartItemRepository.Query().Where(x => x.CartId == cart.Id);
 
             cartItems.ToList().ForEach(ci => _cartItemRepository.Remove(ci));
@@ -51,7 +52,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> AddToCartResult(long productId)
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, User.IsInRole("vendor"));
 
             var model = new AddToCartResult
             {
@@ -81,7 +82,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         public async Task<IActionResult> List()
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cart = await _cartService.GetCart(currentUser.Id);
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
 
             return Json(cart);
         }
@@ -111,11 +112,24 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             var validationResult =  await _cartService.ApplyCoupon(currentUser.Id, model.CouponCode);
             if (validationResult.Succeeded)
             {
-                var cart = await _cartService.GetCart(currentUser.Id);
+                var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
                 return Json(cart);
             }
 
             return Json(validationResult);
+        }
+
+        [Authorize(Roles ="admin, vendor")]
+        [HttpPost]
+        public async Task<ActionResult> ApplyFee([FromBody] ApplyFeeForm model)
+        {
+            var currentUser = await _workContext.GetCurrentUser();
+
+            _cartService.ApplyFee(currentUser.Id, model.FeeAmount);
+
+            var cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
+
+            return Json(cart);
         }
 
         [HttpPost]

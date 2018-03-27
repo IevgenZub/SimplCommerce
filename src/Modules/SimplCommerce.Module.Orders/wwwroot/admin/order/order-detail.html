@@ -21,6 +21,14 @@
                         <td>Order Total</td>
                         <td>{{vm.order.orderTotalString}}</td>
                     </tr>
+                    <tr>
+                        <td>PNR Number</td>
+                        <td><span class="label label-primary">{{vm.order.pnrNumber}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Confirmation Number</td>
+                        <td><span class="label label-info">{{vm.order.confirmationNumber}}</span></td>
+                    </tr>
                 </table>
             </div>
             <div class="col-md-6">
@@ -94,9 +102,15 @@
                             </li>
                         </ul>
                     </td>
-                    <td class="text-right">{{item.productPriceString}}</td>
                     <td class="text-right">
-                        Ordered {{item.quantity}}<span ng-if="item.shippedQuantity"><br />Shipped {{item.shippedQuantity}}</span>
+                        <p>adult {{item.productPriceString}}</p>
+                        <p>child {{item.productPriceString}}</p>
+                        <p>infant {{item.productChildPriceString}}</p>
+                    </td>
+                    <td class="text-right">
+                        <p>{{item.quantity}} adult</p>
+                        <p>{{item.quantityChild}} child</p>
+                        <p>{{item.quantityBaby}} baby</p>
                     </td>
                     <td class="text-right">{{item.totalString}}</td>
                     <td class="text-right">{{item.taxAmountString}}</td>
@@ -120,7 +134,7 @@
                 <p>{{vm.order.paymentMethod}}</p>
             </div>
             <div class="col-md-6">
-                <h5>Shipping: {{vm.order.shippingMethod}}</h5>
+                <h5>Shipping Method: {{vm.order.shippingMethod}}</h5>
                 <div class="text-right"><button class="btn btn-default" ui-sref="shipment-create({orderId: vm.order.id})">Add Shipment</button></div>
             </div>
         </div>
@@ -188,7 +202,7 @@
                         <td class="text-right">{{vm.order.subtotalString}}</td>
                     </tr>
                     <tr>
-                        <td>Shipping</td>
+                        <td>Agency Fee</td>
                         <td class="text-right">{{vm.order.shippingAmountString}}</td>
                     </tr>
                     <tr>

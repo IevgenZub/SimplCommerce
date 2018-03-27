@@ -58,8 +58,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                     x.Id,
                     CustomerName = x.CreatedBy.FullName,
                     x.OrderTotal,
-                    OrderTotalString = x.OrderTotal.ToString("C"),
-                    OrderStatus = x.OrderStatus.ToString(), x.CreatedOn
+                    OrderTotalString = x.OrderTotal + "$",
+                    OrderStatus = x.OrderStatus.ToString(),
+                    x.CreatedOn
                 });
 
             return Json(model);
@@ -119,8 +120,13 @@ namespace SimplCommerce.Module.Orders.Controllers
                 order => new
                 {
                     order.Id,
-                    CustomerName = order.CreatedBy.FullName, order.SubTotal,
-                    OrderStatus = order.OrderStatus.ToString(), order.CreatedOn
+                    CustomerName = order.CreatedBy.FullName,
+                    order.SubTotal,
+                    OrderStatus = order.OrderStatus.ToString(),
+                    order.CreatedOn,
+                    order.ShippingAmount,
+                    order.PnrNumber,
+                    order.AgencyReservationNumber
                 });
 
             return Json(orders);
@@ -167,6 +173,8 @@ namespace SimplCommerce.Module.Orders.Controllers
                 TaxAmount = order.TaxAmount,
                 ShippingAmount = order.ShippingAmount,
                 OrderTotal = order.OrderTotal,
+                PnrNumber = order.PnrNumber,
+                ConfirmationNumber = order.AgencyReservationNumber,
                 ShippingAddress = new ShippingAddressVm
                 {
                     AddressLine1 = order.ShippingAddress.AddressLine1,
@@ -182,6 +190,9 @@ namespace SimplCommerce.Module.Orders.Controllers
                     ProductId = x.Product.Id,
                     ProductName = x.Product.Name,
                     ProductPrice = x.ProductPrice,
+                    ChildPrice = x.ChildPrice,
+                    QuantityChild = x.QuantityChild,
+                    QuantityBaby = x.QuantityBaby,
                     Quantity = x.Quantity,
                     TaxAmount = x.TaxAmount,
                     TaxPercent = x.TaxPercent,
@@ -213,6 +224,18 @@ namespace SimplCommerce.Module.Orders.Controllers
             {
                 var oldStatus = order.OrderStatus;
                 order.OrderStatus = (OrderStatus) model.StatusId;
+
+
+                if (order.OrderStatus == OrderStatus.Complete)
+                {
+                    if (string.IsNullOrEmpty(model.Note))
+                    {
+                        return BadRequest(new { Error = "Invalid Agency Confirmation Number" });
+                    }
+
+                    order.AgencyReservationNumber = model.Note;
+                }
+
                 await _orderRepository.SaveChangesAsync();
 
                 var orderStatusChanged = new OrderChanged

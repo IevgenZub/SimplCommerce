@@ -15,6 +15,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public decimal Price { get; set; }
 
+        public decimal ChildPrice { get; set; }
+
         public decimal? OldPrice { get; set; }
 
         public decimal? SpecialPrice { get; set; }
@@ -63,14 +65,15 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public ProductDetail Details { get; set; }
 
-        public static ProductThumbnail FromProduct(Product product)
+        public static ProductThumbnail FromProduct(Product product, bool isVendor)
         {
             var productThumbnail = new ProductThumbnail
             {
                 Id = product.Id,
                 Name = product.Name,
                 SeoTitle = product.SeoTitle,
-                Price = product.Price,
+                Price = isVendor ? product.AgencyPrice : product.PassengerPrice,
+                ChildPrice = isVendor ? product.AgencyChildPrice : product.PassengerChildPrice,
                 OldPrice = product.OldPrice,
                 SpecialPrice = product.SpecialPrice,
                 SpecialPriceStart = product.SpecialPriceStart,

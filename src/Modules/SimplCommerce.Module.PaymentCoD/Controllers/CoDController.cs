@@ -24,7 +24,7 @@ namespace SimplCommerce.Module.PaymentCoD.Controllers
         public async Task<IActionResult> CoDCheckout()
         {
             var currentUser = await _workContext.GetCurrentUser();
-            await _orderService.CreateOrder(currentUser, "CashOnDelivery");
+            await _orderService.CreateOrder(currentUser, "CashOnDelivery", User.IsInRole("vendor"), User.IsInRole("guest"));
             return Redirect("~/checkout/congratulation");
         }
     }

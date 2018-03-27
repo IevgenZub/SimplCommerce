@@ -4,23 +4,28 @@
     ViewBag.Title = Model.Name;
 }
 
-<div class="product-detail" style="padding-left:15px;padding-right:15px; padding-top:15px">
+<div class="product-detail">
     <div class="row">
         <div class="col-md-12">
            
             @if (Model.HasVariation)
             {
                 <form>
-                    <div class="product-attrs">
+                    <div class="product-attrs row">
+                        @{
+                            var optionsCount = Model.AvailableOptions.Count();
+                            var columns = 12 / optionsCount;
+                        }
+
                         @foreach (var option in Model.AvailableOptions)
                         {
-                            <div>
-                                <h5 style="margin-bottom:0;">@option.OptionName </h5>
-                                <ul class="list-inline product-attr-options" style="font:smaller; margin-bottom: 20px;">
+                            <div class="col-sm-@columns">
+                                <h5>@option.OptionName </h5>
+                                <ul class="list-inline product-attr-options">
                                     @if (option.OptionName == "Departure Date")
                                     {
                                         var valuesSorted = option.Values.OrderBy(o => Convert.ToDateTime(o, new System.Globalization.CultureInfo("ru-RU", true)));
-                                        
+
                                         @foreach (var value in valuesSorted)
                                         {
                                             var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
@@ -35,11 +40,11 @@
                                     @if (option.OptionName == "Package Days")
                                     {
                                         var valuesSorted = option.Values.OrderBy(o => Convert.ToInt32(o));
-                                        
+
                                         @foreach (var value in valuesSorted)
                                         {
                                             var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
-                                            
+
                                             <li>
                                                 <input type="radio" value="@value" data-return="@value" checked="@shouldChecked" name="@option.OptionName" />
                                                 <label style="font-size:unset; height:28px">@value</label>
@@ -65,38 +70,95 @@
                     </div>
                 </form>
 
-                foreach (var variant in Model.Variations)
-                {
-                    var hidden = variant != Model.Variations.First() ? "collapse" : "";
-                    <div class="product-variation @hidden" data-variation-name="@variant.NormalizedName">
-                        <div class="product-price">
-                            @if (variant.IsCallForPricing)
+                            foreach (var variant in Model.Variations)
                             {
-                                <span class="label label-info">@Localizer["Call for pricing"]</span>
-                            }
-                            else
-                            {
-                                <label><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></label>
-                                if (variant.CalculatedProductPrice.PercentOfSaving > 0)
-                                {
-                                    <p class="product-price-regular">@variant.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
-                                    <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
-                                }
-                            }
-                            (@variant.FlightClass)
-                            @variant.DepartureDate.Value.DateTime.ToShortDateString() - 
-                            @if (variant.ReturnLandingDate.HasValue)
-                            {
-                                <span>@variant.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
-                            }
-                        </div>
-                        @if (variant.StockQuantity <= 0)
-                        {
-                            <div class="out-of-stock">
-                                <span class="label label-danger">@Localizer["Out of stock"]</span>
+                                var hidden = variant != Model.Variations.First() ? "collapse" : "";
+                               <div class="product-variation row @hidden" data-variation-name="@variant.NormalizedName">
+                               <div class="product-price col-sm-12">
+                               <div class="row">
+                               <div class="col-xs-12 col-md-2 col-sm-3" style="white-space:nowrap">
+                                    @if (variant.IsCallForPricing)
+                                    {
+                                        <p><span class="label label-info">@Localizer["Call for pricing"]</span></p>
+                                    }
+                                    else
+                                    {
+                                        <h3><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></h3>
+                                        if (variant.CalculatedProductPrice.PercentOfSaving > 0)
+                                        {
+                                            <p class="product-price-regular"><span class="priceToConvert">@variant.CalculatedProductPrice.OldPrice.Value</span></p>
+                                            <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
+                                        }
+                                    }
+                                </div>
+                                <div class="col-xs-12 col-md-3 col-sm-9" style="white-space:nowrap">
+                                        <span class="label label-default">@variant.FlightClass</span>
+                                        @{
+                                            var dateOptionsString = variant.DepartureDate.Value.DateTime.ToShortDateString();
+                                            if (variant.ReturnLandingDate.HasValue)
+                                            {
+                                                dateOptionsString = variant.ReturnLandingDate.Value.DateTime.ToShortDateString();
+                                            }
+                                         }
+                                        <span class="label label-primary">@dateOptionsString</span>
+                                        @if (variant.StockQuantity <= 0)
+                                        {
+                                            <span class="label label-danger ">@Localizer["Out of stock"]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="label label-info">@Localizer["Available"] <span class="badge">@variant.StockQuantity</span></span>
+                                        }
+                                </div>
+                                <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                           <span class="glyphicon glyphicon-arrow-right"></span> Carrier: @Model.Carrier
+                                        </div>
+                                        <div class="col-sm-3">
+                                            Flight #: @Model.FlightNumber
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Aircraft: @Model.Aircraft
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Terminal: @Model.Terminal
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(Model.Via))
+                                        {
+                                            <div class="col-sm-2">
+                                                Via: @Model.Via
+                                            </div>
+                                        }
+                                    </div>
+                                    @if (Model.IsRoundTrip)
+                                    {
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <span class="glyphicon glyphicon-arrow-left"></span> Carrier: @Model.ReturnCarrier
+                                            </div>
+                                            <div class="col-sm-3">
+                                                Flight #: @Model.ReturnFlightNumber
+                                            </div>
+                                            <div class="col-sm-2">
+                                                Aircraft: @Model.ReturnAircraft
+                                            </div>
+                                            <div class="col-sm-2">
+                                                Terminal: @Model.ReturnTerminal
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(Model.ReturnVia))
+                                            {
+                                                <div class="col-sm-2">
+                                                    Via: @Model.ReturnVia
+                                                </div>
+                                            }                                        
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                        }
-                        <div class="add-to-cart">
+                        </div>
+
+                        <div class="add-to-cart col-sm-12">
                             <form class="inline">
                                 <input type="hidden" name="productId" value="@variant.Id" />
                                 <div class="product-quantity">
@@ -118,34 +180,87 @@
                             </form>
                         </div>
                     </div>
-                }
+                            }
                 <div class="product-variation-notavailable collapse">
                     <span class="label label-danger">Not available</span>
                 </div>
-            }
-            else
-            {
-                <div class="product-price">
-                    @if (Model.IsCallForPricing)
-                    {
-                        <span class="label label-info">@Localizer["Call for pricing"]</span>
-                    }
-                    else
-                    {
-                        <label><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></label>
-                        if (Model.CalculatedProductPrice.PercentOfSaving > 0)
-                        {
-                            <p class="product-price-regular">@Model.CalculatedProductPrice.OldPrice.Value.ToString("C")</p>
-                            <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
-                        }
-                    }
-                </div>
-                if (Model.StockQuantity <= 0)
-                {
-                    <div class="out-of-stock">
-                        <span class="label label-danger">@Localizer["Out of stock"]</span>
+             }
+             else
+             {
+                <div class="product-price col-sm-12" style="white-space:nowrap">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-2 col-sm-3">
+                            @if (Model.IsCallForPricing)
+                            {
+                                <p><span class="label label-info">@Localizer["Call for pricing"]</span></p>
+                            }
+                            else
+                            {
+                                <h3><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></h3>
+                                if (Model.CalculatedProductPrice.PercentOfSaving > 0)
+                                {
+                                    <p class="product-price-regular"><span class="priceToConvert">@Model.CalculatedProductPrice.OldPrice.Value</span></p>
+                                    <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
+                                }
+                            }
+                        </div>
+                        <div class="col-xs-12 col-md-3 col-sm-9 flight-main-details">
+                            @if (Model.StockQuantity <= 0)
+                            {
+                                <span class="label label-danger">@Localizer["Out of stock"]</span>
+                            }
+                            else
+                            {
+                                <span class="label label-info">@Localizer["Available"] <span class="badge">@Model.StockQuantity</span></span>
+                            }
+                        </div>
+                        <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                  <span class="glyphicon glyphicon-arrow-right"></span>  Carrier: @Model.Carrier
+                                </div>
+                                <div class="col-sm-3">
+                                    Flight #: @Model.FlightNumber
+                                </div>
+                                <div class="col-sm-2">
+                                    Aircraft: @Model.Aircraft
+                                </div>
+                                <div class="col-sm-2">
+                                    Terminal: @Model.Terminal
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.Via))
+                                {
+                                    <div class="col-sm-2">
+                                        Via: @Model.Via
+                                    </div>
+                                }
+                            </div>
+                            @if (Model.IsRoundTrip)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <span class="glyphicon glyphicon-arrow-left"></span> Carrier: @Model.ReturnCarrier
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Flight #: @Model.ReturnFlightNumber
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Aircraft: @Model.ReturnAircraft
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Terminal: @Model.ReturnTerminal
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(Model.ReturnVia))
+                                    {
+                                        <div class="col-sm-2">
+                                            Via: @Model.ReturnVia
+                                        </div>
+                                    }                                
+                                </div>                            
+                            }
+                        </div>
                     </div>
-                }
+                </div>
                 <div class="add-to-cart">
                     <form class="inline">
                         <input type="hidden" name="productId" value="@Model.Id" />
@@ -167,7 +282,7 @@
                         <button type="button" style="font-size:smaller" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
                     </form>
                 </div>
-            }
+             }
         </div>
     </div>
 </div>

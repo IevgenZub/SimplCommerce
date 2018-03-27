@@ -1,4 +1,5 @@
 ﻿using SimplCommerce.Module.Core.ViewModels;
+using System;
 using System.Collections.Generic;
 
 namespace SimplCommerce.Module.Orders.ViewModels
@@ -8,6 +9,10 @@ namespace SimplCommerce.Module.Orders.ViewModels
         public DeliveryInformationVm()
         {
         }
+
+        public DateTimeOffset? DepartureDate { get; set; }
+
+        public int PassportExpRule { get; set; }
 
         public int NumberofPassengers { get; set; }
 

@@ -52,7 +52,9 @@ namespace SimplCommerce.Module.Search.Controllers
 
             if (!string.IsNullOrEmpty(searchOption.Reservation))
             {
-                query = query.Where(x => x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper());
+                query = query.Where(x => 
+                    x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper() && 
+                    x.Status == "ACCEPTED");
             }
             else
             {
@@ -60,43 +62,38 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.ShortDescription.Contains(searchOption.Departure) &&
                     x.Description.Contains(searchOption.Landing) &&
                     x.Status == "ACCEPTED" &&
-                    x.IsVisibleIndividually);
+                    x.IsVisibleIndividually &&
+                    x.DepartureDate >= DateTime.Now);
 
-                DateTime departureDate = new DateTime();
-
+                
                 if (!string.IsNullOrEmpty(searchOption.DepartureDate))
                 {
-                    departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                    var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                    var departureDateMin = departureDate.AddDays(-7);
+                    var departureDateMax = departureDate.AddDays(7);
                     query = query.Where(x =>
-                        (!x.HasOptions && x.DepartureDate.Value.Date == departureDate) ||
-                        (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 4 && o.Value.Contains(searchOption.DepartureDate))));
+                        (x.DepartureDate.Value.Date >= departureDateMin && 
+                        x.DepartureDate.Value.Date < departureDateMax) || x.HasOptions);
                 }
 
                 if (searchOption.TripType == "round-trip")
                 {
-                    query = query.Where(x => x.IsRoundTrip);
-
                     if (!string.IsNullOrEmpty(searchOption.ReturnDate))
                     {
                         var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
-                        var packageDays = (returnDate - departureDate).TotalDays;
-                        query = query.Where(x =>
-                            (!x.HasOptions && x.ReturnDepartureDate.Value.Date == returnDate.Date) ||
-                            (x.HasOptions && x.OptionValues.Any(o => o.OptionId == 6 && o.Value.Contains(packageDays.ToString()))));
+                        var returnDateMin = returnDate.AddDays(-7);
+                        var returnDateMax = returnDate.AddDays(7);
+                        query = query.Where(x => 
+                            x.ReturnDepartureDate.Value.Date >= returnDateMin && 
+                            x.ReturnDepartureDate.Value.Date < returnDateMax);
                     }
                 }
-                else
-                {
-                    query = query.Where(x => !x.IsRoundTrip);
-                }
-
 
                 if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
                 {
                     var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
                     var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
                     query = query.Where(x =>
-                        //x.FlightClass == flightClass &&
                         x.StockQuantity >= numberOfPeople);
                 }
             }
@@ -161,7 +158,7 @@ namespace SimplCommerce.Module.Search.Controllers
             query = AppySort(searchOption, query);
 
             var products = query
-                .Select(x => ProductThumbnail.FromProduct(x))
+                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor")))
                 .Skip(offset)
                 .Take(_pageSize)
                 .ToList();
@@ -170,17 +167,17 @@ namespace SimplCommerce.Module.Search.Controllers
             {
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
-                product.Details = GetProductDetails(product.Id);
+                product.Details = GetProductDetails(product.Id, searchOption);
             }
 
-            model.Products = products;
+            model.Products = products.Where(p => !p.Details.HasVariation || (p.Details.HasVariation && p.Details.Variations.Count > 0)).ToList();
             model.CurrentSearchOption.PageSize = _pageSize;
             model.CurrentSearchOption.Page = currentPageNum;
 
             return View(model);
         }
 
-        private ProductDetail GetProductDetails(long id)
+        private ProductDetail GetProductDetails(long id, SearchOption searchOption)
         {
             var product = _productRepository.Query()
                 .Include(x => x.OptionValues)
@@ -188,6 +185,10 @@ namespace SimplCommerce.Module.Search.Controllers
                 .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.ThumbnailImage)
                 .Include(x => x.ThumbnailImage)
                 .Include(x => x.Medias).ThenInclude(m => m.Media)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
+                .Include(x => x.Brand)
+                .Include(x => x.TaxClass)
                 .FirstOrDefault(x => x.Id == id && x.IsPublished);
 
             if (product == null)
@@ -199,7 +200,7 @@ namespace SimplCommerce.Module.Search.Controllers
             {
                 Id = product.Id,
                 Name = product.Name,
-                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product),
+                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product, User.IsInRole("vendor")),
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
@@ -208,11 +209,21 @@ namespace SimplCommerce.Module.Search.Controllers
                 Specification = product.Specification,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
+                Terminal = product.Sku,
+                ReturnTerminal = product.ReturnTerminal,
+                IsRoundTrip = product.IsRoundTrip,
+                FlightNumber = product.FlightNumber,
+                Carrier = product.Brand == null ? "" : product.Brand.Name,
+                ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
+                Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
+                Via = product.Via,
+                ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
+                ReturnVia = product.ReturnVia,
                 Attributes = product.AttributeValues.Select(x => new ProductDetailAttribute { Name = x.Attribute.Name, Value = x.Value }).ToList(),
                 Categories = product.Categories.Select(x => new ProductDetailCategory { Id = x.CategoryId, Name = x.Category.Name, SeoTitle = x.Category.SeoTitle }).ToList()
             };
 
-            MapProductVariantToProductVm(product, model);
+            MapProductVariantToProductVm(product, model, searchOption);
             MapRelatedProductToProductVm(product, model);
 
             foreach (var item in product.OptionValues)
@@ -256,14 +267,23 @@ namespace SimplCommerce.Module.Search.Controllers
             return query;
         }
 
-        private void MapProductVariantToProductVm(Product product, ProductDetail model)
+        private void MapProductVariantToProductVm(Product product, ProductDetail model, SearchOption searchOption)
         {
             var variations = _productRepository
                 .Query()
                 .Include(x => x.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.LinkedProductLinks.Any(link => link.ProductId == product.Id && link.LinkType == ProductLinkType.Super))
-                .Where(x => x.IsPublished)
-                .ToList();
+                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED");
+
+            if (!string.IsNullOrEmpty(searchOption.DepartureDate))
+            {
+                var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                var departureDateMin = departureDate.AddDays(-3);
+                var departureDateMax = departureDate.AddDays(3);
+                variations = variations.Where(x =>
+                    x.DepartureDate.Value.Date >= departureDateMin &&
+                    x.DepartureDate.Value.Date <= departureDateMax);
+            }
 
             foreach (var variation in variations)
             {
@@ -275,11 +295,12 @@ namespace SimplCommerce.Module.Search.Controllers
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
+                    SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
                     InfantPrice = variation.OldPrice,
                     ReturnLandingDate = variation.ReturnLandingDate,
                     FlightClass = variation.FlightClass,
-                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation)
+                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
@@ -303,10 +324,10 @@ namespace SimplCommerce.Module.Search.Controllers
             foreach (var productLink in publishedProductLinks)
             {
                 var linkedProduct = productLink.LinkedProduct;
-                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct);
+                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct, User.IsInRole("vendor"));
 
                 productThumbnail.ThumbnailUrl = _mediaService.GetThumbnailUrl(linkedProduct.ThumbnailImage);
-                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct);
+                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct, User.IsInRole("vendor"));
 
                 if (productLink.LinkType == ProductLinkType.Related)
                 {

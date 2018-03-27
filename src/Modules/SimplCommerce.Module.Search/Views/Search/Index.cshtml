@@ -35,19 +35,22 @@
                         <label class="sr-only" for="departure">@Localizer["Departure"]</label>
                         <input type="text" class="form-control" required style="width: 100%;" id="departure" name="Departure" placeholder="@Localizer["Departure"]">
                     </div>
+                    <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
+                        <button type="button" tabindex="1o" class="btn btn-switch" style="width: 100%"><span class="glyphicon glyphicon-retweet"></span></button>
+                    </div>
                     <div class="col-lg-3 col-md-6 col-xs-12" style="padding: 0">
                         <label class="sr-only" for="landing">@Localizer["Landing"]</label>
                         <input type="text" class="form-control date" required style="width: 100%" id="landing" name="Landing" placeholder="@Localizer["Landing"]">
                     </div>
-                    <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                    <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0;">
                         <label class="sr-only" for="departure-date">@Localizer["Departure Date"]</label>
                         <input type="text" class="form-control" required style="width: 100%" id="departure-date" name="DepartureDate" placeholder="@Localizer["Departure Date"]">
                     </div>
-                    <div class="col-lg-2 col-md-6 col-xs-12 date" style="padding: 0;">
+                    <div class="col-lg-1 col-md-6 col-xs-12 date" style="padding: 0;">
                         <label class="sr-only" for="return-date">@Localizer["Return Date"]</label>
                         <input type="text" class="form-control" style="width: 100%" id="return-date" name="ReturnDate" placeholder="@Localizer["Return Date"]">
                     </div>
-                    <div id="popup-opener" class="col-lg-1 col-md-6 col-xs-12" style="padding: 0;">
+                    <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
                         <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
                         <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
                     </div>
@@ -227,7 +230,7 @@
                             <div style="padding:5px">
                                 <input type = "hidden" id="originMinPrice" value="@Model.FilterOption.Price.MinPrice.ToString("F0")"/>
                                 <input type = "hidden" id="originMaxPrice" value="@Model.FilterOption.Price.MaxPrice.ToString("F0")" />
-                                <span id = "minPrice" ></span>
+                                <span id="minPrice"></span>
                                 <span id="maxPrice"></span>
                             </div>
                             <div class="price-actions">
@@ -275,13 +278,80 @@
                 </ul>
             </div>
         </div>
-        <div class="product-list">
-            @foreach (var product in Model.Products)
+        <div class="product-list product-list__search">
+            @{
+                var ow = Model.Products.Where(p => !p.IsRoundTrip);
+                var rt = Model.Products.Where(p => p.IsRoundTrip);
+
+                var owBlock = ow.Where(p => p.Details.HasVariation);
+                var owSingle = ow.Where(p => !p.Details.HasVariation);
+
+                var rtBlock = rt.Where(p => p.Details.HasVariation);
+                var rtSingle = rt.Where(p => !p.Details.HasVariation);
+
+            }
+            @if (rtBlock.Any() || owBlock.Any())
+            {
+                <div>
+                    <h3 class="text-center">@Localizer["Daily"]</h3>
+                </div>
+                if (rtBlock.Any())
                 {
                     <div>
-                        @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        <h4>@Localizer["Round Trip"]</h4>
                     </div>
+                    @foreach (var product in rtBlock)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
                 }
+                if (owBlock.Any())
+                {
+                    <div>
+                        <h4>@Localizer["One Way"]</h4>
+                    </div>
+                    @foreach (var product in owBlock)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
+            }
+
+            @if (rtSingle.Any() || owSingle.Any())
+            {
+                <div>
+                    <h3 class="text-center">@Localizer["One Time"]</h3>
+                </div>
+                @if (rtSingle.Any())
+                {
+                    <div>
+                        <h4>@Localizer["Round Trip"]</h4>
+                    </div>
+                    @foreach (var product in rtSingle)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
+
+                @if (owSingle.Any())
+                {
+                    <div>
+                        <h4>@Localizer["One Way"]</h4>
+                    </div>
+                    @foreach (var product in owSingle)
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
+            }
         </div>
 
         <div class="row">
@@ -363,6 +433,13 @@
             }
         }
 
+        $(".btn-switch").click(function () {
+            var temp = $("#departure").val();
+            $("#departure").val($("#landing").val());
+            $("#landing").val(temp);
+        });
+
+
         $(".moreDetails").click(function () {
             $current = $(this);
             $details = $current.parents(".my-thumbnail").find('.product-details').first();
@@ -373,8 +450,7 @@
                 if($iconDown.is(':visible')) {
                     $iconDown.hide();
                     $iconUp.show();
-                    $('.btn-hide').hide();
-
+                    
                     var departureDate = $('#departure-date').val().replace('/', '.');
                     var selectedDepartureDate = $('input[type=radio][data-departure="' + departureDate + '"]:visible');
                     if (selectedDepartureDate) {
@@ -404,7 +480,6 @@
                 } else {
                     $iconUp.hide();
                     $iconDown.show();
-                    $('.btn-hide').show();
                 }
             });
         });

@@ -25,6 +25,25 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public int? StockQuantity { get; set; }
 
+        public int? SoldSeats { get; set; }
+
+        public string Carrier { get; set; }
+        public string Vendor { get; set; }
+        public string Via { get; set; }
+        public string Baggage { get; set; }
+        public string Provider { get; set; }
+        public string Terminal { get; set; }
+        public string FlightNumber { get; set; }
+        public string ReturnAircraft { get; set; }
+        public string Aircraft { get; set; }
+        public string ReturnCarrier { get; set; }
+        public string ReturnFlightNumber { get; set; }
+        public string ReturnVia { get; set; }
+        public string ReturnTerminal { get; set; }
+
+        public bool IsRoundTrip { get; set; }
+
+
         public int ReviewsCount { get; set; }
 
         public double? RatingAverage { get; set; }

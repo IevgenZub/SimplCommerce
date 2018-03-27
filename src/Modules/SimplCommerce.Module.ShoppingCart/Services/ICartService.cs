@@ -8,9 +8,11 @@ namespace SimplCommerce.Module.ShoppingCart.Services
     {
         Task AddToCart(long userId, long productId, int quantity, int quantityChild, int quantityBaby);
 
-        Task<CartVm> GetCart(long userId);
+        Task<CartVm> GetCart(long userId, bool isVendor);
 
         Task<CouponValidationResult> ApplyCoupon(long userId, string couponCode);
+
+        void ApplyFee(long userId, decimal feeAmount);
 
         Task MigrateCart(long fromUserId, long toUserId);
     }

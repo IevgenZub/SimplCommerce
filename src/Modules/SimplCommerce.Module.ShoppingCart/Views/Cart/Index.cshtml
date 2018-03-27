@@ -51,18 +51,21 @@
                 </thead>
                 <tbody>
                     <tr ng-if="vm.cart.items.length" ng-repeat="cartItem in vm.cart.items">
-                        <td class="product-image"><img ng-src="{{cartItem.productImage}}" /></td>
+                        <td class="product-image"><img style="max-height:50px; max-width:50px" ng-src="{{cartItem.productImage}}" /></td>
                         <td>
                             <h4>{{cartItem.productName}}</h4>
+                            <p>{{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.departure}}</p>
+                            <p>{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.landing}}</p>
                             <ul class="list-unstyled">
                                 <li ng-repeat="opt in cartItem.variationOptions">
                                     <span>{{opt.optionName}}:</span> {{opt.value}}
                                 </li>
                             </ul>
                         </td>
-                        <td class="text-right">
-                            <p><span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span> adult</p>
-                            <p><span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}" >{{cartItem.childPrice}}</span> child</p>
+                        <td class="text-right" style="width:120px">
+                            <p>adult <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
+                            <p>child <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
+                            <p>infant <span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}">{{cartItem.childPrice}}</span></p>
                         </td>
                         <td class="text-center" style="width:300px">
                             <div class="add-to-cart ">
@@ -101,6 +104,10 @@
                     <dd><span class="priceToConvert" data-usd-price="{{vm.cart.subTotal}}">{{vm.cart.subTotal}}</span></dd>
                     <dt>@Localizer["Discount"] {{vm.cart.couponCode}}</dt>
                     <dd><span class="priceToConvert" data-usd-price="{{vm.cart.discount}}">{{vm.cart.discount}}</span></dd>
+                    <span ng-show="vm.cart.shippingAmount && vm.cart.shippingAmount > 0">
+                        <dt>Agency Fee</dt>
+                        <dd><span class="priceToConvert" data-usd-price="{{vm.cart.shippingAmount}}">{{vm.cart.shippingAmount}}</span></dd>
+                    </span>
                     <dt>@Localizer["Order Total"]</dt>
                     <dd><strong><span class="priceToConvert" data-usd-price="{{vm.cart.orderTotal}}">{{vm.cart.orderTotal}}</span></strong></dd>
                 </dl>
@@ -117,6 +124,17 @@
                         <button type="submit" class="btn btn-default" ng-click="vm.applyCoupon()">Apply</button>
                     </div>
                 </form>
+            </div>
+
+            <div class="fee-form" ng-if="vm.cart.items.length">
+                <h4>Agency Fee</h4>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="feeAmount" ng-model="vm.feeAmount" placeholder="Enter fee">
+                        <button type="submit" class="btn btn-default" ng-click="vm.applyFee()">Apply</button>
+                    </div>
+                </form>
+                <br />
             </div>
         </div>
     </div>

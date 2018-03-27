@@ -9,6 +9,7 @@ using SimplCommerce.Module.Catalog.ViewModels;
 using SimplCommerce.Module.Core.Services;
 using SimplCommerce.Module.Core.ViewModels;
 using System.Collections.Generic;
+using System;
 
 namespace SimplCommerce.Module.Catalog.Components
 {
@@ -35,8 +36,8 @@ namespace SimplCommerce.Module.Catalog.Components
             };
 
             var query = _productRepository.Query()
-              .Where(x => x.IsPublished && x.IsVisibleIndividually);
-
+              .Where(x => x.IsPublished && x.IsVisibleIndividually && x.StockQuantity > 0 && x.DepartureDate >= DateTime.Now);
+            
             if (model.Setting.FeaturedOnly)
             {
                 query = query.Where(x => x.IsFeatured);
@@ -44,14 +45,13 @@ namespace SimplCommerce.Module.Catalog.Components
 
             model.Products = query
               .Include(x => x.ThumbnailImage)
-                .Include(x => x.ReturnAircraft)
-                .Include(x => x.ReturnCarrier)
-                .Include(x => x.Brand)
-                .Include(x => x.TaxClass)
-
+              .Include(x => x.ReturnAircraft)
+              .Include(x => x.ReturnCarrier)
+              .Include(x => x.Brand)
+              .Include(x => x.TaxClass)
               .OrderByDescending(x => x.CreatedOn)
               .Take(model.Setting.NumberOfProducts)
-              .Select(x => ProductThumbnail.FromProduct(x)).ToList();
+              .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"))).ToList();
 
             foreach (var product in model.Products)
             {
@@ -71,6 +71,10 @@ namespace SimplCommerce.Module.Catalog.Components
                 .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.ThumbnailImage)
                 .Include(x => x.ThumbnailImage)
                 .Include(x => x.Medias).ThenInclude(m => m.Media)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
+                .Include(x => x.Brand)
+                .Include(x => x.TaxClass)
                 .FirstOrDefault(x => x.Id == id && x.IsPublished);
 
             if (product == null)
@@ -82,10 +86,22 @@ namespace SimplCommerce.Module.Catalog.Components
             {
                 Id = product.Id,
                 Name = product.Name,
-                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product),
+                CalculatedProductPrice = _productPricingService.CalculateProductPrice(product, HttpContext.User.IsInRole("vendor")),
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
+                Terminal = product.Sku,
+                ReturnTerminal = product.ReturnTerminal,
+                IsRoundTrip = product.IsRoundTrip,
+                FlightNumber = product.FlightNumber,
+                ReturnFlightNumber = product.ReturnFlightNumber,
+                Carrier = product.Brand == null ? "" : product.Brand.Name,
+                ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
+                Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
+                Via = product.Via,
+                ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
+                ReturnVia = product.ReturnVia,
+                SoldSeats = product.SoldSeats,
                 ShortDescription = product.ShortDescription,
                 Description = product.Description,
                 Specification = product.Specification,
@@ -129,8 +145,13 @@ namespace SimplCommerce.Module.Catalog.Components
                 .Query()
                 .Include(x => x.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.LinkedProductLinks.Any(link => link.ProductId == product.Id && link.LinkType == ProductLinkType.Super))
-                .Where(x => x.IsPublished)
-                .ToList();
+                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED");
+
+            var departureDateMin = DateTime.Now;
+            var departureDateMax = DateTime.Now.AddDays(30);
+            variations = variations.Where(x =>
+                    x.DepartureDate.Value.Date >= departureDateMin &&
+                    x.DepartureDate.Value.Date < departureDateMax);
 
             foreach (var variation in variations)
             {
@@ -142,11 +163,12 @@ namespace SimplCommerce.Module.Catalog.Components
                     IsAllowToOrder = variation.IsAllowToOrder,
                     IsCallForPricing = variation.IsCallForPricing,
                     StockQuantity = variation.StockQuantity,
+                    SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
                     InfantPrice = variation.OldPrice,
                     ReturnLandingDate = variation.ReturnLandingDate,
                     FlightClass = variation.FlightClass,
-                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation)
+                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
@@ -170,10 +192,10 @@ namespace SimplCommerce.Module.Catalog.Components
             foreach (var productLink in publishedProductLinks)
             {
                 var linkedProduct = productLink.LinkedProduct;
-                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct);
+                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct, HttpContext.User.IsInRole("vendor"));
 
                 productThumbnail.ThumbnailUrl = _mediaService.GetThumbnailUrl(linkedProduct.ThumbnailImage);
-                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct);
+                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct, HttpContext.User.IsInRole("vendor"));
 
                 if (productLink.LinkType == ProductLinkType.Related)
                 {

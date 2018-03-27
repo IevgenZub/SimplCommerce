@@ -18,7 +18,7 @@ using SimplCommerce.Module.Core.ViewModels;
 
 namespace SimplCommerce.Module.Orders.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("checkout")]
     public class CheckoutController : Controller
     {
@@ -58,7 +58,7 @@ namespace SimplCommerce.Module.Orders.Controllers
 
             var currentUser = await _workContext.GetCurrentUser();
 
-            var cart = await _cartRepository.Query().Include(c => c.Items).Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
+            var cart = await _cartRepository.Query().Include(c => c.Items).ThenInclude(i => i.Product).Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
 
             if (cart == null)
             {
@@ -66,8 +66,21 @@ namespace SimplCommerce.Module.Orders.Controllers
             }
 
             model.NumberofPassengers = cart.Items[0].Quantity + cart.Items[0].QuantityChild + cart.Items[0].QuantityBaby;
+            model.PassportExpRule = cart.Items[0].Product.AdminPasExpirityRule.HasValue ? cart.Items[0].Product.AdminPasExpirityRule.Value : 0;
+            model.DepartureDate = cart.Items[0].Product.DepartureDate;
 
             PopulateShippingForm(model, currentUser);
+
+            model.NewAddress = new UserAddressFormViewModel
+            {
+                Countries = _countryRepository.Query()
+                .OrderBy(x => x.Name)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList()
+            };
 
             return View(model);
         }
@@ -96,12 +109,14 @@ namespace SimplCommerce.Module.Orders.Controllers
                     ContactName = model.FirstName,
                     AddressLine1 = model.LastName,
                     AddressLine2 = model.BirthDate,
-                    CountryId = 238,
+                    CountryId = model.CountryId,
                     StateOrProvinceId = 1,
                     DistrictId = 1,
                     City = model.DocumentNumber,
                     PostalCode = model.DocumentExpiration,
-                    Phone = model.Sex
+                    Phone = model.Sex,
+                    Email = model.Email,
+                    Mobile = model.Phone
                 };
 
                 var userAddress = new UserAddress
@@ -176,7 +191,7 @@ namespace SimplCommerce.Module.Orders.Controllers
             }
 
             var orderTaxAndShippingPrice = new OrderTaxAndShippingPriceVm();
-            orderTaxAndShippingPrice.Cart = await _cartService.GetCart(currentUser.Id);
+            orderTaxAndShippingPrice.Cart = await _cartService.GetCart(currentUser.Id, HttpContext.User.IsInRole("vendor"));
 
             var cart = await _cartRepository.Query().Where(x => x.Id == orderTaxAndShippingPrice.Cart.Id).FirstOrDefaultAsync();
             cart.TaxAmount = orderTaxAndShippingPrice.Cart.TaxAmount = await _orderService.GetTax(currentUser.Id, address.CountryId, address.StateOrProvinceId);
@@ -204,6 +219,13 @@ namespace SimplCommerce.Module.Orders.Controllers
         [HttpGet("congratulation")]
         public IActionResult OrderConfirmation()
         {
+            ViewData["pnr"] = HttpContext.Request.Query["pnr"].ToString();
+            return View();
+        }
+
+        [HttpGet("payment-failed")]
+        public IActionResult PaymentFailed()
+        {
             return View();
         }
 
@@ -223,12 +245,14 @@ namespace SimplCommerce.Module.Orders.Controllers
                     StateOrProvinceName = x.Address.StateOrProvince.Name,
                     CountryName = x.Address.Country.Name,
                     CityName = x.Address.City,
-                    PostalCode = x.Address.PostalCode
+                    PostalCode = x.Address.PostalCode,
+                    Mobile = x.Address.Mobile,
+                    Email = x.Address.Email
                 }).ToList();
 
-            model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0;
+            model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0; 
 
-          
+            
         }
     }
 }

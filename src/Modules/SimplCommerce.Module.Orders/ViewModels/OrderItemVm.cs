@@ -18,7 +18,13 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public decimal ProductPrice { get; set; }
 
+        public decimal ChildPrice { get; set; }
+
         public int Quantity { get; set; }
+
+        public int QuantityChild { get; set; }
+
+        public int QuantityBaby { get; set; }
 
         public int ShippedQuantity { get; set; }
 
@@ -28,19 +34,21 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public decimal DiscountAmount { get; set; }
 
-        public decimal Total => Quantity * ProductPrice;
+        public decimal Total => (Quantity * ProductPrice) + (QuantityChild * ProductPrice) + (QuantityBaby * ChildPrice);
 
         public decimal RowTotal => Total + TaxAmount - DiscountAmount;
 
-        public string TaxAmountString => TaxAmount.ToString("C");
+        public string TaxAmountString => TaxAmount + "$";
 
-        public string ProductPriceString => ProductPrice.ToString("C");
+        public string ProductPriceString => ProductPrice + "$";
 
-        public string DiscountAmountString => DiscountAmount.ToString("C");
+        public string ProductChildPriceString => ChildPrice + "$";
 
-        public string TotalString => Total.ToString("C");
+        public string DiscountAmountString => DiscountAmount + "$";
 
-        public string RowTotalString => RowTotal.ToString("C");
+        public string TotalString => Total + "$";
+
+        public string RowTotalString => RowTotal + "$";
 
         public IEnumerable<ProductVariationOptionVm> VariationOptions { get; set; } =
             new List<ProductVariationOptionVm>();
