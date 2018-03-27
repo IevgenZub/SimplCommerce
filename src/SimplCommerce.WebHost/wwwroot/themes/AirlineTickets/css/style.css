@@ -679,6 +679,7 @@ section:last-child {
 
 .flight-date {
    margin: 10px 0 0;
+   white-space:nowrap;
 }
 .flight-date .flight-date__hidden {
    padding-right: 15px;
