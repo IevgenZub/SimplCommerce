@@ -30,7 +30,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Carrier { get; set; }
         public string Vendor { get; set; }
         public string Via { get; set; }
-        public string Baggage { get; set; }
+        public int Baggage { get; set; }
         public string Provider { get; set; }
         public string Terminal { get; set; }
         public string FlightNumber { get; set; }

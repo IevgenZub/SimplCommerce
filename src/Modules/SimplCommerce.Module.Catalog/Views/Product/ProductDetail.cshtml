@@ -113,15 +113,12 @@
                                 <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                           <span class="glyphicon glyphicon-arrow-right"></span> Carrier: @Model.Carrier
+                                           <span class="glyphicon glyphicon-arrow-right"></span> Aircraft: @Model.Aircraft 
                                         </div>
                                         <div class="col-sm-3">
-                                            Flight #: @Model.FlightNumber
+                                            Baggage(kg): @Model.Baggage
                                         </div>
-                                        <div class="col-sm-2">
-                                            Aircraft: @Model.Aircraft
-                                        </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-3">
                                             Terminal: @Model.Terminal
                                         </div>
                                         @if (!string.IsNullOrEmpty(Model.Via))
@@ -135,20 +132,17 @@
                                     {
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <span class="glyphicon glyphicon-arrow-left"></span> Carrier: @Model.ReturnCarrier
+                                                <span class="glyphicon glyphicon-arrow-left"></span> Aircraft: @Model.ReturnAircraft
                                             </div>
                                             <div class="col-sm-3">
-                                                Flight #: @Model.ReturnFlightNumber
+                                                Baggage(kg): @Model.Baggage
                                             </div>
-                                            <div class="col-sm-2">
-                                                Aircraft: @Model.ReturnAircraft
-                                            </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 Terminal: @Model.ReturnTerminal
                                             </div>
                                             @if (!string.IsNullOrEmpty(Model.ReturnVia))
                                             {
-                                                <div class="col-sm-2">
+                                                <div class="col-sm-3">
                                                     Via: @Model.ReturnVia
                                                 </div>
                                             }                                        
@@ -217,15 +211,12 @@
                         <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
                             <div class="row">
                                 <div class="col-sm-3">
-                                  <span class="glyphicon glyphicon-arrow-right"></span>  Carrier: @Model.Carrier
+                                  <span class="glyphicon glyphicon-arrow-right"></span>  Aircraft: @Model.Aircraft
                                 </div>
                                 <div class="col-sm-3">
-                                    Flight #: @Model.FlightNumber
+                                    Baggage(kg): @Model.Baggage
                                 </div>
-                                <div class="col-sm-2">
-                                    Aircraft: @Model.Aircraft
-                                </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     Terminal: @Model.Terminal
                                 </div>
                                 @if (!string.IsNullOrEmpty(Model.Via))
@@ -239,20 +230,17 @@
                             {
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <span class="glyphicon glyphicon-arrow-left"></span> Carrier: @Model.ReturnCarrier
+                                        <span class="glyphicon glyphicon-arrow-left"></span> Aircraft: @Model.ReturnAircraft  
                                     </div>
                                     <div class="col-sm-3">
-                                        Flight #: @Model.ReturnFlightNumber
+                                        Baggage(kg): @Model.Baggage
                                     </div>
-                                    <div class="col-sm-2">
-                                        Aircraft: @Model.ReturnAircraft
-                                    </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         Terminal: @Model.ReturnTerminal
                                     </div>
                                     @if (!string.IsNullOrEmpty(Model.ReturnVia))
                                     {
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-3">
                                             Via: @Model.ReturnVia
                                         </div>
                                     }                                

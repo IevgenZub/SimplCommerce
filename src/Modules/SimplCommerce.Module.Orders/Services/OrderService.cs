@@ -224,6 +224,18 @@ namespace SimplCommerce.Module.Orders.Services
             return order;
         }
 
+        public async Task<Order> GetOrder(int id)
+        {
+            var order = await _orderRepository.Query().FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+            {
+                throw new ApplicationException($"Order not found by Id = {id}");
+            }
+
+            return order;
+        }
+
         public async Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId)
         {
             decimal taxAmount = 0;
