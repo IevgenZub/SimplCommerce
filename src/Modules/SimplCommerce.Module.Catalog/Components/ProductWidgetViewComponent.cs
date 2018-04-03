@@ -58,6 +58,13 @@ namespace SimplCommerce.Module.Catalog.Components
                 product.Details = GetProductDetails(product.Id);
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
+
+                // Special requirement from Koray: show fake available quantity 
+                // to increase flight attractiveness and sense of urgency
+                if (product.StockQuantity > 10)
+                {
+                    product.StockQuantity = new Random().Next(7, 12);
+                }
             }
 
             return View("/Modules/SimplCommerce.Module.Catalog/Views/Components/ProductWidget.cshtml", model);
@@ -171,6 +178,12 @@ namespace SimplCommerce.Module.Catalog.Components
                     FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
+
+
+                if (variation.StockQuantity > 10)
+                {
+                    variationVm.StockQuantity = new Random().Next(7, 12);
+                }
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
                 foreach (var combination in optionCombinations)

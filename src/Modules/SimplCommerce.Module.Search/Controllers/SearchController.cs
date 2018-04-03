@@ -88,13 +88,17 @@ namespace SimplCommerce.Module.Search.Controllers
                             x.ReturnDepartureDate.Value.Date < returnDateMax);
                     }
                 }
+                else
+                {
+                    query = query.Where(x => !x.IsRoundTrip);
+                }
 
                 if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
                 {
                     var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
                     var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
-                    query = query.Where(x =>
-                        x.StockQuantity >= numberOfPeople);
+
+                    query = query.Where(x => x.StockQuantity >= numberOfPeople);
                 }
             }
 
@@ -168,6 +172,13 @@ namespace SimplCommerce.Module.Search.Controllers
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
                 product.Details = GetProductDetails(product.Id, searchOption);
+
+                // Special requirement from Koray: show fake available quantity 
+                // to increase flight attractiveness and sense of urgency
+                if (product.StockQuantity > 10)
+                {
+                    product.StockQuantity = new Random().Next(7, 12);
+                }
             }
 
             model.Products = products.Where(p => !p.Details.HasVariation || (p.Details.HasVariation && p.Details.Variations.Count > 0)).ToList();
@@ -302,6 +313,11 @@ namespace SimplCommerce.Module.Search.Controllers
                     FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
+
+                if (variation.StockQuantity > 10)
+                {
+                    variationVm.StockQuantity = new Random().Next(7, 12);
+                }
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
                 foreach (var combination in optionCombinations)
