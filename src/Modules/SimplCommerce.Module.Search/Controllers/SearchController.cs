@@ -50,6 +50,8 @@ namespace SimplCommerce.Module.Search.Controllers
         {
             var query = _productRepository.Query();
 
+            var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+
             if (!string.IsNullOrEmpty(searchOption.Reservation))
             {
                 query = query.Where(x => 
@@ -66,16 +68,12 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.DepartureDate >= DateTime.Now);
 
                 
-                if (!string.IsNullOrEmpty(searchOption.DepartureDate))
-                {
-                    var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-                    var departureDateMin = departureDate.AddDays(-7);
-                    var departureDateMax = departureDate.AddDays(7);
-                    query = query.Where(x =>
+                var departureDateMin = departureDate.AddDays(-7);
+                var departureDateMax = departureDate.AddDays(7);
+                query = query.Where(x =>
                         (x.DepartureDate.Value.Date >= departureDateMin && 
                         x.DepartureDate.Value.Date < departureDateMax) || x.HasOptions);
-                }
-
+                
                 if (searchOption.TripType == "round-trip")
                 {
                     if (!string.IsNullOrEmpty(searchOption.ReturnDate))
@@ -172,6 +170,11 @@ namespace SimplCommerce.Module.Search.Controllers
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
                 product.Details = GetProductDetails(product.Id, searchOption);
+
+                if (product.Details.HasVariation  && product.Details.Variations.Any(v => v.DepartureDate.Value.Date == departureDate))
+                {
+                    product.DepartureDate = departureDate;
+                }
             }
 
             model.Products = products.Where(p => !p.Details.HasVariation || (p.Details.HasVariation && p.Details.Variations.Count > 0)).ToList();
