@@ -58,13 +58,6 @@ namespace SimplCommerce.Module.Catalog.Components
                 product.Details = GetProductDetails(product.Id);
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
-
-                // Special requirement from Koray: show fake available quantity 
-                // to increase flight attractiveness and sense of urgency
-                if (product.StockQuantity > 10)
-                {
-                    product.StockQuantity = new Random().Next(7, 12);
-                }
             }
 
             return View("/Modules/SimplCommerce.Module.Catalog/Views/Components/ProductWidget.cshtml", model);
@@ -118,6 +111,13 @@ namespace SimplCommerce.Module.Catalog.Components
                 Attributes = product.AttributeValues.Select(x => new ProductDetailAttribute { Name = x.Attribute.Name, Value = x.Value }).ToList(),
                 Categories = product.Categories.Select(x => new ProductDetailCategory { Id = x.CategoryId, Name = x.Category.Name, SeoTitle = x.Category.SeoTitle }).ToList()
             };
+
+            // Special requirement from Koray: show fake available quantity 
+            // to increase flight attractiveness and sense of urgency
+            if (model.StockQuantity > 10)
+            {
+                model.StockQuantity = new Random().Next(7, 12);
+            }
 
             MapProductVariantToProductVm(product, model);
             MapRelatedProductToProductVm(product, model);
@@ -180,7 +180,7 @@ namespace SimplCommerce.Module.Catalog.Components
                 };
 
 
-                if (variation.StockQuantity > 10)
+                if (variationVm.StockQuantity > 10)
                 {
                     variationVm.StockQuantity = new Random().Next(7, 12);
                 }
