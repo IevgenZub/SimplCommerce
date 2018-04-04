@@ -53,6 +53,9 @@
                     <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
                         <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
                         <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
+                        <input type="hidden" id="adultPassengers" name="A_P">
+                        <input type="hidden" id="childPassengers"  name="C_P">
+                        <input type="hidden" id="babyPassengers"  name="B_P">
                     </div>
                     <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                         <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
@@ -420,6 +423,22 @@
         if (number) {
             $("#number-of-people").val(number.replace(new RegExp('\\+', 'g'), ' '));
         }
+
+        var adultPassengers = getUrlParameter('A_P');
+        if (adultPassengers) {
+            $(".quantity-field-adult").val(adultPassengers.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var childPassengers = getUrlParameter('C_P');
+        if (childPassengers) {
+            $(".quantity-field-child").val(childPassengers.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var babyPassengers = getUrlParameter('B_P');
+        if (babyPassengers) {
+            $(".quantity-field-baby").val(babyPassengers.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
 
         var tripType = getUrlParameter('TripType');
         if (tripType) {
