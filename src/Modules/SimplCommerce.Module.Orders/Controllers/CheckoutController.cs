@@ -217,12 +217,12 @@ namespace SimplCommerce.Module.Orders.Controllers
         }
 
         [HttpGet("congratulation")]
-        public async Task<IActionResult> OrderConfirmation()
+        public IActionResult OrderConfirmation()
         {
             ViewData["pnr"] = HttpContext.Request.Query["pnr"].ToString();
 
             var id = Convert.ToInt32(HttpContext.Request.Query["orderId"].ToString());
-            var order = await _orderService.GetOrder(id);
+            var order = _orderService.GetOrder(id);
             var model = new OrderDetailVm
             {
                 Id = order.Id,

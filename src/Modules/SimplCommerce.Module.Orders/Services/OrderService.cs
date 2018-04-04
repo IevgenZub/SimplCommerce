@@ -224,9 +224,15 @@ namespace SimplCommerce.Module.Orders.Services
             return order;
         }
 
-        public async Task<Order> GetOrder(int id)
+        public Order GetOrder(int id)
         {
-            var order = await _orderRepository.Query().FirstOrDefaultAsync(o => o.Id == id);
+            var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.ThumbnailImage)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.OptionCombinations).ThenInclude(x => x.Option)
+                .Include(x => x.CreatedBy)
+                .FirstOrDefault(x => x.Id == id);
 
             if (order == null)
             {

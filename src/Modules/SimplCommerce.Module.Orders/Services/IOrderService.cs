@@ -18,6 +18,6 @@ namespace SimplCommerce.Module.Orders.Services
 
         Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId);
 
-        Task<Order> GetOrder(int id);
+        Order GetOrder(int id);
     }
 }
