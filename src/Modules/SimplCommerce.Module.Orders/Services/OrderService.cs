@@ -242,6 +242,24 @@ namespace SimplCommerce.Module.Orders.Services
             return order;
         }
 
+        public Order GetOrderByPnr(string pnr)
+        {
+            var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.ThumbnailImage)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.OptionCombinations).ThenInclude(x => x.Option)
+                .Include(x => x.CreatedBy)
+                .FirstOrDefault(x => x.PnrNumber == pnr);
+
+            if (order == null)
+            {
+                throw new ApplicationException($"Order not found by PNR = {pnr}");
+            }
+
+            return order;
+        }
+
         public async Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId)
         {
             decimal taxAmount = 0;

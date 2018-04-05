@@ -15,6 +15,7 @@ using SimplCommerce.Module.ShippingPrices.Services;
 using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.Services;
 using SimplCommerce.Module.Core.ViewModels;
+using SimplCommerce.Module.Orders.Models;
 
 namespace SimplCommerce.Module.Orders.Controllers
 {
@@ -219,55 +220,24 @@ namespace SimplCommerce.Module.Orders.Controllers
         [HttpGet("congratulation")]
         public IActionResult OrderConfirmation()
         {
-            ViewData["pnr"] = HttpContext.Request.Query["pnr"].ToString();
-
-            var id = Convert.ToInt32(HttpContext.Request.Query["orderId"].ToString());
-            var order = _orderService.GetOrder(id);
-            var model = new OrderDetailVm
+            Order order = null;
+            var pnr = HttpContext.Request.Query["pnr"].ToString();
+            var orderId = HttpContext.Request.Query["orderId"].ToString();
+            
+            if (string.IsNullOrEmpty(orderId))
             {
-                Id = order.Id,
-                CreatedOn = order.CreatedOn,
-                OrderStatus = (int)order.OrderStatus,
-                OrderStatusString = order.OrderStatus.ToString(),
-                CustomerId = order.CreatedById,
-                CustomerName = order.CreatedBy.FullName,
-                CustomerEmail = order.CreatedBy.Email,
-                ShippingMethod = order.ShippingMethod,
-                PaymentMethod = order.PaymentMethod,
-                Subtotal = order.SubTotal,
-                Discount = order.Discount,
-                SubTotalWithDiscount = order.SubTotalWithDiscount,
-                TaxAmount = order.TaxAmount,
-                ShippingAmount = order.ShippingAmount,
-                OrderTotal = order.OrderTotal,
-                PnrNumber = order.PnrNumber,
-                ConfirmationNumber = order.AgencyReservationNumber,
-                ShippingAddress = new ShippingAddressVm
-                {
-                    AddressLine1 = order.ShippingAddress.AddressLine1,
-                    AddressLine2 = order.ShippingAddress.AddressLine2,
-                    ContactName = order.ShippingAddress.ContactName,
-                    DistrictName = order.ShippingAddress.District?.Name,
-                    StateOrProvinceName = order.ShippingAddress.StateOrProvince.Name,
-                    Phone = order.ShippingAddress.Phone
-                },
-                OrderItems = order.OrderItems.Select(x => new OrderItemVm
-                {
-                    Id = x.Id,
-                    ProductId = x.Product.Id,
-                    ProductName = x.Product.Name,
-                    ProductPrice = x.ProductPrice,
-                    ChildPrice = x.ChildPrice,
-                    QuantityChild = x.QuantityChild,
-                    QuantityBaby = x.QuantityBaby,
-                    Quantity = x.Quantity,
-                    TaxAmount = x.TaxAmount,
-                    TaxPercent = x.TaxPercent,
-                    VariationOptions = OrderItemVm.GetVariationOption(x.Product)
-                }).ToList()
-            };
+                order = _orderService.GetOrderByPnr(pnr);
+            }
+            else
+            {
+                var id = Convert.ToInt32(orderId);
+                order = _orderService.GetOrder(id);
+            }
 
-            return View(model);
+
+            ViewData["pnr"] = pnr;
+
+            return View(order);
         }
 
         [HttpGet("payment-failed")]
