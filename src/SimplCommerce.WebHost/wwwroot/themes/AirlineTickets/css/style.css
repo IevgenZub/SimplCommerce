@@ -623,8 +623,6 @@ section:last-child {
 
 @media only screen and (max-width: 320px) {}
 
-
-
 /*  NEW custom styles */
 
 .gly-rotate-left {
@@ -648,7 +646,6 @@ section:last-child {
   border-bottom: 1px solid #eee;
   display: block;
   padding: 4px;
-  margin: 0 auto 20px;
   overflow: hidden;
 }
 
@@ -681,20 +678,9 @@ section:last-child {
    margin: 0 0 20px;
    color: #194d9e;
 }
-.flight-item {
 
-}
-.flight-row {
-   margin: 0 0 10px; /*20px*/
-}
 .flight-way {
    text-align: right;
-}
-
-
-.airlines {}
-.airlines figure {
-   padding-left: 15px;
 }
 
 .flight-date {
@@ -736,16 +722,9 @@ section:last-child {
    margin-left: 5px;
 }
 
-.flight-departure  {}
-.flight-departure .departure__text {
-   white-space: nowrap;
-}
-.flight-departure .departure__time {
+.flight-time {
    color: darkblue;
 }
-.flight-landing {}
-.flight-duration {}
-
 
 /*regiter form*/
 .btn-default[value="Facebook"]{

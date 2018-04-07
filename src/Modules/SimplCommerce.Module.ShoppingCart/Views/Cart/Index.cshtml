@@ -38,7 +38,7 @@
 
 <div class="cart-list product-detail" ng-app="simpl.shoppingCart" ng-controller="shoppingCartListCtrl as vm" ng-cloak>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -95,8 +95,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-4">
-            <div class="order-summary" ng-if="vm.cart.items.length">
+        <div class="col-md-3">
+            <div class="order-summary text-right" ng-if="vm.cart.items.length">
                 <h4>@Localizer["Order summary"]</h4>
                 <dl class="dl-horizontal">
                     <dt>@Localizer["Subtotal"]</dt>

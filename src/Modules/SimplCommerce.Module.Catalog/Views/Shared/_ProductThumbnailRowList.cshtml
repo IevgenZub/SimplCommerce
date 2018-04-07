@@ -23,16 +23,16 @@
             </figure>
         </div>
         <div class="col-sm-1">
-            <span>@Model.FlightNumber</span>
+            <span class="flight-number">@Model.FlightNumber</span>
         </div>
         <div class="col-sm-1">
             <span>@Model.DepartureDate.Value.Date.ToShortDateString()</span>
         </div>
         <div class="col-sm-3">
-            <span>@Model.DepartureDate.Value.DateTime.ToShortTimeString() @Model.Departure</span>
+            <span><span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Departure</span>
         </div>
         <div class="col-sm-3">
-            <span>@Model.LandingDate.Value.DateTime.ToShortTimeString() @Model.Landing </span>
+            <span><span class="flight-time">@Model.LandingDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing </span>
         </div>
         <div class="col-sm-1">
             <span class="text-nowrap"><span class="glyphicon glyphicon-plane gly-rotate-right"></span>  @durationTime</span>
@@ -57,7 +57,7 @@
                         {
                             @if (!Model.Details.HasVariation)
                             {
-                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span> >></button>
+                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span></button>
                                 <input type="hidden" name="productId" id="productId" value="@Model.Id">
                             }
                             else
@@ -80,16 +80,16 @@
                     </figure>
             </div>
             <div class="col-sm-1">
-                <span>@Model.ReturnFlightNumber</span>
+                <span class="flight-number">@Model.ReturnFlightNumber</span>
             </div> 
             <div class="col-sm-1">
                  <span >@Model.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
             </div>     
             <div class="col-sm-3">
-                <span>@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString() @Model.Landing</span>
+                <span><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing</span>
             </div>
             <div class="col-sm-3">
-                <span>@Model.ReturnLandingDate.Value.DateTime.ToShortTimeString() @Model.Departure</span>
+                <span><span class="flight-time">@Model.ReturnLandingDate.Value.DateTime.ToString("HH:mm")</span> @Model.Departure</span>
             </div>
             <div class="col-sm-1">
                 <span class="text-nowrap"><span class="glyphicon glyphicon-plane gly-rotate-left"></span> @returnDurationTime</span>
@@ -109,7 +109,7 @@
                         <div class="next">
                                 @if (!Model.Details.HasVariation)
                                 {
-                                    <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span> >></button>
+                                    <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span></button>
                                     <input type="hidden" name="productId" id="productId" value="@Model.Id">
                                 }
                                 else
