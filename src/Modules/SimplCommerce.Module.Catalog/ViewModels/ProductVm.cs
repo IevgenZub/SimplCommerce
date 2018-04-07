@@ -44,9 +44,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         [Required]
         public string Slug { get; set; }
 
-        public string ShortDescription { get; set; }
+        public string Departure { get; set; }
 
-        public string Description { get; set; }
+        public string Destination { get; set; }
 
         public string Specification { get; set; }
 

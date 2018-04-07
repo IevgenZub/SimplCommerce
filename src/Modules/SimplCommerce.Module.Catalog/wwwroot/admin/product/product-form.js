@@ -9,7 +9,7 @@
         var vm = this;
         vm.translate = translateService;
         // declare shoreDescription and description for summernote
-        vm.product = { shortDescription: '', description: '', specification: '', isPublished: true, price: 0, isCallForPricing: false, isAllowToOrder: true };
+        vm.product = { departure: '', destination: '', specification: '', isPublished: true, price: 0, isCallForPricing: false, isAllowToOrder: true };
         vm.product.categoryIds = [];
         vm.product.options = [];
         vm.product.variations = [];
