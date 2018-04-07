@@ -7,9 +7,9 @@ namespace SimplCommerce.Module.Catalog.Models
 {
     public class Product : Content
     {
-        public string ShortDescription { get; set; }
+        public string Departure { get; set; }
 
-        public string Description { get; set; }
+        public string Destination { get; set; }
 
         public string Specification { get; set; }
 
@@ -182,8 +182,8 @@ namespace SimplCommerce.Module.Catalog.Models
             product.MetaTitle = MetaTitle;
             product.MetaKeywords = MetaKeywords;
             product.MetaDescription = MetaDescription;
-            product.ShortDescription = ShortDescription;
-            product.Description = Description;
+            product.Departure = Departure;
+            product.Destination = Destination;
             product.Specification = Specification;
             product.IsPublished = true;
             product.PublishedOn = DateTimeOffset.Now;

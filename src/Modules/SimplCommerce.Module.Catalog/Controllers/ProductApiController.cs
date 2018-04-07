@@ -78,8 +78,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Slug = product.SeoTitle,
-                ShortDescription = product.ShortDescription,
-                Description = product.Description,
+                ShortDescription = product.Departure,
+                Description = product.Destination,
                 Specification = product.Specification,
                 OldPrice = product.OldPrice,
                 Price = product.Price,
@@ -260,13 +260,13 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 if (search.From != null)
                 {
                     string from = search.From;
-                    query = query.Where(x => x.ShortDescription.Contains(from));
+                    query = query.Where(x => x.Departure.Contains(from));
                 }
 
                 if (search.To != null)
                 {
                     string to = search.To;
-                    query = query.Where(x => x.Description.Contains(to));
+                    query = query.Where(x => x.Destination.Contains(to));
                 }
 
                 if (search.HasOptions != null)
@@ -321,8 +321,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Seats = x.SoldSeats + "/" + x.StockQuantity,
                     CreatedOn = x.CreatedOn,
                     IsPublished = x.IsPublished,
-                    From = x.ShortDescription.Split('(', ')')[1],
-                    To = x.Description.Split('(', ')')[1],
+                    From = x.Departure.Split('(', ')')[1],
+                    To = x.Destination.Split('(', ')')[1],
                     DepartureDate = x.DepartureDate,
                     ReturnDepartureDate = x.ReturnDepartureDate,
                     LandingDate = x.LandingDate,
@@ -349,8 +349,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 Name = model.Product.Name,
                 SeoTitle = model.Product.Slug,
-                ShortDescription = model.Product.ShortDescription,
-                Description = model.Product.Description,
+                Departure = model.Product.ShortDescription,
+                Destination = model.Product.Description,
                 Specification = model.Product.Specification,
                 Price = model.Product.Price,
                 OldPrice = model.Product.OldPrice,
@@ -494,8 +494,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
 
             product.Name = model.Product.Name;
             product.SeoTitle = model.Product.Slug;
-            product.ShortDescription = model.Product.ShortDescription;
-            product.Description = model.Product.Description;
+            product.Departure = model.Product.ShortDescription;
+            product.Destination = model.Product.Description;
             product.Specification = model.Product.Specification;
             product.Price = model.Product.Price;
             product.OldPrice = model.Product.OldPrice;

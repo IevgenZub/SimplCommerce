@@ -11,11 +11,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Name { get; set; }
 
-        public string ShortDescription { get; set; }
+        public string Departure { get; set; }
 
         public CalculatedProductPrice CalculatedProductPrice { get; set; }
 
-        public string Description { get; set; }
+        public string Destination { get; set; }
 
         public string Specification { get; set; }
 

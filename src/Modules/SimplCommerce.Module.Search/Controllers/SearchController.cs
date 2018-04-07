@@ -62,8 +62,8 @@ namespace SimplCommerce.Module.Search.Controllers
             else
             {
                 query = query.Where(x =>
-                    x.ShortDescription.Contains(searchOption.Departure) &&
-                    x.Description.Contains(searchOption.Landing) &&
+                    x.Departure.Contains(searchOption.Departure) &&
+                    x.Destination.Contains(searchOption.Landing) &&
                     x.Status == "ACCEPTED" &&
                     x.IsVisibleIndividually &&
                     x.DepartureDate >= DateTime.Now);
@@ -184,8 +184,8 @@ namespace SimplCommerce.Module.Search.Controllers
                             .Include(x => x.ReturnCarrier)
                             .Include(x => x.Brand)
                             .Include(x => x.TaxClass).FirstOrDefault(x =>
-                        x.ShortDescription.Contains(searchOption.Landing) &&
-                        x.Description.Contains(searchOption.Departure) &&
+                        x.Departure.Contains(searchOption.Landing) &&
+                        x.Destination.Contains(searchOption.Departure) &&
                         x.Status == "ACCEPTED" &&
                         x.DepartureDate >= DateTime.Now &&
                         !x.IsRoundTrip &&
@@ -241,8 +241,8 @@ namespace SimplCommerce.Module.Search.Controllers
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
-                ShortDescription = product.ShortDescription,
-                Description = product.Description,
+                Departure = product.Departure,
+                Destination = product.Destination,
                 Specification = product.Specification,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
