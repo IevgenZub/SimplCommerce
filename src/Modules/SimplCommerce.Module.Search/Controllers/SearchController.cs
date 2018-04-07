@@ -50,6 +50,7 @@ namespace SimplCommerce.Module.Search.Controllers
         {
             var query = _productRepository.Query();
 
+            var numberOfPeople = 1;
             var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
 
             if (!string.IsNullOrEmpty(searchOption.Reservation))
@@ -81,7 +82,7 @@ namespace SimplCommerce.Module.Search.Controllers
                         var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
                         var returnDateMin = returnDate.AddDays(-7);
                         var returnDateMax = returnDate.AddDays(7);
-                        query = query.Where(x => 
+                        query = query.Where(x => !x.ReturnDepartureDate.HasValue ||  
                             x.ReturnDepartureDate.Value.Date >= returnDateMin && 
                             x.ReturnDepartureDate.Value.Date < returnDateMax);
                     }
@@ -93,7 +94,7 @@ namespace SimplCommerce.Module.Search.Controllers
 
                 if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
                 {
-                    var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
+                    numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
                     var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
 
                     query = query.Where(x => x.StockQuantity >= numberOfPeople);
@@ -174,6 +175,35 @@ namespace SimplCommerce.Module.Search.Controllers
                 if (product.Details.HasVariation  && product.Details.Variations.Any(v => v.DepartureDate.Value.Date == departureDate))
                 {
                     product.DepartureDate = departureDate;
+                }
+
+                if (!product.Details.HasVariation && !product.IsRoundTrip && searchOption.TripType == "round-trip")
+                {
+                    var returnFlight = _productRepository.Query()
+                            .Include(x => x.ReturnAircraft)
+                            .Include(x => x.ReturnCarrier)
+                            .Include(x => x.Brand)
+                            .Include(x => x.TaxClass).FirstOrDefault(x =>
+                        x.ShortDescription.Contains(searchOption.Landing) &&
+                        x.Description.Contains(searchOption.Departure) &&
+                        x.Status == "ACCEPTED" &&
+                        x.DepartureDate >= DateTime.Now &&
+                        !x.IsRoundTrip &&
+                        x.StockQuantity >= numberOfPeople);
+
+                    var returnFlightThumbnail = ProductThumbnail.FromProduct(returnFlight, User.IsInRole("vendor"));
+                    product.IsRoundTrip = true;
+                    product.Details.IsRoundTrip = true;
+                    product.Details.ReturnTerminal = returnFlightThumbnail.Terminal;
+                    product.Details.ReturnAircraft = returnFlightThumbnail.Aircraft;
+                    product.Details.ReturnVia = returnFlightThumbnail.Via;
+                    product.Details.ReturnCarrier = returnFlightThumbnail.Carrier;
+                    product.ReturnCarrier = returnFlightThumbnail.Carrier;
+                    product.ReturnDepartureDate = returnFlightThumbnail.DepartureDate;
+                    product.ReturnFlightNumber = returnFlightThumbnail.FlightNumber;
+                    product.ReturnLandingDate = returnFlightThumbnail.LandingDate;
+                    product.Price += returnFlight.Price;
+                    product.Details.CalculatedProductPrice.Price += returnFlight.Price;
                 }
             }
 

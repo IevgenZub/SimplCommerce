@@ -626,6 +626,24 @@ section:last-child {
 
 
 /*  NEW custom styles */
+
+.gly-rotate-left {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+.gly-rotate-right {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
 .my-thumbnail {
   border-bottom: 1px solid #eee;
   display: block;
@@ -633,6 +651,7 @@ section:last-child {
   margin: 0 auto 20px;
   overflow: hidden;
 }
+
 
 .my-thumbnail img {
   max-height: 30px;
@@ -743,99 +762,4 @@ section:last-child {
 .passenger-registraion-panel .panel {
    margin-bottom: 20px;
 }
-
-/*sm*/
-@media (min-width:768px){
-   .flight-date {
-      margin-top: 0;
-   }
-}
-
-/*md*/
-@media (min-width:992px){
-   .flight-date {
-      margin-top: 10px;
-   }
-   .flight-number-2 {
-      margin-top: 10px;
-   }
-   .flight-departure {
-      margin-top: 10px;
-   }
-   .flight-landing {
-      margin-top: 10px;
-   }
-   .flight-duration {
-      margin-top: 10px;
-   }
-
-   /*product-list SEARCH*/
-   .product-list__search .my-thumbnail {
-      padding: 0;
-   }
-   .product-list__search .my-thumbnail .airlines {
-      padding: 0;
-   }
-   .product-list__search .my-thumbnail .airlines figure {
-      padding: 0;
-   }
-   .product-list__search .flight-detail {
-      clear: both;
-      width: 50%;
-   }
-   .product-list__search .flight-price {
-      width: 50%;
-   }
-   .product-list__search .btn-add-cart {
-      margin-bottom: 0;
-   }
-}
-
-/*lg*/
-@media (min-width:1200px){
-   .flight-date {
-      margin-top: 0;
-   }
-   .flight-date .flight-date__text {
-      display: block;
-      margin-top: 10px;
-   }
-   .flight-detail {
-      margin-top: 3px; /*0*/
-   }
-   .flight-price {
-      margin-top: 0;
-   }
-
-   /*product-list SEARCH*/
-   .product-list__search .flight-date {
-      width: 16.6666%;
-   }
-   .product-list__search .flight-number-2 {
-      width: 16.6666%;
-   }
-   .product-list__search .flight-duration {
-      width: 16.6666%;
-   }
-}
-@media (min-width: 1400px){
-   /*product-list SEARCH*/
-   .product-list__search .flight-date {
-      width: 8.33333333%;
-   }
-   .product-list__search .flight-number-2 {
-      width: 8.33333333%;
-   }
-   .product-list__search .flight-duration {
-      width: 8.33333333%;
-   }
-   .product-list__search .flight-detail {
-      clear: none;
-      width: 16.6666%;
-   }
-   .product-list__search .flight-price {
-      width: 8.33333333%;
-   }
-}
-
 
