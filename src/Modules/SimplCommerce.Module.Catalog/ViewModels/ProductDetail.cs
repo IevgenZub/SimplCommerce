@@ -34,6 +34,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Provider { get; set; }
         public string Terminal { get; set; }
         public string FlightNumber { get; set; }
+        public string FlightClass { get; set; }
         public string ReturnAircraft { get; set; }
         public string Aircraft { get; set; }
         public string ReturnCarrier { get; set; }

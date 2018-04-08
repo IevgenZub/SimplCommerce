@@ -12,6 +12,9 @@
         returnDuration = Model.ReturnLandingDate.Value.Subtract(Model.ReturnDepartureDate.Value);
         returnDurationTime = duration.Hours + "h " + duration.Minutes + "m";
     }
+
+    var selectedFlightId = Model.Details.HasVariation ? Model.Details.Variations.First().Id : Model.Id;
+    var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First().CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
 }
 
 <div class="my-thumbnail flight-item">
@@ -55,15 +58,8 @@
                     <div class="next">
                         @if (!Model.IsRoundTrip)
                         {
-                            @if (!Model.Details.HasVariation)
-                            {
                                 <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span></button>
                                 <input type="hidden" name="productId" id="productId" value="@Model.Id">
-                            }
-                            else
-                            {
-                                <b class="priceToConvert pull-right">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</b>
-                            }
                         }
                     </div>
                 </div>
@@ -107,15 +103,8 @@
                     </div>
                     <div class="col-xs-6 text-right">
                         <div class="next">
-                                @if (!Model.Details.HasVariation)
-                                {
-                                    <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span></button>
-                                    <input type="hidden" name="productId" id="productId" value="@Model.Id">
-                                }
-                                else
-                                {
-                                    <b class="priceToConvert pull-right">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</b>
-                                }
+                                <button type="submit" id="@selectedFlightId"  class="btn pull-right btn-lg btn-add-cart btn-hide"><span class="priceToConvert">@selectedPrice</span></button>
+                                <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
                         </div>
                     </div>
                 </div>
@@ -128,3 +117,4 @@
         </div>
     </div>
 </div>
+
