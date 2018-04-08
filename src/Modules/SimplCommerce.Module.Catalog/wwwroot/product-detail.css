@@ -25,11 +25,9 @@
 }
 
 .product-price {
-    margin: 20px 0;
     padding: 5px 10px;
     background-color: #FFFFFF;
     text-align: left;
-    border: 2px dashed #E0E0E0;
     overflow: hidden;
     font-weight: bold;
 }
@@ -236,12 +234,13 @@
     padding: 5px 15px;
     /*padding-left:15px;padding-right:15px; padding-top:15px*/
 }
-.product-attrs h5 {
 
+.product-metrics {
+    white-space:nowrap;
 }
+
 .product-attrs .list-inline {
-    font:smaller; 
-    margin-bottom: 20px;
+    font: smaller;
 }
 .product-attrs label {
     float: none;
