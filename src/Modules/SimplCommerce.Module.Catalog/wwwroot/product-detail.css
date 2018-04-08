@@ -251,38 +251,6 @@
     padding: 0;
 }
 
-.product-variation {}
-.product-variation-notavailable {
-    margin: 0 0 20px;
-}
 
-@media (min-width:768px){
-    .product-detail .product-quantity {
-        display: inline-block;
-        margin: 0 5px 25px;
-        vertical-align: top;
-        /*float: left;*/
-        /*margin-right: 30px;*/
-    }
-    .product-detail .btn-add-cart {
-        /*display: block;*/
-    }
-    .flight-main-details p {
-        float: left;
-        margin: 15px 10px 10px 0;
-    }
-}
-@media (min-width:992px){
-    .product-detail .btn-add-cart {
-        margin-top: -3px;
-    }
-    .flight-main-details p {
-        float: none;
-        margin: 0 0 10px;
-    }
-    div.product-price {
-        margin-top: 0;
-    }
-}
 
 

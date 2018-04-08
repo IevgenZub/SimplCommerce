@@ -1,83 +1,39 @@
 ﻿@model SimplCommerce.Module.Catalog.ViewModels.ProductWidgetComponentVm
 
-<h2 style="border:none">@Localizer[Model.WidgetName]</h2>
+<h3 class="text-center" style="border:none">@Localizer[Model.WidgetName]</h3>
 <div class="row product-list">
     @{
         var ow = Model.Products.Where(p => !p.IsRoundTrip);
         var rt = Model.Products.Where(p => p.IsRoundTrip);
-
-        var owBlock = ow.Where(p => p.Details.HasVariation);
-        var owSingle = ow.Where(p => !p.Details.HasVariation);
-
-        var rtBlock = rt.Where(p => p.Details.HasVariation);
-        var rtSingle = rt.Where(p => !p.Details.HasVariation);
-
     }
 
-    @if (rtBlock.Any() || owBlock.Any())
+    @if (rt.Any())
     {
     <div class="col-xs-12 col-md-12">
-        <h3 class="text-center flight-category" style="margin-top:0px">@Localizer["Daily"]</h3>
+        <h4 class="flight-category">@Localizer["Round Trip"]</h4>
     </div>
-    @if (rtBlock.Any())
-    {
-    <div class="col-xs-12 col-md-12">
-        <h4 class="flight-type">@Localizer["Round Trip"]</h4>
-    </div>
-    @foreach (var product in rtBlock)
+
+    @foreach (var product in rt)
     {
         <div class="col-xs-12 col-md-12">
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
         </div>
     }
     }
-    @if (owBlock.Any())
-    {
-    <div class="col-xs-12 col-md-12">
-        <br />
-        <h4 class="flight-type">@Localizer["One Way"]</h4>
-    </div>
-    @foreach (var product in owBlock)
-    {
-        <div class="col-xs-12 col-md-12">
-            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-        </div>
-    }
-    }
-    }
-
-    @if (owSingle.Any() || rtSingle.Any())
-    {
-    <div class="col-xs-12 col-md-12">
-        <h3 class="text-center flight-category">@Localizer["One Time"]</h3>
-    </div>
-
-    @if (rtSingle.Any())
-    {
 
     
-    <div class="col-xs-12 col-md-12">
-        <h4 class="flight-type">@Localizer["Round Trip"]</h4>
-    </div>
-    @foreach (var product in rtSingle)
+    @if (ow.Any())
     {
-        <div class="col-xs-12 col-md-12">
-            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-        </div>
-    }
-    }
-    @if (owSingle.Any())
-    { 
     <div class="col-xs-12 col-md-12">
         <br />
-        <h4 class="flight-type">@Localizer["One Way"]</h4>
+        <h4 class="flight-category">@Localizer["One Way"]</h4>
     </div>
-    @foreach (var product in owSingle)
+
+    @foreach (var product in ow)
     {
         <div class="col-xs-12 col-md-12">
             @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
         </div>
-    }
     }
     }
 </div>
