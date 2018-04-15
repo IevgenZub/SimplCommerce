@@ -78,18 +78,25 @@
                                         <div class="row ">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    @if (variant.StockQuantity <= 0)
-                                                   {
-                                                <span class="label label-danger ">@Localizer["Out of stock"]</span>
-                                                   }
-                                                   else
-                                                   {
-                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass
-                                                   }
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            @if (variant.StockQuantity <= 0)
+                                                            {
+                                                                <span class="label label-danger ">@Localizer["Out of stock"]</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass
+                                                            }
+                                                        </div>
+                                                        <div class="col-xs-6 text-right">
+                                                            <img src="~/themes/AirlineTickets/img/no-dogs.png" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="col-xs-3">
-                                                        <span class="glyphicon glyphicon-plane gly-rotate-right"></span> @Model.Aircraft
+                                                        <i class="fas fa-plane"></i> @Model.Aircraft
                                                     </div>
                                                     <div class="col-xs-3">
                                                         <span class="glyphicon glyphicon-lock"></span> @Model.Baggage
@@ -113,7 +120,7 @@
                                                     <div class="panel-body">
 
                                                         <div class="col-xs-3">
-                                                            <span class="glyphicon glyphicon-plane gly-rotate-left"></span> @Model.ReturnAircraft
+                                                            <i class="fas fa-plane gly-rotate-left"></i> @Model.ReturnAircraft
                                                         </div>
                                                         <div class="col-xs-3">
                                                             <span class="glyphicon glyphicon-lock"></span> @Model.Baggage
@@ -163,24 +170,32 @@
                             </div>
                             }
                             else
-                            {
+             {
+                                <br />
                                 <div class="row panel-group">
                                     <div class="col-sm-12">
                                         <div class="row">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                                @if (Model.StockQuantity <= 0)
-                                                                {
-                                                                    <h4><span class="label label-danger">@Localizer["Out of stock"]</span></h4>
-                                                                }
-                                                                else
-                                                                {
-                                                                    @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass
-                                                                }
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            @if (Model.StockQuantity <= 0)
+                                                            {
+                                                                <h4><span class="label label-danger">@Localizer["Out of stock"]</span></h4>
+                                                            }
+                                                            else
+                                                            {
+                                                                @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass
+                                                            }
+                                                        </div>
+                                                        <div class="col-xs-6 text-right">
+                                                            <img src="~/themes/AirlineTickets/img/no-dogs.png" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="col-xs-3">
-                                                        <span class="glyphicon glyphicon-plane gly-rotate-right"></span> @Model.Aircraft
+                                                        <i class="fas fa-plane"></i> @Model.Aircraft
                                                     </div>
                                                     <div class="col-xs-3">
                                                         <span class="glyphicon glyphicon-lock"></span> @Model.Baggage
@@ -203,7 +218,7 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     <div class="col-xs-3">
-                                                        <span class="glyphicon glyphicon-plane gly-rotate-left"></span> @Model.ReturnAircraft
+                                                        <i class="fas fa-plane gly-rotate-left"></i> @Model.ReturnAircraft
                                                     </div>
                                                     <div class="col-xs-3">
                                                         <span class="glyphicon glyphicon-lock"></span>  @Model.Baggage

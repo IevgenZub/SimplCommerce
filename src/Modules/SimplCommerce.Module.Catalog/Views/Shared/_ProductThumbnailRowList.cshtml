@@ -35,7 +35,7 @@
             <span><span class="flight-time">@Model.DepartureDate.Value.DateTime.AddHours(Model.DurationHours).AddMinutes(Model.DurationMinutes).ToString("HH:mm")</span> @Model.Landing </span>
         </div>
         <div class="col-sm-1 hidden-xs">
-            <span class="text-nowrap"><span class="glyphicon glyphicon-plane gly-rotate-right"></span>  @durationTime</span>
+            <span class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</span>
         </div>
         <div class="col-sm-2 col-xs-12">
             <div class="row">
@@ -85,7 +85,7 @@
                 <span><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.AddHours(Model.ReturnDurationHours).AddMinutes(Model.ReturnDurationMinutes).ToString("HH:mm")</span> @Model.Departure</span>
             </div>
             <div class="col-sm-1 hidden-xs">
-                <span class="text-nowrap"><span class="glyphicon glyphicon-plane gly-rotate-left"></span> @returnDurationTime</span>
+                <span class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</span>
             </div>
             <div class="col-sm-2  col-xs-12">
                 <div class="row">
