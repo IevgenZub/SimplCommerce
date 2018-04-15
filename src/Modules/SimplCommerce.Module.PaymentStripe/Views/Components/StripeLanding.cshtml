@@ -1,7 +1,6 @@
 ﻿@model SimplCommerce.Module.PaymentStripe.ViewModels.StripeCheckoutForm
+<label>Portmone</label>
 <div>
-
-
     <form id="portmoneForm" action="https://www.portmone.com.ua/gateway/" method="post">
         <input type="hidden" name="payee_id" value="@Model.PublicKey" />
         <input type="hidden" name="shop_order_number" value="@Model.OrderNumber" />
@@ -16,6 +15,3 @@
     </form>
 </div>
 <br />
-<div>
-    <img style="width:75%;height:75%; border-radius:3px" src="../themes/AirlineTickets/img/portmone.jpg" />
-</div>

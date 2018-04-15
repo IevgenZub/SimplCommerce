@@ -3,7 +3,7 @@
 @{
     var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
     var durationTime = Model.DurationHours + "h " + Model.DurationMinutes + "m";
-    
+
     string returnDurationTime  = string.Empty;
     if (Model.IsRoundTrip)
     {
@@ -12,6 +12,26 @@
 
     var selectedFlightId = Model.Details.HasVariation ? Model.Details.Variations.First().Id : Model.Id;
     var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First().CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
+
+    var qtyAdult = 1;
+    if (Context.Request.Query.Any(q => q.Key == "A_P"))
+    {
+        qtyAdult = Convert.ToInt16(Context.Request.Query["A_P"]);
+    }
+
+    var qtyChild = 0;
+    if (Context.Request.Query.Any(q => q.Key == "C_P"))
+    {
+        qtyChild = Convert.ToInt16(Context.Request.Query["C_P"]);
+    }
+
+    var qtyBaby = 0;
+    if (Context.Request.Query.Any(q => q.Key == "B_P"))
+    {
+        qtyBaby = Convert.ToInt16(Context.Request.Query["B_P"]);
+    }
+
+    selectedPrice = selectedPrice * qtyAdult + selectedPrice * qtyChild + Model.ChildPrice * qtyBaby;
 }
 
 <div class="my-thumbnail flight-item">
@@ -55,7 +75,7 @@
                     <div class="next">
                         @if (!Model.IsRoundTrip)
                         {
-                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span></button>
+                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@selectedPrice</span></button>
                                 <input type="hidden" name="productId" id="productId" value="@Model.Id">
                         }
                     </div>

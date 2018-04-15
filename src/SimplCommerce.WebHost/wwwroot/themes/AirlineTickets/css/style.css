@@ -16,10 +16,6 @@ Contact: mustafa@turhan.gen.tr;
    color: #fff;
 }
 
-body {
-   font-family: 'Open Sans', sans-serif;
-}
-
 .valign-wrapper {
    display: -webkit-flex;
    display: -ms-flexbox;
@@ -515,6 +511,7 @@ section:last-child {
    min-height: 200px;
    color: #fff;
    padding-bottom: 20px;
+
 }
 
 .main-page-footer h3 {
@@ -524,7 +521,7 @@ section:last-child {
 }
 
 .list-widget {
-   margin-bottom: 40px;
+   
 }
 
 .list-widget li a {

@@ -56,7 +56,7 @@
                         <h4 class="modal-title" id="rezKontrolLabel">@Localizer["Check reservation"]</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="modal-form" action="checkout/congratulation" method="get" accept-charset="utf-8">
+                        <form class="modal-form" action="~/checkout/congratulation" method="get" accept-charset="utf-8">
                             <div class="form-group">
                                 <label class="sr-only" for="rez-no">@Localizer["Reservation Number"]</label>
                                 <input type="text" class="form-control" name="pnr" id="rez-no" placeholder="@Localizer["Reservation Number"]">
@@ -69,7 +69,7 @@
         </div>
     </header>
     <!-- /header -->
-    <main>
+    <main class="main-container">
         <section id="promotions" >
             <div class="container" >
                 @RenderBody()
@@ -89,7 +89,7 @@
         </section>
         -->
     </main>
-    <footer style="min-height:370px" class="main-page-footer">
+    <footer class="main-page-footer">
         <div class="container">
             <!-- menü -->
             <div class="col-xs-12 col-md-4">
@@ -128,7 +128,10 @@
                 </form>
             </div>
             <div class="col-xs-12 text-center">
-                <p style="display: inline-block; font-size: 0.75em; color: #aaa;"><span style="margin-top:3px">Copyright 2018 www.charterwing.com </span></p>
+                <br />
+                <br />
+                <p style="display: inline-block; font-size: 0.75em; color: #aaa;padding-bottom:8px"><span style="margin-top:3px">Copyright 2018 www.charterwing.com </span></p>
+                <br />
             </div>
         </div>
     </footer>

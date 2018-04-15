@@ -54,6 +54,7 @@
                         <td>
                             <h4>{{cartItem.productName}}</h4>
                             <p>{{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.departure}}</p>
+                            <p>{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.landing}}</p>
                             <ul class="list-unstyled">
                                 <li ng-repeat="opt in cartItem.variationOptions">
                                     <span>{{opt.optionName}}:</span> {{opt.value}}
@@ -114,7 +115,7 @@
             <div class="coupon-form" ng-if="vm.cart.items.length">
                 <h4>@Localizer["Coupon code"]</h4>
                 <form class="form-inline">
-                    <div class="form-group">
+                    <div ng-if="vm.couponErrorMessage" class="form-group">
                         <label>{{vm.couponErrorMessage}}</label>
                     </div>
                     <div class="form-group">

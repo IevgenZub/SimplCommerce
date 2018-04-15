@@ -2,23 +2,11 @@
 $(function () {
     $('body').on('click', '.btn-add-cart', function () {
         var quantity, quantityChild, quantityBaby, productId
-
-        if ($(this).hasClass('btn-hide')) {
-            productId = $(this).attr("id");
-            quantity = 1; 
-            quantityChild = 0;
-            quantityBaby = 0;
-        }
-        else {
-            var $form = $(this).closest("form"),
-            productId = $(this).closest("form").find('input[name=productId]').val(),
-            $quantityAdultInput = $form.find('.quantity-field-adult');
-            $quantityChildInput = $form.find('.quantity-field-child');
-            $quantityBabyInput = $form.find('.quantity-field-baby');
-            quantity = $quantityAdultInput.length === 1 ? $quantityAdultInput.val() : 1;
-            quantityChild = $quantityChildInput.length === 1 ? $quantityChildInput.val() : 0;
-            quantityBaby = $quantityBabyInput.length === 1 ? $quantityBabyInput.val() : 0;
-        }
+        
+        productId = $(this).attr("id");
+        quantity = $("input[data-product-id='"+ productId + "'][class='quantity-field quantity-field-adult']").val(); 
+        quantityChild = $("input[data-product-id='" + productId + "'][class='quantity-field quantity-field-child']").val();
+        quantityBaby = $("input[data-product-id='" + productId + "'][class='quantity-field quantity-field-baby']").val();
             
         $.ajax({
             type: 'POST',

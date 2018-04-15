@@ -174,6 +174,7 @@ namespace SimplCommerce.Module.Catalog.Components
                     StockQuantity = variation.StockQuantity,
                     SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
+                    ReturnDate = variation.ReturnDepartureDate,
                     InfantPrice = variation.OldPrice,
                     FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))

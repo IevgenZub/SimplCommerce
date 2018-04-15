@@ -95,7 +95,9 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Departure = x.Product.Departure,
                     Landing = x.Product.Destination,
                     DepartureDate = x.Product.DepartureDate,
+                    LandingDate = x.Product.DepartureDate.Value.AddHours(x.Product.DurationHours).AddMinutes(x.Product.DurationMinutes),
                     ReturnDepartureDate = x.Product.ReturnDepartureDate,
+                    ReturnLandingDate = x.Product.ReturnDepartureDate.Value.AddHours(x.Product.ReturnDurationHours).AddMinutes(x.Product.ReturnDurationMinutes),
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 
