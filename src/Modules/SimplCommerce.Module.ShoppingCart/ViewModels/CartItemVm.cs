@@ -18,9 +18,7 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
         public string Landing { get; set; }
 
         public DateTimeOffset? DepartureDate { get; set; }
-
-        public DateTimeOffset? LandingDate { get; set; }
-
+        
         public DateTimeOffset? ReturnDepartureDate { get; set; }
 
         public string ProductImage { get; set; }

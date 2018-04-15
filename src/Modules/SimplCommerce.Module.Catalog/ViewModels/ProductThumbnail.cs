@@ -44,7 +44,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Departure { get; set; }
         public string Landing { get; set; }
         public DateTimeOffset? DepartureDate { get; set; }
-        public DateTimeOffset? LandingDate { get; set; }
+        public int DurationHours { get; set; }
+        public int DurationMinutes { get; set; }
         public string Carrier { get; set; }
         public string Vendor { get; set; }
         public string Via { get; set; }
@@ -59,7 +60,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string ReturnVia { get; set; }
         public string ReturnTerminal { get; set; }
         public DateTimeOffset? ReturnDepartureDate { get; set; }
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public int ReturnDurationHours { get; set; }
+        public int ReturnDurationMinutes { get; set; }
         public bool IsRoundTrip { get; set; }
         public string Currency { get; set; }
 
@@ -87,12 +89,14 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 Departure = product.Departure.Split(',')[0] + " (" + product.Departure.Split('(', ')')[1] + ")",
                 Landing = product.Destination.Split(',')[0] + " (" + product.Destination.Split('(', ')')[1] + ")",
                 DepartureDate = product.DepartureDate,
-                LandingDate = product.LandingDate,
+                DurationHours = product.DurationHours,
+                DurationMinutes = product.DurationMinutes,
                 Provider = product.Provider,
                 ReturnDepartureDate = product.ReturnDepartureDate,
-                ReturnLandingDate = product.ReturnLandingDate,
+                ReturnDurationHours = product.ReturnDurationHours,
+                ReturnDurationMinutes = product.ReturnDurationMinutes,
                 ReturnFlightNumber = product.ReturnFlightNumber,
-                Terminal = product.Sku,
+                Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,

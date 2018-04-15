@@ -201,7 +201,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     product.ReturnCarrier = returnFlightThumbnail.Carrier;
                     product.ReturnDepartureDate = returnFlightThumbnail.DepartureDate;
                     product.ReturnFlightNumber = returnFlightThumbnail.FlightNumber;
-                    product.ReturnLandingDate = returnFlightThumbnail.LandingDate;
+                    product.ReturnDurationHours = returnFlightThumbnail.ReturnDurationHours;
                     product.Price += returnFlight.Price;
                     product.Details.CalculatedProductPrice.Price += returnFlight.Price;
                 }
@@ -246,7 +246,7 @@ namespace SimplCommerce.Module.Search.Controllers
                 Specification = product.Specification,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
-                Terminal = product.Sku,
+                Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,
@@ -343,7 +343,6 @@ namespace SimplCommerce.Module.Search.Controllers
                     SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
                     InfantPrice = variation.OldPrice,
-                    ReturnLandingDate = variation.ReturnLandingDate,
                     FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };

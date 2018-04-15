@@ -38,10 +38,8 @@
         vm.datePickerSpecialPriceEnd = {};
 
         vm.datePickerDepartureDate = {};
-        vm.datePickerLandingDate = {};
-
+        
         vm.datePickerReturnDepartureDate = {};
-        vm.datePickerReturnLandingDate = {};
         
         vm.updateSlug = function () {
             vm.product.slug = slugify(vm.product.flightNumber);
@@ -371,9 +369,7 @@
             vm.product.specialPriceStart = vm.product.specialPriceStart === null ? '' : vm.product.specialPriceStart;
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
             vm.product.returnDepartureDate = vm.product.returnDepartureDate == null ? '' : new Date(vm.product.returnDepartureDate.valueOf() - vm.product.returnDepartureDate.getTimezoneOffset() * 60000);
-            vm.product.returnLandingDate = vm.product.returnLandingDate == null ? '' : new Date(vm.product.returnLandingDate.valueOf() - vm.product.returnLandingDate.getTimezoneOffset() * 60000);
             vm.product.departureDate = vm.product.departureDate == null ? '' : new Date(vm.product.departureDate.valueOf() - vm.product.departureDate.getTimezoneOffset()*60000);
-            vm.product.landingDate = vm.product.landingDate == null ? '' : new Date(vm.product.landingDate.valueOf() - vm.product.landingDate.getTimezoneOffset() * 60000);
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
@@ -457,16 +453,9 @@
                 if (vm.product.returnDepartureDate) {
                     vm.product.returnDepartureDate = getUtcDate(new Date(vm.product.returnDepartureDate));
                 }
-                if (vm.product.returnLandingDate) {
-                    vm.product.returnLandingDate = getUtcDate(new Date(vm.product.returnLandingDate));
-                }
 
                 if (vm.product.departureDate) {
                     vm.product.departureDate = getUtcDate(new Date(vm.product.departureDate));
-                }
-
-                if (vm.product.landingDate) {
-                    vm.product.landingDate = getUtcDate(new Date(vm.product.landingDate));
                 }
             });
         }

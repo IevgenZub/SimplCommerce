@@ -2,15 +2,12 @@
 
 @{
     var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
-    var duration = Model.LandingDate.Value.Subtract(Model.DepartureDate.Value);
-    var durationTime = duration.Hours + "h " + duration.Minutes + "m";
-
-    TimeSpan returnDuration;
+    var durationTime = Model.DurationHours + "h " + Model.DurationMinutes + "m";
+    
     string returnDurationTime  = string.Empty;
     if (Model.IsRoundTrip)
     {
-        returnDuration = Model.ReturnLandingDate.Value.Subtract(Model.ReturnDepartureDate.Value);
-        returnDurationTime = duration.Hours + "h " + duration.Minutes + "m";
+        returnDurationTime = Model.ReturnDurationHours + "h " + Model.ReturnDurationMinutes + "m";
     }
 
     var selectedFlightId = Model.Details.HasVariation ? Model.Details.Variations.First().Id : Model.Id;
@@ -35,7 +32,7 @@
             <span><span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Departure</span>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <span><span class="flight-time">@Model.LandingDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing </span>
+            <span><span class="flight-time">@Model.DepartureDate.Value.DateTime.AddHours(Model.DurationHours).AddMinutes(Model.DurationMinutes).ToString("HH:mm")</span> @Model.Landing </span>
         </div>
         <div class="col-sm-1 hidden-xs">
             <span class="text-nowrap"><span class="glyphicon glyphicon-plane gly-rotate-right"></span>  @durationTime</span>
@@ -76,7 +73,7 @@
                     </figure>
             </div>
             <div class="col-sm-1 col-xs-6">
-                <span>@Model.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
+                <span>@Model.ReturnDepartureDate.Value.DateTime.ToShortDateString()</span>
             </div>    
             <div class="col-sm-1 col-xs-6 text-right">
                 <span class="flight-number">@Model.ReturnFlightNumber</span>
@@ -85,7 +82,7 @@
                 <span><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing</span>
             </div>
             <div class="col-sm-3 col-xs-12">
-                <span><span class="flight-time">@Model.ReturnLandingDate.Value.DateTime.ToString("HH:mm")</span> @Model.Departure</span>
+                <span><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.AddHours(Model.ReturnDurationHours).AddMinutes(Model.ReturnDurationMinutes).ToString("HH:mm")</span> @Model.Departure</span>
             </div>
             <div class="col-sm-1 hidden-xs">
                 <span class="text-nowrap"><span class="glyphicon glyphicon-plane gly-rotate-left"></span> @returnDurationTime</span>

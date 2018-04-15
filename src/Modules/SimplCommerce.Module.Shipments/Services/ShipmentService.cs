@@ -49,7 +49,7 @@ namespace SimplCommerce.Module.Shipments.Services
                 {
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
-                    ProductSku = x.Product.Sku,
+                    ProductSku = x.Product.Terminal,
                     OrderItemId = x.Id,
                     OrderedQuantity = x.Quantity
                 })

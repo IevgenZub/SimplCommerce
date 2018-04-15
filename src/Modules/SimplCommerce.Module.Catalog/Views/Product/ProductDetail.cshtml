@@ -73,11 +73,6 @@
                             foreach (var variant in Model.Variations)
                             {
                                 var hidden = variant != Model.Variations.First() ? "collapse" : "";
-                                var dateOptionsString = variant.DepartureDate.Value.DateTime.ToShortDateString();
-                                if (variant.ReturnLandingDate.HasValue)
-                                {
-                                    dateOptionsString = variant.ReturnLandingDate.Value.DateTime.ToShortDateString();
-                                }
                                 <div class="product-variation panel-group row @hidden" data-variation-name="@variant.NormalizedName">
                                     <div class="col-sm-12">
                                         <div class="row ">

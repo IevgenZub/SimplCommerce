@@ -92,7 +92,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public DateTimeOffset? ReturnDepartureDate { get; set; }
 
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public int ReturnDurationHours { get; set; }
+
+        public int ReturnDurationMinutes { get; set; }
 
         public long? ReturnCarrierId { get; set; }
 
@@ -121,8 +123,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string FlightClass { get; set; }
 
         public DateTimeOffset? DepartureDate { get; set; }
+        public int DurationHours { get; set; }
+        public int DurationMinutes { get; set; }
 
-        public DateTimeOffset? LandingDate { get; set; }
 
         // Admin Rules Departure
 

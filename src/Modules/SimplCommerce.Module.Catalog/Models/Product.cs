@@ -49,7 +49,7 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public int StockQuantity { get; set; }
 
-        public string Sku { get; set; }
+        public string Terminal { get; set; }
 
         public string NormalizedName { get; set; }
 
@@ -89,13 +89,15 @@ namespace SimplCommerce.Module.Catalog.Models
         public int? SoldSeats { get; set; }
         public bool? SaleRtOnly { get; set; }
         public DateTimeOffset? DepartureDate { get; set; }
-        public DateTimeOffset? LandingDate { get; set; }
+        public int DurationHours { get; set; }
+        public int DurationMinutes { get; set; }
 
         // Return
 
         public string ReturnFlightNumber { get; set; }
         public DateTimeOffset? ReturnDepartureDate { get; set; }
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public int ReturnDurationHours { get; set; }
+        public int ReturnDurationMinutes { get; set; }
         public long? ReturnCarrierId { get; set; }
         public Brand ReturnCarrier { get; set; }
         public long? ReturnAircraftId { get; set; }
@@ -198,7 +200,6 @@ namespace SimplCommerce.Module.Catalog.Models
             product.DisplayOrder = DisplayOrder;
             product.SpecialPriceEnd = SpecialPriceEnd;
             product.SpecialPriceStart = SpecialPriceStart;
-            product.Sku = Sku;
             product.Currency = Currency;
             product.Provider = Provider;
             product.TaxClassId = TaxClassId;
@@ -210,7 +211,6 @@ namespace SimplCommerce.Module.Catalog.Models
             product.ReturnVia = ReturnVia;
             product.ReturnTerminal = ReturnTerminal;
             product.ReturnDepartureDate = ReturnDepartureDate;
-            product.ReturnLandingDate = ReturnLandingDate;
             product.AdminRoundTrip = AdminRoundTrip;
             product.AdminRoundTripOperatorId = AdminRoundTripOperatorId;
             product.AdminPayLater = AdminPayLater;
@@ -234,7 +234,6 @@ namespace SimplCommerce.Module.Catalog.Models
             product.FlightClass = FlightClass;
             product.SoldSeats = 0;
             product.DepartureDate = DepartureDate;
-            product.LandingDate = LandingDate;
             product.PassengerChildPrice = product.PassengerChildPrice;
             product.PassengerPrice = product.PassengerPrice;
             product.ChildPrice = product.ChildPrice;

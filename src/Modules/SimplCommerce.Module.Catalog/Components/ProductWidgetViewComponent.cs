@@ -90,7 +90,7 @@ namespace SimplCommerce.Module.Catalog.Components
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
-                Terminal = product.Sku,
+                Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,
@@ -175,7 +175,6 @@ namespace SimplCommerce.Module.Catalog.Components
                     SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
                     InfantPrice = variation.OldPrice,
-                    ReturnLandingDate = variation.ReturnLandingDate,
                     FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };

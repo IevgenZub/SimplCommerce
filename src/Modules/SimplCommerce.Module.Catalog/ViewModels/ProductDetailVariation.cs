@@ -14,8 +14,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public decimal? InfantPrice { get; set; }
 
-        public DateTimeOffset? ReturnLandingDate { get; set; }
-
         public string FlightClass { get; set; }
 
         public string NormalizedName { get; set; }

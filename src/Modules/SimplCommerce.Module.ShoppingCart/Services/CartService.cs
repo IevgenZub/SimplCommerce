@@ -95,7 +95,6 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     Departure = x.Product.Departure,
                     Landing = x.Product.Destination,
                     DepartureDate = x.Product.DepartureDate,
-                    LandingDate = x.Product.LandingDate,
                     ReturnDepartureDate = x.Product.ReturnDepartureDate,
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();

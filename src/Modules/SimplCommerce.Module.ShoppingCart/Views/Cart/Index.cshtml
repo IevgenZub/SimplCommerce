@@ -54,7 +54,6 @@
                         <td>
                             <h4>{{cartItem.productName}}</h4>
                             <p>{{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.departure}}</p>
-                            <p>{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.landing}}</p>
                             <ul class="list-unstyled">
                                 <li ng-repeat="opt in cartItem.variationOptions">
                                     <span>{{opt.optionName}}:</span> {{opt.value}}
