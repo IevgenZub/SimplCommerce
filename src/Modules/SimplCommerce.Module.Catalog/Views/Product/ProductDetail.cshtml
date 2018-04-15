@@ -89,7 +89,7 @@
                                                             }
                                                             else
                                                             {
-                                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass <span class="priceToConvert">@variant.CalculatedProductPrice.Price</span>
+                                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass <span>&nbsp;1&nbsp;x&nbsp;</span><i class="fas fa-user">&nbsp;=&nbsp;<span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></i>
                                                             }
 
                                                             @if (!string.IsNullOrEmpty(returnDate))
@@ -194,7 +194,7 @@
                                                             }
                                                             else
                                                             {
-                                                                 @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass  <span class="priceToConvert">@Model.CalculatedProductPrice.Price</span>
+                                                                 @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass <span>&nbsp;1&nbsp;x&nbsp;</span><i class="fas fa-user">&nbsp;=&nbsp;<span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></i> 
                                                             }
                                                         </div>
                                                         <div class="col-xs-2 text-right">
