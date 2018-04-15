@@ -82,14 +82,14 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <div class="row">
-                                                        <div class="col-xs-4">
+                                                        <div class="col-xs-10">
                                                             @if (variant.StockQuantity <= 0)
                                                             {
                                                                 <span class="label label-danger ">@Localizer["Out of stock"]</span>
                                                             }
                                                             else
                                                             {
-                                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass
+                                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass <span class="priceToConvert">@variant.CalculatedProductPrice.Price</span>
                                                             }
 
                                                             @if (!string.IsNullOrEmpty(returnDate))
@@ -98,10 +98,7 @@
                                                             }
                                                             
                                                         </div>
-                                                        <div class="col-xs-4 text-center">
-                                                            <span class="priceToConvert">@variant.CalculatedProductPrice.Price</span>
-                                                        </div>
-                                                        <div class="col-xs-4 text-right">
+                                                        <div class="col-xs-2 text-right">
                                                             <img src="~/themes/AirlineTickets/img/no-dogs.png" />
                                                         </div>
                                                     </div>
@@ -190,20 +187,17 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <div class="row">
-                                                        <div class="col-xs-4">
+                                                        <div class="col-xs-10">
                                                             @if (Model.StockQuantity <= 0)
                                                             {
                                                                 <h4><span class="label label-danger">@Localizer["Out of stock"]</span></h4>
                                                             }
                                                             else
                                                             {
-                                                                @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass
+                                                                 @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass  <span class="priceToConvert">@Model.CalculatedProductPrice.Price</span>
                                                             }
                                                         </div>
-                                                        <div class="col-xs-4 text-center">
-                                                            <span class="priceToConvert">@Model.CalculatedProductPrice.Price</span>
-                                                        </div>
-                                                        <div class="col-xs-4 text-right">
+                                                        <div class="col-xs-2 text-right">
                                                             <img src="~/themes/AirlineTickets/img/no-dogs.png" />
                                                         </div>
                                                     </div>

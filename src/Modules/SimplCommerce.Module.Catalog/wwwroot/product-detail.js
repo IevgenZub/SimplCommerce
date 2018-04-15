@@ -15,6 +15,7 @@
             $attrOptions.each(function () {
                 selectedproductOptions.push($(this).find('input[type=radio]:checked').val());
             });
+
             var current = $(this);
             var details = current.parents(".my-thumbnail").find('.product-details').first();
 
