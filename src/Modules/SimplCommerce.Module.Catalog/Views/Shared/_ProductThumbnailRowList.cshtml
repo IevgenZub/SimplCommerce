@@ -65,8 +65,8 @@
                         @if (!Model.IsRoundTrip)
             {
                             <button class="btn btn-default moreDetails">
-                                <span class="fa fa-angle-double-down"></span>
-                                <span class="fa fa-angle-double-up" style="display: none;"></span>
+                                <i class="fas fa-search-plus"></i>
+                                <i class="fas fa-search-minus" style="display: none;"></i>
                             </button>
                         }
                     </div>
@@ -75,7 +75,7 @@
                     <div class="next">
                         @if (!Model.IsRoundTrip)
                         {
-                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@selectedPrice</span></button>
+                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
                                 <input type="hidden" name="productId" id="productId" value="@Model.Id">
                         }
                     </div>
@@ -113,14 +113,14 @@
                     <div class="col-xs-6">
                         <div class="previous">
                                 <button class="btn btn-default moreDetails">
-                                    <span class="fa fa-angle-double-down"></span>
-                                    <span class="fa fa-angle-double-up" style="display: none;"></span>
+                                    <i class="fas fa-search-plus"></i>
+                                    <i class="fas fa-search-minus" style="display: none;"></i>
                                 </button>
                         </div>
                     </div>
                     <div class="col-xs-6 text-right">
                         <div class="next">
-                                <button type="submit" id="@selectedFlightId"  class="btn pull-right btn-lg btn-add-cart btn-hide"><span class="priceToConvert">@selectedPrice</span></button>
+                                <button type="submit" id="@selectedFlightId"  class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
                                 <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
                         </div>
                     </div>
