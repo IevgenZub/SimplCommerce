@@ -82,9 +82,9 @@ namespace SimplCommerce.Module.Search.Controllers
                         var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
                         var returnDateMin = returnDate.AddDays(-7);
                         var returnDateMax = returnDate.AddDays(7);
-                        query = query.Where(x => !x.ReturnDepartureDate.HasValue ||  
+                        query = query.Where(x => (!x.ReturnDepartureDate.HasValue ||  
                             x.ReturnDepartureDate.Value.Date >= returnDateMin && 
-                            x.ReturnDepartureDate.Value.Date < returnDateMax);
+                            x.ReturnDepartureDate.Value.Date < returnDateMax) || x.HasOptions);
                     }
                 }
                 else
@@ -97,7 +97,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
                     var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
 
-                    query = query.Where(x => x.StockQuantity >= numberOfPeople);
+                    query = query.Where(x => x.StockQuantity >= numberOfPeople || x.HasOptions);
                 }
             }
 
@@ -329,6 +329,14 @@ namespace SimplCommerce.Module.Search.Controllers
                 variations = variations.Where(x =>
                     x.DepartureDate.Value.Date >= departureDateMin &&
                     x.DepartureDate.Value.Date <= departureDateMax);
+            }
+
+            if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
+            {
+                var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
+                var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
+
+                variations = variations.Where(x => x.StockQuantity >= numberOfPeople);
             }
 
             foreach (var variation in variations)
