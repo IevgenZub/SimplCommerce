@@ -23,9 +23,8 @@
             $variationDiv = details.find('div[data-variation-name="' + variationName + '"]');
 
             $variationDiv.closest('.my-thumbnail').find('.btn-hide').attr("id", $variationDiv.find("input[type='hidden']").val());
-            $variationDiv.closest('.my-thumbnail').find('.btn-hide').html($variationDiv.find(".variant-price").html());
+            $variationDiv.closest('.my-thumbnail').find('.btn-hide').html("<strong>" + $variationDiv.find(".variant-price").html() + "</strong>");
 
-            
             details.find('.product-variation').hide();
             if ($variationDiv.length > 0) {
                 $variationDiv.show();

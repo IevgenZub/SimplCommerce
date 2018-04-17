@@ -84,6 +84,8 @@
                                                     <div class="row">
                                                         <div class="col-xs-4"> 
                                                             <b>Terminal</b>
+                                                            <input type="hidden" name="productId" value="@variant.Id" />
+                                                            <span style="visibility:hidden" class="priceToConvert variant-price">@variant.CalculatedProductPrice.Price</span>
                                                         </div>
                                                         <div class="col-xs-4 text-center">
                                                             <i class="fas fa-suitcase"></i>&nbsp;(kg)
@@ -171,9 +173,6 @@
 
                                 <div class="add-to-cart col-sm-12 hidden">
                                     <form class="inline">
-                                        <input type="hidden" name="productId" value="@variant.Id" />
-                                        <span class="priceToConvert variant-price">@variant.CalculatedProductPrice.Price</span>
-
                                         <div class="product-quantity">
                                             <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
                                             <input type="text" style="font-size:smaller" data-product-id="@variant.Id" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
