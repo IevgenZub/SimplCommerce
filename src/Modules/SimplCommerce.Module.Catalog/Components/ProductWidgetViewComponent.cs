@@ -51,7 +51,7 @@ namespace SimplCommerce.Module.Catalog.Components
               .Include(x => x.TaxClass)
               .OrderByDescending(x => x.CreatedOn)
               .Take(model.Setting.NumberOfProducts)
-              .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"))).ToList();
+              .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"), false)).ToList();
 
             foreach (var product in model.Products)
             {

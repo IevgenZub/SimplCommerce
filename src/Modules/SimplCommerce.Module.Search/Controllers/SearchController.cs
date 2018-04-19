@@ -52,6 +52,7 @@ namespace SimplCommerce.Module.Search.Controllers
 
             var numberOfPeople = 1;
             var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+            var isRoundTrip = searchOption.TripType == "round-trip";
 
             query = query.Where(x =>
                     x.Departure.Contains(searchOption.Departure) &&
@@ -65,10 +66,8 @@ namespace SimplCommerce.Module.Search.Controllers
                 x.DepartureDate.Value.Date >= departureDateMin && 
                 x.DepartureDate.Value.Date < departureDateMax);
 
-            var isRoundTrip = searchOption.TripType == "round-trip";
-            query = query.Where(x => x.IsRoundTrip == isRoundTrip);
-
-            if (!string.IsNullOrEmpty(searchOption.ReturnDate))
+            
+            if (isRoundTrip && !string.IsNullOrEmpty(searchOption.ReturnDate))
             {
                 var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
                 var returnDateMin = returnDate.AddDays(-7);
@@ -137,8 +136,9 @@ namespace SimplCommerce.Module.Search.Controllers
 
             query = query
                 .Include(x => x.ThumbnailImage)
-                .Include(x => x.ReturnAircraft)
-                .Include(x => x.ReturnCarrier)
+                .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.ThumbnailImage)
+                .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.Brand)
+                .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.TaxClass)
                 .Include(x => x.Brand)
                 .Include(x => x.TaxClass)
                 .Include(x => x.OptionValues);
@@ -146,7 +146,7 @@ namespace SimplCommerce.Module.Search.Controllers
             query = AppySort(searchOption, query);
 
             var products = query
-                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor")))
+                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"), isRoundTrip))
                 .Skip(offset)
                 .Take(_pageSize)
                 .ToList();
@@ -156,6 +156,11 @@ namespace SimplCommerce.Module.Search.Controllers
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
                 product.Details = GetProductDetails(product.Id, searchOption);
+                
+                if (isRoundTrip)
+                {
+                    product.ReturnThumbnailUrl = _mediaService.GetThumbnailUrl(product.ReturnThumbnailImage);
+                }
             }
 
             model.Products = products;

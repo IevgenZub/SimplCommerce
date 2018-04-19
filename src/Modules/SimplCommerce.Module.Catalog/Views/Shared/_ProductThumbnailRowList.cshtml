@@ -14,19 +14,19 @@
     var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First().CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
 
     var qtyAdult = 1;
-    if (Context.Request.Query.Any(q => q.Key == "A_P"))
+    if (Context.Request.Query.Any(q => q.Key == "A_P" && !string.IsNullOrEmpty(q.Value)))
     {
         qtyAdult = Convert.ToInt16(Context.Request.Query["A_P"]);
     }
 
     var qtyChild = 0;
-    if (Context.Request.Query.Any(q => q.Key == "C_P"))
+    if (Context.Request.Query.Any(q => q.Key == "C_P" && !string.IsNullOrEmpty(q.Value)))
     {
         qtyChild = Convert.ToInt16(Context.Request.Query["C_P"]);
     }
 
     var qtyBaby = 0;
-    if (Context.Request.Query.Any(q => q.Key == "B_P"))
+    if (Context.Request.Query.Any(q => q.Key == "B_P" && !string.IsNullOrEmpty(q.Value)))
     {
         qtyBaby = Convert.ToInt16(Context.Request.Query["B_P"]);
     }
@@ -88,7 +88,7 @@
         <div class="row my-row flight-row">
             <div class="col-sm-1 col-xs-12 airlines">
                     <figure>
-                        <img src="@Model.ThumbnailUrl">
+                        <img src="@Model.ReturnThumbnailUrl">
                         <figcaption>@Model.ReturnCarrier</figcaption>
                     </figure>
             </div>

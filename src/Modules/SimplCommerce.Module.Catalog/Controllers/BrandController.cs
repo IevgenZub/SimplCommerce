@@ -85,7 +85,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             query = AppySort(searchOption, query);
 
             var products = query
-                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor")))
+                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"), false))
                 .Skip(offset)
                 .Take(_pageSize)
                 .ToList();

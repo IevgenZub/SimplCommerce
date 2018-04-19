@@ -33,7 +33,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public Media ThumbnailImage { get; set; }
 
+        public Media ReturnThumbnailImage { get; set; }
+
         public string ThumbnailUrl { get; set; }
+
+        public string ReturnThumbnailUrl { get; set; }
 
         public int ReviewsCount { get; set; }
 
@@ -67,7 +71,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public ProductDetail Details { get; set; }
 
-        public static ProductThumbnail FromProduct(Product product, bool isVendor)
+        public static ProductThumbnail FromProduct(Product product, bool isVendor, bool isRoundTrip = false)
         {
             var productThumbnail = new ProductThumbnail
             {
@@ -92,22 +96,30 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 DurationHours = product.DurationHours,
                 DurationMinutes = product.DurationMinutes,
                 Provider = product.Provider,
-                ReturnDepartureDate = product.ReturnDepartureDate,
-                ReturnDurationHours = product.ReturnDurationHours,
-                ReturnDurationMinutes = product.ReturnDurationMinutes,
-                ReturnFlightNumber = product.ReturnFlightNumber,
                 Terminal = product.Terminal,
-                ReturnTerminal = product.ReturnTerminal,
-                IsRoundTrip = product.IsRoundTrip,
+                IsRoundTrip = isRoundTrip,
                 FlightNumber = product.FlightNumber,
                 Currency = product.Currency,
                 Carrier = product.Brand == null ? "" : product.Brand.Name,
-                ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
                 Via = product.Via,
-                ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
-                ReturnVia = product.ReturnVia
-        };
+            };
+
+            if (isRoundTrip && product.ProductLinks.Any())
+            {
+                var returnFlight = product.ProductLinks[0].LinkedProduct;
+                productThumbnail.ReturnAircraft = returnFlight.TaxClass.Name;
+                productThumbnail.ReturnDepartureDate = returnFlight.DepartureDate;
+                productThumbnail.ReturnDurationHours = returnFlight.DurationHours;
+                productThumbnail.ReturnDurationMinutes = returnFlight.DurationMinutes;
+                productThumbnail.ReturnFlightNumber = returnFlight.FlightNumber;
+                productThumbnail.ReturnTerminal = returnFlight.Terminal;
+                productThumbnail.ReturnCarrier = returnFlight.Brand == null ? "" : returnFlight.Brand.Name;
+                productThumbnail.ReturnAircraft = returnFlight.TaxClass == null ? "" : returnFlight.TaxClass.Name;
+                productThumbnail.ReturnVia = returnFlight.Via;
+                productThumbnail.ReturnThumbnailImage = returnFlight.ThumbnailImage;
+                productThumbnail.Price += isVendor ? returnFlight.AgencyPrice : returnFlight.PassengerPrice;
+            }
 
             return productThumbnail;
         }
