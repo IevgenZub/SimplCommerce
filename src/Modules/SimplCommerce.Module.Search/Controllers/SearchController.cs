@@ -66,6 +66,7 @@ namespace SimplCommerce.Module.Search.Controllers
                 x.DepartureDate.Value.Date >= departureDateMin && 
                 x.DepartureDate.Value.Date < departureDateMax);
 
+            query = query.Where(x => x.IsRoundTrip == isRoundTrip);
             
             if (isRoundTrip && !string.IsNullOrEmpty(searchOption.ReturnDate))
             {
@@ -136,9 +137,8 @@ namespace SimplCommerce.Module.Search.Controllers
 
             query = query
                 .Include(x => x.ThumbnailImage)
-                .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.ThumbnailImage)
-                .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.Brand)
-                .Include(x => x.ProductLinks).ThenInclude(p => p.LinkedProduct).ThenInclude(m => m.TaxClass)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
                 .Include(x => x.Brand)
                 .Include(x => x.TaxClass)
                 .Include(x => x.OptionValues);
@@ -156,11 +156,6 @@ namespace SimplCommerce.Module.Search.Controllers
                 product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
                 product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
                 product.Details = GetProductDetails(product.Id, searchOption);
-                
-                if (isRoundTrip)
-                {
-                    product.ReturnThumbnailUrl = _mediaService.GetThumbnailUrl(product.ReturnThumbnailImage);
-                }
             }
 
             model.Products = products;
