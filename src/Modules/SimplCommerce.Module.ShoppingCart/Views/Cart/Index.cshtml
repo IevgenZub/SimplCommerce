@@ -52,13 +52,11 @@
                     <tr ng-if="vm.cart.items.length" ng-repeat="cartItem in vm.cart.items">
                         <td class="product-image"><img style="max-height:50px; max-width:50px" ng-src="{{cartItem.productImage}}" /></td>
                         <td>
-                            <label>{{cartItem.flightNumber}}</label>
-                            <span>{{cartItem.flightClass}} </span>
+                            <h4><span class="label label-default">{{cartItem.flightNumber}} {{cartItem.flightClass}}</span></h4>
                             <p><span style="color:darkblue"> {{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
                             <p><span style="color:darkblue">{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}}</span> {{cartItem.landing}}</p>
                             
-                            <label ng-if="cartItem.isRoundTrip">{{cartItem.returnFlightNumber}}</label>
-                            <span ng-if="cartItem.isRoundTrip">{{cartItem.flightClass}}</span>
+                            <h4><span class="label label-default" ng-if="cartItem.isRoundTrip">{{cartItem.returnFlightNumber}} {{cartItem.flightClass}}</span></h4>
                             <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnDepartureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.landing}}</p>
                             <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnLandingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
                         </td>

@@ -9,13 +9,13 @@
     {
         <tr>
             <td>
-                <h4>@item.FlightNumber @item.FlightClass</h4>
+                <h4><span class="label label-default">@item.FlightNumber @item.FlightClass</span></h4>
                 <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
                 <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
 
                 @if (item.IsRoundTrip)
                 {
-                    <h4>@item.ReturnFlightNumber @item.FlightClass</h4>
+                    <h4><span class="label label-default">@item.ReturnFlightNumber @item.FlightClass</span></h4>
                     <p>@item.ReturnDepartureDate.Value.Date.ToShortDateString() @item.ReturnDepartureDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
                     <p>@item.ReturnLandingDate.Value.Date.ToShortDateString() @item.ReturnLandingDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
                 }
