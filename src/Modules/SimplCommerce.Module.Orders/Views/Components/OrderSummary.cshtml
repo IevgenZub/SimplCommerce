@@ -9,19 +9,16 @@
     {
         <tr>
             <td>
-                <h4>@item.ProductName</h4>
-                @if (item.VariationOptions.Any())
-                {
-                    <ul class="list-unstyled">
-                        @foreach (var attr in item.VariationOptions)
-                        {
-                            <li><span>@attr.OptionName:</span> @attr.Value</li>
-                        }
-                    </ul>
-                }
-
+                <h4>@item.FlightNumber @item.FlightClass</h4>
                 <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
                 <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
+
+                @if (item.IsRoundTrip)
+                {
+                    <h4>@item.ReturnFlightNumber @item.FlightClass</h4>
+                    <p>@item.ReturnDepartureDate.Value.Date.ToShortDateString() @item.ReturnDepartureDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
+                    <p>@item.ReturnLandingDate.Value.Date.ToShortDateString() @item.ReturnLandingDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
+                }
             </td>
             <td class="text-left">
                 <p>@item.Quantity (18+)</p> 

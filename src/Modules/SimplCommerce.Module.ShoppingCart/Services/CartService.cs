@@ -85,7 +85,9 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                 {
                     Id = x.Id,
                     ProductId = x.ProductId,
-                    ProductName = x.Product.Name,
+                    FlightNumber = x.Product.FlightNumber,
+                    FlightClass = x.Product.FlightClass,
+                    ReturnFlightNumber = x.Product.ReturnFlightNumber,
                     ProductPrice = isVendor ? x.Product.AgencyPrice : x.Product.PassengerPrice,
                     ChildPrice = isVendor ? x.Product.AgencyChildPrice : x.Product.PassengerChildPrice,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
@@ -94,6 +96,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                     QuantityBaby = x.QuantityBaby,
                     Departure = x.Product.Departure,
                     Landing = x.Product.Destination,
+                    IsRoundTrip = x.Product.IsRoundTrip,
                     DepartureDate = x.Product.DepartureDate,
                     LandingDate = x.Product.DepartureDate.Value.AddHours(x.Product.DurationHours).AddMinutes(x.Product.DurationMinutes),
                     ReturnDepartureDate = x.Product.ReturnDepartureDate,

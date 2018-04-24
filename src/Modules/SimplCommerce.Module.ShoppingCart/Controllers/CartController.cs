@@ -61,7 +61,7 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
             };
 
             var addedProduct = cart.Items.First(x => x.ProductId == productId);
-            model.ProductName = addedProduct.ProductName;
+            model.ProductName = addedProduct.FlightNumber;
             model.ProductImage = addedProduct.ProductImage;
             model.ProductPrice = addedProduct.ProductPrice;
             model.Quantity = addedProduct.Quantity;

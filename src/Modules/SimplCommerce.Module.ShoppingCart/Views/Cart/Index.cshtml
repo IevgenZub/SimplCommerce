@@ -52,14 +52,15 @@
                     <tr ng-if="vm.cart.items.length" ng-repeat="cartItem in vm.cart.items">
                         <td class="product-image"><img style="max-height:50px; max-width:50px" ng-src="{{cartItem.productImage}}" /></td>
                         <td>
-                            <h4>{{cartItem.productName}}</h4>
-                            <p>{{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.departure}}</p>
-                            <p>{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} {{cartItem.landing}}</p>
-                            <ul class="list-unstyled">
-                                <li ng-repeat="opt in cartItem.variationOptions">
-                                    <span>{{opt.optionName}}:</span> {{opt.value}}
-                                </li>
-                            </ul>
+                            <label>{{cartItem.flightNumber}}</label>
+                            <span>{{cartItem.flightClass}} </span>
+                            <p><span style="color:darkblue"> {{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
+                            <p><span style="color:darkblue">{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}}</span> {{cartItem.landing}}</p>
+                            
+                            <label ng-if="cartItem.isRoundTrip">{{cartItem.returnFlightNumber}}</label>
+                            <span ng-if="cartItem.isRoundTrip">{{cartItem.flightClass}}</span>
+                            <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnDepartureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.landing}}</p>
+                            <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnLandingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
                         </td>
                         <td class="text-right" style="width:120px">
                             <p>adult <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
