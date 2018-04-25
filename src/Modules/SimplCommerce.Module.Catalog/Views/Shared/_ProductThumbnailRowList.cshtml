@@ -45,7 +45,7 @@
         <div class="col-sm-1 col-xs-6">
             <span>@Model.DepartureDate.Value.Date.ToShortDateString()</span>
         </div>
-        <div class="col-sm-1 col-xs-6">
+        <div class="col-sm-1 col-xs-6 text-right">
             <span class="flight-number">@Model.FlightNumber</span>
         </div>
         <div class="col-sm-3 col-xs-12">
@@ -95,7 +95,7 @@
             <div class="col-sm-1 col-xs-6">
                 <span>@Model.ReturnDepartureDate.Value.DateTime.ToShortDateString()</span>
             </div>    
-            <div class="col-sm-1 col-xs-6">
+            <div class="col-sm-1 col-xs-6 text-right">
                 <span class="flight-number">@Model.ReturnFlightNumber</span>
             </div> 
             <div class="col-sm-3 col-xs-12">
@@ -112,17 +112,22 @@
                     <!-- panel-footer -->
                     <div class="col-xs-6">
                         <div class="previous">
-                                <button class="btn btn-default moreDetails">
-                                    <i class="fas fa-search-plus"></i>
-                                    <i class="fas fa-search-minus" style="display: none;"></i>
-                                </button>
+                                
+    <button class="btn btn-default moreDetails">
+        <i class="fas fa-search-plus"></i>
+        <i class="fas fa-search-minus" style="display: none;"></i>
+    </button>
+                                
                         </div>
                     </div>
                     <div class="col-xs-6 text-right">
                         <div class="next">
-                                <button type="submit" id="@selectedFlightId"  class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
+                                
+                            
+                                <button type="submit" id="@selectedFlightId" class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
+                            
                                 <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
-                        </div>
+</div>
                     </div>
                 </div>
             </div>
