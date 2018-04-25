@@ -2,12 +2,12 @@
 
 @{
     var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
-    var durationTime = Model.DurationHours + "h " + Model.DurationMinutes + "m";
+    var durationTime = string.Format("{0:00}", Model.DurationHours) + "h " + string.Format("{0:00}", Model.DurationMinutes) + "m";
 
     string returnDurationTime  = string.Empty;
     if (Model.IsRoundTrip)
     {
-        returnDurationTime = Model.ReturnDurationHours + "h " + Model.ReturnDurationMinutes + "m";
+        returnDurationTime = string.Format("{0:00}", Model.ReturnDurationHours) + "h " + string.Format("{0:00}", Model.ReturnDurationMinutes) + "m";
     }
 
     var selectedFlightId = Model.Details.HasVariation ? Model.Details.Variations.First().Id : Model.Id;
@@ -45,7 +45,7 @@
         <div class="col-sm-1 col-xs-6">
             <span>@Model.DepartureDate.Value.Date.ToShortDateString()</span>
         </div>
-        <div class="col-sm-1 col-xs-6 text-right">
+        <div class="col-sm-1 col-xs-6">
             <span class="flight-number">@Model.FlightNumber</span>
         </div>
         <div class="col-sm-3 col-xs-12">
@@ -95,7 +95,7 @@
             <div class="col-sm-1 col-xs-6">
                 <span>@Model.ReturnDepartureDate.Value.DateTime.ToShortDateString()</span>
             </div>    
-            <div class="col-sm-1 col-xs-6 text-right">
+            <div class="col-sm-1 col-xs-6">
                 <span class="flight-number">@Model.ReturnFlightNumber</span>
             </div> 
             <div class="col-sm-3 col-xs-12">

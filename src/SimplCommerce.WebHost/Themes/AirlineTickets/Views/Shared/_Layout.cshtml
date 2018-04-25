@@ -93,33 +93,28 @@
         <div class="container">
             <!-- menü -->
             <div class="col-xs-12 col-md-4">
-                <h3>About Us</h3>
+                <h3>@Localizer["About Us"]</h3>
                 <ul class="list-unstyled list-widget">
-                    <li><a href="~/about">About</a></li>
-                    <li><a href="~/faq">FAQ</a></li>
-                    <li><a href="~/contact">Contact</a></li>
-                    <li><a href="~/agreements">Agreements</a></li>
-                    <li><a href="~/policy">Privacy Policy</a></li>
+                    <li><a href="~/about"><b>@Localizer["About"]</b></a></li>
+                    <li><a href="~/faq"><b>@Localizer["FAQ"]</b></a></li>
+                    <li><a href="~/contact"><b>@Localizer["Contact"]</b></a></li>
+                    <li><a href="~/agreements"><b>@Localizer["Agreements"]</b></a></li>
+                    <li><a href="~/policy"><b>@Localizer["Privacy Policy"]</b></a></li>
                 </ul>
             </div>
-            <div class="col-xs-12 col-md-4">
-                <h3>Payment</h3>
-                <img  style="border-radius:3px" src="~/themes/AirlineTickets/img/refill2.png" />
-            </div>
-
-            <div class="col-xs-12 col-md-4">
-                <h3>Subscribe</h3>
-                <p>Будьте в курсе самых лучших предложений и свежих новостей. Введите свой email и нажмите «Подписаться».</p>
+            <div class="col-xs-12 col-md-4 text-center">
+                <h3>@Localizer["Subscribe"]</h3>
+                <p class="text-right">@Localizer["Want to stay updated with the best offerings and latest news? Enter your email and click Subscribe"]</p>
                 <form name="subscribe" id="footer-subscribe" data-add-validation-email="true" novalidate="novalidate">
                     <div class="s7-theme row form-control-group">
                         <div class="col-md-12 ">
                             <div class="row">
-                                <div class="col-xs-12">
-                                    <input type="email" name="email" id="footer-email" class="input-h38 form-control br-green fs18" placeholder="Электронная почта" value="" maxlength="50" data-rule-email="true" required="" aria-required="true">
+                                 <div class="col-xs-12">
+                                    <input type="email" name="email" id="footer-email" class="input-h38 form-control br-green fs18" placeholder="Email" value="" maxlength="50" data-rule-email="true" required="" aria-required="true">
                                 </div>
                                 <div class="col-xs-12 text-right">
                                     <button type="button" style="margin-top:5px" class="btn btn-default" id="footer-btn-subscribe">
-                                        Subscribe
+                                        @Localizer["Subscribe"]
                                     </button>
                                 </div>
                             </div>
@@ -127,9 +122,16 @@
                     </div>
                 </form>
             </div>
+
+            <div class="col-xs-12 col-md-4 text-right">
+                <h3>
+                    <img style="border-radius:3px" src="~/themes/AirlineTickets/img/refill2.png" />
+                </h3>
+            </div>
             <div class="col-xs-12 text-center">
                 <br />
                 <br />
+                <p><img src="~/themes/AirlineTickets/img/ivm-tour.png" /></p>
                 <p style="display: inline-block; font-size: 0.75em; color: #aaa;padding-bottom:8px"><span style="margin-top:3px">Copyright 2018 www.charterwing.com </span></p>
                 <br />
             </div>
