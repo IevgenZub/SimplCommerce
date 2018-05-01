@@ -200,7 +200,7 @@ namespace SimplCommerce.Module.Search.Controllers
                 Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
-                Baggage = product.DisplayOrder,
+                Baggage = product.Baggage,
                 FlightNumber = product.FlightNumber,
                 FlightClass = product.FlightClass,
                 Carrier = product.Brand == null ? "" : product.Brand.Name,

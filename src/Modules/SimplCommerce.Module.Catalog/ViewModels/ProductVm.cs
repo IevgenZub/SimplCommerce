@@ -125,6 +125,10 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public DateTimeOffset? DepartureDate { get; set; }
         public int DurationHours { get; set; }
         public int DurationMinutes { get; set; }
+        public DateTimeOffset? LandingTime { get; set; }
+        public bool IsNextDayLanding { get; set; }
+        public DateTimeOffset? ReturnLandingTime { get; set; }
+        public bool ReturnIsNextDayLanding { get; set; }
 
 
         // Admin Rules Departure

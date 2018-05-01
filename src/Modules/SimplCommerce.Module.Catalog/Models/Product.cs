@@ -53,7 +53,7 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public string NormalizedName { get; set; }
 
-        public int DisplayOrder { get; set; }
+        public int Baggage { get; set; }
 
         public long? VendorId { get; set; }
 
@@ -91,6 +91,8 @@ namespace SimplCommerce.Module.Catalog.Models
         public DateTimeOffset? DepartureDate { get; set; }
         public int DurationHours { get; set; }
         public int DurationMinutes { get; set; }
+        public DateTimeOffset? LandingTime { get; set; }
+        public bool IsNextDayLanding { get; set; }
 
         // Return
 
@@ -105,6 +107,9 @@ namespace SimplCommerce.Module.Catalog.Models
         public string ReturnTerminal { get; set; }
         public string ReturnVia { get; set; }
         public string ReservationNumber { get; set; }
+        public DateTimeOffset? ReturnLandingTime { get; set; }
+        public bool ReturnIsNextDayLanding { get; set; }
+
 
         public string Status { get; set; }
         public string FlightClass { get; set; }
@@ -197,7 +202,7 @@ namespace SimplCommerce.Module.Catalog.Models
             product.BrandId = BrandId;
             product.VendorId = VendorId;
             product.Via = Via;
-            product.DisplayOrder = DisplayOrder;
+            product.Baggage = Baggage;
             product.SpecialPriceEnd = SpecialPriceEnd;
             product.SpecialPriceStart = SpecialPriceStart;
             product.Currency = Currency;
@@ -239,6 +244,10 @@ namespace SimplCommerce.Module.Catalog.Models
             product.ChildPrice = product.ChildPrice;
             product.AgencyChildPrice = product.AgencyChildPrice;
             product.AgencyPrice = product.AgencyPrice;
+            product.LandingTime = product.LandingTime;
+            product.IsNextDayLanding = product.IsNextDayLanding;
+            product.LandingTime = product.LandingTime;
+            product.IsNextDayLanding = product.IsNextDayLanding;
 
             foreach (var attribute in AttributeValues)
             {

@@ -94,7 +94,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ThumbnailImageUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage),
                 BrandId = product.BrandId,
                 TaxClassId = product.TaxClassId,
-                Baggage = product.DisplayOrder,
+                Baggage = product.Baggage,
                 Seats = product.StockQuantity,
                 TerminalInfo = product.Terminal,
                 Via = product.Via,
@@ -118,7 +118,11 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 DurationMinutes = product.DurationMinutes,
                 ReturnDurationHours = product.ReturnDurationHours,
                 ReturnDurationMinutes = product.ReturnDurationMinutes,
-                ChildPrice = product.ChildPrice
+                ChildPrice = product.ChildPrice,
+                LandingTime = product.LandingTime,
+                IsNextDayLanding = product.IsNextDayLanding,
+                ReturnLandingTime = product.ReturnLandingTime,
+                ReturnIsNextDayLanding = product.ReturnIsNextDayLanding
             };
 
             if (User.IsInRole("admin"))
@@ -367,7 +371,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 HasOptions = model.Product.Variations.Any() ? true : false,
                 IsVisibleIndividually = true,
                 CreatedBy = currentUser,
-                DisplayOrder = model.Product.Baggage,
+                Baggage = model.Product.Baggage,
                 StockQuantity = model.Product.Seats,
                 Terminal = model.Product.TerminalInfo,
                 Via = model.Product.Via,
@@ -391,6 +395,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 DurationMinutes = model.Product.DurationMinutes,
                 ReturnDurationHours = model.Product.ReturnDurationHours,
                 ReturnDurationMinutes = model.Product.ReturnDurationMinutes,
+                LandingTime = DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc),
+                IsNextDayLanding = model.Product.IsNextDayLanding,
+                ReturnLandingTime = DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc),
+                ReturnIsNextDayLanding = model.Product.ReturnIsNextDayLanding
             };
 
             if (!User.IsInRole("admin"))
@@ -512,7 +520,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.IsCallForPricing = model.Product.IsCallForPricing;
             product.IsAllowToOrder = model.Product.IsAllowToOrder;
             product.UpdatedBy = currentUser;
-            product.DisplayOrder = model.Product.Baggage;
+            product.Baggage = model.Product.Baggage;
             product.StockQuantity = model.Product.Seats;
             product.Terminal = model.Product.TerminalInfo;
             product.Via = model.Product.Via;
@@ -536,7 +544,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.DurationMinutes = model.Product.DurationMinutes;
             product.ReturnDurationHours = model.Product.ReturnDurationHours;
             product.ReturnDurationMinutes = model.Product.ReturnDurationMinutes;
-
+            product.LandingTime = DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc);
+            product.IsNextDayLanding = model.Product.IsNextDayLanding;
+            product.ReturnLandingTime = DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc);
+            product.ReturnIsNextDayLanding = model.Product.ReturnIsNextDayLanding;
 
             if (User.IsInRole("admin"))
             {

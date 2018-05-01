@@ -52,7 +52,7 @@
             <span><span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Departure</span>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <span><span class="flight-time">@Model.DepartureDate.Value.DateTime.AddHours(Model.DurationHours).AddMinutes(Model.DurationMinutes).ToString("HH:mm")</span> @Model.Landing </span>
+            <span class="flight-time">@Model.LandingTime.Value.DateTime.ToString("HH:mm") @if (Model.IsNextDayLanding) {<span>(+1)</span> } </span> @Model.Landing
         </div>
         <div class="col-sm-1 hidden-xs">
             <span class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</span>
@@ -102,7 +102,7 @@
                 <span><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing</span>
             </div>
             <div class="col-sm-3 col-xs-12">
-                <span><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.AddHours(Model.ReturnDurationHours).AddMinutes(Model.ReturnDurationMinutes).ToString("HH:mm")</span> @Model.Departure</span>
+                <span class="flight-time">@Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding) { <span>(+1)</span> } </span> @Model.Departure
             </div>
             <div class="col-sm-1 hidden-xs">
                 <span class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</span>

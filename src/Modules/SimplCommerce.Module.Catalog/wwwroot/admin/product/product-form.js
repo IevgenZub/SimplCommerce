@@ -369,7 +369,9 @@
             vm.product.specialPriceStart = vm.product.specialPriceStart === null ? '' : vm.product.specialPriceStart;
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
             vm.product.returnDepartureDate = vm.product.returnDepartureDate == null ? '' : new Date(vm.product.returnDepartureDate.valueOf() - vm.product.returnDepartureDate.getTimezoneOffset() * 60000);
-            vm.product.departureDate = vm.product.departureDate == null ? '' : new Date(vm.product.departureDate.valueOf() - vm.product.departureDate.getTimezoneOffset()*60000);
+            vm.product.departureDate = vm.product.departureDate == null ? '' : new Date(vm.product.departureDate.valueOf() - vm.product.departureDate.getTimezoneOffset() * 60000);
+            vm.product.landingTime = vm.product.landingTime == null ? '' : new Date(vm.product.landingTime.valueOf() - vm.product.landingTime.getTimezoneOffset() * 60000);
+            vm.product.returnLandingTime = vm.product.returnLandingTime == null ? '' : new Date(vm.product.returnLandingTime.valueOf() - vm.product.returnLandingTime.getTimezoneOffset() * 60000);
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
@@ -456,6 +458,14 @@
 
                 if (vm.product.departureDate) {
                     vm.product.departureDate = getUtcDate(new Date(vm.product.departureDate));
+                }
+
+                if (vm.product.landingTime) {
+                    vm.product.landingTime = getUtcDate(new Date(vm.product.landingTime));
+                }
+
+                if (vm.product.returnLandingTime) {
+                    vm.product.returnLandingTime = getUtcDate(new Date(vm.product.returnLandingTime));
                 }
             });
         }

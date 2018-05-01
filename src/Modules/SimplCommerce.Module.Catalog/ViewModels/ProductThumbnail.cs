@@ -68,6 +68,10 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public int ReturnDurationMinutes { get; set; }
         public bool IsRoundTrip { get; set; }
         public string Currency { get; set; }
+        public DateTimeOffset? LandingTime { get; set; }
+        public bool IsNextDayLanding { get; set; }
+        public DateTimeOffset? ReturnLandingTime { get; set; }
+        public bool ReturnIsNextDayLanding { get; set; }
 
         public ProductDetail Details { get; set; }
 
@@ -110,7 +114,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
                 Via = product.Via,
                 ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
-                ReturnVia = product.ReturnVia
+                ReturnVia = product.ReturnVia,
+                LandingTime = product.LandingTime,
+                IsNextDayLanding = product.IsNextDayLanding,
+                ReturnLandingTime = product.ReturnLandingTime,
+                ReturnIsNextDayLanding = product.ReturnIsNextDayLanding
             };
 
             return productThumbnail;

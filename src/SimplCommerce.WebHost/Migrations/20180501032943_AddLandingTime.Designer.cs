@@ -11,9 +11,10 @@ using System;
 namespace SimplCommerce.WebHost.Migrations
 {
     [DbContext(typeof(SimplDbContext))]
-    partial class SimplDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180501032943_AddLandingTime")]
+    partial class AddLandingTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,7 +270,7 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<bool>("IsVisibleIndividually");
 
-                    b.Property<DateTimeOffset?>("LandingTime");
+                    b.Property<string>("LandingTime");
 
                     b.Property<string>("MetaDescription");
 
@@ -308,10 +309,6 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<int>("ReturnDurationMinutes");
 
                     b.Property<string>("ReturnFlightNumber");
-
-                    b.Property<bool>("ReturnIsNextDayLanding");
-
-                    b.Property<DateTimeOffset?>("ReturnLandingTime");
 
                     b.Property<string>("ReturnTerminal");
 

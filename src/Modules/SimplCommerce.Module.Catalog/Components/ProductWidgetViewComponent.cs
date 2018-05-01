@@ -103,7 +103,7 @@ namespace SimplCommerce.Module.Catalog.Components
                 ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
                 ReturnVia = product.ReturnVia,
                 SoldSeats = product.SoldSeats,
-                Baggage = product.DisplayOrder,
+                Baggage = product.Baggage,
                 Departure = product.Departure,
                 Destination = product.Destination,
                 Specification = product.Specification,
