@@ -45,7 +45,6 @@
                         <th colspan="2">@Localizer["Flight"]</th>
                         <th class="text-right">@Localizer["Price"]</th>
                         <th class="text-center">@Localizer["Quantity"]</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +83,6 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="text-right"><button class="btn btn-link" ng-click="vm.removeShoppingCartItem(cartItem)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
                     </tr>
                     <tr ng-if="!vm.cart.items.length">
                         <td colspan="5" class="text-center">

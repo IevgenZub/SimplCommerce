@@ -1,0 +1,155 @@
+﻿@model SimplCommerce.Module.Orders.Models.Order
+
+<div class="panel-group passenger-registraion-panel">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-2 hidden-xs"><strong>First Name</strong></div>
+                        <div class="col-sm-2 hidden-xs"><strong>Last Name</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Birth Date</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Document#</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
+                        <div class="col-sm-2 hidden-xs"><strong>Email</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Phone</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Country</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                        <div class="address-container">
+                            @foreach (var address in Model.RegistrationAddress)
+                            {
+                                <div class="row passenger-row" style="border-bottom: 1px solid #eee; padding:5px" >
+                                    <div class="col-sm-4 col-md-2 col-xs-12 first-name">
+                                        <label class="visible-xs visible-sm hidden-label">First Name:&nbsp;</label>@address.Address.ContactName
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 col-xs-12 last-name">
+                                        <label class="visible-xs visible-sm hidden-label">Last Name:&nbsp;</label>@address.Address.AddressLine1
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Birth Date:&nbsp;</label>@address.Address.AddressLine2
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12 document-no">
+                                        <label class="visible-xs visible-sm hidden-label">Document #:&nbsp;</label>@address.Address.City
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Expiration:&nbsp;</label>@address.Address.PostalCode
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Email:&nbsp;</label>@address.Address.Email
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Phone:&nbsp;</label>@address.Address.Mobile
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Country:&nbsp;</label>@address.Address.Country.Name
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Sex:&nbsp;</label>@address.Address.Phone
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table border="0" cellpadding="0" cellspacing="0" style="background:#ffffff;width:100%">
+    <tbody>
+        <tr>
+            <td align="center" valign="top">
+                <table border="0" cellpadding="0" cellspacing="0" style="width:650px;border-top:1px #cccccc">
+                    <tbody>
+                        <tr>
+                            <td align="left" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#333333;background:#fff" valign="top">
+                                <p>Dear <strong>@Model.CreatedBy.FullName</strong>,</p>
+                                <p></p>
+                                <div style="background:#eff0f4;border:1px solid #e2e2e2;margin-top:10px;width:100%">
+                                    <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                        <tbody>
+                                            <tr style="padding:10px">
+                                                <td colspan="2" style="border-top:1px solid #eff0f4">
+                                                    <table style="padding:7px 0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding:2px 8px 0px 15px">@Localizer["Order No."]:</td>
+                                                                <td style="padding:2px 8px 0px 15px"><strong>@Model.Id</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 2px 8px 0px 15px">@Localizer["Order Date"]:</td>
+                                                                <td style="padding: 2px 8px 0px 15px"><strong>@Model.CreatedOn</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 2px 8px 0px 15px" valign="top">@Localizer["Shippping Address"]:</td>
+                                                                <td style="padding: 2px 8px 0px 15px">
+                                                                    <strong>@Model.ShippingAddress.ContactName @Model.ShippingAddress.AddressLine1</strong>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 2px 8px 0px 15px">@Localizer["Order Status"]:</td>
+                                                                <td style="padding: 2px 8px 0px 15px; color: green">@Model.OrderStatus</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="background:#eff0f4;border:1px solid #e2e2e2;margin-top:10px;width:100%">
+                                    <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                        <tbody>
+                                            <tr bgcolor="#cc0000" style="color:#fff;height:25px">
+                                                <th scope="col" style="padding:5px">@Localizer["Products"]</th>
+                                                <th scope="col" style="padding:5px">@Localizer["Price"]</th>
+                                                <th scope="col" style="padding:5px">@Localizer["Quantity"]</th>
+                                                <th scope="col" style="padding:5px">@Localizer["Total"]</th>
+                                            </tr>
+                                            @foreach (var item in Model.OrderItems)
+                                            {
+                                                <tr>
+                                                    <td style="padding:5px 0 5px 15px">
+                                                        <div>@item.Product.Name</div>
+                                                    </td>
+                                                    <td style="padding:5px 0;text-align:right">@item.ProductPrice.ToString("C0")</td>
+                                                    <td style="padding:5px 0;text-align:center">@item.Quantity</td>
+                                                    <td style="padding:5px 15px 5px 0px;text-align:right">@((item.ProductPrice * item.Quantity).ToString("C0"))</td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td align="right" colspan="3" style="border-top:1px solid #eff0f4;border-bottom:1px solid #eff0f4;padding:5px">@Localizer["Discount"]</td>
+                                                <td align="right" style="border-top:1px solid #eff0f4;border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px">@Model.Discount.ToString("C0")</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" colspan="3" style="border-bottom:1px solid #eff0f4;padding:5px">@Localizer["Shipping fee"]</td>
+                                                <td align="right" style="border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px">@Model.ShippingAmount.ToString("C0")</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" colspan="3" style="border-bottom:1px solid #eff0f4;padding:5px">@Localizer["Tax"]</td>
+                                                <td align="right" style="border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px">@Model.TaxAmount.ToString("C0")</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" colspan="3" style="border-bottom:1px solid #eff0f4;padding:5px"><strong>@Localizer["Order Total"]</strong></td>
+                                                <td align="right" style="border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px"><strong>@Model.OrderTotal.ToString("C0")</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>@Localizer["Thank you!"]</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
