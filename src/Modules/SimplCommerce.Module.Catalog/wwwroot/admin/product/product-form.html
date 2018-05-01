@@ -164,7 +164,7 @@
                             <label class="col-sm-2 control-label">Landing Time</label>
                             <div class="col-sm-4">
                                 <p class="input-group">
-                                    <input type="time" required ng-model="vm.product.returnLandingTime" />
+                                    <input type="time" ng-required="vm.product.isRoundTrip" ng-model="vm.product.returnLandingTime" />
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" ng-model="vm.product.returnIsNextDayLanding">Next Day
