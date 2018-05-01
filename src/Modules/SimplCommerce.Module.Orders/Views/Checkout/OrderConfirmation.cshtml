@@ -1,12 +1,9 @@
-﻿@model SimplCommerce.Module.Orders.Models.Order
-
-@{
+﻿@{
     ViewBag.Title = "Order received";
 }
 
 <h2>Your order has been received!</h2>
 
 <h3>PNR Number <span class="label label-primary">@ViewData["pnr"]</span></h3>
-<br />
 @await Component.InvokeAsync("OrderConfirmation", new { pnr = ViewData["pnr"] })
 

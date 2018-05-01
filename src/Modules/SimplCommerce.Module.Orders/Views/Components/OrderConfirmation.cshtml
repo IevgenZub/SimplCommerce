@@ -2,7 +2,31 @@
 
 <div class="panel-group passenger-registraion-panel">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12 text-center"><h4>Order Details</h4></div>
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-3"><strong>Airlines</strong></div>
+                        <div class="col-sm-3"><strong>Flight</strong></div>
+                        <div class="col-sm-3"><strong>Quantity</strong></div>
+                        <div class="col-sm-3"><strong>Price</strong></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-3">@Model.OrderItems[0].Product?.TaxClass?.Name @Model.OrderItems[0].Product?.Brand?.Name</div>
+                        <div class="col-sm-3"><span style="font-size:larger" class="label label-default">@Model.OrderItems[0].Product.FlightNumber @Model.OrderItems[0].Product.FlightClass </span></div>
+                        <div class="col-sm-3"><i style="font-size:xx-large" class="fas fa-male"></i>&nbsp;@Model.OrderItems[0].Quantity &nbsp;<i style="font-size:x-large" class="fas fa-male"></i>&nbsp; @Model.OrderItems[0].QuantityChild &nbsp; <i class="fas fa-male"></i>&nbsp; @Model.OrderItems[0].QuantityBaby</div>
+                        <div class="col-sm-3"><i style="font-size:xx-large" class="fas fa-male"></i>&nbsp;<span class="priceToConvert">@Model.OrderItems[0].ProductPrice </span>&nbsp;<i style="font-size:x-large" class="fas fa-male"></i>&nbsp;<span class="priceToConvert">@Model.OrderItems[0].ProductPrice</span> &nbsp;<i class="fas fa-male"></i>&nbsp;<span class="priceToConvert">@Model.OrderItems[0].ChildPrice </span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center"><h4>Passengers</h4></div>
+        <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
@@ -21,7 +45,7 @@
                         <div class="address-container">
                             @foreach (var address in Model.RegistrationAddress)
                             {
-                                <div class="row passenger-row" style="border-bottom: 1px solid #eee; padding:5px" >
+                                <div class="row passenger-row" >
                                     <div class="col-sm-4 col-md-2 col-xs-12 first-name">
                                         <label class="visible-xs visible-sm hidden-label">First Name:&nbsp;</label>@address.Address.ContactName
                                     </div>
@@ -58,98 +82,4 @@
     </div>
 </div>
 
-<table border="0" cellpadding="0" cellspacing="0" style="background:#ffffff;width:100%">
-    <tbody>
-        <tr>
-            <td align="center" valign="top">
-                <table border="0" cellpadding="0" cellspacing="0" style="width:650px;border-top:1px #cccccc">
-                    <tbody>
-                        <tr>
-                            <td align="left" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#333333;background:#fff" valign="top">
-                                <p>Dear <strong>@Model.CreatedBy.FullName</strong>,</p>
-                                <p></p>
-                                <div style="background:#eff0f4;border:1px solid #e2e2e2;margin-top:10px;width:100%">
-                                    <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" style="width:100%">
-                                        <tbody>
-                                            <tr style="padding:10px">
-                                                <td colspan="2" style="border-top:1px solid #eff0f4">
-                                                    <table style="padding:7px 0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td style="padding:2px 8px 0px 15px">@Localizer["Order No."]:</td>
-                                                                <td style="padding:2px 8px 0px 15px"><strong>@Model.Id</strong></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding: 2px 8px 0px 15px">@Localizer["Order Date"]:</td>
-                                                                <td style="padding: 2px 8px 0px 15px"><strong>@Model.CreatedOn</strong></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding: 2px 8px 0px 15px" valign="top">@Localizer["Shippping Address"]:</td>
-                                                                <td style="padding: 2px 8px 0px 15px">
-                                                                    <strong>@Model.ShippingAddress.ContactName @Model.ShippingAddress.AddressLine1</strong>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding: 2px 8px 0px 15px">@Localizer["Order Status"]:</td>
-                                                                <td style="padding: 2px 8px 0px 15px; color: green">@Model.OrderStatus</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div style="background:#eff0f4;border:1px solid #e2e2e2;margin-top:10px;width:100%">
-                                    <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" style="width:100%">
-                                        <tbody>
-                                            <tr bgcolor="#cc0000" style="color:#fff;height:25px">
-                                                <th scope="col" style="padding:5px">@Localizer["Products"]</th>
-                                                <th scope="col" style="padding:5px">@Localizer["Price"]</th>
-                                                <th scope="col" style="padding:5px">@Localizer["Quantity"]</th>
-                                                <th scope="col" style="padding:5px">@Localizer["Total"]</th>
-                                            </tr>
-                                            @foreach (var item in Model.OrderItems)
-                                            {
-                                                <tr>
-                                                    <td style="padding:5px 0 5px 15px">
-                                                        <div>@item.Product.Name</div>
-                                                    </td>
-                                                    <td style="padding:5px 0;text-align:right">@item.ProductPrice.ToString("C0")</td>
-                                                    <td style="padding:5px 0;text-align:center">@item.Quantity</td>
-                                                    <td style="padding:5px 15px 5px 0px;text-align:right">@((item.ProductPrice * item.Quantity).ToString("C0"))</td>
-                                                </tr>
-                                            }
-                                            <tr>
-                                                <td align="right" colspan="3" style="border-top:1px solid #eff0f4;border-bottom:1px solid #eff0f4;padding:5px">@Localizer["Discount"]</td>
-                                                <td align="right" style="border-top:1px solid #eff0f4;border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px">@Model.Discount.ToString("C0")</td>
-                                            </tr>
-                                            <tr>
-                                                <td align="right" colspan="3" style="border-bottom:1px solid #eff0f4;padding:5px">@Localizer["Shipping fee"]</td>
-                                                <td align="right" style="border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px">@Model.ShippingAmount.ToString("C0")</td>
-                                            </tr>
-                                            <tr>
-                                                <td align="right" colspan="3" style="border-bottom:1px solid #eff0f4;padding:5px">@Localizer["Tax"]</td>
-                                                <td align="right" style="border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px">@Model.TaxAmount.ToString("C0")</td>
-                                            </tr>
-                                            <tr>
-                                                <td align="right" colspan="3" style="border-bottom:1px solid #eff0f4;padding:5px"><strong>@Localizer["Order Total"]</strong></td>
-                                                <td align="right" style="border-bottom:1px solid #eff0f4;padding:5px 16px 5px 5px"><strong>@Model.OrderTotal.ToString("C0")</strong></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>@Localizer["Thank you!"]</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-</table>
 

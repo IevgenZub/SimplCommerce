@@ -248,6 +248,8 @@ namespace SimplCommerce.Module.Orders.Services
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.ThumbnailImage)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.TaxClass)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.Brand)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.OptionCombinations).ThenInclude(x => x.Option)
                 .Include(x => x.CreatedBy)
                 .Include(x => x.RegistrationAddress).ThenInclude(ra => ra.Address).ThenInclude(a => a.Country)

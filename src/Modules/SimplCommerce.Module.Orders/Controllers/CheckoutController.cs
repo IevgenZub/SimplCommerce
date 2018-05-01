@@ -220,24 +220,11 @@ namespace SimplCommerce.Module.Orders.Controllers
         [HttpGet("congratulation")]
         public IActionResult OrderConfirmation()
         {
-            Order order = null;
             var pnr = HttpContext.Request.Query["pnr"].ToString();
-            var orderId = HttpContext.Request.Query["orderId"].ToString();
             
-            if (string.IsNullOrEmpty(orderId))
-            {
-                order = _orderService.GetOrderByPnr(pnr);
-            }
-            else
-            {
-                var id = Convert.ToInt32(orderId);
-                order = _orderService.GetOrder(id);
-            }
-
-
             ViewData["pnr"] = pnr;
 
-            return View(order);
+            return View();
         }
 
         [HttpGet("payment-failed")]
