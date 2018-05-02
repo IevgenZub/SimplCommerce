@@ -1,31 +1,67 @@
 ﻿@model SimplCommerce.Module.Orders.Models.Order
 
+@{ 
+    var orderItem = Model.OrderItems[0];
+    var flight = Model.OrderItems[0].Product;
+    var carrierImageUrl = ViewBag.CarrierImageUrl;
+    var totalPassengers = orderItem.QuantityBaby + orderItem.QuantityChild + orderItem.Quantity;
+}
+
 <div class="panel-group passenger-registraion-panel">
     <div class="row">
-        <div class="col-sm-12 text-center"><h4>Order Details</h4></div>
+        <div class="col-sm-12 text-center"><h4>Order # @Model.Id</h4></div>
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-sm-3"><strong>Airlines</strong></div>
-                        <div class="col-sm-3"><strong>Flight</strong></div>
-                        <div class="col-sm-3"><strong>Quantity</strong></div>
-                        <div class="col-sm-3"><strong>Price</strong></div>
+                        <div class="col-sm-1"><strong>Carrier</strong></div>
+                        <div class="col-sm-2"><strong>Flight</strong></div>
+                        <div class="col-sm-2"><strong>Departure</strong></div>
+                        <div class="col-sm-2"><strong>Destiation</strong></div>
+                        <div class="col-sm-1"><strong>Departure</strong></div>
+                        <div class="col-sm-1"><strong>Status</strong></div>
+                        <div class="col-sm-3 text-right"><strong>Quantity/Price</strong></div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-3">@Model.OrderItems[0].Product?.TaxClass?.Name @Model.OrderItems[0].Product?.Brand?.Name</div>
-                        <div class="col-sm-3"><span style="font-size:larger" class="label label-default">@Model.OrderItems[0].Product.FlightNumber @Model.OrderItems[0].Product.FlightClass </span></div>
-                        <div class="col-sm-3"><i style="font-size:xx-large" class="fas fa-male"></i>&nbsp;@Model.OrderItems[0].Quantity &nbsp;<i style="font-size:x-large" class="fas fa-male"></i>&nbsp; @Model.OrderItems[0].QuantityChild &nbsp; <i class="fas fa-male"></i>&nbsp; @Model.OrderItems[0].QuantityBaby</div>
-                        <div class="col-sm-3"><i style="font-size:xx-large" class="fas fa-male"></i>&nbsp;<span class="priceToConvert">@Model.OrderItems[0].ProductPrice </span>&nbsp;<i style="font-size:x-large" class="fas fa-male"></i>&nbsp;<span class="priceToConvert">@Model.OrderItems[0].ProductPrice</span> &nbsp;<i class="fas fa-male"></i>&nbsp;<span class="priceToConvert">@Model.OrderItems[0].ChildPrice </span></div>
+                        <div class="col-sm-1">
+                            <figure class="text-center">
+                                <img src="@carrierImageUrl">
+                                <figcaption style="font-size:smaller">@flight.Brand.Name</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-sm-2">
+                            <span style="font-size:14px" class="label label-default">@flight.FlightNumber @flight.FlightClass </span>
+                        </div>
+                        <div class="col-sm-2">
+                            @flight.Departure
+                        </div>
+                        <div class="col-sm-2">
+                            @flight.Destination
+                        </div>
+                        <div class="col-sm-1">@flight.DepartureDate.Value.DateTime.ToShortDateString()</div>
+                        <div class="col-sm-1">@Model.OrderStatus.ToString()</div>
+                        <div class="col-sm-3  text-right">
+                            <p><i style="font-size:xx-large" class="fas fa-male"></i>&nbsp;@orderItem.Quantity x <span class="priceToConvert">&nbsp;@orderItem.ProductPrice</span> + <i style="font-size:x-large" class="fas fa-male"></i> @Model.OrderItems[0].QuantityChild x <span class="priceToConvert">@orderItem.ProductPrice</span>  +  <i class="fas fa-male"></i>&nbsp;@orderItem.QuantityBaby x <span class="priceToConvert">@orderItem.ChildPrice</span></p>
+                            <p></p>
+                            <p><strong>Agency Fee</strong> <span class="priceToConvert">@Model.ShippingAmount</span></p>
+                        </div>
                     </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-6">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email</span> at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
+                        <div class="col-sm-6 text-right">
+                            <strong>Order Total <span class="priceToConvert">@Model.OrderTotal</span></strong> 
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 text-center"><h4>Passengers</h4></div>
+        <div class="col-sm-12 text-center"><h4> <span class="badge badge-default">@totalPassengers</span> Passenger(s)</h4></div>
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
