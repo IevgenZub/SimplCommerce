@@ -35,62 +35,68 @@
     }
 
 </style>
-
 <div class="cart-list product-detail" ng-app="simpl.shoppingCart" ng-controller="shoppingCartListCtrl as vm" ng-cloak>
     <div class="row">
         <div class="col-md-9">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th colspan="2">@Localizer["Flight"]</th>
-                        <th class="text-right">@Localizer["Price"]</th>
-                        <th class="text-center">@Localizer["Quantity"]</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-if="vm.cart.items.length" ng-repeat="cartItem in vm.cart.items">
-                        <td class="product-image"><img style="max-height:50px; max-width:50px" ng-src="{{cartItem.productImage}}" /></td>
-                        <td>
-                            <h4><span class="label label-default">{{cartItem.flightNumber}} {{cartItem.flightClass}}</span></h4>
-                            <p><span style="color:darkblue"> {{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
-                            <p><span style="color:darkblue">{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}}</span> {{cartItem.landing}}</p>
-                            
-                            <h4><span class="label label-default" ng-if="cartItem.isRoundTrip">{{cartItem.returnFlightNumber}} {{cartItem.flightClass}}</span></h4>
-                            <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnDepartureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.landing}}</p>
-                            <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnLandingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
-                        </td>
-                        <td class="text-right" style="width:120px">
-                            <p>@Localizer["adult"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
-                            <p>@Localizer["child"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
-                            <p>@Localizer["baby"] <span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}">{{cartItem.childPrice}}</span></p>
-                        </td>
-                        <td class="text-center" style="width:300px">
-                            <div class="add-to-cart ">
-                                <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantity(cartItem)" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" ng-model="cartItem.quantity"  class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
-                                    <button type="button" class="quantity-button quantity-button-adult" ng-click="vm.increaseQuantity(cartItem)" style="font-size:smaller;text-align:left" name="add" value="+">+ (18+)</button>
-                                </div>
-                                <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantityChild(cartItem)" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" ng-model="cartItem.quantityChild" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
-                                    <button type="button" ng-click="vm.increaseQuantityChild(cartItem)" class="quantity-button quantity-button-child" style="font-size:smaller;text-align:left" name="add" value="+">+ (2-11)</button>
-                                </div>
-                                <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantityBaby(cartItem)" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" ng-model="cartItem.quantityBaby" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
-                                    <button type="button" ng-click="vm.increaseQuantityBaby(cartItem)"  class="quantity-button quantity-button-baby" style="font-size:smaller; text-align:left" name="add" value="+">+ (0-2)</button>
+            <div class="panel-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-sm-1 hidden-xs"><strong>@Localizer["Carrier"]</strong></div>
+                                    <div class="col-sm-6 hidden-xs"><strong>@Localizer["Flight"]</strong></div>
+                                    <div class="col-sm-2 hidden-xs"><strong>@Localizer["Price"]</strong></div>
+                                    <div class="col-sm-3 hidden-xs"><strong>@Localizer["Quantity"]</strong></div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr ng-if="!vm.cart.items.length">
-                        <td colspan="5" class="text-center">
-                            @Localizer["There are no items in this cart."] <a href="~/">@Localizer["Go to shopping"]</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <div class="panel-body">
+                                <div class="row" ng-repeat="cartItem in vm.cart.items">
+                                    <div class="col-sm-1">
+                                        <figure class="text-center">
+                                            <img ng-src="{{cartItem.productImage}}">
+                                            <figcaption style="font-size:smaller">{{cartItem.brand.name}}</figcaption>
+                                        </figure>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4><span class="label label-default">{{cartItem.flightNumber}} {{cartItem.flightClass}}</span></h4>
+                                        <p><span style="color:darkblue"> {{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
+                                        <p><span style="color:darkblue">{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}}</span> {{cartItem.landing}}</p>
+
+                                        <h4><span class="label label-default" ng-if="cartItem.isRoundTrip">{{cartItem.returnFlightNumber}} {{cartItem.flightClass}}</span></h4>
+                                        <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnDepartureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.landing}}</p>
+                                        <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnLandingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p>@Localizer["adult"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
+                                        <p>@Localizer["child"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
+                                        <p>@Localizer["baby"] <span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}">{{cartItem.childPrice}}</span></p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="add-to-cart ">
+                                            <div class="product-quantity">
+                                                <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantity(cartItem)" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
+                                                <input type="text" style="font-size:smaller" ng-model="cartItem.quantity" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
+                                                <button type="button" class="quantity-button quantity-button-adult" ng-click="vm.increaseQuantity(cartItem)" style="font-size:smaller;text-align:left" name="add" value="+">+ (18+)</button>
+                                            </div>
+                                            <div class="product-quantity">
+                                                <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantityChild(cartItem)" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
+                                                <input type="text" style="font-size:smaller" ng-model="cartItem.quantityChild" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
+                                                <button type="button" ng-click="vm.increaseQuantityChild(cartItem)" class="quantity-button quantity-button-child" style="font-size:smaller;text-align:left" name="add" value="+">+ (2-11)</button>
+                                            </div>
+                                            <div class="product-quantity">
+                                                <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantityBaby(cartItem)" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
+                                                <input type="text" style="font-size:smaller" ng-model="cartItem.quantityBaby" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
+                                                <button type="button" ng-click="vm.increaseQuantityBaby(cartItem)" class="quantity-button quantity-button-baby" style="font-size:smaller; text-align:left" name="add" value="+">+ (0-2)</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-3">
             <div class="order-summary text-right" ng-if="vm.cart.items.length">

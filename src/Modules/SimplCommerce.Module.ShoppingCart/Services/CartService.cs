@@ -79,6 +79,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
             cartVm.Items = _cartItemRepository
                 .Query()
                 .Include(x => x.Product).ThenInclude(p => p.ThumbnailImage)
+                .Include(x => x.Product).ThenInclude(p => p.Brand)
                 .Include(x => x.Product).ThenInclude(p => p.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.CartId == cart.Id)
                 .Select(x => new CartItemVm
