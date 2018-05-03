@@ -86,6 +86,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
                 {
                     Id = x.Id,
                     ProductId = x.ProductId,
+                    Carrier = x.Product.Brand.Name,
                     FlightNumber = x.Product.FlightNumber,
                     FlightClass = x.Product.FlightClass,
                     ReturnFlightNumber = x.Product.ReturnFlightNumber,

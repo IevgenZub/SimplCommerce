@@ -11,6 +11,8 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
 
         public long ProductId { get; set; }
 
+        public string Carrier { get; set; }
+
         public string FlightNumber { get; set; }
 
         public string FlightClass { get; set; }
