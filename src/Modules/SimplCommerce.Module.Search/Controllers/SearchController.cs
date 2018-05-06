@@ -60,7 +60,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.Status == "ACCEPTED" &&
                     !x.IsDeleted  &&
                     x.IsPublished &&
-                    !x.IsVisibleIndividually &&
+                    !x.HasOptions &&
                     x.DepartureDate >= DateTime.Now);
                 
             var departureDateMin = departureDate.AddDays(-7);

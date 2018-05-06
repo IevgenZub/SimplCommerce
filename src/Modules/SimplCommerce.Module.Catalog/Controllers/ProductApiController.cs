@@ -395,9 +395,9 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 DurationMinutes = model.Product.DurationMinutes,
                 ReturnDurationHours = model.Product.ReturnDurationHours,
                 ReturnDurationMinutes = model.Product.ReturnDurationMinutes,
-                LandingTime = DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc),
+                LandingTime = model.Product.LandingTime.HasValue ? DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?),
                 IsNextDayLanding = model.Product.IsNextDayLanding,
-                ReturnLandingTime = DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc),
+                ReturnLandingTime = model.Product.ReturnLandingTime.HasValue ? DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?),
                 ReturnIsNextDayLanding = model.Product.ReturnIsNextDayLanding
             };
 
@@ -544,9 +544,9 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.DurationMinutes = model.Product.DurationMinutes;
             product.ReturnDurationHours = model.Product.ReturnDurationHours;
             product.ReturnDurationMinutes = model.Product.ReturnDurationMinutes;
-            product.LandingTime = DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc);
+            product.LandingTime = model.Product.LandingTime.HasValue ? DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?);
             product.IsNextDayLanding = model.Product.IsNextDayLanding;
-            product.ReturnLandingTime = DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc);
+            product.ReturnLandingTime = model.Product.ReturnLandingTime.HasValue ? DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?);
             product.ReturnIsNextDayLanding = model.Product.ReturnIsNextDayLanding;
 
             if (User.IsInRole("admin"))
