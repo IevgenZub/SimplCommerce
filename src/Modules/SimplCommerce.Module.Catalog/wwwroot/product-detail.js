@@ -64,9 +64,5 @@
                 quantityInput.val(quantityInput.val() - 1);
             }
         });
-
-        $('input[type=radio]:checked').each(function (index) {
-            $(this).parent('li').click();
-        });
     });
 })(jQuery);

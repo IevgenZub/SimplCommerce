@@ -58,6 +58,9 @@ namespace SimplCommerce.Module.Search.Controllers
                     x.Departure.Contains(searchOption.Departure) &&
                     x.Destination.Contains(searchOption.Landing) &&
                     x.Status == "ACCEPTED" &&
+                    !x.IsDeleted  &&
+                    x.IsPublished &&
+                    !x.IsVisibleIndividually &&
                     x.DepartureDate >= DateTime.Now);
                 
             var departureDateMin = departureDate.AddDays(-7);

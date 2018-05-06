@@ -1,7 +1,6 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
 
 @{
-    var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
     var durationTime = string.Format("{0:00}", Model.DurationHours) + "h " + string.Format("{0:00}", Model.DurationMinutes) + "m";
 
     string returnDurationTime  = string.Empty;
@@ -10,7 +9,7 @@
         returnDurationTime = string.Format("{0:00}", Model.ReturnDurationHours) + "h " + string.Format("{0:00}", Model.ReturnDurationMinutes) + "m";
     }
 
-    var selectedFlightId = Model.Details.HasVariation ? Model.Details.Variations.First().Id : Model.Id;
+    var selectedFlightId = (Model.Details.HasVariation && Model.Details.Variations.Any()) ? Model.Details.Variations.First().Id : Model.Id;
     var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First().CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
 
     var qtyAdult = 1;

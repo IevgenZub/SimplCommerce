@@ -7,7 +7,13 @@ $(function () {
         quantity = $("input[data-product-id='"+ productId + "'][class='quantity-field quantity-field-adult']").val(); 
         quantityChild = $("input[data-product-id='" + productId + "'][class='quantity-field quantity-field-child']").val();
         quantityBaby = $("input[data-product-id='" + productId + "'][class='quantity-field quantity-field-baby']").val();
-            
+
+        if (!quantity) {
+            quantity = 1;
+            quantityChild = 0;
+            quantityBaby = 0;
+        }
+        
         $.ajax({
             type: 'POST',
             url: '/cart/addtocart',
