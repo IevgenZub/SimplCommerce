@@ -65,5 +65,8 @@
             }
         });
 
+        $('input[type=radio]:checked').each(function (index) {
+            $(this).parent('li').click();
+        });
     });
 })(jQuery);

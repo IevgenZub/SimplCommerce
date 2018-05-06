@@ -35,6 +35,9 @@
     }
 
 </style>
+
+<h3>@Localizer["Order Confirmation"]</h3>
+
 <div class="cart-list product-detail" ng-app="simpl.shoppingCart" ng-controller="shoppingCartListCtrl as vm" ng-cloak>
     <div class="row">
         <div class="col-md-9">
@@ -44,10 +47,10 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="col-sm-1 hidden-xs"><strong>@Localizer["Carrier"]</strong></div>
+                                    <div class="col-sm-1 hidden-xs"></div>
                                     <div class="col-sm-6 hidden-xs"><strong>@Localizer["Flight"]</strong></div>
-                                    <div class="col-sm-2 hidden-xs"><strong>@Localizer["Price"]</strong></div>
                                     <div class="col-sm-3 hidden-xs"><strong>@Localizer["Quantity"]</strong></div>
+                                    <div class="col-sm-2 text-right hidden-xs"><strong>@Localizer["Price"]</strong></div>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -67,12 +70,7 @@
                                         <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnDepartureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.landing}}</p>
                                         <p ng-if="cartItem.isRoundTrip"><span style="color:darkblue">{{cartItem.returnLandingDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
                                     </div>
-                                    <div class="col-sm-2">
-                                        <p>@Localizer["adult"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
-                                        <p>@Localizer["child"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
-                                        <p>@Localizer["baby"] <span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}">{{cartItem.childPrice}}</span></p>
-                                    </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-3 col-xs-9">
                                         <div class="add-to-cart ">
                                             <div class="product-quantity">
                                                 <button type="button" style="font-size:smaller" ng-click="vm.decreaseQuantity(cartItem)" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
@@ -90,6 +88,11 @@
                                                 <button type="button" ng-click="vm.increaseQuantityBaby(cartItem)" class="quantity-button quantity-button-baby" style="font-size:smaller; text-align:left" name="add" value="+">+ (0-2)</button>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-sm-2 col-xs-3 text-right">
+                                        <p>@Localizer["adult"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
+                                        <p>@Localizer["child"] <span class="priceToConvert" data-usd-price="{{cartItem.productPrice}}">{{cartItem.productPrice}}</span></p>
+                                        <p>@Localizer["baby"] <span class="priceToConvert" data-usd-price="{{cartItem.childPrice}}">{{cartItem.childPrice}}</span></p>
                                     </div>
                                 </div>
                             </div>
