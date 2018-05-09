@@ -99,7 +99,7 @@
                 <p class="flight-number">@Model.ReturnFlightNumber</p>
             </div> 
             <div class="col-sm-3 col-xs-12">
-                <p><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing</p>
+                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing
             </div>
             <div class="col-sm-3 col-xs-12">
                 <p><span class="flight-time">@Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding)
