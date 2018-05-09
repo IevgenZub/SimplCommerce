@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Reservation #</label>
                         <div class="col-sm-10">
-                            <input id="productReservationNumber" type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
+                            <input id="productReservationNumber" ng-disabled="!vm.userIsAdmin" type="text" name="provider" ng-model="vm.product.reservationNumber" class="form-control" />
                         </div>
                     </div>
                     <div ng-show="vm.userIsAdmin" class="form-group" >

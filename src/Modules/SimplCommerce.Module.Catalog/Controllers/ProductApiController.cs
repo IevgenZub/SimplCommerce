@@ -600,7 +600,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
         [HttpPost("change-status/{id}")]
         public async Task<IActionResult> ChangeStatus(long id)
         {
-            var product = _productRepository.Query().FirstOrDefault(x => x.Id == id);
+            var product = _productRepository.Query().Include(p => p.Vendor).FirstOrDefault(x => x.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -611,9 +611,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 return BadRequest(new { error = "You don't have permission to manage this product" });
             }
-
-            //product.IsPublished = !product.IsPublished;
+            
             product.Status = product.Status == "ACCEPTED" ? "PAUSE" : "ACCEPTED";
+
+            if (product.Status == "ACCEPTED" && string.IsNullOrEmpty(product.ReservationNumber))
+            {
+                product.ReservationNumber = product.Id.ToReservation(product.Vendor.Name);
+            }
+
             await _productRepository.SaveChangesAsync();
 
             return Accepted();

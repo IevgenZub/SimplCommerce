@@ -239,15 +239,21 @@ namespace SimplCommerce.Module.Catalog.Models
             product.FlightClass = FlightClass;
             product.SoldSeats = 0;
             product.DepartureDate = DepartureDate;
-            product.PassengerChildPrice = product.PassengerChildPrice;
-            product.PassengerPrice = product.PassengerPrice;
-            product.ChildPrice = product.ChildPrice;
-            product.AgencyChildPrice = product.AgencyChildPrice;
-            product.AgencyPrice = product.AgencyPrice;
-            product.LandingTime = product.LandingTime;
-            product.IsNextDayLanding = product.IsNextDayLanding;
-            product.LandingTime = product.LandingTime;
-            product.IsNextDayLanding = product.IsNextDayLanding;
+            product.PassengerChildPrice = PassengerChildPrice;
+            product.PassengerPrice = PassengerPrice;
+            product.ChildPrice = ChildPrice;
+            product.AgencyChildPrice = AgencyChildPrice;
+            product.AgencyPrice = AgencyPrice;
+            product.LandingTime = LandingTime;
+            product.IsNextDayLanding = IsNextDayLanding;
+            product.ReturnLandingTime = ReturnLandingTime;
+            product.ReturnIsNextDayLanding = ReturnIsNextDayLanding;
+            product.Terminal = Terminal;
+            product.DurationHours = DurationHours;
+            product.DurationMinutes = DurationMinutes;
+            product.ReturnDurationHours = ReturnDurationHours;
+            product.ReturnDurationMinutes = ReturnDurationMinutes;
+            product.ReturnVia = ReturnVia;
 
             foreach (var attribute in AttributeValues)
             {
