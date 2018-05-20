@@ -13,6 +13,7 @@ using SimplCommerce.Module.Catalog.Services;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using SimplCommerce.Module.Core.ViewModels;
+using System.Globalization;
 
 namespace SimplCommerce.Module.Search.Controllers
 {
@@ -54,9 +55,20 @@ namespace SimplCommerce.Module.Search.Controllers
             var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
             var isRoundTrip = searchOption.TripType == "round-trip";
 
+            if (CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru")
+            {
+                query = query.Where(x =>
+                        x.DepartureRus.Contains(searchOption.Departure) &&
+                        x.DestinationRus.Contains(searchOption.Landing));
+            }
+            else
+            {
+                query = query.Where(x =>
+                        x.Departure.Contains(searchOption.Departure) &&
+                        x.Destination.Contains(searchOption.Landing));
+            }
+
             query = query.Where(x =>
-                    x.Departure.Contains(searchOption.Departure) &&
-                    x.Destination.Contains(searchOption.Landing) &&
                     x.Status == "ACCEPTED" &&
                     !x.IsDeleted  &&
                     x.IsPublished &&

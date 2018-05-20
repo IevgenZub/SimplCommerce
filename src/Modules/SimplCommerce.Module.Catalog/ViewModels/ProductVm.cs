@@ -48,6 +48,10 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Destination { get; set; }
 
+        public string DepartureRus { get; set; }
+
+        public string DestinationRus { get; set; }
+
         public string Specification { get; set; }
 
         public bool IsPublished { get; set; }

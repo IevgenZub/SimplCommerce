@@ -1,4 +1,5 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
+@using System.Globalization
 
 @{
     var durationTime = string.Format("{0:00}", Model.DurationHours) + "h " + string.Format("{0:00}", Model.DurationMinutes) + "m";
@@ -31,6 +32,9 @@
     }
 
     selectedPrice = selectedPrice * qtyAdult + selectedPrice * qtyChild + Model.ChildPrice * qtyBaby;
+
+    var departure = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.DepartureRus : Model.Departure;
+    var landing = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.LandingRus : Model.Landing;
 }
 
 <div class="my-thumbnail flight-item">
@@ -48,11 +52,11 @@
             <p class="flight-number">@Model.FlightNumber</p>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Departure
+            <span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @departure
         </div>
         <div class="col-sm-3 col-xs-12">
             <p><span class="flight-time"> @Model.LandingTime.Value.DateTime.ToString("HH:mm") @if (Model.IsNextDayLanding)
-            {<span>(+1)</span> } </span> @Model.Landing </p>
+            {<span>(+1)</span> } </span> @landing </p>
         </div>
         <div class="col-sm-1 hidden-xs">
             <p class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</p>
@@ -99,11 +103,11 @@
                 <p class="flight-number">@Model.ReturnFlightNumber</p>
             </div> 
             <div class="col-sm-3 col-xs-12">
-                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @Model.Landing
+                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @landing
             </div>
             <div class="col-sm-3 col-xs-12">
                 <p><span class="flight-time">@Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding)
-                { <span>(+1)</span> } </span> @Model.Departure </p> 
+                { <span>(+1)</span> } </span> @departure </p> 
             </div>
             <div class="col-sm-1 hidden-xs">
                 <p class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</p>

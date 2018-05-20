@@ -47,6 +47,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Departure { get; set; }
         public string Landing { get; set; }
+        public string DepartureRus { get; set; }
+        public string LandingRus { get; set; }
         public DateTimeOffset? DepartureDate { get; set; }
         public int DurationHours { get; set; }
         public int DurationMinutes { get; set; }
@@ -96,6 +98,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 RatingAverage = product.RatingAverage,
                 Departure = product.Departure.Split(',')[0] + " (" + product.Departure.Split('(', ')')[1] + ")",
                 Landing = product.Destination.Split(',')[0] + " (" + product.Destination.Split('(', ')')[1] + ")",
+                DepartureRus = product.DepartureRus.Split(',')[0] + " (" + product.DepartureRus.Split('(', ')')[1] + ")",
+                LandingRus = product.DestinationRus.Split(',')[0] + " (" + product.DestinationRus.Split('(', ')')[1] + ")",
                 DepartureDate = product.DepartureDate,
                 DurationHours = product.DurationHours,
                 DurationMinutes = product.DurationMinutes,

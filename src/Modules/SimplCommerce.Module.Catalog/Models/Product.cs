@@ -11,6 +11,10 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public string Destination { get; set; }
 
+        public string DepartureRus { get; set; }
+
+        public string DestinationRus { get; set; }
+
         public string Specification { get; set; }
 
         public decimal Price { get; set; }
@@ -191,6 +195,8 @@ namespace SimplCommerce.Module.Catalog.Models
             product.MetaDescription = MetaDescription;
             product.Departure = Departure;
             product.Destination = Destination;
+            product.DepartureRus = DepartureRus;
+            product.DestinationRus = DestinationRus;
             product.Specification = Specification;
             product.IsPublished = true;
             product.PublishedOn = DateTimeOffset.Now;

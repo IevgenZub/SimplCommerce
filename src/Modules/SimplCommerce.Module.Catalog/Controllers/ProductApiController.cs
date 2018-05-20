@@ -80,6 +80,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Slug = product.SeoTitle,
                 Departure = product.Departure,
                 Destination = product.Destination,
+                DepartureRus = product.DepartureRus,
+                DestinationRus = product.DestinationRus,
                 Specification = product.Specification,
                 OldPrice = product.OldPrice,
                 Price = product.Price,
@@ -356,6 +358,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 SeoTitle = model.Product.Slug,
                 Departure = model.Product.Departure,
                 Destination = model.Product.Destination,
+                DepartureRus = model.Product.DepartureRus,
+                DestinationRus = model.Product.DestinationRus,
                 Specification = model.Product.Specification,
                 Price = model.Product.Price,
                 OldPrice = model.Product.OldPrice,
@@ -507,6 +511,8 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.SeoTitle = model.Product.Slug;
             product.Departure = model.Product.Departure;
             product.Destination = model.Product.Destination;
+            product.DepartureRus = model.Product.DepartureRus;
+            product.DestinationRus = model.Product.DestinationRus;
             product.Specification = model.Product.Specification;
             product.Price = model.Product.Price;
             product.OldPrice = model.Product.OldPrice;

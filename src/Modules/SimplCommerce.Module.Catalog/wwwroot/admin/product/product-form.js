@@ -486,11 +486,11 @@
                 vm.categories = result.data;
 
                 var options = {
-                    url: "themes/AirlineTickets/data/airports.json",
-
+                    url: "themes/AirlineTickets/data/airports_utf.json",
+                    contentType: "application/json; charset=utf-8",
                     getValue: function (element) {
-                        return element.city + ", " + element.name + " (" + element.code + "), " + element.country;
-                    },
+                        return element.city_eng + ", " + element.name_eng + " (" + element.iata_code + "), " + element.country_eng;
+                   },
 
                     list: {
                         match: {
@@ -510,6 +510,33 @@
                 };
 
                 $("#flightFrom, #flightTo").easyAutocomplete(options);
+
+                var optionsRus = {
+                    url: "themes/AirlineTickets/data/airports_utf.json",
+                    contentType: "application/json; charset=utf-8",
+                    getValue: function (element) {
+                        var name = element.name_rus == "" ? element.name_eng : element.name_rus;
+                        return element.city_rus + ", " + name + " (" + element.iata_code + "), " + element.country_rus;
+                    },
+
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        },
+                        hideAnimation: {
+                            type: "slide", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        }
+                    }
+                };
+
+                $("#flightFromRus, #flightToRus").easyAutocomplete(optionsRus);
             });
         }
 
