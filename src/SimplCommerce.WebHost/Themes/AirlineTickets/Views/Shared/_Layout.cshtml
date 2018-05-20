@@ -198,10 +198,16 @@
                 });
 
                 var options = {
-                    url: "themes/AirlineTickets/data/airports.json",
-
-                    getValue: function(element) {
-                        return element.city + ", "  + element.name + " (" + element.code + ")";
+                    url: "themes/AirlineTickets/data/airports_utf.json",
+                    contentType: "application/json; charset=utf-8",
+                    getValue: function (element) {
+                        if ("@CultureInfo.CurrentCulture.Name.ToLower()" === "ru-ru") {
+                            var name = element.name_rus == "" ? element.name_eng : element.name_rus;
+                            return element.city_rus + ", " + name + " (" + element.iata_code + ")";
+                        }
+                        else {
+                            return element.city_eng + ", " + element.name_eng + " (" + element.iata_code + ")";
+                        }
                     },
 
                     list: {
