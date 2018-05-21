@@ -14,6 +14,12 @@
                 <th>Actions</th>
                 <th st-sort="Id" class="sortable">{{::vm.translate.get('OrderId')}}</th>
                 <th>Status</th>
+                <th>{{::vm.translate.get('Customer')}}</th>
+                <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
+                <th st-sort="SubTotal" class="sortable">{{::vm.translate.get('SubTotal')}}</th>
+                <th st-sort="ShippingAmount" class="sortable">Agency Fee</th>
+                <th st-sort="PnrNumber" class="sortable">PNR</th>
+                <th st-sort="AgencyReservationNumber" class="sortable">Confirmation</th>
                 <th>Res #</th>
                 <th>Departure</th>
                 <th>Destination</th>
@@ -26,12 +32,6 @@
                 <th>Time</th>
                 <th>Agency Price</th>
                 <th>Passenger Price</th>
-                <th>{{::vm.translate.get('Customer')}}</th>
-                <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
-                <th st-sort="SubTotal" class="sortable">{{::vm.translate.get('SubTotal')}}</th>
-                <th st-sort="ShippingAmount" class="sortable">Agency Fee</th>
-                <th st-sort="PnrNumber" class="sortable">PNR</th>
-                <th st-sort="AgencyReservationNumber" class="sortable">Confirmation</th>
             </tr>
             <tr>
                 <th></th>
@@ -48,18 +48,6 @@
                         </select>
                     </div>
                 </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
                 <th>
                     <div class="form-group">
                         <input class="form-control" st-search="CustomerName" />
@@ -67,6 +55,17 @@
                 </th>
                 <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+
             </tr>
         </thead>
         <tbody ng-show="!vm.isLoading">
@@ -74,6 +73,12 @@
                 <td><a ui-sref="order-detail({id: order.id})" title="View" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-eye-open"></span></a></td>
                 <td>{{order.id}}</td>
                 <td>{{order.orderStatus}}</td>
+                <td>{{order.customerName}}</td>
+                <td>{{order.createdOn | date:'medium'}}</td>
+                <td>{{order.subTotal}}$</td>
+                <td>{{order.shippingAmount}}$</td>
+                <td>{{order.pnrNumber}}</td>
+                <td>{{order.agencyReservationNumber}}</td>
                 <td>{{order.flight.reservationNumber}}</td>
                 <td>{{order.flight.departure}}</td>
                 <td>{{order.flight.destination}}</td>
@@ -81,17 +86,12 @@
                 <td>{{order.flight.landingTime | date:'HH:mm':'UTC'}}</td>
                 <td>{{order.flight.flightNumber}}</td>
                 <td>{{order.flight.isRoundTrip}}</td>
-                <td>{{order.flight.returnFlightNumber}}</td>
+                <td><span ng-if='order.flight.returnFlightNumber != "null"'> {{order.flight.returnFlightNumber}} </span></td>
                 <td>{{order.flight.returnDepartureDate | date:'dd.MM.yy':'UTC'}}</td>
                 <td>{{order.flight.returnLandingTime | date:'HH:mm':'UTC'}}</td>
                 <td>{{order.flight.agencyPrice}}$</td>
                 <td>{{order.flight.passengerPrice}}$</td>
-                <td>{{order.customerName}}</td>
-                <td>{{order.createdOn | date:'medium'}}</td>
-                <td>{{order.subTotal}}$</td>
-                <td>{{order.shippingAmount}}$</td>
-                <td>{{order.pnrNumber}}</td>
-                <td>{{order.agencyReservationNumber}}</td>
+
             </tr>
         </tbody>
         <tbody ng-show="vm.isLoading">
