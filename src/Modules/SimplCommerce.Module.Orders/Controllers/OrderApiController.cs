@@ -70,7 +70,7 @@ namespace SimplCommerce.Module.Orders.Controllers
         public async Task<ActionResult> List([FromBody] SmartTableParam param)
         {
             IQueryable<Order> query = _orderRepository
-                .Query();
+                .Query().Include(o => o.OrderItems).ThenInclude(oi => oi.Product);
 
             var currentUser = await _workContext.GetCurrentUser();
             if (!User.IsInRole("admin"))
@@ -126,7 +126,22 @@ namespace SimplCommerce.Module.Orders.Controllers
                     order.CreatedOn,
                     order.ShippingAmount,
                     order.PnrNumber,
-                    order.AgencyReservationNumber
+                    order.AgencyReservationNumber,
+                    Flight = order.OrderItems.Select(i => new
+                    {
+                        i.Product.ReservationNumber,
+                        i.Product.FlightNumber,
+                        ReturnFlightNumber = i.Product.ReturnFlightNumber,
+                        i.Product.AgencyPrice,
+                        i.Product.PassengerPrice,
+                        Departure = i.Product.Departure.Split('(', ')')[1],
+                        Destination = i.Product.Destination.Split('(', ')')[1],
+                        i.Product.DepartureDate,
+                        i.Product.ReturnDepartureDate,
+                        i.Product.LandingTime,
+                        i.Product.ReturnLandingTime,
+                        IsRoundTrip = i.Product.IsRoundTrip ? "RT" : "OW",
+                    }).FirstOrDefault()
                 });
 
             return Json(orders);
