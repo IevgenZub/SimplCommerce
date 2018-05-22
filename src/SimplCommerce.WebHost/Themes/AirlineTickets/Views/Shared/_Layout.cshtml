@@ -113,11 +113,11 @@
                                     <input type="email" name="email" id="footer-email" class="input-h38 form-control br-green fs18" placeholder="Email" value="" maxlength="50" data-rule-email="true" required="" aria-required="true">
                                 </div>
                                 <div class="col-xs-12 text-right">
-                                    <input type="submit" style="margin-top:5px" value="@Localizer["Subscribe"]" class="btn btn-default" id="footer-btn-subscribe">
+                                    <label id="subscribe-success" style="display:none">@Localizer["Thank you! You are subscribed for updates!"] &nbsp;</label><input type="submit" style="margin-top:5px" value="@Localizer["Subscribe"]" class="btn btn-default" id="footer-btn-subscribe">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </form>
             </div>
 
@@ -128,7 +128,7 @@
             </div>
             <div class="col-xs-12 text-center">
                     <h1>
-                        <a href="#" class="twitter"><i style="color:darkseagreen" class="fab fa-twitter"></i></a>
+                        <a href="#" class="twitter"><i style="color:darkseagreen" class="fab fa-instagram"></i></a>
                         <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
                         <a href="#" class="google"><i style="color:red" class="fab fa-google-plus"></i></a>
                     </h1>
@@ -183,7 +183,8 @@
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                     }).always(function () {
-                        alert("Thank you! Email has been sent!");
+                        $('#footer-email').val('');
+                        $('#subscribe-success').show();
                     });
                 });
 

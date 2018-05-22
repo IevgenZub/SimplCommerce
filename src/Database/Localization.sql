@@ -68,6 +68,7 @@ INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Order Confirmation', N'Подтверждение заказа')
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Passenger Registration', N'Данные о пассажирах')
 INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Select payment method', N'Выберите способ оплаты')
+INSERT [dbo].[Localization_Resource] ([CultureId], [Key], [Value]) VALUES (5, N'Thank you! You are subscribed for updates!', N'Спасибо! Получайте лучшие предложения первыми!')
 
 
 
