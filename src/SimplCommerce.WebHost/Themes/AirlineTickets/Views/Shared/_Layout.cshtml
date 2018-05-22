@@ -104,26 +104,24 @@
             </div>
             <div class="col-xs-12 col-md-4 text-center">
                 <h3>@Localizer["Subscribe"]</h3>
-                <p class="text-right">@Localizer["Want to stay updated with the best offerings and latest news? Enter your email and click Subscribe"]</p>
                 <form name="subscribe" id="footer-subscribe" method="post" action="/account/subscribe">
                     <div class="s7-theme row form-control-group">
                         <div class="col-md-12 ">
                             <div class="row">
                                 <div class="col-xs-12">
+                                    <p class="text-right">@Localizer["Want to stay updated with the best offerings and latest news? Enter your email and click Subscribe"]</p>
                                     <input type="email" name="email" id="footer-email" class="input-h38 form-control br-green fs18" placeholder="Email" value="" maxlength="50" data-rule-email="true" required="" aria-required="true">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12 text-center">
-                                    <p class="text-center">
+                                <div class="col-xs-8">
+                                    <p>
                                         <div id="email-send-loader">
-                                            <label id="subscribe-success" style="display:none">@Localizer["Thank you! You are subscribed for updates!"] &nbsp;</label>
+                                            <label id="subscribe-success" style="display:none;"><i class="fas fa-check" style="color:green"></i>&nbsp; @Localizer["Thank you! You are subscribed!"] &nbsp;</label>
                                         </div>
                                     </p>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 text-right">
+                                <div class="col-xs-4 text-right">
                                     <input type="submit" style="margin-top:5px" value="@Localizer["Subscribe"]" class="btn btn-default" id="footer-btn-subscribe">
                                 </div>
                             </div>

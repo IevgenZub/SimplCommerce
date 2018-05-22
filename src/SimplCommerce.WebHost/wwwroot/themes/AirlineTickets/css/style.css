@@ -747,6 +747,9 @@ section:last-child {
     width: 20px;
     height: 20px;
     animation: spin 2s linear infinite;
+    position: relative;
+    left: 50%;
+    top: 50%;
 }
 
 @keyframes spin {
