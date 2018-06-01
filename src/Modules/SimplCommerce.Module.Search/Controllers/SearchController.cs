@@ -55,17 +55,21 @@ namespace SimplCommerce.Module.Search.Controllers
             var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
             var isRoundTrip = searchOption.TripType == "round-trip";
 
+            
+            var departure = searchOption.Departure.Contains("*") ? searchOption.Departure.Split(',')[0] : searchOption.Departure;
+            var landing = searchOption.Landing.Contains("*") ? searchOption.Landing.Split(',')[0] : searchOption.Landing;
+
             if (CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru")
             {
                 query = query.Where(x =>
-                        x.DepartureRus.Contains(searchOption.Departure) &&
-                        x.DestinationRus.Contains(searchOption.Landing));
+                        x.DepartureRus.Contains(departure) &&
+                        x.DestinationRus.Contains(landing));
             }
             else
             {
                 query = query.Where(x =>
-                        x.Departure.Contains(searchOption.Departure) &&
-                        x.Destination.Contains(searchOption.Landing));
+                        x.Departure.Contains(departure) &&
+                        x.Destination.Contains(landing));
             }
 
             query = query.Where(x =>

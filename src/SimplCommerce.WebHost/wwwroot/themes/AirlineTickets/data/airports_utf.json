@@ -8192,6 +8192,23 @@
     "country_eng": "United States"
   },
   {
+    "0": "",
+    "1": "Анталия",
+    "2": "Antalya",
+    "3": "Анталия",
+    "4": "Antalya",
+    "5": "Турция",
+    "6": "Turkey",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Анталия",
+    "city_eng": "Antalya",
+    "country_rus": "Турция",
+    "country_eng": "Turkey"
+  },
+
+  {
     "0": "AYT",
     "1": "Анталия",
     "2": "Antalya",
@@ -8202,6 +8219,22 @@
     "iata_code": "AYT",
     "name_rus": "Анталия",
     "name_eng": "Antalya",
+    "city_rus": "Анталия",
+    "city_eng": "Antalya",
+    "country_rus": "Турция",
+    "country_eng": "Turkey"
+  },
+  {
+    "0": "GZP",
+    "1": "Анталия",
+    "2": "Antalya",
+    "3": "Анталия",
+    "4": "Antalya",
+    "5": "Турция",
+    "6": "Turkey",
+    "iata_code": "GZP",
+    "name_rus": "Газипаша",
+    "name_eng": "Gazipaşa",
     "city_rus": "Анталия",
     "city_eng": "Antalya",
     "country_rus": "Турция",
@@ -51150,6 +51183,22 @@
     "city_eng": "Riesa",
     "country_rus": "Германия",
     "country_eng": "Germany"
+  },
+  {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Киев",
+    "city_eng": "Kiev",
+    "country_rus": "Украина",
+    "country_eng": "Ukraine"
   },
   {
     "0": "IEV",

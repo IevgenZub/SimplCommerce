@@ -86,7 +86,7 @@ namespace SimplCommerce.Module.Catalog.Models
         public long? TaxClassId { get; set; }
         public TaxClass TaxClass { get; set; }
         public string Via { get; set; }
-        public string Currency { get; set; }
+        public string Currency { get; set; } = "USD";
         public string Provider { get; set; }
         public bool IsRoundTrip { get; set; }
         public string FlightNumber { get; set; }

@@ -248,6 +248,11 @@ namespace SimplCommerce.Module.Orders.Controllers
                         return BadRequest(new { Error = "Invalid Agency Confirmation Number" });
                     }
 
+                    if (oldStatus == OrderStatus.Complete)
+                    {
+                        return BadRequest(new { Error = "Order is already in Complete state" });
+                    }
+
                     order.AgencyReservationNumber = model.Note;
                 }
 

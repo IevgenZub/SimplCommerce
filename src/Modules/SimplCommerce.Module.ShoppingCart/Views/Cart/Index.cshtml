@@ -47,21 +47,21 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="col-sm-1 hidden-xs"></div>
-                                    <div class="col-sm-6 hidden-xs"><strong>@Localizer["Flight"]</strong></div>
+                                    <div class="col-sm-2 hidden-xs"></div>
+                                    <div class="col-sm-5 hidden-xs"><strong>@Localizer["Flight"]</strong></div>
                                     <div class="col-sm-3 hidden-xs"><strong>@Localizer["Quantity"]</strong></div>
                                     <div class="col-sm-2 text-right hidden-xs"><strong>@Localizer["Price"]</strong></div>
                                 </div>
                             </div>
                             <div class="panel-body">
                                 <div class="row" ng-repeat="cartItem in vm.cart.items">
-                                    <div class="col-sm-1">
+                                    <div class="col-sm-2">
                                         <figure class="text-center">
-                                            <img ng-src="{{cartItem.productImage}}">
+                                            <img style="max-height:50px;max-width:150px"  ng-src="{{cartItem.productImage}}">
                                             <figcaption style="font-size:smaller">{{cartItem.carrier}}</figcaption>
                                         </figure>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-5">
                                         <h4><span class="label label-default">{{cartItem.flightNumber}} {{cartItem.flightClass}}</span></h4>
                                         <p><span style="color:darkblue"> {{cartItem.departureDate | date:'dd.MM.yyyy HH:mm':'UTC'}} </span>{{cartItem.departure}}</p>
                                         <p><span style="color:darkblue">{{cartItem.landingDate | date:'dd.MM.yyyy HH:mm':'UTC'}}</span> {{cartItem.landing}}</p>

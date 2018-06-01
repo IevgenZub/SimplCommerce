@@ -107,13 +107,13 @@ namespace SimplCommerce.Module.Orders.Controllers
 
                 var address = new Address
                 {
-                    ContactName = model.FirstName,
-                    AddressLine1 = model.LastName,
+                    ContactName = model.FirstName.ToUpper(),
+                    AddressLine1 = model.LastName.ToUpper(),
                     AddressLine2 = model.BirthDate,
                     CountryId = model.CountryId,
                     StateOrProvinceId = 1,
                     DistrictId = 1,
-                    City = model.DocumentNumber,
+                    City = model.DocumentNumber.ToUpper(),
                     PostalCode = model.DocumentExpiration,
                     Phone = model.Sex,
                     Email = model.Email,
