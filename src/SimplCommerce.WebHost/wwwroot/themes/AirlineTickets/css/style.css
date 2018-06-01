@@ -16,10 +16,6 @@ Contact: mustafa@turhan.gen.tr;
    color: #fff;
 }
 
-body {
-   font-family: 'Open Sans', sans-serif;
-}
-
 .valign-wrapper {
    display: -webkit-flex;
    display: -ms-flexbox;
@@ -73,7 +69,7 @@ section {
 
 .navbar-brand {
    height: 65px;
-   padding: 3px 15px 5px;
+   padding: 5px 15px 10px;
 }
 
 .navbar-nav>li>a {
@@ -515,6 +511,7 @@ section:last-child {
    min-height: 200px;
    color: #fff;
    padding-bottom: 20px;
+
 }
 
 .main-page-footer h3 {
@@ -524,7 +521,7 @@ section:last-child {
 }
 
 .list-widget {
-   margin-bottom: 40px;
+   
 }
 
 .list-widget li a {
@@ -623,20 +620,36 @@ section:last-child {
 
 @media only screen and (max-width: 320px) {}
 
-
-
 /*  NEW custom styles */
+
+.gly-rotate-left {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.gly-rotate-right {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
 .my-thumbnail {
   border-bottom: 1px solid #eee;
   display: block;
   padding: 4px;
-  margin: 0 auto 20px;
   overflow: hidden;
 }
 
+
 .my-thumbnail img {
-  max-height: 30px;
-  max-width: 30px;
+  max-height: 40px;
+  max-width: 100px;
 }
 
 .my-thumbnail figcaption {
@@ -647,7 +660,6 @@ section:last-child {
 
 .airlines {
   display: table-cell;
-  vertical-align: middle;
   text-align: center;
 }
 .hidden-label {
@@ -662,20 +674,9 @@ section:last-child {
    margin: 0 0 20px;
    color: #194d9e;
 }
-.flight-item {
 
-}
-.flight-row {
-   margin: 0 0 10px; /*20px*/
-}
 .flight-way {
    text-align: right;
-}
-
-
-.airlines {}
-.airlines figure {
-   padding-left: 15px;
 }
 
 .flight-date {
@@ -717,16 +718,9 @@ section:last-child {
    margin-left: 5px;
 }
 
-.flight-departure  {}
-.flight-departure .departure__text {
-   white-space: nowrap;
-}
-.flight-departure .departure__time {
+.flight-time {
    color: darkblue;
 }
-.flight-landing {}
-.flight-duration {}
-
 
 /*regiter form*/
 .btn-default[value="Facebook"]{
@@ -744,98 +738,26 @@ section:last-child {
    margin-bottom: 20px;
 }
 
-/*sm*/
-@media (min-width:768px){
-   .flight-date {
-      margin-top: 0;
-   }
+
+.loader {
+    border: 3px solid #f3f3f3; /* Light grey */
+    border-top: 3px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+    position: relative;
+    left: 50%;
+    top: 50%;
 }
 
-/*md*/
-@media (min-width:992px){
-   .flight-date {
-      margin-top: 10px;
-   }
-   .flight-number-2 {
-      margin-top: 10px;
-   }
-   .flight-departure {
-      margin-top: 10px;
-   }
-   .flight-landing {
-      margin-top: 10px;
-   }
-   .flight-duration {
-      margin-top: 10px;
-   }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
 
-   /*product-list SEARCH*/
-   .product-list__search .my-thumbnail {
-      padding: 0;
-   }
-   .product-list__search .my-thumbnail .airlines {
-      padding: 0;
-   }
-   .product-list__search .my-thumbnail .airlines figure {
-      padding: 0;
-   }
-   .product-list__search .flight-detail {
-      clear: both;
-      width: 50%;
-   }
-   .product-list__search .flight-price {
-      width: 50%;
-   }
-   .product-list__search .btn-add-cart {
-      margin-bottom: 0;
-   }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-
-/*lg*/
-@media (min-width:1200px){
-   .flight-date {
-      margin-top: 0;
-   }
-   .flight-date .flight-date__text {
-      display: block;
-      margin-top: 10px;
-   }
-   .flight-detail {
-      margin-top: 3px; /*0*/
-   }
-   .flight-price {
-      margin-top: 0;
-   }
-
-   /*product-list SEARCH*/
-   .product-list__search .flight-date {
-      width: 16.6666%;
-   }
-   .product-list__search .flight-number-2 {
-      width: 16.6666%;
-   }
-   .product-list__search .flight-duration {
-      width: 16.6666%;
-   }
-}
-@media (min-width: 1400px){
-   /*product-list SEARCH*/
-   .product-list__search .flight-date {
-      width: 8.33333333%;
-   }
-   .product-list__search .flight-number-2 {
-      width: 8.33333333%;
-   }
-   .product-list__search .flight-duration {
-      width: 8.33333333%;
-   }
-   .product-list__search .flight-detail {
-      clear: none;
-      width: 16.6666%;
-   }
-   .product-list__search .flight-price {
-      width: 8.33333333%;
-   }
-}
-
 

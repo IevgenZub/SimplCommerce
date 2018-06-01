@@ -25,11 +25,9 @@
 }
 
 .product-price {
-    margin: 20px 0;
     padding: 5px 10px;
     background-color: #FFFFFF;
     text-align: left;
-    border: 2px dashed #E0E0E0;
     overflow: hidden;
     font-weight: bold;
 }
@@ -143,7 +141,6 @@
 .btn-add-cart {
     background: #18ba9b;
     font-size: smaller;
-    margin: 0 auto 20px;
     padding: 10px 25px;
     border: 0;
     color: #fff;
@@ -237,12 +234,10 @@
     padding: 5px 15px;
     /*padding-left:15px;padding-right:15px; padding-top:15px*/
 }
-.product-attrs h5 {
+]
 
-}
 .product-attrs .list-inline {
-    font:smaller; 
-    margin-bottom: 20px;
+    font: smaller;
 }
 .product-attrs label {
     float: none;
@@ -256,39 +251,6 @@
     padding: 0;
 }
 
-.product-variation {}
-.product-variation-notavailable {
-    margin: 0 0 20px;
-}
 
-@media (min-width:768px){
-    .product-detail .product-quantity {
-        display: inline-block;
-        margin: 0 5px 25px;
-        vertical-align: top;
-        /*float: left;*/
-        /*margin-right: 30px;*/
-    }
-    .product-detail .btn-add-cart {
-        /*display: block;*/
-    }
-    .flight-main-details p {
-        float: left;
-        margin: 15px 10px 10px 0;
-    }
-}
-@media (min-width:992px){
-    .product-detail .btn-add-cart {
-        margin-top: -3px;
-    }
-    .flight-main-details p {
-        float: none;
-        margin: 0 0 10px;
-    }
-    div.product-price {
-        padding: 15px;
-        margin-top: 0;
-    }
-}
 
 

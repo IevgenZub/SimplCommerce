@@ -33,7 +33,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public Media ThumbnailImage { get; set; }
 
+        public Media ReturnThumbnailImage { get; set; }
+
         public string ThumbnailUrl { get; set; }
+
+        public string ReturnThumbnailUrl { get; set; }
 
         public int ReviewsCount { get; set; }
 
@@ -43,8 +47,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Departure { get; set; }
         public string Landing { get; set; }
+        public string DepartureRus { get; set; }
+        public string LandingRus { get; set; }
         public DateTimeOffset? DepartureDate { get; set; }
-        public DateTimeOffset? LandingDate { get; set; }
+        public int DurationHours { get; set; }
+        public int DurationMinutes { get; set; }
         public string Carrier { get; set; }
         public string Vendor { get; set; }
         public string Via { get; set; }
@@ -59,13 +66,18 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string ReturnVia { get; set; }
         public string ReturnTerminal { get; set; }
         public DateTimeOffset? ReturnDepartureDate { get; set; }
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public int ReturnDurationHours { get; set; }
+        public int ReturnDurationMinutes { get; set; }
         public bool IsRoundTrip { get; set; }
         public string Currency { get; set; }
+        public DateTimeOffset? LandingTime { get; set; }
+        public bool IsNextDayLanding { get; set; }
+        public DateTimeOffset? ReturnLandingTime { get; set; }
+        public bool ReturnIsNextDayLanding { get; set; }
 
         public ProductDetail Details { get; set; }
 
-        public static ProductThumbnail FromProduct(Product product, bool isVendor)
+        public static ProductThumbnail FromProduct(Product product, bool isVendor, bool isRoundTrip = false)
         {
             var productThumbnail = new ProductThumbnail
             {
@@ -84,15 +96,19 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 ThumbnailImage = product.ThumbnailImage,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
-                Departure = product.ShortDescription.Split(',')[0] + " (" + product.ShortDescription.Split('(', ')')[1] + ")",
-                Landing = product.Description.Split(',')[0] + " (" + product.Description.Split('(', ')')[1] + ")",
+                Departure = product.Departure.Split(',')[0] + " (" + product.Departure.Split('(', ')')[1] + ")",
+                Landing = product.Destination.Split(',')[0] + " (" + product.Destination.Split('(', ')')[1] + ")",
+                DepartureRus = product.DepartureRus.Split(',')[0] + " (" + product.DepartureRus.Split('(', ')')[1] + ")",
+                LandingRus = product.DestinationRus.Split(',')[0] + " (" + product.DestinationRus.Split('(', ')')[1] + ")",
                 DepartureDate = product.DepartureDate,
-                LandingDate = product.LandingDate,
+                DurationHours = product.DurationHours,
+                DurationMinutes = product.DurationMinutes,
                 Provider = product.Provider,
                 ReturnDepartureDate = product.ReturnDepartureDate,
-                ReturnLandingDate = product.ReturnLandingDate,
+                ReturnDurationHours = product.ReturnDurationHours,
+                ReturnDurationMinutes = product.ReturnDurationMinutes,
                 ReturnFlightNumber = product.ReturnFlightNumber,
-                Terminal = product.Sku,
+                Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,
@@ -102,8 +118,12 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
                 Via = product.Via,
                 ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
-                ReturnVia = product.ReturnVia
-        };
+                ReturnVia = product.ReturnVia,
+                LandingTime = product.LandingTime,
+                IsNextDayLanding = product.IsNextDayLanding,
+                ReturnLandingTime = product.ReturnLandingTime,
+                ReturnIsNextDayLanding = product.ReturnIsNextDayLanding
+            };
 
             return productThumbnail;
         }

@@ -58,7 +58,10 @@
                             </div>
                             <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
                                 <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
-                                <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
+                                <input type="text" class="form-control" style="width: 100%" id="number-of-people" value="1 - Economic" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
+                                <input type="hidden" id="adultPassengers" name="A_P" value="1">
+                                <input type="hidden" id="childPassengers" name="C_P" value="0">
+                                <input type="hidden" id="babyPassengers" name="B_P" value="0">
                             </div>
                             <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                                 <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
@@ -229,8 +232,8 @@
         $(".moreDetails").click(function () {
             $current = $(this);
             $details = $current.parents(".my-thumbnail").find('.product-details').first();
-            $iconDown = $current.parent().find(".fa-angle-double-down");
-            $iconUp = $current.parent().find(".fa-angle-double-up");
+            $iconDown = $current.parent().find(".fa-search-minus");
+            $iconUp = $current.parent().find(".fa-search-plus");
 
             $details.slideToggle(300, function () {
                 if($iconDown.is(':visible')) {

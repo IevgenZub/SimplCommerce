@@ -1,180 +1,142 @@
 @model SimplCommerce.Module.Catalog.ViewModels.ProductThumbnail
+@using System.Globalization
 
 @{
+    var durationTime = string.Format("{0:00}", Model.DurationHours) + "h " + string.Format("{0:00}", Model.DurationMinutes) + "m";
 
-    var datesVisible = !Model.Details.AvailableOptions.Any(o => o.OptionName == "Departure Date");
+    string returnDurationTime  = string.Empty;
+    if (Model.IsRoundTrip)
+    {
+        returnDurationTime = string.Format("{0:00}", Model.ReturnDurationHours) + "h " + string.Format("{0:00}", Model.ReturnDurationMinutes) + "m";
+    }
+
+    var selectedFlightId = (Model.Details.HasVariation && Model.Details.Variations.Any()) ? Model.Details.Variations.First().Id : Model.Id;
+    var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First().CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
+
+    var qtyAdult = 1;
+    if (Context.Request.Query.Any(q => q.Key == "A_P" && !string.IsNullOrEmpty(q.Value)))
+    {
+        qtyAdult = Convert.ToInt16(Context.Request.Query["A_P"]);
+    }
+
+    var qtyChild = 0;
+    if (Context.Request.Query.Any(q => q.Key == "C_P" && !string.IsNullOrEmpty(q.Value)))
+    {
+        qtyChild = Convert.ToInt16(Context.Request.Query["C_P"]);
+    }
+
+    var qtyBaby = 0;
+    if (Context.Request.Query.Any(q => q.Key == "B_P" && !string.IsNullOrEmpty(q.Value)))
+    {
+        qtyBaby = Convert.ToInt16(Context.Request.Query["B_P"]);
+    }
+
+    selectedPrice = selectedPrice * qtyAdult + selectedPrice * qtyChild + Model.ChildPrice * qtyBaby;
+
+    var departure = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.DepartureRus : Model.Departure;
+    var landing = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.LandingRus : Model.Landing;
 }
 
 <div class="my-thumbnail flight-item">
     <div class="row my-row flight-row">
-        <div class="airlines col-xs-12 col-sm-6 col-md-1 col-lg-1 hidden-sm hidden-xs">
-            <figure>
-                <img src="@Model.ThumbnailUrl" >
-                <figcaption>@Model.Carrier</figcaption>
-            </figure>
+        <div class="col-sm-1 col-xs-12 airlines">
+                <figure>
+                    <img src="@Model.ThumbnailUrl">
+                    <figcaption>@Model.Carrier</figcaption>
+                </figure>
         </div>
-        <div class="flight-date col-xs-6 col-sm-6 col-md-2 col-lg-1">
-                <label class="visible-sm visible-xs hidden-label">Departure:&nbsp;</label>
-                <span class="flight-date__text">@Model.DepartureDate.Value.Date.ToShortDateString()</span>
+        <div class="col-sm-1 col-xs-6">
+            <p>@Model.DepartureDate.Value.Date.ToShortDateString()</p>
         </div>
-        <!-- airlines flight-way icon /// hidden-md -->
-        <div class="flight-way col-xs-6 col-sm-6 col-md-1 col-lg-1 hidden-sm hidden-md hidden-lg">
-            @if (Model.IsRoundTrip)
-            {
-                <img src="~/themes/AirlineTickets/img/round-trip.png" />
-            }
-            else
-            {
-                <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
-            }
+        <div class="col-sm-1 col-xs-6 text-right">
+            <p class="flight-number">@Model.FlightNumber</p>
         </div>
-        <div class="flight-number flight-number-2 col-xs-12 col-sm-6 col-md-1 col-lg-1">
-            <label class="visible-sm visible-xs hidden-label">Flight #:&nbsp;</label>@Model.FlightNumber
+        <div class="col-sm-3 col-xs-12">
+            <span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @departure
         </div>
-        <div class="from flight-departure col-xs-12 col-sm-6 col-md-3 col-lg-2">
-            <label class="visible-sm visible-xs hidden-label">From:&nbsp;</label>
-            <span class="flight-departure__text"><span class="flight-departure__time">@Model.DepartureDate.Value.DateTime.ToShortTimeString() </span> @Model.Departure</span>
+        <div class="col-sm-3 col-xs-12">
+            <p><span class="flight-time"> @Model.LandingTime.Value.DateTime.ToString("HH:mm") @if (Model.IsNextDayLanding)
+            {<span>(+1)</span> } </span> @landing </p>
         </div>
-        <div class="to flight-landing col-xs-12 col-xs-12 col-sm-6 col-md-3 col-lg-2">
-            <label class="visible-sm visible-xs hidden-label">To:&nbsp;</label>
-            <span class="flight-departure__text"><span class="flight-departure__time">@Model.LandingDate.Value.DateTime.ToShortTimeString()</span>  @Model.Landing </span>
+        <div class="col-sm-1 hidden-xs">
+            <p class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</p>
         </div>
-        <div class="to flight-duration col-xs-12 col-sm-6 col-md-1 col-lg-1">
-            @{
-                var duration = Model.LandingDate.Value.Subtract(Model.DepartureDate.Value);
-                var durationTime = duration.Hours + "h " + duration.Minutes + "m";
-             }
-             <label class="visible-sm visible-xs hidden-label">Duration:&nbsp;</label>
-
-            <span class="text-nowrap">@durationTime</span>
-        </div>
-        <div class="flight-way-2 col-xs-12 col-sm-6 col-md-1 col-lg-1 hidden-xs">
-            @if (Model.IsRoundTrip)
-            {
-                <img src="~/themes/AirlineTickets/img/round-trip.png" />
-            }
-            else
-            {
-                <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
-            }
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 flight-detail">
-          @if (!Model.IsRoundTrip)
-            {
-                <!-- <br class="visible-sm visible-xs" /> -->
-                <button class="btn btn-secondary moreDetails">
-                    <span class="fa fa-angle-double-down"></span>
-                    <span class="fa fa-angle-double-up" style="display: none;"></span>
-                    <span style="cursor: pointer;">@Localizer["Details"]</span>
-                </button>
-            }
-        </div>
-
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 flight-price">
-        @if (!Model.IsRoundTrip)
-            {
-                @if (!Model.Details.HasVariation)
-                {
-                    <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span> >></button>
-                    <input type="hidden" name="productId" id="productId" value="@Model.Id">
-                }
-                else
-                {
-                    <p class="pull-right">
-                        <span>From</span>
-                        <b class="priceToConvert product-price">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</b>
-                    </p>
-                }
-            }
+        <div class="col-sm-2 col-xs-12">
+            <div class="row">
+                <!-- panel-footer -->
+                <div class="col-xs-6">
+                    <div class="previous">
+                        @if (!Model.IsRoundTrip)
+                        {
+                            <button class="btn btn-default moreDetails">
+                                <i class="fas fa-search-plus"></i>
+                                <i class="fas fa-search-minus" style="display: none;"></i>
+                            </button>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <div class="next">
+                        @if (!Model.IsRoundTrip)
+                        {
+                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
+                                <input type="hidden" name="productId" id="productId" value="@Model.Id">
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
 </div>
     @if (Model.IsRoundTrip)
     {
         <div class="row my-row flight-row">
-            <div class="airlines col-xs-12 col-sm-6 col-md-1 col-lg-1 hidden-sm hidden-xs">
+            <div class="col-sm-1 col-xs-12 airlines">
                     <figure>
                         <img src="@Model.ThumbnailUrl">
                         <figcaption>@Model.ReturnCarrier</figcaption>
                     </figure>
             </div>
-            <div class="flight-number flight-date col-xs-6 col-sm-6 col-md-2 col-lg-1">
-                 <label class="visible-sm visible-xs hidden-label">Return:&nbsp;</label>
-                 <span class="flight-date__text">
-                 @Model.ReturnLandingDate.Value.DateTime.ToShortDateString()</span>
+            <div class="col-sm-1 col-xs-6">
+                <p>@Model.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p>
+            </div>    
+            <div class="col-sm-1 col-xs-6 text-right">
+                <p class="flight-number">@Model.ReturnFlightNumber</p>
+            </div> 
+            <div class="col-sm-3 col-xs-12">
+                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @landing
             </div>
-            <!-- airlines flight-way icon /// hidden-md -->
-            <div class="flight-way col-xs-6 col-sm-6 col-md-1 col-lg-1 hidden-sm hidden-md hidden-lg">
-                @if (Model.IsRoundTrip)
-                {
-                    <img src="~/themes/AirlineTickets/img/round-trip.png" />
-                }
-                else
-                {
-                    <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
-                }
+            <div class="col-sm-3 col-xs-12">
+                <p><span class="flight-time">@Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding)
+                { <span>(+1)</span> } </span> @departure </p> 
             </div>
-            
-            <div class="flight-number flight-number-2 col-xs-12 col-sm-6 col-md-1 col-lg-1">
-                 <label class="visible-sm visible-xs hidden-label">Flight #:&nbsp;</label>@Model.ReturnFlightNumber
+            <div class="col-sm-1 hidden-xs">
+                <p class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</p>
             </div>
-            <div class="from flight-departure col-xs-12 col-sm-6 col-md-3 col-lg-2">
-                <label class="visible-sm visible-xs hidden-label">From:&nbsp;</label>
-                <span class="flight-departure__text"><span class="flight-departure__time">@Model.ReturnDepartureDate.Value.DateTime.ToShortTimeString()</span> @Model.Landing </span>
+            <div class="col-sm-2  col-xs-12">
+                <div class="row">
+                    <!-- panel-footer -->
+                    <div class="col-xs-6">
+                        <div class="previous">        
+                            <button class="btn btn-default moreDetails">
+                                <i class="fas fa-search-plus"></i>
+                                <i class="fas fa-search-minus" style="display: none;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <div class="next">
+                            <button type="submit" id="@selectedFlightId" class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>    
+                            <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="to flight-landing col-xs-12 col-xs-12 col-sm-6 col-md-3 col-lg-2">
-                <label class="visible-sm visible-xs hidden-label">To:&nbsp;</label>
-                <span class="flight-departure__text"><span class="flight-departure__time">@Model.ReturnLandingDate.Value.DateTime.ToShortTimeString()</span> @Model.Departure</span>
-            </div>
-            <div class="to flight-duration col-xs-12 col-sm-6 col-md-1 col-lg-1">
-                @{
-                    var returnDuration = Model.ReturnLandingDate.Value.Subtract(Model.ReturnDepartureDate.Value);
-                    var returnDurationTime = duration.Hours + "h " + duration.Minutes + "m";
-                }
-                <label class="visible-sm visible-xs hidden-label">Duration:&nbsp;</label>
-                <span class="text-nowrap">@returnDurationTime</span>
-            </div>
-            <div class="flight-way-2 col-xs-12 col-sm-6 col-md-1 col-lg-1 hidden-xs">
-                @if (Model.IsRoundTrip)
-                {
-                    <img src="~/themes/AirlineTickets/img/round-trip.png" />
-                }
-                else
-                {
-                    <img src="~/themes/AirlineTickets/img/one-way1.jpg" />
-                }
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 flight-detail">
-                <!-- <br class="visible-sm visible-xs" /> -->
-                <button class="btn btn-secondary moreDetails">
-                    <span class="fa fa-angle-double-down"></span>
-                    <span class="fa fa-angle-double-up" style="display: none;"></span>
-                    <span style="cursor: pointer;">@Localizer["Details"]</span>
-                </button>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 flight-price">
-
-                            @if (!Model.Details.HasVariation)
-                            {
-                                <button type="submit" style="width:90px" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><span class="priceToConvert">@Model.Price</span> >></button>
-                                <input type="hidden" name="productId" id="productId" value="@Model.Id">
-                            }
-                            else
-                            {
-
-                                <p class="pull-right">
-                                    <span>From </span>
-                                    <b class="priceToConvert product-price">@Model.Details.Variations.Min(v => v.CalculatedProductPrice.Price)</b>
-                                </p>
-                            }
-
-            </div>
-
         </div>
     }
-
     <div class="row product-details" style="display: none; transition: max-height 0.3s">
         <div class="col-md-12 col-sm-12" >
             @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Product/ProductDetail.cshtml", Model.Details)
         </div>
     </div>
 </div>
+

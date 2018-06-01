@@ -2,9 +2,8 @@
     ViewBag.Title = "Order received";
 }
 
-<h2>Your order has been received.</h2>
+<h2>Your order has been received!</h2>
 
 <h3>PNR Number <span class="label label-primary">@ViewData["pnr"]</span></h3>
-<br />
-<br />
+@await Component.InvokeAsync("OrderConfirmation", new { pnr = ViewData["pnr"] })
 

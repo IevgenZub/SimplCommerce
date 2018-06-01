@@ -9,19 +9,26 @@
     {
         <tr>
             <td>
-                <h4>@item.ProductName</h4>
-                @if (item.VariationOptions.Any())
-                {
-                    <ul class="list-unstyled">
-                        @foreach (var attr in item.VariationOptions)
-                        {
-                            <li><span>@attr.OptionName:</span> @attr.Value</li>
-                        }
-                    </ul>
-                }
+                <div class="row">
+                    <div class="col-sm-2">
+                        <figure class="text-center">
+                            <img style="max-height:40px;max-width:150px" src="@item.ProductImage">
+                            <figcaption style="font-size:smaller">@item.Carrier</figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-sm-10">
+                        <h4><span class="label label-default">@item.FlightNumber @item.FlightClass</span></h4>
+                        <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
+                        <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
 
-                <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
-                <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
+                        @if (item.IsRoundTrip)
+                        {
+                            <h4><span class="label label-default">@item.ReturnFlightNumber @item.FlightClass</span></h4>
+                            <p>@item.ReturnDepartureDate.Value.Date.ToShortDateString() @item.ReturnDepartureDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
+                            <p>@item.ReturnLandingDate.Value.Date.ToShortDateString() @item.ReturnLandingDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
+                        }
+                    </div>
+                </div>
             </td>
             <td class="text-left">
                 <p>@item.Quantity (18+)</p> 

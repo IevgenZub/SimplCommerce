@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using SimplCommerce.Module.Core.ViewModels.Account;
 using SimplCommerce.Module.Core.Models;
 using SimplCommerce.Module.Core.Services;
+using SimplCommerce.Infrastructure.Web;
 
 namespace SimplCommerce.Module.Core.Controllers
 {
@@ -20,19 +21,22 @@ namespace SimplCommerce.Module.Core.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IRazorViewRenderer _viewRender;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IRazorViewRenderer viewRender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _viewRender = viewRender;
         }
 
         //
@@ -152,6 +156,21 @@ namespace SimplCommerce.Module.Core.Controllers
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
+        }
+
+        //
+        // POST: /Account/Subscribe
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Subscribe([FromBody] SubscribeViewModel model)
+        {
+            var email = model.Email;
+            var emailBody = await _viewRender.RenderViewToStringAsync($"/Modules/SimplCommerce.Module.Orders/Views/EmailTemplates/Subscription.cshtml", model);
+
+            var emailSubject = $"Subscription for Charter Wing updates!";
+            await _emailSender.SendEmailAsync(email, emailSubject, emailBody, true);
+
+            return Ok();
         }
 
         //

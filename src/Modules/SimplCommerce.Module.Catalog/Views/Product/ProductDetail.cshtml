@@ -7,7 +7,7 @@
 <div class="product-detail">
     <div class="row">
         <div class="col-md-12">
-           
+
             @if (Model.HasVariation)
             {
                 <form>
@@ -51,7 +51,7 @@
                                             </li>
                                         }
                                     }
-                                   
+
                                     @if (option.OptionName == "Class")
                                     {
                                         foreach (var value in option.Values)
@@ -73,216 +73,240 @@
                             foreach (var variant in Model.Variations)
                             {
                                 var hidden = variant != Model.Variations.First() ? "collapse" : "";
-                               <div class="product-variation row @hidden" data-variation-name="@variant.NormalizedName">
-                               <div class="product-price col-sm-12">
-                               <div class="row">
-                               <div class="col-xs-12 col-md-2 col-sm-3" style="white-space:nowrap">
-                                    @if (variant.IsCallForPricing)
-                                    {
-                                        <p><span class="label label-info">@Localizer["Call for pricing"]</span></p>
-                                    }
-                                    else
-                                    {
-                                        <h3><span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></h3>
-                                        if (variant.CalculatedProductPrice.PercentOfSaving > 0)
-                                        {
-                                            <p class="product-price-regular"><span class="priceToConvert">@variant.CalculatedProductPrice.OldPrice.Value</span></p>
-                                            <p class="product-price-saving">You save (@(variant.CalculatedProductPrice.PercentOfSaving)%)</p>
-                                        }
-                                    }
-                                </div>
-                                <div class="col-xs-12 col-md-3 col-sm-9" style="white-space:nowrap">
-                                        <span class="label label-default">@variant.FlightClass</span>
-                                        @{
-                                            var dateOptionsString = variant.DepartureDate.Value.DateTime.ToShortDateString();
-                                            if (variant.ReturnLandingDate.HasValue)
-                                            {
-                                                dateOptionsString = variant.ReturnLandingDate.Value.DateTime.ToShortDateString();
-                                            }
-                                         }
-                                        <span class="label label-primary">@dateOptionsString</span>
-                                        @if (variant.StockQuantity <= 0)
-                                        {
-                                            <span class="label label-danger ">@Localizer["Out of stock"]</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="label label-info">@Localizer["Available"] <span class="badge">@variant.StockQuantity</span></span>
-                                        }
-                                </div>
-                                <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                           <span class="glyphicon glyphicon-arrow-right"></span> Carrier: @Model.Carrier
-                                        </div>
-                                        <div class="col-sm-3">
-                                            Flight #: @Model.FlightNumber
-                                        </div>
-                                        <div class="col-sm-2">
-                                            Aircraft: @Model.Aircraft
-                                        </div>
-                                        <div class="col-sm-2">
-                                            Terminal: @Model.Terminal
-                                        </div>
-                                        @if (!string.IsNullOrEmpty(Model.Via))
-                                        {
-                                            <div class="col-sm-2">
-                                                Via: @Model.Via
-                                            </div>
-                                        }
-                                    </div>
-                                    @if (Model.IsRoundTrip)
-                                    {
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <span class="glyphicon glyphicon-arrow-left"></span> Carrier: @Model.ReturnCarrier
-                                            </div>
-                                            <div class="col-sm-3">
-                                                Flight #: @Model.ReturnFlightNumber
-                                            </div>
-                                            <div class="col-sm-2">
-                                                Aircraft: @Model.ReturnAircraft
-                                            </div>
-                                            <div class="col-sm-2">
-                                                Terminal: @Model.ReturnTerminal
-                                            </div>
-                                            @if (!string.IsNullOrEmpty(Model.ReturnVia))
-                                            {
-                                                <div class="col-sm-2">
-                                                    Via: @Model.ReturnVia
-                                                </div>
-                                            }                                        
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                                var returnDate = Model.AvailableOptions.Any(o => o.OptionName == "Package Days") ? 
+                                    variant.ReturnDate.Value.DateTime.ToString("dd.MM.yy") : string.Empty;
 
-                        <div class="add-to-cart col-sm-12">
-                            <form class="inline">
-                                <input type="hidden" name="productId" value="@variant.Id" />
-                                <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
-                                    <button type="button" class="quantity-button quantity-button-adult" style="font-size:smaller" name="add" value="+">+ (18+)</button>
-                                </div>
-                                <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
-                                    <button type="button" class="quantity-button quantity-button-child" style="font-size:smaller" name="add" value="+">+ (2-11)</button>
-                                </div>
-                                <div class="product-quantity">
-                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
-                                    <input type="text" style="font-size:smaller" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
-                                    <button type="button" class="quantity-button quantity-button-baby" style="font-size:smaller" name="add" value="+">+ (0-2)</button>
-                                </div>
-                                <button type="button" style="font-size:smaller"  disabled="@(!variant.IsAllowToOrder || variant.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
-                            </form>
-                        </div>
-                    </div>
-                            }
-                <div class="product-variation-notavailable collapse">
-                    <span class="label label-danger">Not available</span>
-                </div>
-             }
-             else
-             {
-                <div class="product-price col-sm-12" style="white-space:nowrap">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-2 col-sm-3">
-                            @if (Model.IsCallForPricing)
-                            {
-                                <p><span class="label label-info">@Localizer["Call for pricing"]</span></p>
-                            }
-                            else
-                            {
-                                <h3><span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></h3>
-                                if (Model.CalculatedProductPrice.PercentOfSaving > 0)
-                                {
-                                    <p class="product-price-regular"><span class="priceToConvert">@Model.CalculatedProductPrice.OldPrice.Value</span></p>
-                                    <p class="product-price-saving">You save (@(Model.CalculatedProductPrice.PercentOfSaving)%)</p>
-                                }
-                            }
-                        </div>
-                        <div class="col-xs-12 col-md-3 col-sm-9 flight-main-details">
-                            @if (Model.StockQuantity <= 0)
-                            {
-                                <span class="label label-danger">@Localizer["Out of stock"]</span>
-                            }
-                            else
-                            {
-                                <span class="label label-info">@Localizer["Available"] <span class="badge">@Model.StockQuantity</span></span>
-                            }
-                        </div>
-                        <div class="col-xs-12 col-md-7 col-sm-12 font-smaller">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                  <span class="glyphicon glyphicon-arrow-right"></span>  Carrier: @Model.Carrier
-                                </div>
-                                <div class="col-sm-3">
-                                    Flight #: @Model.FlightNumber
-                                </div>
-                                <div class="col-sm-2">
-                                    Aircraft: @Model.Aircraft
-                                </div>
-                                <div class="col-sm-2">
-                                    Terminal: @Model.Terminal
-                                </div>
-                                @if (!string.IsNullOrEmpty(Model.Via))
-                                {
-                                    <div class="col-sm-2">
-                                        Via: @Model.Via
-                                    </div>
-                                }
-                            </div>
-                            @if (Model.IsRoundTrip)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <span class="glyphicon glyphicon-arrow-left"></span> Carrier: @Model.ReturnCarrier
-                                    </div>
-                                    <div class="col-sm-3">
-                                        Flight #: @Model.ReturnFlightNumber
-                                    </div>
-                                    <div class="col-sm-2">
-                                        Aircraft: @Model.ReturnAircraft
-                                    </div>
-                                    <div class="col-sm-2">
-                                        Terminal: @Model.ReturnTerminal
-                                    </div>
-                                    @if (!string.IsNullOrEmpty(Model.ReturnVia))
-                                    {
-                                        <div class="col-sm-2">
-                                            Via: @Model.ReturnVia
+                                <div class="product-variation panel-group row @hidden" data-variation-name="@variant.NormalizedName">
+                                    <div class="col-sm-12">
+                                        <div class="row ">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <div class="row">
+                                                        <div class="col-xs-4"> 
+                                                            <b>Terminal</b>
+                                                            <input type="hidden" name="productId" value="@variant.Id" />
+                                                            <span style="visibility:hidden" class="priceToConvert variant-price">@variant.CalculatedProductPrice.Price</span>
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            <i class="fas fa-suitcase"></i>&nbsp;(kg)
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            <i class="fas fa-plane"></i>
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(Model.Via))
+                                                        {
+                                                            <div class="col-xs-4">
+                                                                Via: 
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            @Model.Terminal
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            @Model.Baggage
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            @Model.Aircraft
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(Model.Via))
+                                                        {
+                                                            <div class="col-xs-4">
+                                                                @Model.Via
+                                                            </div>
+                                                        }
+                                                    </div>
+                                              @if (Model.IsRoundTrip)
+                                              {
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            @Model.ReturnTerminal
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            @Model.Baggage
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            @Model.ReturnAircraft
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(Model.ReturnVia))
+                                                        {
+                                                            <div class="col-xs-4">
+                                                                @Model.ReturnVia
+                                                            </div>
+                                                        }
+                                                    </div>
+                                              }
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            @if (variant.StockQuantity <= 0)
+                                                            {
+                                                                <span class="label label-danger ">@Localizer["Out of stock"]</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                @Localizer["Available"] <span class="badge">@variant.StockQuantity</span> @variant.FlightClass
+                                                            }
+
+                                                            @if (!string.IsNullOrEmpty(returnDate))
+                                                            {
+                                                                <span>(return @returnDate)</span>
+                                                            }
+
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            <img src="~/themes/AirlineTickets/img/no-dogs.png" />
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            <span>&nbsp;1&nbsp;x&nbsp;</span><i class="fas fa-user">&nbsp;=&nbsp;<span class="priceToConvert">@variant.CalculatedProductPrice.Price</span></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    }                                
-                                </div>                            
+                                    </div>
+                                </div>
+
+                                <div class="add-to-cart col-sm-12 hidden">
+                                    <form class="inline">
+                                        <div class="product-quantity">
+                                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
+                                            <input type="text" style="font-size:smaller" data-product-id="@variant.Id" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
+                                            <button type="button" class="quantity-button quantity-button-adult" style="font-size:smaller" name="add" value="+">+ (18+)</button>
+                                        </div>
+                                        <div class="product-quantity">
+                                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
+                                            <input type="text" style="font-size:smaller" data-product-id="@variant.Id" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
+                                            <button type="button" class="quantity-button quantity-button-child" style="font-size:smaller" name="add" value="+">+ (2-11)</button>
+                                        </div>
+                                        <div class="product-quantity">
+                                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
+                                            <input type="text" style="font-size:smaller" data-product-id="@variant.Id" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
+                                            <button type="button" class="quantity-button quantity-button-baby" style="font-size:smaller" name="add" value="+">+ (0-2)</button>
+                                        </div>
+                                        <button type="button" style="font-size:smaller" disabled="@(!variant.IsAllowToOrder || variant.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
+                                    </form>
+                                </div>
                             }
-                        </div>
-                    </div>
-                </div>
-                <div class="add-to-cart">
-                    <form class="inline">
-                        <input type="hidden" name="productId" value="@Model.Id" />
-                        <div class="product-quantity">
-                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
-                            <input type="text" style="font-size:smaller" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
-                            <button type="button" class="quantity-button quantity-button-adult" style="font-size:smaller" name="add" value="+">+ (18+)</button>
-                        </div>
-                        <div class="product-quantity">
-                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
-                            <input type="text" style="font-size:smaller" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
-                            <button type="button" class="quantity-button quantity-button-child" style="font-size:smaller" name="add" value="+">+ (2-11)</button>
-                        </div>
-                        <div class="product-quantity">
-                            <button type="button" style="font-size:smaller" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
-                            <input type="text" style="font-size:smaller" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
-                            <button type="button" class="quantity-button quantity-button-baby" style="font-size:smaller" name="add" value="+">+ (0-2)</button>
-                        </div>
-                        <button type="button" style="font-size:smaller" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
-                    </form>
-                </div>
-             }
+                            <div class="product-variation-notavailable collapse">
+                                <span class="label label-danger">Not available</span>
+                            </div>
+                            }
+                            else
+             {
+                                <br />
+                                <div class="row panel-group">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            <b>Terminal</b>
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            <i class="fas fa-suitcase"></i>&nbsp;(kg)
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            <i class="fas fa-plane"></i>                                                            
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(Model.Via))
+                                                        {
+                                                            <div class="col-xs-4">
+                                                                Via:
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            @Model.Terminal
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            @Model.Baggage
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            @Model.Aircraft
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(Model.Via))
+                                                        {
+                                                            <div class="col-xs-4">
+                                                                @Model.Via
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    @if (Model.IsRoundTrip)
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-xs-4">
+                                                                @Model.ReturnTerminal
+                                                            </div>
+                                                            <div class="col-xs-4 text-center">
+                                                                @Model.Baggage
+                                                            </div>
+                                                            <div class="col-xs-4 text-right">
+                                                                @Model.ReturnAircraft
+                                                            </div>
+                                                            @if (!string.IsNullOrEmpty(Model.ReturnVia))
+                                                            {
+                                                                <div class="col-xs-4">
+                                                                    @Model.ReturnVia
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            @if (Model.StockQuantity <= 0)
+                                                            {
+                                                                <span class="label label-danger ">@Localizer["Out of stock"]</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                @Localizer["Available"] <span class="badge">@Model.StockQuantity</span> @Model.FlightClass
+                                                            }
+                                                        </div>
+                                                        <div class="col-xs-4 text-center">
+                                                            <img src="~/themes/AirlineTickets/img/no-dogs.png" />
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            <span>&nbsp;1&nbsp;x&nbsp;</span><i class="fas fa-user">&nbsp;=&nbsp;<span class="priceToConvert">@Model.CalculatedProductPrice.Price</span></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                        <div class="add-to-cart hidden">
+                                            <form class="inline">
+                                                <input type="hidden" name="productId" value="@Model.Id" />
+                                                <div class="product-quantity">
+                                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-adult" name="subtract" value="-">-</button>
+                                                    <input type="text" style="font-size:smaller" data-product-id="@Model.Id" class="quantity-field quantity-field-adult" readonly="readonly" name="qty" value="1">
+                                                    <button type="button" class="quantity-button quantity-button-adult" style="font-size:smaller" name="add" value="+">+ (18+)</button>
+                                                </div>
+                                                <div class="product-quantity">
+                                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-child" name="subtract" value="-">-</button>
+                                                    <input type="text" style="font-size:smaller" data-product-id="@Model.Id" class="quantity-field quantity-field-child" readonly="readonly" name="qty" value="0">
+                                                    <button type="button" class="quantity-button quantity-button-child" style="font-size:smaller" name="add" value="+">+ (2-11)</button>
+                                                </div>
+                                                <div class="product-quantity">
+                                                    <button type="button" style="font-size:smaller" class="quantity-button quantity-button-baby" name="subtract" value="-">-</button>
+                                                    <input type="text" style="font-size:smaller" data-product-id="@Model.Id" class="quantity-field quantity-field-baby" readonly="readonly" name="qty" value="0">
+                                                    <button type="button" class="quantity-button quantity-button-baby" style="font-size:smaller" name="add" value="+">+ (0-2)</button>
+                                                </div>
+                                                <button type="button" style="font-size:smaller" disabled="@(!Model.IsAllowToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
+                                            </form>
+                                        </div>
+                            }
         </div>
     </div>
 </div>

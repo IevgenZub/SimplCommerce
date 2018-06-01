@@ -12,9 +12,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public DateTimeOffset? DepartureDate { get; set; }
 
-        public decimal? InfantPrice { get; set; }
+        public DateTimeOffset? ReturnDate { get; set; }
 
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public decimal? InfantPrice { get; set; }
 
         public string FlightClass { get; set; }
 

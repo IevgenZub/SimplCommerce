@@ -218,6 +218,8 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<decimal>("AgencyPrice");
 
+                    b.Property<int>("Baggage");
+
                     b.Property<long?>("BrandId");
 
                     b.Property<decimal>("ChildPrice");
@@ -228,11 +230,19 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<string>("Currency");
 
+                    b.Property<string>("Departure");
+
                     b.Property<DateTimeOffset?>("DepartureDate");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("DepartureRus");
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<string>("Destination");
+
+                    b.Property<string>("DestinationRus");
+
+                    b.Property<int>("DurationHours");
+
+                    b.Property<int>("DurationMinutes");
 
                     b.Property<string>("FlightClass");
 
@@ -252,13 +262,15 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<bool>("IsLastMinute");
 
+                    b.Property<bool>("IsNextDayLanding");
+
                     b.Property<bool>("IsPublished");
 
                     b.Property<bool>("IsRoundTrip");
 
                     b.Property<bool>("IsVisibleIndividually");
 
-                    b.Property<DateTimeOffset?>("LandingDate");
+                    b.Property<DateTimeOffset?>("LandingTime");
 
                     b.Property<string>("MetaDescription");
 
@@ -292,9 +304,15 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<DateTimeOffset?>("ReturnDepartureDate");
 
+                    b.Property<int>("ReturnDurationHours");
+
+                    b.Property<int>("ReturnDurationMinutes");
+
                     b.Property<string>("ReturnFlightNumber");
 
-                    b.Property<DateTimeOffset?>("ReturnLandingDate");
+                    b.Property<bool>("ReturnIsNextDayLanding");
+
+                    b.Property<DateTimeOffset?>("ReturnLandingTime");
 
                     b.Property<string>("ReturnTerminal");
 
@@ -305,10 +323,6 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<bool?>("SaleRtOnly");
 
                     b.Property<string>("SeoTitle");
-
-                    b.Property<string>("ShortDescription");
-
-                    b.Property<string>("Sku");
 
                     b.Property<int?>("SoldSeats");
 
@@ -325,6 +339,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.Property<int>("StockQuantity");
 
                     b.Property<long?>("TaxClassId");
+
+                    b.Property<string>("Terminal");
 
                     b.Property<long?>("ThumbnailImageId");
 

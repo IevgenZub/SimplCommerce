@@ -11,11 +11,15 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public string Name { get; set; }
 
-        public string ShortDescription { get; set; }
+        public string Departure { get; set; }
+
+        public string DepartureRus { get; set; }
 
         public CalculatedProductPrice CalculatedProductPrice { get; set; }
 
-        public string Description { get; set; }
+        public string Destination { get; set; }
+
+        public string DestinationRus { get; set; }
 
         public string Specification { get; set; }
 
@@ -30,10 +34,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Carrier { get; set; }
         public string Vendor { get; set; }
         public string Via { get; set; }
-        public string Baggage { get; set; }
+        public int Baggage { get; set; }
         public string Provider { get; set; }
         public string Terminal { get; set; }
         public string FlightNumber { get; set; }
+        public string FlightClass { get; set; }
         public string ReturnAircraft { get; set; }
         public string Aircraft { get; set; }
         public string ReturnCarrier { get; set; }

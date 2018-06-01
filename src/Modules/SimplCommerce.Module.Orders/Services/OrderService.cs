@@ -11,6 +11,7 @@ using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.Orders.ViewModels;
 using SimplCommerce.Module.ShippingPrices.Services;
 using SimplCommerce.Module.Tax.Services;
+using SimplCommerce.Module.Catalog.Services;
 
 namespace SimplCommerce.Module.Orders.Services
 {
@@ -24,6 +25,8 @@ namespace SimplCommerce.Module.Orders.Services
         private readonly IShippingPriceService _shippingPriceService;
         private readonly IRepository<UserAddress> _userAddressRepository;
         private readonly IOrderEmailService _orderEmailService;
+        private readonly IProductPricingService _productPricingService;
+
 
         public OrderService(IRepository<Order> orderRepository,
             IRepository<Cart> cartRepository,
@@ -32,7 +35,8 @@ namespace SimplCommerce.Module.Orders.Services
             ITaxService taxService,
             IShippingPriceService shippingPriceService,
             IRepository<UserAddress> userAddressRepository,
-            IOrderEmailService orderEmailService)
+            IOrderEmailService orderEmailService,
+            IProductPricingService productPricingService)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
@@ -42,6 +46,7 @@ namespace SimplCommerce.Module.Orders.Services
             _shippingPriceService = shippingPriceService;
             _userAddressRepository = userAddressRepository;
             _orderEmailService = orderEmailService;
+            _productPricingService = productPricingService;
         }
 
         public async Task<Order> CreateOrder(User user, string paymentMethod, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
@@ -130,8 +135,8 @@ namespace SimplCommerce.Module.Orders.Services
                 var orderItem = new OrderItem
                 {
                     Product = cartItem.Product,
-                    ProductPrice = isVendor ? cartItem.Product.AgencyPrice : cartItem.Product.PassengerPrice,
-                    ChildPrice = isVendor ? cartItem.Product.AgencyChildPrice : cartItem.Product.PassengerChildPrice,
+                    ProductPrice = _productPricingService.CalculateProductPrice(cartItem.Product, isVendor).Price,
+                    ChildPrice = _productPricingService.CalculateProductChildPrice(cartItem.Product, isVendor).Price,
                     Quantity = cartItem.Quantity,
                     QuantityChild = cartItem.QuantityChild,
                     QuantityBaby = cartItem.QuantityBaby,
@@ -219,6 +224,45 @@ namespace SimplCommerce.Module.Orders.Services
                     user.Email = registrationAddress.Address.Email;
                     await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
                 }
+            }
+
+            return order;
+        }
+
+        public Order GetOrder(int id)
+        {
+            var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.ThumbnailImage)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.OptionCombinations).ThenInclude(x => x.Option)
+                .Include(x => x.CreatedBy)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (order == null)
+            {
+                throw new ApplicationException($"Order not found by Id = {id}");
+            }
+
+            return order;
+        }
+
+        public Order GetOrderByPnr(string pnr)
+        {
+            var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.ThumbnailImage)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.TaxClass)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.OptionCombinations).ThenInclude(x => x.Option)
+                .Include(x => x.CreatedBy)
+                .Include(x => x.RegistrationAddress).ThenInclude(ra => ra.Address).ThenInclude(a => a.Country)
+                .FirstOrDefault(x => x.PnrNumber == pnr);
+
+            if (order == null)
+            {
+                throw new ApplicationException($"Order not found by PNR = {pnr}");
             }
 
             return order;

@@ -20,5 +20,8 @@ $(document).ready(function() {
         var fc = $('#flight-class option:selected').text();
 
         $('#number-of-people').val(totalCount + ' - ' + fc);
+        $('#adultPassengers').val($("#adult-passenger").val());
+        $('#childPassengers').val($("#child-passenger").val());
+        $('#babyPassengers').val($("#baby-passenger").val());
     });
 });

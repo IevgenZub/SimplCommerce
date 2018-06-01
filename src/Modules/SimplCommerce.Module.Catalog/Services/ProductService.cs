@@ -32,14 +32,14 @@ namespace SimplCommerce.Module.Catalog.Services
                 _productRepository.Add(product);
                 _productRepository.SaveChanges();
 
-                var prefix = "CO"; // Default
                 var vendor = _vendorRepository.Query().FirstOrDefault(v => v.Id == product.VendorId);
-                if (vendor != null)
-                {
-                    prefix = vendor.Name[0].ToString().ToUpper() + vendor.Name[1].ToString().ToUpper();
-                }
+                
+                product.ReservationNumber = product.Id.ToReservation(vendor.Name);
 
-                product.ReservationNumber = prefix + product.Id.ToString("000000.##");
+                foreach (var link in product.ProductLinks.Where(pl => pl.LinkType == ProductLinkType.Super))
+                {
+                    link.Product.ReservationNumber = link.Product.Id.ToReservation(vendor.Name);
+                }
 
                 _entityService.Add(product.Name, product.SeoTitle, product.Id, ProductEntityTypeId);
                 _productRepository.SaveChanges();
@@ -78,6 +78,16 @@ namespace SimplCommerce.Module.Catalog.Services
             product.IsDeleted = true;
             await _entityService.Remove(product.Id, ProductEntityTypeId);
             _productRepository.SaveChanges();
+        }
+    }
+
+    public static class ReservationNumberHelper
+    {
+        const string ReservationNumberFormat = "000000.##";
+
+        public static string ToReservation(this long id, string vendor)
+        {
+            return vendor[0].ToString().ToUpper() + vendor[1].ToString().ToUpper() + id.ToString(ReservationNumberFormat);
         }
     }
 }

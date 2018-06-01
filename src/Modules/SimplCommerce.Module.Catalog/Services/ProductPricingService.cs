@@ -2,11 +2,24 @@
 using SimplCommerce.Module.Catalog.Models;
 using SimplCommerce.Module.Catalog.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace SimplCommerce.Module.Catalog.Services
 {
     public class ProductPricingService : IProductPricingService
     {
+        private decimal _priceRegulation;
+
+        public ProductPricingService(IConfiguration config)
+        {
+            _priceRegulation = config.GetValue<decimal>("Price.Regulation");
+        }
+
+        public CalculatedProductPrice CalculateProductChildPrice(Product product, bool isVendor)
+        {
+            return CalculateProductPrice(isVendor ? product.AgencyChildPrice : product.PassengerChildPrice, product.OldPrice, product.SpecialPrice, product.SpecialPriceStart, product.SpecialPriceEnd);
+        }
+
         public CalculatedProductPrice CalculateProductPrice(ProductThumbnail productThumbnail)
         {
             return CalculateProductPrice(productThumbnail.Price, productThumbnail.OldPrice, productThumbnail.SpecialPrice, productThumbnail.SpecialPriceStart, productThumbnail.SpecialPriceEnd);
@@ -36,6 +49,8 @@ namespace SimplCommerce.Module.Catalog.Services
             {
                 percentOfSaving = (int)(100 - Math.Ceiling((calculatedPrice / oldPrice.Value) * 100));
             }
+
+            calculatedPrice += _priceRegulation * calculatedPrice / 100;
 
             return new CalculatedProductPrice
             {

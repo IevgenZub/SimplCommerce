@@ -78,8 +78,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Slug = product.SeoTitle,
-                ShortDescription = product.ShortDescription,
-                Description = product.Description,
+                Departure = product.Departure,
+                Destination = product.Destination,
+                DepartureRus = product.DepartureRus,
+                DestinationRus = product.DestinationRus,
                 Specification = product.Specification,
                 OldPrice = product.OldPrice,
                 Price = product.Price,
@@ -94,15 +96,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ThumbnailImageUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage),
                 BrandId = product.BrandId,
                 TaxClassId = product.TaxClassId,
-                Baggage = product.DisplayOrder,
+                Baggage = product.Baggage,
                 Seats = product.StockQuantity,
-                TerminalInfo = product.Sku,
+                TerminalInfo = product.Terminal,
                 Via = product.Via,
                 Currency = product.Currency,
                 ReturnFlightNumber = product.ReturnFlightNumber,
                 ReturnCarrierId = product.ReturnCarrierId,
                 ReturnDepartureDate = product.ReturnDepartureDate,
-                ReturnLandingDate = product.ReturnLandingDate,
                 IsRoundTrip = product.IsRoundTrip,
                 ReturnAircraftId = product.ReturnAircraftId,
                 ReturnTerminal = product.ReturnTerminal,
@@ -115,8 +116,15 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 VendorId = product.VendorId,
                 FlightClass = product.FlightClass,
                 DepartureDate = product.DepartureDate,
-                LandingDate = product.LandingDate,
-                ChildPrice = product.ChildPrice
+                DurationHours = product.DurationHours,
+                DurationMinutes = product.DurationMinutes,
+                ReturnDurationHours = product.ReturnDurationHours,
+                ReturnDurationMinutes = product.ReturnDurationMinutes,
+                ChildPrice = product.ChildPrice,
+                LandingTime = product.LandingTime,
+                IsNextDayLanding = product.IsNextDayLanding,
+                ReturnLandingTime = product.ReturnLandingTime,
+                ReturnIsNextDayLanding = product.ReturnIsNextDayLanding
             };
 
             if (User.IsInRole("admin"))
@@ -260,13 +268,13 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 if (search.From != null)
                 {
                     string from = search.From;
-                    query = query.Where(x => x.ShortDescription.Contains(from));
+                    query = query.Where(x => x.Departure.Contains(from));
                 }
 
                 if (search.To != null)
                 {
                     string to = search.To;
-                    query = query.Where(x => x.Description.Contains(to));
+                    query = query.Where(x => x.Destination.Contains(to));
                 }
 
                 if (search.HasOptions != null)
@@ -321,11 +329,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Seats = x.SoldSeats + "/" + x.StockQuantity,
                     CreatedOn = x.CreatedOn,
                     IsPublished = x.IsPublished,
-                    From = x.ShortDescription.Split('(', ')')[1],
-                    To = x.Description.Split('(', ')')[1],
+                    From = x.Departure.Split('(', ')')[1],
+                    To = x.Destination.Split('(', ')')[1],
                     DepartureDate = x.DepartureDate,
                     ReturnDepartureDate = x.ReturnDepartureDate,
-                    LandingDate = x.LandingDate,
                     Status = x.Status,
                     Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
                     FlightClass = x.FlightClass,
@@ -349,8 +356,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 Name = model.Product.Name,
                 SeoTitle = model.Product.Slug,
-                ShortDescription = model.Product.ShortDescription,
-                Description = model.Product.Description,
+                Departure = model.Product.Departure,
+                Destination = model.Product.Destination,
+                DepartureRus = model.Product.DepartureRus,
+                DestinationRus = model.Product.DestinationRus,
                 Specification = model.Product.Specification,
                 Price = model.Product.Price,
                 OldPrice = model.Product.OldPrice,
@@ -366,15 +375,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 HasOptions = model.Product.Variations.Any() ? true : false,
                 IsVisibleIndividually = true,
                 CreatedBy = currentUser,
-                DisplayOrder = model.Product.Baggage,
+                Baggage = model.Product.Baggage,
                 StockQuantity = model.Product.Seats,
-                Sku = model.Product.TerminalInfo,
+                Terminal = model.Product.TerminalInfo,
                 Via = model.Product.Via,
                 Currency = model.Product.Currency,
                 ReturnFlightNumber = model.Product.ReturnFlightNumber,
                 ReturnCarrierId = model.Product.ReturnCarrierId,
                 ReturnDepartureDate = model.Product.ReturnDepartureDate,
-                ReturnLandingDate = model.Product.ReturnLandingDate,
                 IsRoundTrip = model.Product.IsRoundTrip,
                 ReturnAircraftId = model.Product.ReturnAircraftId,
                 ReturnTerminal = model.Product.ReturnTerminal,
@@ -386,8 +394,15 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 ReservationNumber = model.Product.ReservationNumber,
                 FlightClass = model.Product.FlightClass,
                 DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc),
-                LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc),
-                ChildPrice = model.Product.ChildPrice
+                ChildPrice = model.Product.ChildPrice,
+                DurationHours = model.Product.DurationHours,
+                DurationMinutes = model.Product.DurationMinutes,
+                ReturnDurationHours = model.Product.ReturnDurationHours,
+                ReturnDurationMinutes = model.Product.ReturnDurationMinutes,
+                LandingTime = model.Product.LandingTime.HasValue ? DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?),
+                IsNextDayLanding = model.Product.IsNextDayLanding,
+                ReturnLandingTime = model.Product.ReturnLandingTime.HasValue ? DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?),
+                ReturnIsNextDayLanding = model.Product.ReturnIsNextDayLanding
             };
 
             if (!User.IsInRole("admin"))
@@ -494,8 +509,10 @@ namespace SimplCommerce.Module.Catalog.Controllers
 
             product.Name = model.Product.Name;
             product.SeoTitle = model.Product.Slug;
-            product.ShortDescription = model.Product.ShortDescription;
-            product.Description = model.Product.Description;
+            product.Departure = model.Product.Departure;
+            product.Destination = model.Product.Destination;
+            product.DepartureRus = model.Product.DepartureRus;
+            product.DestinationRus = model.Product.DestinationRus;
             product.Specification = model.Product.Specification;
             product.Price = model.Product.Price;
             product.OldPrice = model.Product.OldPrice;
@@ -509,15 +526,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.IsCallForPricing = model.Product.IsCallForPricing;
             product.IsAllowToOrder = model.Product.IsAllowToOrder;
             product.UpdatedBy = currentUser;
-            product.DisplayOrder = model.Product.Baggage;
+            product.Baggage = model.Product.Baggage;
             product.StockQuantity = model.Product.Seats;
-            product.Sku = model.Product.TerminalInfo;
+            product.Terminal = model.Product.TerminalInfo;
             product.Via = model.Product.Via;
             product.Currency = model.Product.Currency;
             product.ReturnFlightNumber = model.Product.ReturnFlightNumber;
             product.ReturnCarrierId = model.Product.ReturnCarrierId;
             product.ReturnDepartureDate = model.Product.ReturnDepartureDate;
-            product.ReturnLandingDate = model.Product.ReturnLandingDate;
             product.IsRoundTrip = model.Product.IsRoundTrip;
             product.ReturnAircraftId = model.Product.ReturnAircraftId;
             product.ReturnTerminal = model.Product.ReturnTerminal;
@@ -529,8 +545,15 @@ namespace SimplCommerce.Module.Catalog.Controllers
             product.VendorId = model.Product.VendorId;
             product.FlightClass = model.Product.FlightClass;
             product.DepartureDate = DateTime.SpecifyKind(model.Product.DepartureDate.Value.DateTime, DateTimeKind.Utc);
-            product.LandingDate = DateTime.SpecifyKind(model.Product.LandingDate.Value.DateTime, DateTimeKind.Utc);
             product.ChildPrice = model.Product.ChildPrice;
+            product.DurationHours = model.Product.DurationHours;
+            product.DurationMinutes = model.Product.DurationMinutes;
+            product.ReturnDurationHours = model.Product.ReturnDurationHours;
+            product.ReturnDurationMinutes = model.Product.ReturnDurationMinutes;
+            product.LandingTime = model.Product.LandingTime.HasValue ? DateTime.SpecifyKind(model.Product.LandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?);
+            product.IsNextDayLanding = model.Product.IsNextDayLanding;
+            product.ReturnLandingTime = model.Product.ReturnLandingTime.HasValue ? DateTime.SpecifyKind(model.Product.ReturnLandingTime.Value.DateTime, DateTimeKind.Utc) : default(DateTimeOffset?);
+            product.ReturnIsNextDayLanding = model.Product.ReturnIsNextDayLanding;
 
             if (User.IsInRole("admin"))
             {
@@ -583,7 +606,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
         [HttpPost("change-status/{id}")]
         public async Task<IActionResult> ChangeStatus(long id)
         {
-            var product = _productRepository.Query().FirstOrDefault(x => x.Id == id);
+            var product = _productRepository.Query().Include(p => p.Vendor).FirstOrDefault(x => x.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -594,9 +617,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
             {
                 return BadRequest(new { error = "You don't have permission to manage this product" });
             }
-
-            //product.IsPublished = !product.IsPublished;
+            
             product.Status = product.Status == "ACCEPTED" ? "PAUSE" : "ACCEPTED";
+
+            if (product.Status == "ACCEPTED" && string.IsNullOrEmpty(product.ReservationNumber))
+            {
+                product.ReservationNumber = product.Id.ToReservation(product.Vendor.Name);
+            }
+
             await _productRepository.SaveChangesAsync();
 
             return Accepted();
@@ -670,22 +698,14 @@ namespace SimplCommerce.Module.Catalog.Controllers
                         .AddHours(product.DepartureDate.Value.Hour)
                         .AddMinutes(product.DepartureDate.Value.Minute);
 
-                linkedProduct.LandingDate = departureDate
-                        .AddHours(product.LandingDate.Value.Hour)
-                        .AddMinutes(product.LandingDate.Value.Minute);
-
                 var daysOption = variation.OptionCombinations.FirstOrDefault(o => o.OptionName == "Package Days");
                 if (daysOption != null)
                 {
                     var days = Convert.ToInt32(daysOption.Value);
                     var returnDepartureTime = linkedProduct.ReturnDepartureDate.Value.TimeOfDay;
-                    var returnLandingTime = linkedProduct.ReturnLandingDate.Value.TimeOfDay;
                     linkedProduct.ReturnDepartureDate = DateTime.SpecifyKind(linkedProduct.DepartureDate.Value.Date
                         .AddDays(days)
                         .Add(returnDepartureTime), DateTimeKind.Utc);
-                    linkedProduct.ReturnLandingDate = DateTime.SpecifyKind(linkedProduct.DepartureDate.Value.Date
-                        .AddDays(days)
-                        .Add(returnLandingTime), DateTimeKind.Utc);
                 }
             }
         

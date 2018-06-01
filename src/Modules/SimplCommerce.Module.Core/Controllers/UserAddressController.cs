@@ -47,8 +47,6 @@ namespace SimplCommerce.Module.Core.Controllers
                     Phone = x.Address.Phone,
                     AddressLine1 = x.Address.AddressLine1,
                     AddressLine2 = x.Address.AddressLine1,
-                    DistrictName = x.Address.District.Name,
-                    StateOrProvinceName = x.Address.StateOrProvince.Name,
                     CountryName = x.Address.Country.Name
                 }).ToList();
 
@@ -88,7 +86,9 @@ namespace SimplCommerce.Module.Core.Controllers
                     DistrictId = 1,
                     City = model.City,
                     PostalCode = model.PostalCode,
-                    Phone = model.Phone
+                    Phone = model.Phone,
+                    Email = model.Email,
+                    Mobile = model.Mobile
                 };
 
                 var userAddress = new UserAddress
@@ -135,10 +135,12 @@ namespace SimplCommerce.Module.Core.Controllers
                 AddressLine1 = userAddress.Address.AddressLine1,
                 AddressLine2 = userAddress.Address.AddressLine2,
                 CountryId = userAddress.Address.CountryId,
-                DistrictId = userAddress.Address.DistrictId,
-                StateOrProvinceId = userAddress.Address.StateOrProvinceId,
+                DistrictId = 1,
+                StateOrProvinceId = 1,
                 City = userAddress.Address.City,
-                PostalCode = userAddress.Address.PostalCode
+                PostalCode = userAddress.Address.PostalCode,
+                Mobile = userAddress.Address.Mobile,
+                Email = userAddress.Address.Email
             };
 
             PopulateAddressFormData(model);
@@ -167,11 +169,13 @@ namespace SimplCommerce.Module.Core.Controllers
                 userAddress.Address.AddressLine2 = model.AddressLine2;
                 userAddress.Address.ContactName = model.ContactName;
                 userAddress.Address.CountryId = model.CountryId;
-                userAddress.Address.StateOrProvinceId = model.StateOrProvinceId;
-                userAddress.Address.DistrictId = model.DistrictId;
+                userAddress.Address.StateOrProvinceId = 1;
+                userAddress.Address.DistrictId = 1;
                 userAddress.Address.City = model.City;
                 userAddress.Address.PostalCode = model.PostalCode;
                 userAddress.Address.Phone = model.Phone;
+                userAddress.Address.Email = model.Email;
+                userAddress.Address.Mobile = model.Mobile;
 
                 _userAddressRepository.SaveChanges();
                 return RedirectToAction("List");
@@ -227,37 +231,12 @@ namespace SimplCommerce.Module.Core.Controllers
         private void PopulateAddressFormData(UserAddressFormViewModel model)
         {
             model.Countries = _countryRepository.Query()
-                .Where(x => x.IsShippingEnabled)
                 .OrderBy(x => x.Name)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }).ToList();
-
-            var onlyShipableCountryId = model.CountryId > 0 ? model.CountryId : long.Parse(model.Countries.First().Value);
-            model.StateOrProvinces = _stateOrProvinceRepository
-                .Query()
-                .Where(x => x.CountryId == onlyShipableCountryId)
-                .OrderBy(x => x.Name)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-
-            if(model.StateOrProvinceId > 0)
-            {
-                model.Districts = _districtRepository
-                    .Query()
-                    .Where(x => x.StateOrProvinceId == model.StateOrProvinceId)
-                    .OrderBy(x => x.Name)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            }
         }
     }
 }

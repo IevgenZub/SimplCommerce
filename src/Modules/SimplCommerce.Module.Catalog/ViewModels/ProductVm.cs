@@ -44,9 +44,13 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         [Required]
         public string Slug { get; set; }
 
-        public string ShortDescription { get; set; }
+        public string Departure { get; set; }
 
-        public string Description { get; set; }
+        public string Destination { get; set; }
+
+        public string DepartureRus { get; set; }
+
+        public string DestinationRus { get; set; }
 
         public string Specification { get; set; }
 
@@ -92,7 +96,9 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public DateTimeOffset? ReturnDepartureDate { get; set; }
 
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public int ReturnDurationHours { get; set; }
+
+        public int ReturnDurationMinutes { get; set; }
 
         public long? ReturnCarrierId { get; set; }
 
@@ -121,8 +127,13 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string FlightClass { get; set; }
 
         public DateTimeOffset? DepartureDate { get; set; }
+        public int DurationHours { get; set; }
+        public int DurationMinutes { get; set; }
+        public DateTimeOffset? LandingTime { get; set; }
+        public bool IsNextDayLanding { get; set; }
+        public DateTimeOffset? ReturnLandingTime { get; set; }
+        public bool ReturnIsNextDayLanding { get; set; }
 
-        public DateTimeOffset? LandingDate { get; set; }
 
         // Admin Rules Departure
 

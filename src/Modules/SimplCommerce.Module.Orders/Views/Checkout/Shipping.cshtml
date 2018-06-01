@@ -5,37 +5,32 @@
 @{
     ViewBag.Title = "Passenger Registration";
 }
+<div class="row" style="padding:5px">
+    <div class="col-sm-8"><h3>@Localizer["Passenger Registration"] </h3></div>
+    <div class="col-sm-4 text-right">
+        <a href="~/user/address"><i class="fas fa-address-book"></i> Edit Passengers Book</a>&nbsp;
+        <input id="search-txt" placeholder="Filter Text.." pattern="[A-Za-z]+" />
+    </div>
+</div>
 <div class="panel-group passenger-registraion-panel">
     <div class="row">
-        <div class="col-sm-12"><h3>Passenger Registration </h3></div>
-    </div>
-    <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-xs-6 col-md-10">
-                            Select Passenger(s)
-                        </div>
-                        <div style="width: 100%;max-width: 154px;" class="col-xs-6 col-md-2 text-right passenger-filter">
-                            <input id="search-txt"  placeholder="Filter Text.." pattern="[A-Za-z]+" />
-                        </div>
+                        <div class="col-sm-2 hidden-xs"><strong>First Name</strong></div>
+                        <div class="col-sm-2 hidden-xs"><strong>Last Name</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Birth Date</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Document#</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
+                        <div class="col-sm-2 hidden-xs"><strong>Email</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Phone</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Country</strong></div>
+                        <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
-
-                        <div class="row hidden-xs hidden-sm" style="border-bottom: 1px solid #eee;">
-                            <div class="col-sm-2"><strong>First Name</strong></div>
-                            <div class="col-sm-2"><strong>Last Name</strong></div>
-                            <div class="col-sm-1"><strong>Birth Date</strong></div>
-                            <div class="col-sm-1"><strong>Document#</strong></div>
-                            <div class="col-sm-1"><strong>Expiration</strong></div>
-                            <div class="col-sm-2"><strong>Email</strong></div>
-                            <div class="col-sm-1"><strong>Phone</strong></div>
-                            <div class="col-sm-1"><strong>Country</strong></div>
-                            <div class="col-sm-1"><strong>Sex</strong></div>
-                        </div>
                         <div class="address-container">
                             @foreach (var address in Model.ExistingShippingAddresses)
                         {
@@ -74,9 +69,8 @@
                                 </div>
                         }
                         </div>
-                        <br />
-                        <div class="form-group">
-                            <div class="col-md-12 text-right">
+                        <div class="row">
+                            <div class="col-md-12 text-right" style="padding-top:7px">
                                 <small id="selectionInfo">Select <span id="numberOfCheckedPassengers"></span>@Model.NumberofPassengers passenger(s) &nbsp;</small>
                                 <input type="hidden" id="numberOfPassengers" value="@Model.NumberofPassengers" />
                                 <button type="submit" class="btn btn-primary btn-order" disabled>@Localizer["Continue"]</button>
@@ -87,7 +81,7 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">Add New Passenger</div>
                 <div class="panel-body">
                     <form action="add-address" method="POST" class="add-address-form form-horizontal">
@@ -162,7 +156,7 @@
                                 <div class="form-group">
                                     <div class="col-sm-12 text-right">
                                         <small class="alert-danger" hidden id="addPassangerAlert">Add <span id="numberOfPassengersToAdd"></span>&nbsp; passenger(s) &nbsp;</small>
-                                        <button type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add New</button>
+                                        <button type="submit" class="btn btn-default"><i class="fas fa-id-card"></i>&nbsp;Add Passenger</button>
                                     </div>
                                 </div>
 

@@ -9,7 +9,7 @@
         var vm = this;
         vm.translate = translateService;
         // declare shoreDescription and description for summernote
-        vm.product = { shortDescription: '', description: '', specification: '', isPublished: true, price: 0, isCallForPricing: false, isAllowToOrder: true };
+        vm.product = { departure: '', destination: '', specification: '', isPublished: true, price: 0, isCallForPricing: false, isAllowToOrder: true };
         vm.product.categoryIds = [];
         vm.product.options = [];
         vm.product.variations = [];
@@ -38,10 +38,8 @@
         vm.datePickerSpecialPriceEnd = {};
 
         vm.datePickerDepartureDate = {};
-        vm.datePickerLandingDate = {};
-
+        
         vm.datePickerReturnDepartureDate = {};
-        vm.datePickerReturnLandingDate = {};
         
         vm.updateSlug = function () {
             vm.product.slug = slugify(vm.product.flightNumber);
@@ -371,9 +369,9 @@
             vm.product.specialPriceStart = vm.product.specialPriceStart === null ? '' : vm.product.specialPriceStart;
             vm.product.specialPriceEnd = vm.product.specialPriceEnd === null ? '' : vm.product.specialPriceEnd;
             vm.product.returnDepartureDate = vm.product.returnDepartureDate == null ? '' : new Date(vm.product.returnDepartureDate.valueOf() - vm.product.returnDepartureDate.getTimezoneOffset() * 60000);
-            vm.product.returnLandingDate = vm.product.returnLandingDate == null ? '' : new Date(vm.product.returnLandingDate.valueOf() - vm.product.returnLandingDate.getTimezoneOffset() * 60000);
-            vm.product.departureDate = vm.product.departureDate == null ? '' : new Date(vm.product.departureDate.valueOf() - vm.product.departureDate.getTimezoneOffset()*60000);
-            vm.product.landingDate = vm.product.landingDate == null ? '' : new Date(vm.product.landingDate.valueOf() - vm.product.landingDate.getTimezoneOffset() * 60000);
+            vm.product.departureDate = vm.product.departureDate == null ? '' : new Date(vm.product.departureDate.valueOf() - vm.product.departureDate.getTimezoneOffset() * 60000);
+            vm.product.landingTime = vm.product.landingTime == null ? '' : new Date(vm.product.landingTime.valueOf() - vm.product.landingTime.getTimezoneOffset() * 60000);
+            vm.product.returnLandingTime = vm.product.returnLandingTime == null ? '' : new Date(vm.product.returnLandingTime.valueOf() - vm.product.returnLandingTime.getTimezoneOffset() * 60000);
             vm.product.returnAircraftId = vm.product.returnAircraftId === null ? '' : vm.product.returnAircraftId;
             vm.product.returnCarrierId = vm.product.returnCarrierId === null ? '' : vm.product.returnCarrierId;
             vm.product.isRoundTrip = vm.product.isRoundTrip === null ? '' : vm.product.isRoundTrip;
@@ -457,16 +455,17 @@
                 if (vm.product.returnDepartureDate) {
                     vm.product.returnDepartureDate = getUtcDate(new Date(vm.product.returnDepartureDate));
                 }
-                if (vm.product.returnLandingDate) {
-                    vm.product.returnLandingDate = getUtcDate(new Date(vm.product.returnLandingDate));
-                }
 
                 if (vm.product.departureDate) {
                     vm.product.departureDate = getUtcDate(new Date(vm.product.departureDate));
                 }
 
-                if (vm.product.landingDate) {
-                    vm.product.landingDate = getUtcDate(new Date(vm.product.landingDate));
+                if (vm.product.landingTime) {
+                    vm.product.landingTime = getUtcDate(new Date(vm.product.landingTime));
+                }
+
+                if (vm.product.returnLandingTime) {
+                    vm.product.returnLandingTime = getUtcDate(new Date(vm.product.returnLandingTime));
                 }
             });
         }
@@ -487,11 +486,11 @@
                 vm.categories = result.data;
 
                 var options = {
-                    url: "themes/AirlineTickets/data/airports.json",
-
+                    url: "themes/AirlineTickets/data/airports_utf.json",
+                    contentType: "application/json; charset=utf-8",
                     getValue: function (element) {
-                        return element.city + ", " + element.name + " (" + element.code + "), " + element.country;
-                    },
+                        return element.city_eng + ", " + element.name_eng + " (" + element.iata_code + "), " + element.country_eng;
+                   },
 
                     list: {
                         match: {
@@ -511,6 +510,33 @@
                 };
 
                 $("#flightFrom, #flightTo").easyAutocomplete(options);
+
+                var optionsRus = {
+                    url: "themes/AirlineTickets/data/airports_utf.json",
+                    contentType: "application/json; charset=utf-8",
+                    getValue: function (element) {
+                        var name = element.name_rus == "" ? element.name_eng : element.name_rus;
+                        return element.city_rus + ", " + name + " (" + element.iata_code + "), " + element.country_rus;
+                    },
+
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        },
+                        hideAnimation: {
+                            type: "slide", //normal|slide|fade
+                            time: 400,
+                            callback: function () { }
+                        }
+                    }
+                };
+
+                $("#flightFromRus, #flightToRus").easyAutocomplete(optionsRus);
             });
         }
 

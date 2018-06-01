@@ -13,6 +13,7 @@ using SimplCommerce.Module.Catalog.Services;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using SimplCommerce.Module.Core.ViewModels;
+using System.Globalization;
 
 namespace SimplCommerce.Module.Search.Controllers
 {
@@ -50,54 +51,60 @@ namespace SimplCommerce.Module.Search.Controllers
         {
             var query = _productRepository.Query();
 
-            if (!string.IsNullOrEmpty(searchOption.Reservation))
+            var numberOfPeople = 1;
+            var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+            var isRoundTrip = searchOption.TripType == "round-trip";
+
+            
+            var departure = searchOption.Departure.Contains("*") ? searchOption.Departure.Split(',')[0] : searchOption.Departure;
+            var landing = searchOption.Landing.Contains("*") ? searchOption.Landing.Split(',')[0] : searchOption.Landing;
+
+            if (CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru")
             {
-                query = query.Where(x => 
-                    x.ReservationNumber.ToUpper() == searchOption.Reservation.ToUpper() && 
-                    x.Status == "ACCEPTED");
+                query = query.Where(x =>
+                        x.DepartureRus.Contains(departure) &&
+                        x.DestinationRus.Contains(landing));
             }
             else
             {
                 query = query.Where(x =>
-                    x.ShortDescription.Contains(searchOption.Departure) &&
-                    x.Description.Contains(searchOption.Landing) &&
-                    x.Status == "ACCEPTED" &&
-                    x.IsVisibleIndividually &&
-                    x.DepartureDate >= DateTime.Now);
-
-                
-                if (!string.IsNullOrEmpty(searchOption.DepartureDate))
-                {
-                    var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-                    var departureDateMin = departureDate.AddDays(-7);
-                    var departureDateMax = departureDate.AddDays(7);
-                    query = query.Where(x =>
-                        (x.DepartureDate.Value.Date >= departureDateMin && 
-                        x.DepartureDate.Value.Date < departureDateMax) || x.HasOptions);
-                }
-
-                if (searchOption.TripType == "round-trip")
-                {
-                    if (!string.IsNullOrEmpty(searchOption.ReturnDate))
-                    {
-                        var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
-                        var returnDateMin = returnDate.AddDays(-7);
-                        var returnDateMax = returnDate.AddDays(7);
-                        query = query.Where(x => 
-                            x.ReturnDepartureDate.Value.Date >= returnDateMin && 
-                            x.ReturnDepartureDate.Value.Date < returnDateMax);
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
-                {
-                    var numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
-                    var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
-                    query = query.Where(x =>
-                        x.StockQuantity >= numberOfPeople);
-                }
+                        x.Departure.Contains(departure) &&
+                        x.Destination.Contains(landing));
             }
 
+            query = query.Where(x =>
+                    x.Status == "ACCEPTED" &&
+                    !x.IsDeleted  &&
+                    x.IsPublished &&
+                    !x.HasOptions &&
+                    x.DepartureDate >= DateTime.Now);
+                
+            var departureDateMin = departureDate.AddDays(-7);
+            var departureDateMax = departureDate.AddDays(7);
+            query = query.Where(x =>
+                x.DepartureDate.Value.Date >= departureDateMin && 
+                x.DepartureDate.Value.Date < departureDateMax);
+
+            query = query.Where(x => x.IsRoundTrip == isRoundTrip);
+            
+            if (isRoundTrip && !string.IsNullOrEmpty(searchOption.ReturnDate))
+            {
+                var returnDate = Convert.ToDateTime(searchOption.ReturnDate);
+                var returnDateMin = returnDate.AddDays(-7);
+                var returnDateMax = returnDate.AddDays(7);
+                query = query.Where(x => (x.IsRoundTrip &&  
+                        x.ReturnDepartureDate.Value.Date >= returnDateMin && 
+                        x.ReturnDepartureDate.Value.Date <= returnDateMax));
+            }
+
+            if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
+            {
+                numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
+                var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
+
+                query = query.Where(x => x.StockQuantity >= numberOfPeople);
+            }
+            
             var model = new SearchResult
             {
                 CurrentSearchOption = searchOption,
@@ -105,17 +112,17 @@ namespace SimplCommerce.Module.Search.Controllers
             };
 
 
-            model.FilterOption.Price.MaxPrice = query.Select(x => x.Price).DefaultIfEmpty(0).Max();
-            model.FilterOption.Price.MinPrice = query.Select(x => x.Price).DefaultIfEmpty(0).Min();
+            model.FilterOption.Price.MaxPrice = query.Select(x => x.PassengerPrice).DefaultIfEmpty(0).Max();
+            model.FilterOption.Price.MinPrice = query.Select(x => x.PassengerPrice).DefaultIfEmpty(0).Min();
 
             if (searchOption.MinPrice.HasValue)
             {
-                query = query.Where(x => x.Price >= searchOption.MinPrice.Value);
+                query = query.Where(x => x.PassengerPrice >= searchOption.MinPrice.Value);
             }
 
             if (searchOption.MaxPrice.HasValue)
             {
-                query = query.Where(x => x.Price <= searchOption.MaxPrice.Value);
+                query = query.Where(x => x.PassengerPrice <= searchOption.MaxPrice.Value);
             }
 
             AppendFilterOptionsToModel(model, query);
@@ -158,7 +165,7 @@ namespace SimplCommerce.Module.Search.Controllers
             query = AppySort(searchOption, query);
 
             var products = query
-                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor")))
+                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"), isRoundTrip))
                 .Skip(offset)
                 .Take(_pageSize)
                 .ToList();
@@ -170,7 +177,7 @@ namespace SimplCommerce.Module.Search.Controllers
                 product.Details = GetProductDetails(product.Id, searchOption);
             }
 
-            model.Products = products.Where(p => !p.Details.HasVariation || (p.Details.HasVariation && p.Details.Variations.Count > 0)).ToList();
+            model.Products = products;
             model.CurrentSearchOption.PageSize = _pageSize;
             model.CurrentSearchOption.Page = currentPageNum;
 
@@ -204,15 +211,17 @@ namespace SimplCommerce.Module.Search.Controllers
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
-                ShortDescription = product.ShortDescription,
-                Description = product.Description,
+                Departure = product.Departure,
+                Destination = product.Destination,
                 Specification = product.Specification,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
-                Terminal = product.Sku,
+                Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
+                Baggage = product.Baggage,
                 FlightNumber = product.FlightNumber,
+                FlightClass = product.FlightClass,
                 Carrier = product.Brand == null ? "" : product.Brand.Name,
                 ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,
@@ -223,23 +232,11 @@ namespace SimplCommerce.Module.Search.Controllers
                 Categories = product.Categories.Select(x => new ProductDetailCategory { Id = x.CategoryId, Name = x.Category.Name, SeoTitle = x.Category.SeoTitle }).ToList()
             };
 
-            MapProductVariantToProductVm(product, model, searchOption);
-            MapRelatedProductToProductVm(product, model);
-
-            foreach (var item in product.OptionValues)
+            // Special requirement from Koray: show fake available quantity 
+            // to increase flight attractiveness and sense of urgency
+            if (model.StockQuantity > 10)
             {
-                var optionValues = JsonConvert.DeserializeObject<IList<ProductOptionValueVm>>(item.Value);
-                foreach (var value in optionValues)
-                {
-                    if (!model.OptionDisplayValues.ContainsKey(value.Key))
-                    {
-                        model.OptionDisplayValues.Add(value.Key, new ProductOptionDisplay
-                        {
-                            DisplayType = item.DisplayType,
-                            Value = (string.IsNullOrEmpty(value.Display) || value.Display.ToLower() == "null") ? value.Key : value.Display
-                        });
-                    }
-                }
+                model.StockQuantity = new Random().Next(7, 12);
             }
 
             model.Images = product.Medias.Where(x => x.Media.MediaType == Core.Models.MediaType.Image).Select(productMedia => new MediaViewModel
@@ -257,90 +254,15 @@ namespace SimplCommerce.Module.Search.Controllers
             switch (sortBy.ToLower())
             {
                 case "price-desc":
-                    query = query.OrderByDescending(x => x.Price);
+                    query = query.OrderByDescending(x => x.PassengerPrice);
                     break;
                 default:
-                    query = query.OrderBy(x => x.Price);
+                    query = query.OrderBy(x => x.PassengerPrice);
                     break;
             }
 
             return query;
         }
-
-        private void MapProductVariantToProductVm(Product product, ProductDetail model, SearchOption searchOption)
-        {
-            var variations = _productRepository
-                .Query()
-                .Include(x => x.OptionCombinations).ThenInclude(o => o.Option)
-                .Where(x => x.LinkedProductLinks.Any(link => link.ProductId == product.Id && link.LinkType == ProductLinkType.Super))
-                .Where(x => x.IsPublished && x.StockQuantity > 0 && x.Status == "ACCEPTED");
-
-            if (!string.IsNullOrEmpty(searchOption.DepartureDate))
-            {
-                var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
-                var departureDateMin = departureDate.AddDays(-3);
-                var departureDateMax = departureDate.AddDays(3);
-                variations = variations.Where(x =>
-                    x.DepartureDate.Value.Date >= departureDateMin &&
-                    x.DepartureDate.Value.Date <= departureDateMax);
-            }
-
-            foreach (var variation in variations)
-            {
-                var variationVm = new ProductDetailVariation
-                {
-                    Id = variation.Id,
-                    Name = variation.Name,
-                    NormalizedName = variation.NormalizedName,
-                    IsAllowToOrder = variation.IsAllowToOrder,
-                    IsCallForPricing = variation.IsCallForPricing,
-                    StockQuantity = variation.StockQuantity,
-                    SoldSeats = variation.SoldSeats,
-                    DepartureDate = variation.DepartureDate,
-                    InfantPrice = variation.OldPrice,
-                    ReturnLandingDate = variation.ReturnLandingDate,
-                    FlightClass = variation.FlightClass,
-                    CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
-                };
-
-                var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
-                foreach (var combination in optionCombinations)
-                {
-                    variationVm.Options.Add(new ProductDetailVariationOption
-                    {
-                        OptionId = combination.OptionId,
-                        OptionName = combination.Option.Name,
-                        Value = combination.Value
-                    });
-                }
-
-                model.Variations.Add(variationVm);
-            }
-        }
-
-        private void MapRelatedProductToProductVm(Product product, ProductDetail model)
-        {
-            var publishedProductLinks = product.ProductLinks.Where(x => x.LinkedProduct.IsPublished && (x.LinkType == ProductLinkType.Related || x.LinkType == ProductLinkType.CrossSell));
-            foreach (var productLink in publishedProductLinks)
-            {
-                var linkedProduct = productLink.LinkedProduct;
-                var productThumbnail = ProductThumbnail.FromProduct(linkedProduct, User.IsInRole("vendor"));
-
-                productThumbnail.ThumbnailUrl = _mediaService.GetThumbnailUrl(linkedProduct.ThumbnailImage);
-                productThumbnail.CalculatedProductPrice = _productPricingService.CalculateProductPrice(linkedProduct, User.IsInRole("vendor"));
-
-                if (productLink.LinkType == ProductLinkType.Related)
-                {
-                    model.RelatedProducts.Add(productThumbnail);
-                }
-
-                if (productLink.LinkType == ProductLinkType.CrossSell)
-                {
-                    model.CrossSellProducts.Add(productThumbnail);
-                }
-            }
-        }
-
 
         private static void AppendFilterOptionsToModel(SearchResult model, IQueryable<Product> query)
         {

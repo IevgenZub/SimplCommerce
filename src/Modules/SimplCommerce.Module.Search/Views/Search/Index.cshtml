@@ -52,7 +52,10 @@
                     </div>
                     <div id="popup-opener" class="col-lg-2 col-md-6 col-xs-12" style="padding: 0;">
                         <label class="sr-only" for="number-of-people">@Localizer["Travelers"]</label>
-                        <input type="text" class="form-control" style="width: 100%" id="number-of-people" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
+                        <input type="text" class="form-control" style="width: 100%" id="number-of-people" value="1 - Economic" name="NumberOfPeople" placeholder="@Localizer["Travelers"]" readonly="readonly">
+                        <input type="hidden" id="adultPassengers" name="A_P" value="1">
+                        <input type="hidden" id="childPassengers"  name="C_P" value="0">
+                        <input type="hidden" id="babyPassengers"  name="B_P" value="0">
                     </div>
                     <div class="col-lg-1 col-md-6 col-xs-12" style="padding: 0">
                         <button type="submit" class="btn btn-submit" style="width: 100%"><i class="fa fa-search"></i></button>
@@ -247,8 +250,8 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-7 category-result">
-                <h2>@Localizer["Search results"]</h2>
-                <small class="badge-results">@Model.TotalProduct Results</small>
+                <h2>@Localizer["Search results"] <span class="badge badge-light">@Model.TotalProduct</span></h2>
+                <br />
             </div>
             <div class="col-md-5">
                 <ul class="list-inline clear-both product-list-display-options">
@@ -279,79 +282,13 @@
             </div>
         </div>
         <div class="product-list product-list__search">
-            @{
-                var ow = Model.Products.Where(p => !p.IsRoundTrip);
-                var rt = Model.Products.Where(p => p.IsRoundTrip);
-
-                var owBlock = ow.Where(p => p.Details.HasVariation);
-                var owSingle = ow.Where(p => !p.Details.HasVariation);
-
-                var rtBlock = rt.Where(p => p.Details.HasVariation);
-                var rtSingle = rt.Where(p => !p.Details.HasVariation);
-
-            }
-            @if (rtBlock.Any() || owBlock.Any())
+            @foreach (var product in Model.Products)
             {
                 <div>
-                    <h3 class="text-center">@Localizer["Daily"]</h3>
+                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
                 </div>
-                if (rtBlock.Any())
-                {
-                    <div>
-                        <h4>@Localizer["Round Trip"]</h4>
-                    </div>
-                    @foreach (var product in rtBlock)
-                    {
-                        <div>
-                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                        </div>
-                    }
-                }
-                if (owBlock.Any())
-                {
-                    <div>
-                        <h4>@Localizer["One Way"]</h4>
-                    </div>
-                    @foreach (var product in owBlock)
-                    {
-                        <div>
-                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                        </div>
-                    }
-                }
             }
-
-            @if (rtSingle.Any() || owSingle.Any())
-            {
-                <div>
-                    <h3 class="text-center">@Localizer["One Time"]</h3>
-                </div>
-                @if (rtSingle.Any())
-                {
-                    <div>
-                        <h4>@Localizer["Round Trip"]</h4>
-                    </div>
-                    @foreach (var product in rtSingle)
-                    {
-                        <div>
-                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                        </div>
-                    }
-                }
-
-                @if (owSingle.Any())
-                {
-                    <div>
-                        <h4>@Localizer["One Way"]</h4>
-                    </div>
-                    @foreach (var product in owSingle)
-                    {
-                        <div>
-                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                        </div>
-                    }
-                }
-            }
+            <br />
         </div>
 
         <div class="row">
@@ -362,6 +299,9 @@
                           cs-pagenumber-param="page"
                           asp-basehref="~/search"
                           asp-all-route-data="@Model.CurrentSearchOption.ToDictionary()"></cs-pager>
+
+                <br />
+                <br />
             </div>
         </div>
     </div>
@@ -421,6 +361,22 @@
             $("#number-of-people").val(number.replace(new RegExp('\\+', 'g'), ' '));
         }
 
+        var adultPassengers = getUrlParameter('A_P');
+        if (adultPassengers) {
+            $(".quantity-field-adult").val(adultPassengers.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var childPassengers = getUrlParameter('C_P');
+        if (childPassengers) {
+            $(".quantity-field-child").val(childPassengers.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+        var babyPassengers = getUrlParameter('B_P');
+        if (babyPassengers) {
+            $(".quantity-field-baby").val(babyPassengers.replace(new RegExp('\\+', 'g'), ' '));
+        }
+
+
         var tripType = getUrlParameter('TripType');
         if (tripType) {
 
@@ -443,8 +399,8 @@
         $(".moreDetails").click(function () {
             $current = $(this);
             $details = $current.parents(".my-thumbnail").find('.product-details').first();
-            $iconDown = $current.parent().find(".fa-angle-double-down");
-            $iconUp = $current.parent().find(".fa-angle-double-up");
+            $iconDown = $current.parent().find(".fa-search-minus");
+            $iconUp = $current.parent().find(".fa-search-plus");
 
             $details.slideToggle(300, function () {
                 if($iconDown.is(':visible')) {

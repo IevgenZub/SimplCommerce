@@ -19,6 +19,10 @@ namespace SimplCommerce.Module.Core.ViewModels
 
         public string AddressLine2 { get; set; }
 
+        public string Email { get; set; }
+
+        public string Mobile { get; set; }
+
         public string PostalCode { get; set; }
 
         public string City { get; set; }
@@ -36,5 +40,16 @@ namespace SimplCommerce.Module.Core.ViewModels
         public IList<SelectListItem> Districts { get; set; }
 
         public IList<SelectListItem> Countries { get; set; }
+
+        public IList<SelectListItem> SexTypes
+        {
+            get
+            {
+                return new List<SelectListItem> {
+                    new SelectListItem { Text = "Male", Value = "Male" },
+                    new SelectListItem { Text = "Female", Value = "Female" }
+                };
+            }
+        }
     }
 }

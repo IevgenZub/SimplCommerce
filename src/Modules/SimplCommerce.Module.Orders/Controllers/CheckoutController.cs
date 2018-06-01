@@ -15,6 +15,7 @@ using SimplCommerce.Module.ShippingPrices.Services;
 using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.Services;
 using SimplCommerce.Module.Core.ViewModels;
+using SimplCommerce.Module.Orders.Models;
 
 namespace SimplCommerce.Module.Orders.Controllers
 {
@@ -106,13 +107,13 @@ namespace SimplCommerce.Module.Orders.Controllers
 
                 var address = new Address
                 {
-                    ContactName = model.FirstName,
-                    AddressLine1 = model.LastName,
+                    ContactName = model.FirstName.ToUpper(),
+                    AddressLine1 = model.LastName.ToUpper(),
                     AddressLine2 = model.BirthDate,
                     CountryId = model.CountryId,
                     StateOrProvinceId = 1,
                     DistrictId = 1,
-                    City = model.DocumentNumber,
+                    City = model.DocumentNumber.ToUpper(),
                     PostalCode = model.DocumentExpiration,
                     Phone = model.Sex,
                     Email = model.Email,
@@ -219,7 +220,10 @@ namespace SimplCommerce.Module.Orders.Controllers
         [HttpGet("congratulation")]
         public IActionResult OrderConfirmation()
         {
-            ViewData["pnr"] = HttpContext.Request.Query["pnr"].ToString();
+            var pnr = HttpContext.Request.Query["pnr"].ToString();
+            
+            ViewData["pnr"] = pnr;
+
             return View();
         }
 
@@ -251,8 +255,6 @@ namespace SimplCommerce.Module.Orders.Controllers
                 }).ToList();
 
             model.ShippingAddressId = currentUser.DefaultShippingAddressId ?? 0; 
-
-            
         }
     }
 }

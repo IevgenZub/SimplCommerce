@@ -34,7 +34,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                 .Where(x => x.CreatedById == user.Id && x.ParentId == null)
                 .Select(x => new OrderHistoryListItem
                 {
-                    Id = x.Id,
+                    Id = x.Id,  
                     CreatedOn = x.CreatedOn,
                     SubTotal = x.SubTotal,
                     OrderStatus = x.OrderStatus,

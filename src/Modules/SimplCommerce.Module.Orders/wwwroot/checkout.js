@@ -18,9 +18,9 @@
     
         // Get some values from elements on the page:
         var $form = $(this),
-            firstName = $form.find("input[name='firstName']").val(),
-            lastName = $form.find("input[name='lastName']").val(),
-            documentNumber = $form.find("input[name='documentNumber']").val(),
+            firstName = $form.find("input[name='firstName']").val().toUpperCase(),
+            lastName = $form.find("input[name='lastName']").val().toUpperCase(),
+            documentNumber = $form.find("input[name='documentNumber']").val().toUpperCase(),
             documentExpiration = $form.find("input[name='documentExpiration']").val(),
             birthDate = $form.find("input[name='birthDate']").val(),
             sex = $form.find("input[name='sex']:checked").val(),

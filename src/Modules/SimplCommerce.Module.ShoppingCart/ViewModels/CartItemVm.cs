@@ -11,17 +11,27 @@ namespace SimplCommerce.Module.ShoppingCart.ViewModels
 
         public long ProductId { get; set; }
 
-        public string ProductName { get; set; }
+        public string Carrier { get; set; }
+
+        public string FlightNumber { get; set; }
+
+        public string FlightClass { get; set; }
+
+        public string ReturnFlightNumber { get; set; }
 
         public string Departure { get; set; }
 
         public string Landing { get; set; }
+
+        public bool IsRoundTrip { get; set; }
 
         public DateTimeOffset? DepartureDate { get; set; }
 
         public DateTimeOffset? LandingDate { get; set; }
 
         public DateTimeOffset? ReturnDepartureDate { get; set; }
+
+        public DateTimeOffset? ReturnLandingDate { get; set; }
 
         public string ProductImage { get; set; }
 

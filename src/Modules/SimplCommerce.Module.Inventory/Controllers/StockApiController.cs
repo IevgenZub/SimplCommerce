@@ -57,7 +57,7 @@ namespace SimplCommerce.Module.Inventory.Controllers
                 if (search.ProductSku != null)
                 {
                     string productSku = search.productSku;
-                    query = query.Where(x => x.Product.Sku.Contains(productSku));
+                    query = query.Where(x => x.Product.Terminal.Contains(productSku));
                 }
             }
 
@@ -68,7 +68,7 @@ namespace SimplCommerce.Module.Inventory.Controllers
                     x.Id,
                     x.ProductId,
                     ProductName = x.Product.Name,
-                    ProductSku = x.Product.Sku,
+                    ProductSku = x.Product.Terminal,
                     x.Quantity,
                     AdjustedQuantity = 0
                 });

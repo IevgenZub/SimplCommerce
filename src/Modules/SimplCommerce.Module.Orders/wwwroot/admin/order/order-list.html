@@ -1,71 +1,108 @@
-﻿<div class="page-header">
-    <div class="row">
-        <div class="col-md-8">
-            <h2>{{::vm.translate.get('Orders')}}</h2>
-        </div>
-        <div class="col-md-4 text-right">
-        </div>
-    </div>
-</div>
+﻿<script>
+    $(function () {
+        $("#scroll").doubleScroll({
+            resetOnWindowResize: true,
+            timeToWaitForResize: 100
+        });
+    });
+</script>
+<h3>{{::vm.translate.get('Orders')}}</h3>
+<div id="scroll" style="width:98%">
+    <table class="table table-striped" st-pipe="vm.getOrders"  st-table="vm.orders">
+        <thead>
+            <tr>
+                <th>Actions</th>
+                <th st-sort="Id" class="sortable">{{::vm.translate.get('OrderId')}}</th>
+                <th>Status</th>
+                <th>{{::vm.translate.get('Customer')}}</th>
+                <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
+                <th st-sort="SubTotal" class="sortable">{{::vm.translate.get('SubTotal')}}</th>
+                <th st-sort="ShippingAmount" class="sortable">Agency Fee</th>
+                <th st-sort="PnrNumber" class="sortable">PNR</th>
+                <th st-sort="AgencyReservationNumber" class="sortable">Confirmation</th>
+                <th>Res #</th>
+                <th>Departure</th>
+                <th>Destination</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Flight #</th>
+                <th>Type</th>
+                <th>Return Flight #</th>
+                <th>Return Date</th>
+                <th>Time</th>
+                <th>Agency Price</th>
+                <th>Passenger Price</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <div class="form-group">
+                        <input type="number" class="form-control" st-search="Id" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <select class="form-control" st-search="Status">
+                            <option value="">All</option>
+                            <option ng-repeat="status in vm.orderStatus" value="{{status.id}}">{{status.name}}</option>
+                        </select>
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="CustomerName" />
+                    </div>
+                </th>
+                <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
 
-<table class="table table-striped" st-pipe="vm.getOrders" st-table="vm.orders">
-    <thead>
-        <tr>
-            <th st-sort="Id" class="sortable">{{::vm.translate.get('OrderId')}}</th>
-            <th>{{::vm.translate.get('Order Status')}}</th>
-            <th>{{::vm.translate.get('Customer')}}</th>
-            <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
-            <th st-sort="SubTotal" class="sortable">{{::vm.translate.get('SubTotal')}}</th>
-            <th st-sort="ShippingAmount" class="sortable">Agency Fee</th>
-            <th st-sort="PnrNumber" class="sortable">PNR</th>
-            <th st-sort="AgencyReservationNumber" class="sortable">Confirmation</th>
-            <th>Actions</th>
-        </tr>
-        <tr>
-            <th>
-                <div class="form-group">
-                    <input type="number" class="form-control" st-search="Id" />
-                </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <select class="form-control" st-search="Status">
-                        <option value="">All</option>
-                        <option ng-repeat="status in vm.orderStatus" value="{{status.id}}">{{status.name}}</option>
-                    </select>
-                </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="CustomerName" />
-                </div>
-            </th>
-            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody ng-show="!vm.isLoading">
-        <tr ng-repeat="order in vm.orders">
-            <td>{{order.id}}</td>
-            <td>{{order.orderStatus}}</td>
-            <td>{{order.customerName}}</td>
-            <td>{{order.createdOn | date:'medium'}}</td>
-            <td>{{order.subTotal}}$</td>
-            <td>{{order.shippingAmount}}$</td>
-            <td>{{order.pnrNumber}}</td>
-            <td>{{order.agencyReservationNumber}}</td>
-            <td><a ui-sref="order-detail({id: order.id})" title="View" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-eye-open"></span></a></td>
-        </tr>
-    </tbody>
-    <tbody ng-show="vm.isLoading">
-        <tr>
-            <td colspan="6" class="text-center">Loading ... </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="6"></td>
-        </tr>
-    </tfoot>
-</table>	
+            </tr>
+        </thead>
+        <tbody ng-show="!vm.isLoading">
+            <tr ng-repeat="order in vm.orders">
+                <td><a ui-sref="order-detail({id: order.id})" title="View" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-eye-open"></span></a></td>
+                <td>{{order.id}}</td>
+                <td>{{order.orderStatus}}</td>
+                <td>{{order.customerName}}</td>
+                <td>{{order.createdOn | date:'medium'}}</td>
+                <td>{{order.subTotal}}$</td>
+                <td>{{order.shippingAmount}}$</td>
+                <td>{{order.pnrNumber}}</td>
+                <td>{{order.agencyReservationNumber}}</td>
+                <td>{{order.flight.reservationNumber}}</td>
+                <td>{{order.flight.departure}}</td>
+                <td>{{order.flight.destination}}</td>
+                <td>{{order.flight.departureDate | date:'dd.MM.yy':'UTC'}}</td>
+                <td>{{order.flight.landingTime | date:'HH:mm':'UTC'}}</td>
+                <td>{{order.flight.flightNumber}}</td>
+                <td>{{order.flight.isRoundTrip}}</td>
+                <td><span ng-if='order.flight.returnFlightNumber != "null"'> {{order.flight.returnFlightNumber}} </span></td>
+                <td>{{order.flight.returnDepartureDate | date:'dd.MM.yy':'UTC'}}</td>
+                <td>{{order.flight.returnLandingTime | date:'HH:mm':'UTC'}}</td>
+                <td>{{order.flight.agencyPrice}}$</td>
+                <td>{{order.flight.passengerPrice}}$</td>
+
+            </tr>
+        </tbody>
+        <tbody ng-show="vm.isLoading">
+            <tr>
+                <td colspan="6" class="text-center">Loading ... </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="6"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

@@ -7,9 +7,13 @@ namespace SimplCommerce.Module.Catalog.Models
 {
     public class Product : Content
     {
-        public string ShortDescription { get; set; }
+        public string Departure { get; set; }
 
-        public string Description { get; set; }
+        public string Destination { get; set; }
+
+        public string DepartureRus { get; set; }
+
+        public string DestinationRus { get; set; }
 
         public string Specification { get; set; }
 
@@ -49,11 +53,11 @@ namespace SimplCommerce.Module.Catalog.Models
 
         public int StockQuantity { get; set; }
 
-        public string Sku { get; set; }
+        public string Terminal { get; set; }
 
         public string NormalizedName { get; set; }
 
-        public int DisplayOrder { get; set; }
+        public int Baggage { get; set; }
 
         public long? VendorId { get; set; }
 
@@ -82,20 +86,24 @@ namespace SimplCommerce.Module.Catalog.Models
         public long? TaxClassId { get; set; }
         public TaxClass TaxClass { get; set; }
         public string Via { get; set; }
-        public string Currency { get; set; }
+        public string Currency { get; set; } = "USD";
         public string Provider { get; set; }
         public bool IsRoundTrip { get; set; }
         public string FlightNumber { get; set; }
         public int? SoldSeats { get; set; }
         public bool? SaleRtOnly { get; set; }
         public DateTimeOffset? DepartureDate { get; set; }
-        public DateTimeOffset? LandingDate { get; set; }
+        public int DurationHours { get; set; }
+        public int DurationMinutes { get; set; }
+        public DateTimeOffset? LandingTime { get; set; }
+        public bool IsNextDayLanding { get; set; }
 
         // Return
 
         public string ReturnFlightNumber { get; set; }
         public DateTimeOffset? ReturnDepartureDate { get; set; }
-        public DateTimeOffset? ReturnLandingDate { get; set; }
+        public int ReturnDurationHours { get; set; }
+        public int ReturnDurationMinutes { get; set; }
         public long? ReturnCarrierId { get; set; }
         public Brand ReturnCarrier { get; set; }
         public long? ReturnAircraftId { get; set; }
@@ -103,6 +111,9 @@ namespace SimplCommerce.Module.Catalog.Models
         public string ReturnTerminal { get; set; }
         public string ReturnVia { get; set; }
         public string ReservationNumber { get; set; }
+        public DateTimeOffset? ReturnLandingTime { get; set; }
+        public bool ReturnIsNextDayLanding { get; set; }
+
 
         public string Status { get; set; }
         public string FlightClass { get; set; }
@@ -182,8 +193,10 @@ namespace SimplCommerce.Module.Catalog.Models
             product.MetaTitle = MetaTitle;
             product.MetaKeywords = MetaKeywords;
             product.MetaDescription = MetaDescription;
-            product.ShortDescription = ShortDescription;
-            product.Description = Description;
+            product.Departure = Departure;
+            product.Destination = Destination;
+            product.DepartureRus = DepartureRus;
+            product.DestinationRus = DestinationRus;
             product.Specification = Specification;
             product.IsPublished = true;
             product.PublishedOn = DateTimeOffset.Now;
@@ -195,10 +208,9 @@ namespace SimplCommerce.Module.Catalog.Models
             product.BrandId = BrandId;
             product.VendorId = VendorId;
             product.Via = Via;
-            product.DisplayOrder = DisplayOrder;
+            product.Baggage = Baggage;
             product.SpecialPriceEnd = SpecialPriceEnd;
             product.SpecialPriceStart = SpecialPriceStart;
-            product.Sku = Sku;
             product.Currency = Currency;
             product.Provider = Provider;
             product.TaxClassId = TaxClassId;
@@ -210,7 +222,6 @@ namespace SimplCommerce.Module.Catalog.Models
             product.ReturnVia = ReturnVia;
             product.ReturnTerminal = ReturnTerminal;
             product.ReturnDepartureDate = ReturnDepartureDate;
-            product.ReturnLandingDate = ReturnLandingDate;
             product.AdminRoundTrip = AdminRoundTrip;
             product.AdminRoundTripOperatorId = AdminRoundTripOperatorId;
             product.AdminPayLater = AdminPayLater;
@@ -234,12 +245,21 @@ namespace SimplCommerce.Module.Catalog.Models
             product.FlightClass = FlightClass;
             product.SoldSeats = 0;
             product.DepartureDate = DepartureDate;
-            product.LandingDate = LandingDate;
-            product.PassengerChildPrice = product.PassengerChildPrice;
-            product.PassengerPrice = product.PassengerPrice;
-            product.ChildPrice = product.ChildPrice;
-            product.AgencyChildPrice = product.AgencyChildPrice;
-            product.AgencyPrice = product.AgencyPrice;
+            product.PassengerChildPrice = PassengerChildPrice;
+            product.PassengerPrice = PassengerPrice;
+            product.ChildPrice = ChildPrice;
+            product.AgencyChildPrice = AgencyChildPrice;
+            product.AgencyPrice = AgencyPrice;
+            product.LandingTime = LandingTime;
+            product.IsNextDayLanding = IsNextDayLanding;
+            product.ReturnLandingTime = ReturnLandingTime;
+            product.ReturnIsNextDayLanding = ReturnIsNextDayLanding;
+            product.Terminal = Terminal;
+            product.DurationHours = DurationHours;
+            product.DurationMinutes = DurationMinutes;
+            product.ReturnDurationHours = ReturnDurationHours;
+            product.ReturnDurationMinutes = ReturnDurationMinutes;
+            product.ReturnVia = ReturnVia;
 
             foreach (var attribute in AttributeValues)
             {

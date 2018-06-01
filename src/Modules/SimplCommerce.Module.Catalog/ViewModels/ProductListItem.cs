@@ -26,8 +26,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public DateTimeOffset? DepartureDate { get; set; }
 
-        public DateTimeOffset? LandingDate { get; set; }
-
         public DateTimeOffset? ReturnDepartureDate { get; set; }
     
         public string Status { get; set; }

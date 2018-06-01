@@ -10,6 +10,8 @@ namespace SimplCommerce.Module.Catalog.Services
 
         CalculatedProductPrice CalculateProductPrice(Product product, bool isVendor);
 
+        CalculatedProductPrice CalculateProductChildPrice(Product product, bool isVendor);
+
         CalculatedProductPrice CalculateProductPrice(decimal price, decimal? oldPrice, decimal? specialPrice, DateTimeOffset? specialPriceStart, DateTimeOffset? specialPriceEnd);
     }
 }

@@ -12,7 +12,10 @@
                 selectedProducts: '=selectedProducts',
                 modelId: '@modelId',
                 title: '@title',
-                isVisibleIndividually: '@isVisibleIndividually'
+                isVisibleIndividually: '@isVisibleIndividually',
+                departure: '@departure',
+                destination: '@destination'
+
             },
             controller: ProductSelectionCtrl,
             controllerAs: 'vm',
@@ -34,6 +37,9 @@
             tableStateRef.search.predicateObject = tableStateRef.search.predicateObject || {};
             tableStateRef.search.predicateObject.IsVisibleIndividually = vm.isVisibleIndividually;
             tableStateRef.search.predicateObject.IsPublished = "true";
+            tableStateRef.search.predicateObject.From = vm.destination;
+            tableStateRef.search.predicateObject.To = vm.departure;
+
             vm.isLoading = true;
             productService.getProducts(tableState).then(function (result) {
                 vm.products = result.data.items;

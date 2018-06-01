@@ -1,6 +1,6 @@
 ﻿@model SimplCommerce.Module.Core.ViewModels.UserAddressFormViewModel
 @{
-    ViewData["Title"] = "Create address";
+    ViewData["Title"] = "Edit Passenger";
 }
 
 <div class="row">
@@ -8,7 +8,7 @@
         @Html.Partial("_AccountMenu")
     </div>
     <div class="col-md-9">
-        <h2>@Localizer["Edit Address"]</h2>
+        <h2>Edit Passenger</h2>
         <hr />
         <form asp-controller="UserAddress" asp-action="Edit" method="POST" class="form-horizontal">
             @Html.Partial("_AddressForm", Model)

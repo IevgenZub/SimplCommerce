@@ -7,6 +7,7 @@ using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.ViewModels;
 using SimplCommerce.Module.Core.Services;
 using SimplCommerce.Module.Pricing.Services;
+using SimplCommerce.Module.Catalog.Services;
 
 namespace SimplCommerce.Module.ShoppingCart.Services
 {
@@ -16,13 +17,15 @@ namespace SimplCommerce.Module.ShoppingCart.Services
         private readonly IRepository<CartItem> _cartItemRepository;
         private readonly IMediaService _mediaService;
         private readonly ICouponService _couponService;
+        private readonly IProductPricingService _pricingService;
 
-        public CartService(IRepository<Cart> cartRepository, IRepository<CartItem> cartItemRepository, ICouponService couponService, IMediaService mediaService)
+        public CartService(IProductPricingService pricingService, IRepository<Cart> cartRepository, IRepository<CartItem> cartItemRepository, ICouponService couponService, IMediaService mediaService)
         {
             _cartRepository = cartRepository;
             _cartItemRepository = cartItemRepository;
             _couponService = couponService;
             _mediaService = mediaService;
+            _pricingService = pricingService;
         }
 
         public async Task AddToCart(long userId, long productId, int quantity, int quantityChild, int quaintyBaby)
@@ -79,24 +82,30 @@ namespace SimplCommerce.Module.ShoppingCart.Services
             cartVm.Items = _cartItemRepository
                 .Query()
                 .Include(x => x.Product).ThenInclude(p => p.ThumbnailImage)
+                .Include(x => x.Product).ThenInclude(p => p.Brand)
                 .Include(x => x.Product).ThenInclude(p => p.OptionCombinations).ThenInclude(o => o.Option)
                 .Where(x => x.CartId == cart.Id)
                 .Select(x => new CartItemVm
                 {
                     Id = x.Id,
                     ProductId = x.ProductId,
-                    ProductName = x.Product.Name,
-                    ProductPrice = isVendor ? x.Product.AgencyPrice : x.Product.PassengerPrice,
-                    ChildPrice = isVendor ? x.Product.AgencyChildPrice : x.Product.PassengerChildPrice,
+                    Carrier = x.Product.Brand.Name,
+                    FlightNumber = x.Product.FlightNumber,
+                    FlightClass = x.Product.FlightClass,
+                    ReturnFlightNumber = x.Product.ReturnFlightNumber,
+                    ProductPrice = _pricingService.CalculateProductPrice(x.Product, isVendor).Price,
+                    ChildPrice = _pricingService.CalculateProductChildPrice(x.Product, isVendor).Price,
                     ProductImage = _mediaService.GetThumbnailUrl(x.Product.ThumbnailImage),
                     Quantity = x.Quantity,
                     QuantityChild = x.QuantityChild,
                     QuantityBaby = x.QuantityBaby,
-                    Departure = x.Product.ShortDescription,
-                    Landing = x.Product.Description,
+                    Departure = x.Product.Departure,
+                    Landing = x.Product.Destination,
+                    IsRoundTrip = x.Product.IsRoundTrip,
                     DepartureDate = x.Product.DepartureDate,
-                    LandingDate = x.Product.LandingDate,
+                    LandingDate = x.Product.DepartureDate.Value.AddHours(x.Product.DurationHours).AddMinutes(x.Product.DurationMinutes),
                     ReturnDepartureDate = x.Product.ReturnDepartureDate,
+                    ReturnLandingDate = x.Product.ReturnDepartureDate.Value.AddHours(x.Product.ReturnDurationHours).AddMinutes(x.Product.ReturnDurationMinutes),
                     VariationOptions = CartItemVm.GetVariationOption(x.Product)
                 }).ToList();
 
@@ -116,7 +125,7 @@ namespace SimplCommerce.Module.ShoppingCart.Services
 
             return cartVm;
         }
-
+        
         public async Task<CouponValidationResult> ApplyCoupon(long userId, string couponCode)
         {
             var cart = _cartRepository.Query().Include(x => x.Items).FirstOrDefault(x => x.UserId == userId && x.IsActive);

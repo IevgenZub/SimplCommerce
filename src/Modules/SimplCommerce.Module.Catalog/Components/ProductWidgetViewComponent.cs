@@ -51,7 +51,7 @@ namespace SimplCommerce.Module.Catalog.Components
               .Include(x => x.TaxClass)
               .OrderByDescending(x => x.CreatedOn)
               .Take(model.Setting.NumberOfProducts)
-              .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"))).ToList();
+              .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"), false)).ToList();
 
             foreach (var product in model.Products)
             {
@@ -90,10 +90,11 @@ namespace SimplCommerce.Module.Catalog.Components
                 IsCallForPricing = product.IsCallForPricing,
                 IsAllowToOrder = product.IsAllowToOrder,
                 StockQuantity = product.StockQuantity,
-                Terminal = product.Sku,
+                Terminal = product.Terminal,
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,
+                FlightClass = product.FlightClass,
                 ReturnFlightNumber = product.ReturnFlightNumber,
                 Carrier = product.Brand == null ? "" : product.Brand.Name,
                 ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
@@ -102,14 +103,22 @@ namespace SimplCommerce.Module.Catalog.Components
                 ReturnAircraft = product.ReturnAircraft == null ? "" : product.ReturnAircraft.Name,
                 ReturnVia = product.ReturnVia,
                 SoldSeats = product.SoldSeats,
-                ShortDescription = product.ShortDescription,
-                Description = product.Description,
+                Baggage = product.Baggage,
+                Departure = product.Departure,
+                Destination = product.Destination,
                 Specification = product.Specification,
                 ReviewsCount = product.ReviewsCount,
                 RatingAverage = product.RatingAverage,
                 Attributes = product.AttributeValues.Select(x => new ProductDetailAttribute { Name = x.Attribute.Name, Value = x.Value }).ToList(),
                 Categories = product.Categories.Select(x => new ProductDetailCategory { Id = x.CategoryId, Name = x.Category.Name, SeoTitle = x.Category.SeoTitle }).ToList()
             };
+
+            // Special requirement from Koray: show fake available quantity 
+            // to increase flight attractiveness and sense of urgency
+            if (model.StockQuantity > 10)
+            {
+                model.StockQuantity = new Random().Next(7, 12);
+            }
 
             MapProductVariantToProductVm(product, model);
             MapRelatedProductToProductVm(product, model);
@@ -165,11 +174,17 @@ namespace SimplCommerce.Module.Catalog.Components
                     StockQuantity = variation.StockQuantity,
                     SoldSeats = variation.SoldSeats,
                     DepartureDate = variation.DepartureDate,
+                    ReturnDate = variation.ReturnDepartureDate,
                     InfantPrice = variation.OldPrice,
-                    ReturnLandingDate = variation.ReturnLandingDate,
                     FlightClass = variation.FlightClass,
                     CalculatedProductPrice = _productPricingService.CalculateProductPrice(variation, HttpContext.User.IsInRole("vendor"))
                 };
+
+
+                if (variationVm.StockQuantity > 10)
+                {
+                    variationVm.StockQuantity = new Random().Next(7, 12);
+                }
 
                 var optionCombinations = variation.OptionCombinations.OrderBy(x => x.SortIndex);
                 foreach (var combination in optionCombinations)
