@@ -87,7 +87,7 @@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-sm-6">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email</span> at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
+                        <div class="col-sm-6">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email (Phone # @Model.ShippingAddress.Phone)</span> at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
                         <div class="col-sm-6 text-right">
                             <strong>Order Total <span class="priceToConvert" style="color:green">@Model.OrderTotal</span></strong> 
                         </div>
@@ -104,12 +104,10 @@
                     <div class="row">
                         <div class="col-sm-2 hidden-xs"><strong>First Name</strong></div>
                         <div class="col-sm-2 hidden-xs"><strong>Last Name</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Birth Date</strong></div> 
-                        <div class="col-sm-1 hidden-xs"><strong>Document#</strong></div>
+                        <div class="col-sm-2 hidden-xs"><strong>Birth Date</strong></div> 
+                        <div class="col-sm-2 hidden-xs"><strong>Document#</strong></div>
                         <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
-                        <div class="col-sm-2 hidden-xs"><strong>Email</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Phone</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Country</strong></div>
+                        <div class="col-sm-2 hidden-xs"><strong>Country</strong></div>
                         <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
                     </div>
                 </div>
@@ -124,22 +122,16 @@
                                     <div class="col-sm-4 col-md-2 col-xs-12 last-name">
                                         <label class="visible-xs visible-sm hidden-label">Last Name:&nbsp;</label>@address.Address.AddressLine1
                                     </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                    <div class="col-sm-4 col-md-2 col-xs-12">
                                         <label class="visible-xs visible-sm hidden-label">Birth Date:&nbsp;</label>@address.Address.AddressLine2
                                     </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12 document-no">
+                                    <div class="col-sm-4 col-md-2 col-xs-12 document-no">
                                         <label class="visible-xs visible-sm hidden-label">Document #:&nbsp;</label>@address.Address.City
                                     </div>
                                     <div class="col-sm-4 col-md-1 col-xs-12">
                                         <label class="visible-xs visible-sm hidden-label">Expiration:&nbsp;</label>@address.Address.PostalCode
                                     </div>
                                     <div class="col-sm-4 col-md-2 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Email:&nbsp;</label>@address.Address.Email
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Phone:&nbsp;</label>@address.Address.Mobile
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
                                         <label class="visible-xs visible-sm hidden-label">Country:&nbsp;</label>@address.Address.Country.Name
                                     </div>
                                     <div class="col-sm-4 col-md-1 col-xs-12">

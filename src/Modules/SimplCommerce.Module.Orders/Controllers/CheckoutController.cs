@@ -115,9 +115,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                     DistrictId = 1,
                     City = model.DocumentNumber.ToUpper(),
                     PostalCode = model.DocumentExpiration,
-                    Phone = model.Sex,
-                    Email = model.Email,
-                    Mobile = model.Phone
+                    Phone = model.Sex
                 };
 
                 var userAddress = new UserAddress

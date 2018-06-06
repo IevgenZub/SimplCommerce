@@ -24,8 +24,6 @@
             documentExpiration = $form.find("input[name='documentExpiration']").val(),
             birthDate = $form.find("input[name='birthDate']").val(),
             sex = $form.find("input[name='sex']:checked").val(),
-            phone = $form.find("input[name='phone']").val(),
-            email = $form.find("input[name='email']").val(),
             countryId = $form.find("select[name='countryId']").val(),
             url = $form.attr("action");
 
@@ -48,8 +46,6 @@
             BirthDate: birthDate,
             DocumentExpiration: documentExpiration,
             Sex: sex,
-            Phone: phone,
-            Email: email,
             CountryId: countryId
         });
 
@@ -62,19 +58,17 @@
             var nextIndex = $('.address-container > div').length;
             var newAddress = 
                 $('.address-container').append('\
-                    <div class="row" style="border-bottom: 1px solid #eee; padding:5px">\
-                    <div class="col-sm-2 col-xs-12">\
+                    <div class="row">\
+                    <div class="col-sm-3 col-xs-12">\
                         <input type="hidden" data-val="true" data-val-required="The UserAddressId field is required." id="ExistingShippingAddresses_'+ nextIndex + '__UserAddressId" name="ExistingShippingAddresses[' + nextIndex + '].UserAddressId" value="' + data.id +'">\
                         <input type="checkbox" data-val="true" onclick="checkIfContinueEnabled()" class="registration-address-check" data-val-required="The Selected field is required." id="ExistingShippingAddresses_'+ nextIndex + '__Selected" name="ExistingShippingAddresses[' + nextIndex +'].Selected" checked="true" value="true">\
                     <label class="visible-xs hidden-label">First Name:&nbsp;</label>\
                     ' + firstName + '\
                     </div >\
-                    <div class="col-sm-2 col-xs-12"><label class="visible-xs hidden-label">Last Name:&nbsp;</label>'+ lastName +'</div>\
+                    <div class="col-sm-3 col-xs-12"><label class="visible-xs hidden-label">Last Name:&nbsp;</label>'+ lastName +'</div>\
                     <div class="col-sm-1 col-xs-12"><label class="visible-xs hidden-label">Birth Date:&nbsp;</label>'+ birthDate + '</div>\
-                    <div class="col-sm-1 col-xs-12"><label class="visible-xs hidden-label">Document #:&nbsp;</label>'+ documentNumber + '</div>\
+                    <div class="col-sm-2 col-xs-12"><label class="visible-xs hidden-label">Document #:&nbsp;</label>'+ documentNumber + '</div>\
                     <div class="col-sm-1 col-xs-12"><label class="visible-xs hidden-label">Expiration:&nbsp;</label>'+ documentExpiration + '</div>\
-                    <div class="col-sm-2 col-xs-12"><label class="visible-xs hidden-label">Email:&nbsp;</label>'+ email + '</div>\
-                    <div class="col-sm-1 col-xs-12"><label class="visible-xs hidden-label">Phone:&nbsp;</label>'+ phone + '</div>\
                     <div class="col-sm-1 col-xs-12"><label class="visible-xs hidden-label">Country:&nbsp;</label>'+ $form.find("select[name='countryId'] option:selected").text() + '</div>\
                     <div class="col-sm-1 col-xs-12"><label class="visible-xs hidden-label">Sex:&nbsp;</label>'+ sex +'</div>\
                </div>');
@@ -90,7 +84,6 @@
             $(".passenger-row").hide();
             $("div[data-first-name*='" + filter + "']").show();
             $("div[data-last-name*='" + filter + "']").show();
-            $("div[data-email*='" + filter + "']").show();
             $("div[data-document*='" + filter + "']").show();
         }
         else {

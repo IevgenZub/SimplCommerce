@@ -5,82 +5,21 @@
 @{
     ViewBag.Title = "Passenger Registration";
 }
-<div class="row" style="padding:5px">
-    <div class="col-sm-8"><h3>@Localizer["Passenger Registration"] </h3></div>
-    <div class="col-sm-4 text-right">
-        <a href="~/user/address"><i class="fas fa-address-book"></i> Edit Passengers Book</a>&nbsp;
-        <input id="search-txt" placeholder="Filter Text.." pattern="[A-Za-z]+" />
+
+<h3>Order Confirmation</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">@await Component.InvokeAsync("OrderSummary")</div>
+        </div>
     </div>
 </div>
+
+
 <div class="panel-group passenger-registraion-panel">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-2 hidden-xs"><strong>First Name</strong></div>
-                        <div class="col-sm-2 hidden-xs"><strong>Last Name</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Birth Date</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Document#</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
-                        <div class="col-sm-2 hidden-xs"><strong>Email</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Phone</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Country</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
-                        <div class="address-container">
-                            @foreach (var address in Model.ExistingShippingAddresses)
-                        {
-                            var isChecked = Model.ExistingShippingAddresses.First() == address;
-
-                                <div class="row passenger-row" style="border-bottom: 1px solid #eee; padding:5px" data-last-name="@address.AddressLine1?.ToLower()" data-first-name="@address.ContactName?.ToLower()" data-email="@address.Email?.ToLower()" data-document="@address.CityName?.ToLower()">
-                                    <div class="col-sm-4 col-md-2 col-xs-12 first-name">
-                                        <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
-                                        <input type="checkbox" onclick="checkIfContinueEnabled()" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
-                                        <label class="visible-xs visible-sm hidden-label">First Name:&nbsp;</label>@address.ContactName
-                                    </div>
-                                    <div class="col-sm-4 col-md-2 col-xs-12 last-name">
-                                        <label class="visible-xs visible-sm hidden-label">Last Name:&nbsp;</label>@address.AddressLine1
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Birth Date:&nbsp;</label>@address.AddressLine2
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12 document-no">
-                                        <label class="visible-xs visible-sm hidden-label">Document #:&nbsp;</label>@address.CityName
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Expiration:&nbsp;</label>@address.PostalCode
-                                    </div>
-                                    <div class="col-sm-4 col-md-2 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Email:&nbsp;</label>@address.Email
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Phone:&nbsp;</label>@address.Mobile
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Country:&nbsp;</label>@address.CountryName
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Sex:&nbsp;</label>@address.Phone
-                                    </div>
-                                </div>
-                        }
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 text-right" style="padding-top:7px">
-                                <small id="selectionInfo">Select <span id="numberOfCheckedPassengers"></span>@Model.NumberofPassengers passenger(s) &nbsp;</small>
-                                <input type="hidden" id="numberOfPassengers" value="@Model.NumberofPassengers" />
-                                <button type="submit" class="btn btn-primary btn-order" disabled>@Localizer["Continue"]</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">Add New Passenger</div>
                 <div class="panel-body">
@@ -99,7 +38,6 @@
                                         <input type="text" class="form-control" pattern="[A-Za-z]+" required placeholder="Last Name" id="lastName" name="lastName">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">Birth Date</label>
                                     <div class="col-sm-8">
@@ -107,12 +45,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">Document No.</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" required placeholder="Document No." pattern="[a-zA-Z0-9]+" id="document" name="documentNumber">
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">Sex</label>
                                     <div class="col-sm-8">
@@ -126,19 +58,6 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">Email</label>
-                                    <div class="col-sm-8">
-                                        <input type="email" class="form-control" required placeholder="Email" id="email" name="email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">Phone</label>
-                                    <div class="col-sm-8">
-                                        <input type="tel" class="form-control" pattern="^[0-9\-\+\s\(\)]*$" required placeholder="Phone" id="phone" name="phone">
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">Country</label>
                                     <div class="col-sm-8">
@@ -154,24 +73,113 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-4 control-label">Document No.</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" required placeholder="Document No." pattern="[a-zA-Z0-9]+" id="document" name="documentNumber">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="col-sm-12 text-right">
                                         <small class="alert-danger" hidden id="addPassangerAlert">Add <span id="numberOfPassengersToAdd"></span>&nbsp; passenger(s) &nbsp;</small>
                                         <button type="submit" class="btn btn-default"><i class="fas fa-id-card"></i>&nbsp;Add Passenger</button>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-            <div class="col-md-4">
+        <div class="col-sm-12 text-right">
+            <p>
+                <a href="~/user/address"><i class="fas fa-address-book"></i> Edit Passengers Book</a>&nbsp;
+                <input id="search-txt" placeholder="Filter Text.." pattern="[A-Za-z]+" />
+            </p>
+        </div>
+        <div class="col-md-12">
+            <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
                 <div class="panel panel-default">
-                    <div class="panel-body">@await Component.InvokeAsync("OrderSummary")</div>
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-3 hidden-xs"><strong>First Name</strong></div>
+                            <div class="col-sm-3 hidden-xs"><strong>Last Name</strong></div>
+                            <div class="col-sm-1 hidden-xs"><strong>Birth Date</strong></div>
+                            <div class="col-sm-2 hidden-xs"><strong>Document#</strong></div>
+                            <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
+                            <div class="col-sm-1 hidden-xs"><strong>Country</strong></div>
+                            <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="address-container">
+                            @foreach (var address in Model.ExistingShippingAddresses)
+                        {
+                            var isChecked = Model.ExistingShippingAddresses.First() == address;
+
+                                <div class="row passenger-row" data-last-name="@address.AddressLine1?.ToLower()" data-first-name="@address.ContactName?.ToLower()" data-email="@address.Email?.ToLower()" data-document="@address.CityName?.ToLower()">
+                                    <div class="col-sm-4 col-md-3 col-xs-12 first-name">
+                                        <input type="hidden" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].UserAddressId">
+                                        <input type="checkbox" onclick="checkIfContinueEnabled()" class="registration-address-check" checked="@isChecked" asp-for="ExistingShippingAddresses[Model.ExistingShippingAddresses.IndexOf(address)].Selected">
+                                        <label class="visible-xs visible-sm hidden-label">First Name:&nbsp;</label>@address.ContactName
+                                    </div>
+                                    <div class="col-sm-4 col-md-3 col-xs-12 last-name">
+                                        <label class="visible-xs visible-sm hidden-label">Last Name:&nbsp;</label>@address.AddressLine1
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Birth Date:&nbsp;</label>@address.AddressLine2
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 col-xs-12 document-no">
+                                        <label class="visible-xs visible-sm hidden-label">Document #:&nbsp;</label>@address.CityName
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Expiration:&nbsp;</label>@address.PostalCode
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Country:&nbsp;</label>@address.CountryName
+                                    </div>
+                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                        <label class="visible-xs visible-sm hidden-label">Sex:&nbsp;</label>@address.Phone
+                                    </div>
+                                </div>
+                        }
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><labe>Contact</labe></div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Email</label>
+                                            <div class="col-sm-4">
+                                                <input type="email" class="form-control" required placeholder="Email" id="email" asp-for="ContactEmail">
+                                            </div>
+                                            <label class="col-sm-2 control-label">Phone</label>
+                                            <div class="col-sm-4">
+                                                <input type="tel" class="form-control" pattern="^[0-9\-\+\s\(\)]*$" required placeholder="Phone" id="phone" asp-for="ContactPhone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 text-center" >                                        
+                                            <p style="padding:3px;font:bold;color:gray;border:1px solid; border-color:dodgerblue; border-radius:3px">Flight ticket details will be sent to contact email</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right" style="padding-top:7px">
+                        <small id="selectionInfo">Select <span id="numberOfCheckedPassengers"></span>@Model.NumberofPassengers passenger(s) &nbsp;</small>
+                        <input type="hidden" id="numberOfPassengers" value="@Model.NumberofPassengers" />
+                        <button type="submit" class="btn btn-primary btn-order" disabled>@Localizer["Continue"]</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <br />

@@ -72,6 +72,11 @@ namespace SimplCommerce.Module.Orders.Services
                 billingAddress = shippingAddress = _userAddressRepository.Query().Where(x => x.Id == shippingData.ShippingAddressId).Select(x => x.Address).First();
             }
 
+            billingAddress.Email = shippingData.ContactEmail;
+            billingAddress.Phone = shippingData.ContactPhone;
+            shippingAddress.Email = shippingData.ContactEmail;
+            shippingAddress.Phone = shippingData.ContactPhone;
+
             return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
         }
 
@@ -196,12 +201,7 @@ namespace SimplCommerce.Module.Orders.Services
 
                 order.RegistrationAddress.Add(orderRegistrationAddress);
             }
-
-            if (isGuest)
-            {
-                user.Email = order.RegistrationAddress.First().Address.Email;
-            }
-
+            
             _orderRepository.SaveChanges();
 
             var prefix = "E"; // Default
@@ -214,17 +214,10 @@ namespace SimplCommerce.Module.Orders.Services
             order.PnrNumber = prefix + order.Id.ToString("000000.##");
             _orderRepository.SaveChanges();
 
+            user.Email = order.ShippingAddress.Email;
+
             await _orderEmailService.SendEmailToUser(user, order, "OrderEmailToCustomer");
             await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
-
-            foreach (var registrationAddress in order.RegistrationAddress)
-            {
-                var email = user.Email;
-                if (email != registrationAddress.Address.Email) { 
-                    user.Email = registrationAddress.Address.Email;
-                    await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
-                }
-            }
 
             return order;
         }
