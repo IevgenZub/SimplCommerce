@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-sm-2">
                                         <figure class="text-center">
-                                            <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
+                                            <img style="max-height:40px;max-width:150px" src="@carrierImageUrl">
                                             <figcaption style="font-size:10px; color:gray">@flight.Brand.Name</figcaption>
                                         </figure>
                                 </div>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-sm-9">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email </span> (phone # @Model.ShippingAddress.Mobile)  at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
+                        <div class="col-sm-9">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email </span> (@Model.ShippingAddress.Mobile)  at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
                         <div class="col-sm-3 text-right">
                             <strong>Order Total <span class="priceToConvert" style="color:green">@Model.OrderTotal</span></strong> 
                         </div>
