@@ -153,18 +153,22 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Email</label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-1 control-label">Name</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" required placeholder="Name" id="contactName" asp-for="ContactName">
+                                            </div>
+                                            <label class="col-sm-1 control-label">Email</label>
+                                            <div class="col-sm-3">
                                                 <input type="email" class="form-control" required placeholder="Email" id="email" asp-for="ContactEmail">
                                             </div>
-                                            <label class="col-sm-2 control-label">Phone</label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-1 control-label">Phone</label>
+                                            <div class="col-sm-3">
                                                 <input type="tel" class="form-control" pattern="^[0-9\-\+\s\(\)]*$" required placeholder="Phone" id="phone" asp-for="ContactPhone">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-center" >                                        
-                                            <p style="padding:3px;font:bold;color:gray;border:1px solid; border-color:dodgerblue; border-radius:3px">Flight ticket details will be sent to contact email</p>
+                                        <p style="padding:3px;font:bold;color:gray;border:1px solid; border-color:dodgerblue; border-radius:3px">Flight ticket details will be sent to contact email</p>
                                     </div>
                                 </div>
                             </div>

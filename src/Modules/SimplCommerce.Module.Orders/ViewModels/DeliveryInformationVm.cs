@@ -20,6 +20,8 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public string ContactPhone { get; set; }
 
+        public string ContactName { get; set; }
+
         public IList<ShippingAddressVm> ExistingShippingAddresses { get; set; } =
             new List<ShippingAddressVm>();
 

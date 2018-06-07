@@ -16,11 +16,11 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="row ">
-                                <div class="col-sm-1 hidden-xs"><strong>Carrier</strong></div>
+                                <div class="col-sm-2 text-center hidden-xs"><strong>Carrier</strong></div>
                                 <div class="col-sm-2 hidden-xs"><strong>Flight</strong></div>
-                                <div class="col-sm-3 hidden-xs"><strong>Departure</strong></div>
-                                <div class="col-sm-3 hidden-xs"><strong>Destiation</strong></div>
-                                <div class="col-sm-1 hidden-xs"><strong>Date</strong></div>
+                                <div class="col-sm-2 hidden-xs"><strong>Departure</strong></div>
+                                <div class="col-sm-2 hidden-xs"><strong>Destiation</strong></div>
+                                <div class="col-sm-2 hidden-xs"><strong>Date</strong></div>
                                 <div class="col-sm-2 hidden-xs"><strong>Time</strong></div>
                             </div>
                         </div>
@@ -33,10 +33,10 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="row">
-                                <div class="col-sm-1">
+                                <div class="col-sm-2">
                                         <figure class="text-center">
-                                            <img style="max-height:40px;max-width:150px" src="@carrierImageUrl">
-                                            <figcaption style="font-size:smaller">@flight.Brand.Name</figcaption>
+                                            <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
+                                            <figcaption style="font-size:10px; color:gray">@flight.Brand.Name</figcaption>
                                         </figure>
                                 </div>
                                 <div class="col-sm-2">
@@ -44,22 +44,22 @@
                                         <span style="font-size:12px" class="label label-default">@flight.FlightNumber @flight.FlightClass </span>
                                     </p>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <p>@flight.Departure</p>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <p>@flight.Destination</p>
                                 </div>
-                                <div class="col-sm-1"><p>@flight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                <div class="col-sm-2"><p>@flight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
                                 <div class="col-sm-2"><p>@flight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
                             </div>
                             @if (flight.IsRoundTrip)
                             {
                                 <div class="row">
-                                    <div class="col-sm-1">
+                                    <div class="col-sm-2">
                                             <figure class="text-center">
-                                                <img src="@carrierImageUrl">
-                                                <figcaption style="font-size:smaller">@flight.ReturnCarrier.Name</figcaption>
+                                                <img style="max-height:40px;max-width:100px"  src="@carrierImageUrl">
+                                                <figcaption style="font-size:10px; color:gray">@flight.ReturnCarrier.Name</figcaption>
                                             </figure>
                                     </div>
                                     <div class="col-sm-2">
@@ -67,13 +67,13 @@
                                             <span style="font-size:12px" class="label label-default">@flight.ReturnFlightNumber @flight.FlightClass </span>
                                         </p>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <p>@flight.Destination</p>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <p>@flight.Departure</p>
                                     </div>
-                                    <div class="col-sm-1"><p>@flight.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                    <div class="col-sm-2"><p>@flight.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p></div>
                                     <div class="col-sm-2"><p>@flight.ReturnLandingTime.Value.DateTime.ToString("HH:mm")</p></div>
                                 </div>
                             }
@@ -87,8 +87,8 @@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-sm-6">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email (Phone # @Model.ShippingAddress.Phone)</span> at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
-                        <div class="col-sm-6 text-right">
+                        <div class="col-sm-9">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email </span> (phone # @Model.ShippingAddress.Mobile)  at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
+                        <div class="col-sm-3 text-right">
                             <strong>Order Total <span class="priceToConvert" style="color:green">@Model.OrderTotal</span></strong> 
                         </div>
                     </div> 

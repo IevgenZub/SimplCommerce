@@ -73,9 +73,10 @@ namespace SimplCommerce.Module.Orders.Services
             }
 
             billingAddress.Email = shippingData.ContactEmail;
-            billingAddress.Mobile = shippingData.ContactPhone;
+            billingAddress.Mobile = string.Format("{0} {1}", shippingData.ContactName, shippingData.ContactPhone);
+            
             shippingAddress.Email = shippingData.ContactEmail;
-            shippingAddress.Mobile = shippingData.ContactPhone;
+            shippingAddress.Mobile = string.Format("{0} {1}", shippingData.ContactName, shippingData.ContactPhone);
 
             return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
         }
