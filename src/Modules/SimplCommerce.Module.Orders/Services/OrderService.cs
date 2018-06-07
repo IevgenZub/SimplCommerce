@@ -73,9 +73,9 @@ namespace SimplCommerce.Module.Orders.Services
             }
 
             billingAddress.Email = shippingData.ContactEmail;
-            billingAddress.Phone = shippingData.ContactPhone;
+            billingAddress.Mobile = shippingData.ContactPhone;
             shippingAddress.Email = shippingData.ContactEmail;
-            shippingAddress.Phone = shippingData.ContactPhone;
+            shippingAddress.Mobile = shippingData.ContactPhone;
 
             return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
         }

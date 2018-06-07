@@ -6,6 +6,11 @@
     height: 120px;
 }
 
+.carrier {
+    font-size: smaller;
+    color: gray;
+}
+
 .product-detail .product-name {
     margin-bottom: 12px;
     border-bottom: 1px solid #dedede;
