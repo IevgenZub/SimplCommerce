@@ -5,7 +5,7 @@
 }
 
 <div class="row">
-    <div class="col-md-6 text-center">
+    <div class="col-md-12 text-center">
         <h3>@Localizer["Select payment method"]</h3>
         @foreach (var paymentProvider in Model.PaymentProviders)
         {
@@ -17,7 +17,7 @@
             </div>
         }
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         @await Component.InvokeAsync("OrderSummary")
     </div>
 </div>
