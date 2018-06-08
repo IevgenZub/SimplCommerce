@@ -4,9 +4,11 @@
     ViewBag.Title = "Payment Information";
 }
 
+<h2>@Localizer["Select payment method"]</h2>
+
 <div class="row">
     <div class="col-md-12 text-center">
-        <h3>@Localizer["Select payment method"]</h3>
+       
         @foreach (var paymentProvider in Model.PaymentProviders)
         {
             <div class="payment-method paymentProvider-@paymentProvider.Id">

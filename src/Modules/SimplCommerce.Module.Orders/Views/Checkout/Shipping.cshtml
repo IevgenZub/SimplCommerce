@@ -6,16 +6,20 @@
     ViewBag.Title = "Passenger Registration";
 }
 
-<h3>Order Confirmation</h3>
+<h2>Order confirmation</h2>
+
+<h3 class="text-center">Summary</h3>
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-body">@await Component.InvokeAsync("OrderSummary")</div>
-        </div>
+        @await Component.InvokeAsync("OrderSummary")
     </div>
 </div>
-
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="text-center">Passengers</h3>
+    </div>
+</div>
 
 <div class="panel-group passenger-registraion-panel">
     <div class="row">
@@ -96,6 +100,7 @@
                 <input id="search-txt" placeholder="Filter Text.." pattern="[A-Za-z]+" />
             </p>
         </div>
+       
         <div class="col-md-12">
             <form asp-controller="Checkout" asp-action="Shipping" method="POST" id="checkout-delivery-address" class="form-horizontal">
                 <div class="panel panel-default">
@@ -146,9 +151,10 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12"><h3 class="text-center">Contact</h3></div>
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><labe>Contact</labe></div>
+                            <div class="panel-heading"><labe>Enter order primary contact info</labe></div>
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-12">

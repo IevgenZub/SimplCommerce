@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <figure class="text-center">
-                            <img style="max-height:40px;max-width:150px" src="@item.ProductImage">
+                            <img style="max-height:40px;max-width:100px" src="@item.ProductImage">
                             <figcaption style="font-size:10px;color:gray">@item.Carrier</figcaption>
                         </figure>
                     </div>
@@ -50,20 +50,13 @@
         <td>Agency Fee</td>
         <td colspan="2" id="orderSummaryShipping" class="text-right"><span class="priceToConvert">@Model.ShippingAmount</span></td>
     </tr>
-    @if (!Model.IsTaxIncludedInProductPrice)
-    {
-        <tr>
-            <td>Tax</td>
-            <td colspan="2" id="orderSummaryTax" class="text-right">@Model.TaxAmountString</td>
-        </tr>
-    }
     <tr>
         <td>@Localizer["Discount"]</td>
         <td colspan="2" class="text-right"><span class="priceToConvert">@Model.Discount</span></td>
     </tr>
-    <tr>
-        <td><strong>@Localizer["Order Total"]</strong>@if (Model.IsTaxIncludedInProductPrice)
+    <tr style="font-size:larger">
+        <td><strong style="color:gray">@Localizer["Order Total"]</strong>@if (Model.IsTaxIncludedInProductPrice)
         { @Localizer["VAT included"] }</td>
-        <td colspan="2" class="text-right"><strong id="orderTotal"><span class="priceToConvert">@Model.OrderTotal</span></strong></td>
+        <td colspan="2" class="text-right"><strong id="orderTotal"><span style="color:green" class="priceToConvert">@Model.OrderTotal</span></strong></td>
     </tr>
 </table>
