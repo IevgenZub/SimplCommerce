@@ -16,6 +16,12 @@
                     recalculatePrices();
                 }
 
+                function rejectedCallback(result) {
+                    alert("Can't order more than available");
+                    location.reload();
+                }
+
+
                 function getShoppingCartItems() {
                     shoppingCartService.getShoppingCartItems().then(cartDataCallback);
                 };
@@ -26,7 +32,7 @@
 
                 vm.increaseQuantity = function increaseQuantity(item) {
                     item.quantity += 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback, rejectedCallback);
                 };
 
                 vm.decreaseQuantity = function decreaseQuantity(item) {
@@ -40,7 +46,7 @@
 
                 vm.increaseQuantityChild = function increaseQuantityChild(item) {                    
                     item.quantityChild += 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback, rejectedCallback);
                 };
 
                 vm.decreaseQuantityChild = function decreaseQuantityChild(item) {
@@ -54,7 +60,7 @@
 
                 vm.increaseQuantityBaby = function increaseQuantityBaby(item) {
                     item.quantityBaby += 1;
-                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback);
+                    shoppingCartService.updateQuantity(item.id, item.quantity, item.quantityChild, item.quantityBaby).then(cartDataCallback, rejectedCallback);
                 };
 
                 vm.decreaseQuantityBaby = function decreaseQuantityBaby(item) {

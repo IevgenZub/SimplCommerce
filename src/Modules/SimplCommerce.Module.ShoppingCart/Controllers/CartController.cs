@@ -10,6 +10,7 @@ using SimplCommerce.Module.ShoppingCart.Models;
 using SimplCommerce.Module.ShoppingCart.Services;
 using SimplCommerce.Module.ShoppingCart.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace SimplCommerce.Module.ShoppingCart.Controllers
 {
@@ -90,12 +91,18 @@ namespace SimplCommerce.Module.ShoppingCart.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity([FromBody] CartQuantityUpdate model)
         {
-            var cartItem = _cartItemRepository.Query().FirstOrDefault(x => x.Id == model.CartItemId);
+            var query = _cartItemRepository.Query();
+            var cartItem =  query.Include(c => c.Product).FirstOrDefault(x => x.Id == model.CartItemId);
             if (cartItem == null)
             {
                 return new NotFoundResult();
             }
 
+            if ((cartItem.Product.StockQuantity - model.Quantity - model.QuantityChild) < 0)
+            {
+                return BadRequest();
+            }
+            
             cartItem.Quantity = model.Quantity;
             cartItem.QuantityChild = model.QuantityChild;
             cartItem.QuantityBaby = model.QuantityBaby;
