@@ -1,8 +1,7 @@
 ﻿@model SimplCommerce.Module.ShoppingCart.ViewModels.CartVm
 <table class="table table-striped">
     <tr>
-        <th class="text-center">@Localizer["Carrier"]</th>
-        <th >@Localizer["Flight"]</th>
+        <th>@Localizer["Flight"]</th>
         <th class="text-left">@Localizer["Quantity"]</th>
         <th class="text-right">@Localizer["Price"]</th>
     </tr>
@@ -11,17 +10,13 @@
         <tr>
             <td>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-2">
                         <figure class="text-center">
                             <img style="max-height:40px;max-width:150px" src="@item.ProductImage">
-                            <figcaption style="font-size:10px; color:gray">@item.Carrier</figcaption>
+                            <figcaption style="font-size:10px;color:gray">@item.Carrier</figcaption>
                         </figure>
                     </div>
-                </div>
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-10">
                         <h4><span class="label label-default">@item.FlightNumber @item.FlightClass</span></h4>
                         <p>@item.DepartureDate.Value.Date.ToShortDateString() @item.DepartureDate.Value.DateTime.ToShortTimeString() @item.Departure</p>
                         <p>@item.LandingDate.Value.Date.ToShortDateString() @item.LandingDate.Value.DateTime.ToShortTimeString() @item.Landing</p>
@@ -35,10 +30,9 @@
                     </div>
                 </div>
             </td>
-
             <td class="text-left">
-                <p>@item.Quantity (18+)</p> 
-                <p>@item.QuantityChild (2-11)</p> 
+                <p>@item.Quantity (18+)</p>
+                <p>@item.QuantityChild (2-11)</p>
                 <p>@item.QuantityBaby (0-2)</p>
             </td>
             <td class="text-right">
@@ -50,25 +44,26 @@
     }
     <tr>
         <td>@Localizer["Subtotal"]</td>
-        <td colspan="3" class="text-right"><span class="priceToConvert">@Model.SubTotal</span><input type="hidden" id="orderSubtotal" value="@Model.SubTotal" /></td>
+        <td colspan="2" class="text-right"><span class="priceToConvert">@Model.SubTotal</span><input type="hidden" id="orderSubtotal" value="@Model.SubTotal" /></td>
     </tr>
     <tr>
         <td>Agency Fee</td>
-        <td colspan="3" id="orderSummaryShipping" class="text-right"><span class="priceToConvert">@Model.ShippingAmount</span></td>
+        <td colspan="2" id="orderSummaryShipping" class="text-right"><span class="priceToConvert">@Model.ShippingAmount</span></td>
     </tr>
     @if (!Model.IsTaxIncludedInProductPrice)
     {
-    <tr>
-        <td>Tax</td>
-        <td colspan="3" id="orderSummaryTax" class="text-right">@Model.TaxAmountString</td>
-    </tr>
+        <tr>
+            <td>Tax</td>
+            <td colspan="2" id="orderSummaryTax" class="text-right">@Model.TaxAmountString</td>
+        </tr>
     }
     <tr>
         <td>@Localizer["Discount"]</td>
-        <td colspan="3" class="text-right"><span class="priceToConvert">@Model.Discount</span></td>
+        <td colspan="2" class="text-right"><span class="priceToConvert">@Model.Discount</span></td>
     </tr>
     <tr>
-        <td><strong>@Localizer["Order Total"]</strong>@if (Model.IsTaxIncludedInProductPrice) { @Localizer["VAT included"] }</td>
-        <td colspan="3" class="text-right"><strong id="orderTotal"><span class="priceToConvert">@Model.OrderTotal</span></strong></td>
+        <td><strong>@Localizer["Order Total"]</strong>@if (Model.IsTaxIncludedInProductPrice)
+        { @Localizer["VAT included"] }</td>
+        <td colspan="2" class="text-right"><strong id="orderTotal"><span class="priceToConvert">@Model.OrderTotal</span></strong></td>
     </tr>
-</table>
+</table>S
