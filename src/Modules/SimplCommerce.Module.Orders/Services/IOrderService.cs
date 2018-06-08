@@ -20,5 +20,6 @@ namespace SimplCommerce.Module.Orders.Services
 
         Order GetOrder(int id);
         Order GetOrderByPnr(string pnr);
+        Order GetOrderByNumber(string orderNumber);
     }
 }

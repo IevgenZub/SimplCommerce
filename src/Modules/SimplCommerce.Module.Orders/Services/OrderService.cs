@@ -78,7 +78,7 @@ namespace SimplCommerce.Module.Orders.Services
             shippingAddress.Email = shippingData.ContactEmail;
             shippingAddress.Mobile = string.Format("{0} {1}", shippingData.ContactName, shippingData.ContactPhone);
 
-            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
+            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest, orderStatus);
         }
 
         public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
@@ -133,6 +133,7 @@ namespace SimplCommerce.Module.Orders.Services
                 BillingAddress = orderBillingAddress,
                 ShippingAddress = orderShippingAddress,
                 PaymentMethod = paymentMethod,
+                OrderStatus = orderStatus
             };
 
             foreach (var cartItem in cart.Items)
@@ -241,6 +242,19 @@ namespace SimplCommerce.Module.Orders.Services
             return order;
         }
 
+        public Order GetOrderByNumber(string orderNumber)
+        {
+            var order = _orderRepository.Query().FirstOrDefault(x => x.ExternalNumber == orderNumber);
+
+            if (order == null)
+            {
+                throw new ApplicationException($"Order not found by orderNumber = {orderNumber}");
+            }
+
+            return order;
+        }
+
+
         public Order GetOrderByPnr(string pnr)
         {
             var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
@@ -261,6 +275,8 @@ namespace SimplCommerce.Module.Orders.Services
 
             return order;
         }
+
+
 
         public async Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId)
         {

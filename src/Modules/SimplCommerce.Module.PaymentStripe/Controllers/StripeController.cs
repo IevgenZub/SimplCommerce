@@ -16,6 +16,7 @@ using SimplCommerce.Module.PaymentStripe.ViewModels;
 using SimplCommerce.Module.PaymentStripe.Models;
 using SimplCommerce.Module.Core.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SimplCommerce.Module.PaymentStripe.Controllers
 {
@@ -28,6 +29,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
         private readonly IWorkContext _workContext;
         private readonly IRepository<PaymentProvider> _paymentProviderRepository;
         private readonly IRepository<Payment> _paymentRepository;
+
 
         public StripeController(
             IRepository<Cart> cartRepository,
@@ -93,6 +95,24 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
 
             return Redirect("~/checkout/congratulation");
         }
+        
+        [HttpPost("create-order")]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderCreateViewModel model)
+        {
+            var currentUser = await _workContext.GetCurrentUser();
+
+            var order = await _orderService.CreateOrder(
+                currentUser,
+                "Portmone",
+                HttpContext.User.IsInRole("vendor"),
+                HttpContext.User.IsInRole("guest"),
+                OrderStatus.PendingPayment);
+
+            order.ExternalNumber = model.OrderNumber;
+            _paymentRepository.SaveChanges();
+
+            return Json("success");
+        }
 
         [HttpPost("success-callback")]
         public async Task<IActionResult> PortmoneSuccessPostCallback([FromForm] PortmoneCallback portmoneCallback)
@@ -103,12 +123,7 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
                 .Include(u => u.Roles).ThenInclude(r => r.Role)
                 .First(u => u.Id.ToString() == userId);
 
-            var order = await _orderService.CreateOrder(
-                currentUser, 
-                "Portmone", 
-                currentUser.Roles.Any(r => r.Role.Name == "vendor"),
-                currentUser.Roles.Any(r => r.Role.Name == "guest"),
-                OrderStatus.PaymentReceived);
+            var order = _orderService.GetOrderByNumber(portmoneCallback.SHOPORDERNUMBER);
 
             var payment = new Payment()
             {
@@ -118,8 +133,8 @@ namespace SimplCommerce.Module.PaymentStripe.Controllers
                 CreatedOn = DateTimeOffset.UtcNow,
                 GatewayTransactionId = portmoneCallback.SHOPORDERNUMBER
             };
-
-            order.ExternalNumber = portmoneCallback.SHOPORDERNUMBER;
+            
+            order.OrderStatus = OrderStatus.PaymentReceived;
             _paymentRepository.Add(payment);
             await _paymentRepository.SaveChangesAsync();
 

@@ -3,7 +3,7 @@
 <div>
     <form id="portmoneForm" action="https://www.portmone.com.ua/gateway/" method="post">
         <input type="hidden" name="payee_id" value="@Model.PublicKey" />
-        <input type="hidden" name="shop_order_number" value="@Model.OrderNumber" />
+        <input type="hidden" id="shop_order_number" name="shop_order_number" value="@Model.OrderNumber" />
         <input type="hidden" name="bill_amount" value="@Model.Amount" />
         <input type="hidden" name="description" value="Charterwing.com user id @Model.OrderNumber.Split('-')[0] order #@Model.OrderNumber" />
         <input type="hidden" name="success_url"

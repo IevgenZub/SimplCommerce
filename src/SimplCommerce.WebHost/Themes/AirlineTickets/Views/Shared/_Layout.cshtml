@@ -328,6 +328,33 @@
             };
     </script>
 
+    <script>
+            $(function () {
+                $('#portmoneForm').submit(function (event) {
+
+                    event.preventDefault(); //this will prevent the default submit
+
+                    var request = $.ajax({
+                        url: "/portmone/create-order",
+                        type: "POST",
+                        data: JSON.stringify({ orderNumber: $('#shop_order_number').val() }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8"
+                    });
+
+
+                    request.done(function () {
+                        $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+                    });
+
+                    request.fail(function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    });
+                   
+                })
+            });
+    </script>
+
     @RenderSection("scripts", required: false)
 </body>
 
