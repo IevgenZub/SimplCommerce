@@ -344,7 +344,7 @@
 
 
                     request.done(function () {
-                        $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+                        $('#portmoneForm').unbind('submit').submit(); // continue the submit unbind preventDefault
                     });
 
                     request.fail(function (jqXHR, textStatus) {
