@@ -203,13 +203,17 @@ namespace SimplCommerce.Module.Search.Controllers
                     rt.ReturnFlightNumber = ow.FlightNumber;
                     rt.ReturnIsNextDayLanding= ow.IsNextDayLanding;
                     rt.ReturnLandingTime = ow.LandingTime;
+                    rt.ReturnThumbnailImage = ow.ThumbnailImage;
+                    rt.ReturnThumbnailUrl = ow.ReturnThumbnailUrl;
                     rt.CalculatedProductPrice.Price += ow.CalculatedProductPrice.Price;
-
                     rt.Details.IsRoundTrip = true;
                     rt.Details.ReturnTerminal = ow.Terminal;
                     rt.Details.ReturnCarrier = ow.Carrier;
                     rt.Details.ReturnAircraft = ow.Aircraft;
                     rt.Details.CalculatedProductPrice.Price += ow.CalculatedProductPrice.Price;
+
+                    // TODO: Correlation ID
+                    rt.Currency = ow.Id.ToString();
 
                     if (rt.StockQuantity != ow.StockQuantity)
                     {
