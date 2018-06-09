@@ -180,24 +180,14 @@ namespace SimplCommerce.Module.Search.Controllers
             model.Products = products;
             model.CurrentSearchOption.PageSize = _pageSize;
             model.CurrentSearchOption.Page = currentPageNum;
-
            
             // Two OW as RT logic
 
             var directOneWays = SearchOneWayFlights(searchOption);
-
-            var tempDirection = searchOption.Departure;
-            searchOption.Departure = searchOption.Landing;
-            searchOption.Landing = tempDirection;
+            var returnOneWays = SearchOneWayFlights(searchOption.Reverse());
             
-
-            searchOption.DepartureDate = string.IsNullOrEmpty(searchOption.ReturnDate) ? string.Empty : searchOption.ReturnDate;
-            
-            var returnOneWays = SearchOneWayFlights(searchOption);
-
             for (int i = 0; i < directOneWays.Count(); i++)
             {
-               
                 if (i < returnOneWays.Count())
                 {
                     var rt = directOneWays[i];
@@ -232,7 +222,9 @@ namespace SimplCommerce.Module.Search.Controllers
                 }
             }
 
-            model.MergedProducts = directOneWays;
+            model.MergedProducts = directOneWays.Where(f => f.IsRoundTrip).ToList();
+
+            model.TotalProduct += model.MergedProducts.Count;
 
             return View(model);
         }

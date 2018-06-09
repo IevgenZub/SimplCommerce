@@ -38,6 +38,18 @@ namespace SimplCommerce.Module.Catalog.ViewModels
 
         public int? MaxPrice { get; set; }
 
+        public SearchOption Reverse()
+        {
+            var result = new SearchOption();
+
+            result.Departure = Landing;
+            result.Landing = Departure;
+
+            result.DepartureDate = string.IsNullOrEmpty(ReturnDate) ? string.Empty : ReturnDate;
+
+            return result;
+        }
+
         public Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
