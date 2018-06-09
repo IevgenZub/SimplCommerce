@@ -77,7 +77,8 @@ namespace SimplCommerce.Module.Search.Controllers
                     !x.IsDeleted  &&
                     x.IsPublished &&
                     !x.HasOptions &&
-                    x.DepartureDate >= DateTime.Now);
+                    x.DepartureDate >= DateTime.Now &&
+                    x.PassengerPrice > 0);
                 
             var departureDateMin = departureDate.AddDays(-7);
             var departureDateMax = departureDate.AddDays(7);
@@ -315,7 +316,7 @@ namespace SimplCommerce.Module.Search.Controllers
                 .Include(x => x.ReturnCarrier)
                 .Include(x => x.Brand)
                 .Include(x => x.TaxClass)
-                .FirstOrDefault(x => x.Id == id && x.IsPublished);
+                .FirstOrDefault(x => x.Id == id && x.IsPublished && x.PassengerPrice > 0);
 
             if (product == null)
             {

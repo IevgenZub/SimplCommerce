@@ -286,7 +286,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 if (search.IsRoundTrip != null)
                 {
                     bool isRoundTrip = search.IsRoundTrip;
-                    query = query.Where(x => x.IsRoundTrip);
+                    query = query.Where(x => x.IsRoundTrip == isRoundTrip);
                 }
 
                 if (search.IsVisibleIndividually != null)
