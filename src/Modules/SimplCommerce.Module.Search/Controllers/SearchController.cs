@@ -181,7 +181,134 @@ namespace SimplCommerce.Module.Search.Controllers
             model.CurrentSearchOption.PageSize = _pageSize;
             model.CurrentSearchOption.Page = currentPageNum;
 
+           
+            // Two OW as RT logic
+
+            var directOneWays = SearchOneWayFlights(searchOption);
+
+            var tempDirection = searchOption.Departure;
+            searchOption.Departure = searchOption.Landing;
+            searchOption.Landing = tempDirection;
+            
+
+            searchOption.DepartureDate = string.IsNullOrEmpty(searchOption.ReturnDate) ? string.Empty : searchOption.ReturnDate;
+            
+            var returnOneWays = SearchOneWayFlights(searchOption);
+
+            for (int i = 0; i < directOneWays.Count(); i++)
+            {
+               
+                if (i < returnOneWays.Count())
+                {
+                    var rt = directOneWays[i];
+                    var ow = returnOneWays[i];
+                    rt.IsRoundTrip = true;
+                    rt.ReturnDepartureDate = ow.DepartureDate;
+                    rt.ReturnTerminal = ow.Terminal;
+                    rt.ReturnCarrier = ow.Carrier;
+                    rt.ReturnAircraft = ow.Aircraft;
+                    rt.ReturnDurationHours = ow.DurationHours;
+                    rt.ReturnDurationMinutes = ow.DurationMinutes;
+                    rt.ReturnFlightNumber = ow.FlightNumber;
+                    rt.ReturnIsNextDayLanding= ow.IsNextDayLanding;
+                    rt.ReturnLandingTime = ow.LandingTime;
+                    rt.CalculatedProductPrice.Price += ow.CalculatedProductPrice.Price;
+
+                    rt.Details.IsRoundTrip = true;
+                    rt.Details.ReturnTerminal = ow.Terminal;
+                    rt.Details.ReturnCarrier = ow.Carrier;
+                    rt.Details.ReturnAircraft = ow.Aircraft;
+                    rt.Details.CalculatedProductPrice.Price += ow.CalculatedProductPrice.Price;
+
+                    if (rt.StockQuantity != ow.StockQuantity)
+                    {
+                        rt.StockQuantity = rt.StockQuantity > ow.StockQuantity ? ow.StockQuantity : rt.StockQuantity;
+                    }
+
+                    if (rt.Details.StockQuantity != ow.StockQuantity)
+                    {
+                        rt.Details.StockQuantity = rt.Details.StockQuantity > ow.StockQuantity ? ow.StockQuantity : rt.Details.StockQuantity;
+                    }
+                }
+            }
+
+            model.MergedProducts = directOneWays;
+
             return View(model);
+        }
+
+        private IList<ProductThumbnail> SearchOneWayFlights(SearchOption searchOption)
+        {
+            const bool isRoundTrip = false;
+            var numberOfPeople = 1;
+
+            var query = _productRepository.Query();
+            
+            var departure = searchOption.Departure.Contains("*") ? searchOption.Departure.Split(',')[0] : searchOption.Departure;
+            var landing = searchOption.Landing.Contains("*") ? searchOption.Landing.Split(',')[0] : searchOption.Landing;
+
+            if (CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru")
+            {
+                query = query.Where(x =>
+                        x.DepartureRus.Contains(departure) &&
+                        x.DestinationRus.Contains(landing));
+            }
+            else
+            {
+                query = query.Where(x =>
+                        x.Departure.Contains(departure) &&
+                        x.Destination.Contains(landing));
+            }
+
+            query = query.Where(x =>
+                    x.Status == "ACCEPTED" &&
+                    !x.IsDeleted &&
+                    x.IsPublished &&
+                    !x.HasOptions &&
+                    x.DepartureDate >= DateTime.Now);
+
+            if (!string.IsNullOrEmpty(searchOption.DepartureDate))
+            {
+                var departureDate = Convert.ToDateTime(searchOption.DepartureDate);
+                var departureDateMin = departureDate.AddDays(-7);
+                var departureDateMax = departureDate.AddDays(7);
+                query = query.Where(x =>
+                    x.DepartureDate.Value.Date >= departureDateMin &&
+                    x.DepartureDate.Value.Date < departureDateMax);
+            }
+
+            query = query.Where(x => x.IsRoundTrip == isRoundTrip);
+
+            if (!string.IsNullOrEmpty(searchOption.NumberOfPeople))
+            {
+                numberOfPeople = Convert.ToInt32(searchOption.NumberOfPeople.Split("-")[0].Trim());
+                var flightClass = searchOption.NumberOfPeople.Split("-")[1].Trim();
+
+                query = query.Where(x => x.StockQuantity >= numberOfPeople);
+            }
+
+            query = query
+                .Include(x => x.ThumbnailImage)
+                .Include(x => x.ReturnAircraft)
+                .Include(x => x.ReturnCarrier)
+                .Include(x => x.Brand)
+                .Include(x => x.TaxClass)
+                .Include(x => x.OptionValues);
+
+            query = AppySort(searchOption, query);
+
+            var products = query
+                .Select(x => ProductThumbnail.FromProduct(x, User.IsInRole("vendor"), isRoundTrip))
+                .ToList();
+
+            foreach (var product in products)
+            {
+                product.ThumbnailUrl = _mediaService.GetThumbnailUrl(product.ThumbnailImage);
+                product.CalculatedProductPrice = _productPricingService.CalculateProductPrice(product);
+                product.Details = GetProductDetails(product.Id, searchOption);
+            }
+
+            return products;
         }
 
         private ProductDetail GetProductDetails(long id, SearchOption searchOption)

@@ -16,6 +16,8 @@ namespace SimplCommerce.Module.Search.ViewModels
 
         public IList<ProductThumbnail> Products { get; set; } = new List<ProductThumbnail>();
 
+        public IList<ProductThumbnail> MergedProducts { get; set; } = new List<ProductThumbnail>();
+
         public FilterOption FilterOption { get; set; }
 
         public SearchOption CurrentSearchOption { get; set; }

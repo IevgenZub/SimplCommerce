@@ -281,6 +281,7 @@
                 </ul>
             </div>
         </div>
+        <h4>Special round trip offer</h4>
         <div class="product-list product-list__search">
             @foreach (var product in Model.Products)
             {
@@ -288,7 +289,6 @@
                     @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
                 </div>
             }
-            <br />
         </div>
 
         <div class="row">
@@ -299,11 +299,20 @@
                           cs-pagenumber-param="page"
                           asp-basehref="~/search"
                           asp-all-route-data="@Model.CurrentSearchOption.ToDictionary()"></cs-pager>
-
-                <br />
-                <br />
             </div>
         </div>
+
+        <h4>One way + one way</h4>
+        <div class="product-list product-list__search">
+            @foreach (var product in Model.MergedProducts)
+            {
+                <div>
+                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                </div>
+            }
+            <br />
+        </div>
+
     </div>
 </div>
 

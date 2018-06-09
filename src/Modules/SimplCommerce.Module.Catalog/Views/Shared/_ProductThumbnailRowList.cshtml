@@ -39,7 +39,7 @@
 
 <div class="my-thumbnail flight-item">
     <div class="row my-row flight-row" >
-        <div class="col-sm-1 col-xs-12 airlines">
+        <div class="col-sm-2 col-xs-12 airlines">
             <figure>
                 <img src="@Model.ThumbnailUrl">
                 <figcaption>@Model.Carrier</figcaption>
@@ -51,14 +51,14 @@
         <div class="col-sm-1 col-xs-6 text-right">
             <p class="flight-number">@Model.FlightNumber</p>
         </div>
-        <div class="col-sm-3 col-xs-12">
-            <p><span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @departure</p>
+        <div class="col-sm-2 col-xs-12">
+            <span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @departure
         </div>
-        <div class="col-sm-3 col-xs-12">
+        <div class="col-sm-2 col-xs-12">
             <p><span class="flight-time"> @Model.LandingTime.Value.DateTime.ToString("HH:mm") @if (Model.IsNextDayLanding)
             {<span>(+1)</span> } </span> @landing </p>
         </div>
-        <div class="col-sm-1 hidden-xs">
+        <div class="col-sm-2 hidden-xs">
             <p class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</p>
         </div>
         <div class="col-sm-2 col-xs-12">
@@ -79,8 +79,8 @@
                     <div class="next">
                         @if (!Model.IsRoundTrip)
                         {
-                                <button type="submit" id="@Model.Id" class="btn pull-right btn-add-cart btn-lg btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
-                                <input type="hidden" name="productId" id="productId" value="@Model.Id">
+                                <button type="submit" id="@selectedFlightId" class="btn pull-right btn-add-cart btn-lg btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
+                                <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
                         }
                     </div>
                 </div>
@@ -90,7 +90,7 @@
     @if (Model.IsRoundTrip)
     {
         <div class="row my-row flight-row">
-            <div class="col-sm-1 col-xs-12 airlines">
+            <div class="col-sm-2 col-xs-12 airlines">
                 <figure>
                     <img src="@Model.ThumbnailUrl">
                     <figcaption>@Model.Carrier</figcaption>
@@ -102,14 +102,14 @@
             <div class="col-sm-1 col-xs-6 text-right">
                 <p class="flight-number">@Model.ReturnFlightNumber</p>
             </div> 
-            <div class="col-sm-3 col-xs-12">
-                <p><span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @landing </p>
+            <div class="col-sm-2 col-xs-12">
+                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @landing 
             </div> 
-            <div class="col-sm-3 col-xs-12">
+            <div class="col-sm-2 col-xs-12">
                 <p><span class="flight-time">@Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding)
-                { <span>(+1)</span> } </span> @departure </p> 
+                { <span>(+1)</span> } </span> @departure </p>
             </div>
-            <div class="col-sm-1 hidden-xs">
+            <div class="col-sm-2 hidden-xs">
                 <p class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</p>
             </div>
             <div class="col-sm-2  col-xs-12">

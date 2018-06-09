@@ -336,7 +336,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Status = x.Status,
                     Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
                     FlightClass = x.FlightClass,
-                    Price = x.Price.ToString("0.0") + " " + x.Currency
+                    Price = x.Price.ToString("0.0") + "$"
                 });
 
             return Json(gridData);
