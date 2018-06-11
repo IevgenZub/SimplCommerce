@@ -69,7 +69,7 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public int ReturnDurationHours { get; set; }
         public int ReturnDurationMinutes { get; set; }
         public bool IsRoundTrip { get; set; }
-        public string Currency { get; set; }
+        public string MergedProductId { get; set; }
         public DateTimeOffset? LandingTime { get; set; }
         public bool IsNextDayLanding { get; set; }
         public DateTimeOffset? ReturnLandingTime { get; set; }
@@ -112,7 +112,6 @@ namespace SimplCommerce.Module.Catalog.ViewModels
                 ReturnTerminal = product.ReturnTerminal,
                 IsRoundTrip = product.IsRoundTrip,
                 FlightNumber = product.FlightNumber,
-                Currency = product.Currency,
                 Carrier = product.Brand == null ? "" : product.Brand.Name,
                 ReturnCarrier = product.ReturnCarrier == null ? "" : product.ReturnCarrier.Name,
                 Aircraft = product.TaxClass == null ? "" : product.TaxClass.Name,

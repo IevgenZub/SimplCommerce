@@ -36,9 +36,8 @@
     var departure = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.DepartureRus : Model.Departure;
     var landing = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.LandingRus : Model.Landing;
     var returnThumbnailUrl = string.IsNullOrEmpty(Model.ReturnThumbnailUrl) ? Model.ThumbnailUrl : Model.ReturnThumbnailUrl;
-
-    //TODOs
-    var mergedProductId = string.IsNullOrEmpty(Model.Currency) || Model.Currency == "USD" ? string.Empty : Model.Currency; 
+    
+    var mergedProductId = string.IsNullOrEmpty(Model.MergedProductId) ? "0" : Model.MergedProductId; 
 }
 
 <div class="my-thumbnail flight-item">

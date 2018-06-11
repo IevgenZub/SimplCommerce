@@ -276,8 +276,6 @@ namespace SimplCommerce.Module.Orders.Services
             return order;
         }
 
-
-
         public async Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId)
         {
             decimal taxAmount = 0;
