@@ -286,46 +286,37 @@
                 }
             });
 
-            function recalculatePrices() {
-                var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
-                var rate = 1;
+        function recalculatePrices() {
+            var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
+            var rate = 1;
+            $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
                 if (selectedCurrency == "UAH") {
-                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
-                        $.each(data, function (key, val) {
-                            if (val.ccy == "USD") {
-                                rate = val.sale;
-                            }
-                        });
-
-                        drawNewPrices(rate, selectedCurrency);
-                    });
+                    rate = data[0].sale
                 }
                 else if (selectedCurrency == "RUB") {
-                    alert("Not ready yet");
-                }
-                else if (selectedCurrency == "USD") {
-                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
-                        drawNewPrices(rate, selectedCurrency);
-                    });
+                    rate = data[0].sale / data[2].sale;
                 }
 
-                function drawNewPrices(newRate, selectedCurrency) {
-                    $('.priceToConvert').each(function () {
-                        var sign = "$";
-                        var price = parseFloat($(this).attr("data-usd-price"));
-                        var convertedPrice = Math.round(price * newRate);
+                drawNewPrices(rate, selectedCurrency);
+            });
+        }
 
-                        $(this).text(convertedPrice);
+        function drawNewPrices(newRate, selectedCurrency) {
+            $('.priceToConvert').each(function () {
+                var sign = "$";
+                var price = parseFloat($(this).attr("data-usd-price"));
+                var convertedPrice = Math.round(price * newRate);
 
-                        if (selectedCurrency != "USD") {
-                            sign = selectedCurrency == "UAH" ? "₴" : "₽";
-                        }
+                $(this).text(convertedPrice);
 
-                        $(this).text($(this).text() + sign);
-                        $('.selected-currency-sign').text(sign);
-                    })
+                if (selectedCurrency != "USD") {
+                    sign = selectedCurrency == "UAH" ? "₴" : "₽";
                 }
-            };
+
+                $(this).text($(this).text() + sign);
+                $('.selected-currency-sign').text(sign);
+            });
+        }
     </script>
 
     <script>
