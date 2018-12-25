@@ -255,7 +255,7 @@ namespace SimplCommerce.Module.Orders.Services
         }
 
 
-        public Order GetOrderByPnr(string pnr)
+        public Order GetOrderByPnr(string pnr, string lastName)
         {
             var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
@@ -268,12 +268,8 @@ namespace SimplCommerce.Module.Orders.Services
                 .Include(x => x.RegistrationAddress).ThenInclude(ra => ra.Address).ThenInclude(a => a.Country)
                 .FirstOrDefault(x => x.PnrNumber == pnr);
 
-            if (order == null)
-            {
-                throw new ApplicationException($"Order not found by PNR = {pnr}");
-            }
-
-            return order;
+            return order.RegistrationAddress[0].Address.AddressLine1.ToLower() == lastName.ToLower() ? 
+                order : null;
         }
 
         public async Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId)

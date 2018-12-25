@@ -224,8 +224,10 @@ namespace SimplCommerce.Module.Orders.Controllers
         public IActionResult OrderConfirmation()
         {
             var pnr = HttpContext.Request.Query["pnr"].ToString();
-            
+            var lastName = HttpContext.Request.Query["lastName"].ToString();
+
             ViewData["pnr"] = pnr;
+            ViewData["lastName"] = lastName;
 
             return View();
         }

@@ -67,7 +67,11 @@
                         <form class="modal-form" action="~/checkout/congratulation" method="get" accept-charset="utf-8">
                             <div class="form-group">
                                 <label class="sr-only" for="rez-no">@Localizer["Reservation Number"]</label>
-                                <input type="text" class="form-control" name="pnr" id="rez-no" placeholder="@Localizer["Reservation Number"]">
+                                <input type="text" class="form-control" required name="pnr" id="rez-no" placeholder="@Localizer["Reservation Number"]">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="lastName">@Localizer["Last Name"]</label>
+                                <input type="text" class="form-control" required name="lastName" id="lastName" placeholder="@Localizer["Last Name"]">
                             </div>
                             <button type="submit" class="btn btn-rez">@Localizer["Find Reservation"]</button>
                         </form>

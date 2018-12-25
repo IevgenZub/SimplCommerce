@@ -21,11 +21,15 @@ namespace SimplCommerce.Module.Orders.Components
             _mediaService = mediaService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string pnr)
+        public async Task<IViewComponentResult> InvokeAsync(string pnr, string lastName)
         {
             var curentUser = await _workContext.GetCurrentUser();
-            var order = _orderService.GetOrderByPnr(pnr);
-            ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[0].Product.ThumbnailImage);
+            var order = _orderService.GetOrderByPnr(pnr, lastName);
+
+            if (order != null)
+            { 
+                ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[0].Product.ThumbnailImage);
+            }
 
             return View("/Modules/SimplCommerce.Module.Orders/Views/Components/OrderConfirmation.cshtml", order);
         }
