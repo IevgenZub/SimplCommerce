@@ -36,28 +36,28 @@
                             <div class="col-sm-9">
                                 @if (Model.OrderItems.Count > 1)
                                 {
-                                    var returnflight = Model.OrderItems[1].Product;
-                                    carrierImageUrl = ViewBag.ReturnCarrierImageUrl;
+                                    var returnFlight = Model.OrderItems[1].Product;
+
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <figure class="text-center">
-                                                <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
-                                                <figcaption style="font-size:10px; color:gray">@returnflight.Brand.Name</figcaption>
+                                                <img style="max-height:40px;max-width:100px" src="@ViewBag.ReturnCarrierImageUrl">
+                                                <figcaption style="font-size:10px; color:gray">@returnFlight.Brand.Name</figcaption>
                                             </figure>
                                         </div>
                                         <div class="col-sm-2">
                                             <p>
-                                                <span style="font-size:12px" class="label label-default">@returnflight.FlightNumber @returnflight.FlightClass </span>
+                                                <span style="font-size:12px" class="label label-default">@returnFlight.FlightNumber @returnflight.FlightClass </span>
                                             </p>
                                         </div>
                                         <div class="col-sm-2">
-                                            <p>@returnflight.Departure</p>
+                                            <p>@returnFlight.Departure</p>
                                         </div>
                                         <div class="col-sm-2">
-                                            <p>@returnflight.Destination</p>
+                                            <p>@returnFlight.Destination</p>
                                         </div>
-                                        <div class="col-sm-2"><p>@returnflight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
-                                        <div class="col-sm-2"><p>@returnflight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
+                                        <div class="col-sm-2"><p>@returnFlight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                        <div class="col-sm-2"><p>@returnFlight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
                                     </div>
                                 }
                                 <div class="row">
