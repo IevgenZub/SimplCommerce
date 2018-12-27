@@ -49,6 +49,11 @@ namespace SimplCommerce.Module.Catalog.ViewModels
         public string Landing { get; set; }
         public string DepartureRus { get; set; }
         public string LandingRus { get; set; }
+        public string ReturnDeparture { get; set; }
+        public string ReturnLanding { get; set; }
+        public string ReturnDepartureRus { get; set; }
+        public string ReturnLandingRus { get; set; }
+
         public DateTimeOffset? DepartureDate { get; set; }
         public int DurationHours { get; set; }
         public int DurationMinutes { get; set; }

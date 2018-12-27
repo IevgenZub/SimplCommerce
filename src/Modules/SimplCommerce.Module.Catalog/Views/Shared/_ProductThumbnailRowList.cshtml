@@ -32,12 +32,12 @@
     }
 
     selectedPrice = selectedPrice * qtyAdult + selectedPrice * qtyChild + Model.ChildPrice * qtyBaby;
-
-    var departure = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.DepartureRus : Model.Departure;
-    var landing = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru" ? Model.LandingRus : Model.Landing;
+    var isRus = CultureInfo.CurrentCulture.Name.ToLower() == "ru-ru";
+    var departure = isRus ? Model.DepartureRus : Model.Departure;
+    var landing = isRus ? Model.LandingRus : Model.Landing;
     var returnThumbnailUrl = string.IsNullOrEmpty(Model.ReturnThumbnailUrl) ? Model.ThumbnailUrl : Model.ReturnThumbnailUrl;
-    
-    var mergedProductId = string.IsNullOrEmpty(Model.MergedProductId) ? "0" : Model.MergedProductId; 
+
+    var mergedProductId = string.IsNullOrEmpty(Model.MergedProductId) ? "0" : Model.MergedProductId;
 }
 
 <div class="my-thumbnail flight-item">
@@ -92,6 +92,8 @@
 </div>
     @if (Model.IsRoundTrip)
     {
+        landing = string.IsNullOrEmpty(Model.ReturnDeparture) ? landing : isRus ? Model.ReturnDepartureRus : Model.ReturnDeparture;
+        departure = string.IsNullOrEmpty(Model.ReturnLanding) ? departure : isRus ? Model.ReturnLandingRus : Model.ReturnLanding;
         <div class="row my-row flight-row">
             <div class="col-sm-2 col-xs-12 airlines">
                 <figure>

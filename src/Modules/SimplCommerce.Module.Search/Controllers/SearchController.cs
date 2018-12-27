@@ -44,8 +44,6 @@ namespace SimplCommerce.Module.Search.Controllers
             _pageSize = config.GetValue<int>("Catalog.ProductPageSize");
         }
 
-
-
         [HttpGet("search")]
         public IActionResult Index(SearchOption searchOption)
         {
@@ -194,6 +192,10 @@ namespace SimplCommerce.Module.Search.Controllers
                     var rt = directOneWays[i];
                     var ow = returnOneWays[i];
                     rt.IsRoundTrip = true;
+                    rt.ReturnDeparture = ow.Departure;
+                    rt.ReturnLanding = ow.Landing;
+                    rt.ReturnDepartureRus = ow.DepartureRus;
+                    rt.ReturnLandingRus = ow.LandingRus;
                     rt.ReturnDepartureDate = ow.DepartureDate;
                     rt.ReturnTerminal = ow.Terminal;
                     rt.ReturnCarrier = ow.Carrier;
@@ -204,7 +206,7 @@ namespace SimplCommerce.Module.Search.Controllers
                     rt.ReturnIsNextDayLanding= ow.IsNextDayLanding;
                     rt.ReturnLandingTime = ow.LandingTime;
                     rt.ReturnThumbnailImage = ow.ThumbnailImage;
-                    rt.ReturnThumbnailUrl = ow.ReturnThumbnailUrl;
+                    rt.ReturnThumbnailUrl = ow.ThumbnailUrl;
                     rt.CalculatedProductPrice.Price += ow.CalculatedProductPrice.Price;
                     rt.Details.IsRoundTrip = true;
                     rt.Details.ReturnTerminal = ow.Terminal;
