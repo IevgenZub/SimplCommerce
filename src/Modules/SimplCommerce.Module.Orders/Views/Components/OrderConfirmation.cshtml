@@ -34,6 +34,32 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-9">
+                                @if (Model.OrderItems.Count > 1)
+                                {
+                                    var returnflight = Model.OrderItems[1].Product;
+                                    carrierImageUrl = ViewBag.ReturnCarrierImageUrl;
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <figure class="text-center">
+                                                <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
+                                                <figcaption style="font-size:10px; color:gray">@returnflight.Brand.Name</figcaption>
+                                            </figure>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>
+                                                <span style="font-size:12px" class="label label-default">@returnflight.FlightNumber @returnflight.FlightClass </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@returnflight.Departure</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@returnflight.Destination</p>
+                                        </div>
+                                        <div class="col-sm-2"><p>@returnflight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                        <div class="col-sm-2"><p>@returnflight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
+                                    </div>
+                                }
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <figure class="text-center">
@@ -79,32 +105,7 @@
                                         <div class="col-sm-2"><p>@flight.ReturnLandingTime.Value.DateTime.ToString("HH:mm")</p></div>
                                     </div>
                                 }
-                                @if (Model.OrderItems.Count > 1)
-                                {
-                                    flight = Model.OrderItems[1].Product;
-                                    carrierImageUrl = ViewBag.ReturnCarrierImageUrl;
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <figure class="text-center">
-                                                <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
-                                                <figcaption style="font-size:10px; color:gray">@flight.Brand.Name</figcaption>
-                                            </figure>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <p>
-                                                <span style="font-size:12px" class="label label-default">@flight.FlightNumber @flight.FlightClass </span>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <p>@flight.Departure</p>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <p>@flight.Destination</p>
-                                        </div>
-                                        <div class="col-sm-2"><p>@flight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
-                                        <div class="col-sm-2"><p>@flight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
-                                    </div>
-                                }
+
                             </div>
                             <div class="col-sm-3 text-right">
                                 <p><i style="font-size:x-large" class="fas fa-male"></i>&nbsp;@orderItem.Quantity x <span class="priceToConvert" style="color:green">&nbsp;@orderItem.ProductPrice</span> + <i style="font-size:large" class="fas fa-male"></i> @Model.OrderItems[0].QuantityChild x <span class="priceToConvert" style="color:green">@orderItem.ProductPrice</span>  +  <i class="fas fa-male"></i>&nbsp;@orderItem.QuantityBaby x <span class="priceToConvert" style="color:green">@orderItem.ChildPrice</span></p>

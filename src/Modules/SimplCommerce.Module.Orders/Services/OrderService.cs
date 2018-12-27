@@ -244,7 +244,9 @@ namespace SimplCommerce.Module.Orders.Services
 
         public Order GetOrderByNumber(string orderNumber)
         {
-            var order = _orderRepository.Query().FirstOrDefault(x => x.ExternalNumber == orderNumber);
+            var order = _orderRepository.Query()
+                                .Include(x => x.RegistrationAddress).ThenInclude(ra => ra.Address).ThenInclude(a => a.Country)
+                                .FirstOrDefault(x => x.ExternalNumber == orderNumber);
 
             if (order == null)
             {
