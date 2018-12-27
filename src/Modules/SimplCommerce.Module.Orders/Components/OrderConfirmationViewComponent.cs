@@ -28,7 +28,6 @@ namespace SimplCommerce.Module.Orders.Components
 
             if (order != null)
             { 
-                ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[0].Product.ThumbnailImage);
                 if (order.OrderItems.Count > 1)
                 {
                     ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[1].Product.ThumbnailImage);

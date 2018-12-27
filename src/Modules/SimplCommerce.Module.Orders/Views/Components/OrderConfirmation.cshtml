@@ -5,7 +5,13 @@
     var orderItem = Model.OrderItems[0];
     var flight = Model.OrderItems[0].Product;
     var carrierImageUrl = ViewBag.CarrierImageUrl;
+    var returnCarrierImageUrl = ViewBag.ReturnCarrierImageUrl;
     var totalPassengers = orderItem.QuantityBaby + orderItem.QuantityChild + orderItem.Quantity;
+
+    if (string.IsNullOrEmpty(ViewBag.ReturnCarrierImageUrl))
+    {
+        returnCarrierImageUrl = carrierImageUrl;
+    }
 
     <h2>@Localizer["Your order has been received!"]</h2>
 
@@ -41,13 +47,13 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <figure class="text-center">
-                                                <img style="max-height:40px;max-width:100px" src="@ViewBag.ReturnCarrierImageUrl">
+                                                <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
                                                 <figcaption style="font-size:10px; color:gray">@returnFlight.Brand.Name</figcaption>
                                             </figure>
                                         </div>
                                         <div class="col-sm-2">
                                             <p>
-                                                <span style="font-size:12px" class="label label-default">@returnFlight.FlightNumber @returnflight.FlightClass </span>
+                                                <span style="font-size:12px" class="label label-default">@returnFlight.FlightNumber @returnFlight.FlightClass </span>
                                             </p>
                                         </div>
                                         <div class="col-sm-2">
@@ -63,7 +69,7 @@
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <figure class="text-center">
-                                            <img style="max-height:40px;max-width:150px" src="@carrierImageUrl">
+                                            <img style="max-height:40px;max-width:150px" src="@returnCarrierImageUrl">
                                             <figcaption style="font-size:10px; color:gray">@flight.Brand.Name</figcaption>
                                         </figure>
                                     </div>
