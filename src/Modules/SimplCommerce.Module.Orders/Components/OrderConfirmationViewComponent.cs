@@ -31,7 +31,12 @@ namespace SimplCommerce.Module.Orders.Components
                 ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[0].Product.ThumbnailImage);
                 if (order.OrderItems.Count > 1)
                 {
-                    ViewBag.ReturnCarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[1].Product.ThumbnailImage);
+                    ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[1].Product.ThumbnailImage);
+                    ViewBag.ReturnCarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[0].Product.ThumbnailImage);
+                }
+                else
+                {
+                    ViewBag.CarrierImageUrl = _mediaService.GetThumbnailUrl(order.OrderItems[0].Product.ThumbnailImage);
                 }
             }
 
