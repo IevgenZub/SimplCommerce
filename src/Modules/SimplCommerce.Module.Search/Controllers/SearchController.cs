@@ -107,7 +107,8 @@ namespace SimplCommerce.Module.Search.Controllers
             var model = new SearchResult
             {
                 CurrentSearchOption = searchOption,
-                FilterOption = new FilterOption()
+                FilterOption = new FilterOption(),
+                DepartureDate = departureDate
             };
 
 

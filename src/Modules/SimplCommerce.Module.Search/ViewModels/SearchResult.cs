@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SimplCommerce.Module.Catalog.ViewModels;
 
@@ -6,6 +7,8 @@ namespace SimplCommerce.Module.Search.ViewModels
 {
     public class SearchResult
     {
+        public DateTime DepartureDate { get; set; }
+
         public long BrandId { get; set; }
 
         public string BrandName { get; set; }

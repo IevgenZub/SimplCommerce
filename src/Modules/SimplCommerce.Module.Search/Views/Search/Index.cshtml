@@ -256,8 +256,8 @@
             <div class="col-md-5">
                 <ul class="list-inline clear-both product-list-display-options">
                     <li class="show-option">
-                        <a href = "#"><i class="fa fa-th-list"></i></a>
-                        <a href = "#"><i class="fa fa-th"></i></a>
+                        <a href="#"><i class="fa fa-th-list"></i></a>
+                        <a href="#"><i class="fa fa-th"></i></a>
                     </li>
                     <li class="sort-by">
                         <label>Sort By :</label>
@@ -281,16 +281,28 @@
                 </ul>
             </div>
         </div>
-        <h4>Special round trip offer</h4>
         <div class="product-list product-list__search">
-            @foreach (var product in Model.Products)
+            @if (Model.Products.Any(p => p.DepartureDate.Value.Date == Model.DepartureDate))
             {
-                <div>
-                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                </div>
+                <h5>@Model.DepartureDate.ToShortDateString()</h5>
+                @foreach (var product in Model.Products.Where(p => p.DepartureDate.Value.Date == Model.DepartureDate))
+                {
+                    <div>
+                        @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                    </div>
+                }
+            }
+            @if (Model.Products.Any(p => p.DepartureDate.Value.Date != Model.DepartureDate))
+            {
+                <h5>Closest dates</h5>
+                @foreach (var product in Model.Products.Where(p => p.DepartureDate.Value.Date != Model.DepartureDate))
+                {
+                    <div>
+                        @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                    </div>
+                }
             }
         </div>
-
         <div class="row">
             <div class="col-md-12 text-right">
                 <cs-pager cs-paging-pagesize="@Model.CurrentSearchOption.PageSize"
@@ -301,18 +313,34 @@
                           asp-all-route-data="@Model.CurrentSearchOption.ToDictionary()"></cs-pager>
             </div>
         </div>
+        @if (Model.MergedProducts.Any())
+        {
+            <h4>One way + one way</h4>
+            <div class="product-list product-list__search">
+                @if (Model.MergedProducts.Any(p => p.DepartureDate.Value.Date == Model.DepartureDate))
+                {
+                    <h5>@Model.DepartureDate.ToShortDateString()</h5>
+                    @foreach (var product in Model.MergedProducts.Where(p => p.DepartureDate.Value.Date == Model.DepartureDate))
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
+                @if (Model.MergedProducts.Any(p => p.DepartureDate.Value.Date != Model.DepartureDate))
+                {
+                    <h5>Closest dates</h5>
+                    @foreach (var product in Model.MergedProducts.Where(p => p.DepartureDate.Value.Date != Model.DepartureDate))
+                    {
+                        <div>
+                            @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
+                        </div>
+                    }
+                }
 
-        <h4>One way + one way</h4>
-        <div class="product-list product-list__search">
-            @foreach (var product in Model.MergedProducts)
-            {
-                <div>
-                    @await Html.PartialAsync("/Modules/SimplCommerce.Module.Catalog/Views/Shared/_ProductThumbnailRowList.cshtml", product)
-                </div>
-            }
-            <br />
-        </div>
-
+            </div>
+        }
+        <br />
     </div>
 </div>
 
