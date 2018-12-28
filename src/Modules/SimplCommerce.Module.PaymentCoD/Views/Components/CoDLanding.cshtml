@@ -1,8 +1,10 @@
-﻿<h3>Bank Transfer</h3>
-<form asp-controller="CoD" asp-action="CoDCheckout" method="POST" id="checkout-payment" class="form-horizontal">
-    <div class="form-group">
-        <div class="col-md-12">
-            <button type="submit" class="btn btn-order">Bank Transfer</button>
+﻿<form asp-controller="CoD" asp-action="CoDCheckout" method="POST" id="checkout-payment" class="form-horizontal">
+    @if (User.IsInRole("vendor") || User.IsInRole("admin"))
+    {
+        <div class="form-group">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-order">Bank Transfer</button>
+            </div>
         </div>
-    </div>
+    }
 </form>

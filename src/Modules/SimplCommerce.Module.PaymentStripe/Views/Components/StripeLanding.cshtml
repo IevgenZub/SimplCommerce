@@ -1,17 +1,24 @@
 ﻿@model SimplCommerce.Module.PaymentStripe.ViewModels.StripeCheckoutForm
 <h3>Portmone</h3>
-<div>
+<div class="col-xs-12">
     <form id="portmoneForm" action="https://www.portmone.com.ua/gateway/" method="post">
-        <input type="hidden" name="payee_id" value="@Model.PublicKey" />
-        <input type="hidden" id="shop_order_number" name="shop_order_number" value="@Model.OrderNumber" />
-        <input type="hidden" name="bill_amount" value="@Model.Amount" />
-        <input type="hidden" name="description" value="Charterwing.com user id @Model.OrderNumber.Split('-')[0] order #@Model.OrderNumber" />
-        <input type="hidden" name="success_url"
-               value="https://charterwing.com/portmone/success-callback" />
-        <input type="hidden" name="failure_url"
-               value="https://charterwing.com/portmone/failure-callback" />
-        <input type="hidden" name="lang" value="Язык интерфейса" />
-        <button type="submit" class="btn btn-primary" style="width:100px;height:40px; background: url(../themes/AirlineTickets/img/portmone-logo.png); background-size:100% auto" />
+        <div class="form-group">
+            <input type="hidden" name="payee_id" value="@Model.PublicKey" />
+            <input type="hidden" id="shop_order_number" name="shop_order_number" value="@Model.OrderNumber" />
+            <input type="hidden" name="bill_amount" value="@Model.Amount" />
+            <input type="hidden" name="description" value="Charterwing.com user id @Model.OrderNumber.Split('-')[0] order #@Model.OrderNumber" />
+            <input type="hidden" name="success_url"
+                   value="https://charterwing.com/portmone/success-callback" />
+            <input type="hidden" name="failure_url"
+                   value="https://charterwing.com/portmone/failure-callback" />
+            <input type="hidden" name="lang" value="Язык интерфейса" />
+            <button type="submit" class="btn btn-primary" style="width:100px;height:40px; background: url(../themes/AirlineTickets/img/portmone-logo.png); background-size:100% auto" />
+        </div>
+        <div class="form-group">
+            <input required type="checkbox" id="terms">
+            <label style="color:black" for="terms">I have read and accepted <a target="_blank" href="~/agreements"><b>@Localizer["Agreements"]</b></a>
+            and <a target="_blank" href="~/policy"><b>@Localizer["Privacy Policy"]</b></a></label>
+        </div>
     </form>
 </div>
 <br />
