@@ -4,7 +4,7 @@
 @{
     var durationTime = string.Format("{0:00}", Model.DurationHours) + "h " + string.Format("{0:00}", Model.DurationMinutes) + "m";
 
-    string returnDurationTime  = string.Empty;
+    string returnDurationTime = string.Empty;
     if (Model.IsRoundTrip)
     {
         returnDurationTime = string.Format("{0:00}", Model.ReturnDurationHours) + "h " + string.Format("{0:00}", Model.ReturnDurationMinutes) + "m";
@@ -38,10 +38,20 @@
     var returnThumbnailUrl = string.IsNullOrEmpty(Model.ReturnThumbnailUrl) ? Model.ThumbnailUrl : Model.ReturnThumbnailUrl;
 
     var mergedProductId = string.IsNullOrEmpty(Model.MergedProductId) ? "0" : Model.MergedProductId;
+
+    var minDeparture = string.Empty;
+    var maxDeparture = string.Empty;
+    var hasVariation = Model.Details.HasVariation;
+
+    if (hasVariation)
+    {
+        minDeparture = Model.Details.Variations.Select(f => f.DepartureDate.Value.Date).DefaultIfEmpty(DateTime.Now).Min().ToShortDateString();
+        maxDeparture = Model.Details.Variations.Select(f => f.DepartureDate.Value.Date).DefaultIfEmpty(DateTime.Now).Max().ToShortDateString();
+    }
 }
 
 <div class="my-thumbnail flight-item">
-    <div class="row my-row flight-row" >
+    <div class="row my-row flight-row">
         <div class="col-sm-2 col-xs-12 airlines">
             <figure>
                 <img src="@Model.ThumbnailUrl">
@@ -58,16 +68,20 @@
             <span class="flight-time">@Model.DepartureDate.Value.DateTime.ToString("HH:mm")</span> @departure
         </div>
         <div class="col-sm-2 col-xs-12">
-            <p><span class="flight-time"> @Model.LandingTime.Value.DateTime.ToString("HH:mm") @if (Model.IsNextDayLanding)
-            {<span>(+1)</span> } </span> @landing </p>
+            <p>
+                <span class="flight-time">
+                    @Model.LandingTime.Value.DateTime.ToString("HH:mm") @if (Model.IsNextDayLanding)
+                    {<span>(+1)</span>}
+                </span> @landing
+            </p>
         </div>
-        <div class="col-sm-2 hidden-xs">
+        <div class="col-sm-1 hidden-xs">
             <p class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</p>
         </div>
-        <div class="col-sm-2 col-xs-12">
+        <div class="col-sm-3 col-xs-12">
             <div class="row">
                 <!-- panel-footer -->
-                <div class="col-xs-6">
+                <div class="col-xs-3">
                     <div class="previous">
                         @if (!Model.IsRoundTrip)
                         {
@@ -78,18 +92,26 @@
                         }
                     </div>
                 </div>
-                <div class="col-xs-6 text-right">
+                <div class="col-xs-6">
+                    <div class="previous">
+                        @if (hasVariation)
+                        {
+                            <span class="badge badge-secondary">From @minDeparture ..</span>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-3 text-right">
                     <div class="next">
                         @if (!Model.IsRoundTrip)
                         {
-                                <button type="submit" id="@selectedFlightId" data-merged-flight-id="@mergedProductId" class="btn pull-right btn-add-cart btn-lg btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
-                                <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
+                            <button type="submit" id="@selectedFlightId" data-merged-flight-id="@mergedProductId" class="btn pull-right btn-add-cart btn-lg btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
+                            <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
                         }
                     </div>
                 </div>
             </div>
         </div>
-</div>
+    </div>
     @if (Model.IsRoundTrip)
     {
         landing = string.IsNullOrEmpty(Model.ReturnDeparture) ? landing : isRus ? Model.ReturnDepartureRus : Model.ReturnDeparture;
@@ -103,16 +125,20 @@
             </div>
             <div class="col-sm-1 col-xs-6">
                 <p>@Model.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p>
-            </div>    
+            </div>
             <div class="col-sm-1 col-xs-6 text-right">
                 <p class="flight-number">@Model.ReturnFlightNumber</p>
-            </div> 
+            </div>
             <div class="col-sm-2 col-xs-12">
-                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @landing 
-            </div> 
+                <span class="flight-time">@Model.ReturnDepartureDate.Value.DateTime.ToString("HH:mm")</span> @landing
+            </div>
             <div class="col-sm-2 col-xs-12">
-                <p><span class="flight-time">@Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding)
-                { <span>(+1)</span> } </span> @departure </p>
+                <p>
+                    <span class="flight-time">
+                        @Model.ReturnLandingTime.Value.DateTime.ToString("HH:mm") @if (Model.ReturnIsNextDayLanding)
+                    {<span>(+1)</span>}
+                    </span> @departure
+                </p>
             </div>
             <div class="col-sm-2 hidden-xs">
                 <p class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</p>
@@ -120,26 +146,34 @@
             <div class="col-sm-2  col-xs-12">
                 <div class="row">
                     <!-- panel-footer -->
-                    <div class="col-xs-6">
-                        <div class="previous">        
+                    <div class="col-xs-3">
+                        <div class="previous">
                             <button class="btn btn-default moreDetails">
                                 <i class="fas fa-search-plus"></i>
                                 <i class="fas fa-search-minus" style="display: none;"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="col-xs-6 text-right">
-                        <div class="next">
-                            <button type="submit" id="@selectedFlightId" data-merged-flight-id="@mergedProductId" class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>    
-                            <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
+                    <div class="col-xs-6">
+                        <div class="previous">
+                            @if (hasVariation)
+                            {
+                                <span class="badge badge-secondary">From @minDeparture ..</span>
+                            }
+                        </div>
+                     </div>
+                        <div class="col-xs-3 text-right">
+                            <div class="next">
+                                <button type="submit" id="@selectedFlightId" data-merged-flight-id="@mergedProductId" class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
+                                <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     }
     <div class="row product-details" style="display: none; transition: max-height 0.3s">
-        <div class="col-md-12 col-sm-12" >
+        <div class="col-md-12 col-sm-12">
             @await Html.PartialAsync("~/Modules/SimplCommerce.Module.Catalog/Views/Product/ProductDetail.cshtml", Model.Details)
         </div>
     </div>
