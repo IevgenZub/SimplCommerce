@@ -58,8 +58,15 @@
                 <figcaption>@Model.Carrier</figcaption>
             </figure>
         </div>
-        <div class="col-sm-1 col-xs-6">
-            <p>@Model.DepartureDate.Value.Date.ToShortDateString()</p>
+        <div class="col-sm-2 col-xs-6">
+            @if (hasVariation)
+            {
+                <span class="badge badge-secondary">@minDeparture .. @maxDeparture</span>
+            }
+            else
+            {
+                <p>@Model.DepartureDate.Value.DateTime.ToShortDateString()</p>
+            }
         </div>
         <div class="col-sm-1 col-xs-6 text-right">
             <p class="flight-number">@Model.FlightNumber</p>
@@ -78,10 +85,10 @@
         <div class="col-sm-1 hidden-xs">
             <p class="text-nowrap"><i class="fas fa-plane"></i> @durationTime</p>
         </div>
-        <div class="col-sm-3 col-xs-12">
+        <div class="col-sm-2 col-xs-12">
             <div class="row">
                 <!-- panel-footer -->
-                <div class="col-xs-3">
+                <div class="col-xs-6">
                     <div class="previous">
                         @if (!Model.IsRoundTrip)
                         {
@@ -92,15 +99,7 @@
                         }
                     </div>
                 </div>
-                <div class="col-xs-6">
-                    <div class="previous">
-                        @if (hasVariation)
-                        {
-                            <span class="badge badge-secondary">From @minDeparture ..</span>
-                        }
-                    </div>
-                </div>
-                <div class="col-xs-3 text-right">
+                <div class="col-xs-6 text-right">
                     <div class="next">
                         @if (!Model.IsRoundTrip)
                         {
@@ -123,8 +122,15 @@
                     <figcaption>@Model.ReturnCarrier</figcaption>
                 </figure>
             </div>
-            <div class="col-sm-1 col-xs-6">
-                <p>@Model.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p>
+            <div class="col-sm-2 col-xs-6">
+                @if (hasVariation)
+                {
+                <span class="badge badge-secondary">@minDeparture .. @maxDeparture</span>
+                }
+                else
+                {
+                    <p>@Model.DepartureDate.Value.DateTime.ToShortDateString()</p>
+                }
             </div>
             <div class="col-sm-1 col-xs-6 text-right">
                 <p class="flight-number">@Model.ReturnFlightNumber</p>
@@ -140,13 +146,13 @@
                     </span> @departure
                 </p>
             </div>
-            <div class="col-sm-2 hidden-xs">
+            <div class="col-sm-1 hidden-xs">
                 <p class="text-nowrap"><i class="fas fa-plane gly-rotate-left"></i> @returnDurationTime</p>
             </div>
             <div class="col-sm-2  col-xs-12">
                 <div class="row">
                     <!-- panel-footer -->
-                    <div class="col-xs-3">
+                    <div class="col-xs-6">
                         <div class="previous">
                             <button class="btn btn-default moreDetails">
                                 <i class="fas fa-search-plus"></i>
@@ -154,15 +160,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-xs-6">
-                        <div class="previous">
-                            @if (hasVariation)
-                            {
-                                <span class="badge badge-secondary">From @minDeparture ..</span>
-                            }
-                        </div>
-                     </div>
-                        <div class="col-xs-3 text-right">
+                        <div class="col-xs-6 text-right">
                             <div class="next">
                                 <button type="submit" id="@selectedFlightId" data-merged-flight-id="@mergedProductId" class="btn pull-right btn-lg btn-add-cart btn-hide"><strong><span class="priceToConvert">@selectedPrice</span></strong></button>
                                 <input type="hidden" name="productId" id="productId" value="@selectedFlightId">
