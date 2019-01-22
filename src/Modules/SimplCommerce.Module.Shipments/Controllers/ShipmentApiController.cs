@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using SimplCommerce.Infrastructure.Data;
 using SimplCommerce.Infrastructure.Web.SmartTable;
 using SimplCommerce.Module.Core.Extensions;
+using SimplCommerce.Module.Orders.Models;
+using SimplCommerce.Module.Orders.Services;
 using SimplCommerce.Module.Shipments.Models;
 using SimplCommerce.Module.Shipments.Services;
 using SimplCommerce.Module.Shipments.ViewModels;
@@ -18,12 +20,16 @@ namespace SimplCommerce.Module.Shipments.Controllers
     public class ShipmentApiController : Controller
     {
         private readonly IRepository<Shipment> _shipmentRepository;
+        private readonly IRepository<Order> _orderRepository;
         private readonly IShipmentService _shipmentService;
         private readonly IWorkContext _workContext;
 
-        public ShipmentApiController(IRepository<Shipment> shipmentRepository, IShipmentService shipmentService, IWorkContext workContext)
+        public ShipmentApiController(IRepository<Shipment> shipmentRepository, 
+            IShipmentService shipmentService, IWorkContext workContext,
+            IRepository<Order> orderRepository)
         {
             _shipmentRepository = shipmentRepository;
+            _orderRepository = orderRepository;
             _shipmentService = shipmentService;
             _workContext = workContext;
         }
@@ -112,6 +118,38 @@ namespace SimplCommerce.Module.Shipments.Controllers
                 });
 
             return Json(shipments);
+        }
+
+        [HttpPost("gridV2")]
+        public IActionResult ListV2([FromBody] SmartTableParam param)
+        {
+            var query = _orderRepository.Query();
+
+            if (param.Search.PredicateObject != null)
+            {
+                dynamic search = param.Search.PredicateObject;
+
+                if (search.TrackingNumber != null)
+                {
+                    //string trackingNumber = search.TrackingNumber;
+                    //query = query.Where(x => x.TrackingNumber.Contains(trackingNumber));
+                }
+            }
+
+            var result = new SmartTableResult<ShipmentItemVm>(); 
+
+            foreach (var order in query.ToList())
+            {
+                foreach (var passenger in order.RegistrationAddress)
+                {
+                    result.Items.Add(new ShipmentItemVm
+                    {
+
+                    });
+                }
+            }
+
+            return Json(result);
         }
 
         [HttpGet("id")]
