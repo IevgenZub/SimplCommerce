@@ -9,18 +9,25 @@
 <table class="table table-striped" st-pipe="vm.getShipments" st-table="vm.shipments">
     <thead>
         <tr>
-            <th st-sort="Id" class="sortable">{{::vm.translate.get('Shipment Id')}}</th>
-            <th st-sort="TrackingNumber" class="sortable">{{::vm.translate.get('Tracking Number')}}</th>
+            <th st-sort="OrderId" class="sortable">{{::vm.translate.get('Shipment Id')}}</th>
+            <th st-sort="FlightNumber" class="sortable">{{::vm.translate.get('Tracking Number')}}</th>
             <th>{{::vm.translate.get('Order Id')}}</th>
-            <th>{{::vm.translate.get('Warehouse')}}</th>
-            <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
+            <th>{{::vm.translate.get('FlightNumber')}}</th>
+            <th st-sort="DepartureDate" class="sortable">{{::vm.translate.get('DepartureDate')}}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th>{{::vm.translate.get('Actions')}}</th>
         </tr>
         <tr>
             <th></th>
             <th>
                 <div class="form-group">
-                    <input class="form-control" st-search="TrackingNumber"/>
+                    <input class="form-control" st-search="FlightNumber" />
                 </div>
             </th>
             <th>
@@ -29,28 +36,42 @@
                 </div>
             </th>
             <th></th>
-            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
+            <th><st-date-range predicate="DepartureDate" before="query.before" after="query.after"></st-date-range></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody ng-show="!vm.isLoading">
         <tr ng-repeat="item in vm.shipments">
-            <td>{{item.id}}</td>
-            <td>{{item.trackingNumber}}</td>
             <td>{{item.orderId}}</td>
-            <td>{{item.warehouseName}}</td>
-            <td>{{item.createdOn | date:'medium' }}</td>
-            <td></td>
+            <td>{{item.saleDate}}</td>
+            <td>{{item.status}}</td>
+            <td>{{item.booking}}</td>
+            <td>{{item.confirmation}}</td>
+            <td>{{item.route}}</td>
+            <td>{{item.isRoundTrip}}</td>
+            <td>{{item.passenger}}</td>
+            <td>{{item.flightNumber}}</td>
+            <td>{{item.agencyPassenger}}</td>
+            <td>{{item.agencyPrice}}</td>
+            <td>{{item.salesPrice}}</td>
+            <td>{{item.flightDate | date:'medium' }}</td>
         </tr>
     </tbody>
     <tbody ng-show="vm.isLoading">
         <tr>
-            <td colspan="6" class="text-center">Loading ... </td>
+            <td colspan="13" class="text-center">Loading ... </td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="6"></td>
+            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="13"></td>
         </tr>
     </tfoot>
 </table>	

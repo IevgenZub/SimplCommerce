@@ -1,4 +1,6 @@
-﻿namespace SimplCommerce.Module.Shipments.Services
+﻿using System;
+
+namespace SimplCommerce.Module.Shipments.Services
 {
     public class ShipmentItemVm
     {
@@ -18,15 +20,16 @@
 
         public int QuantityToShip { get; set; }
 
+        public long OrderId { get; set; }
         public string SaleDate { get; set; }
         public string Status { get; set; }
         public string Booking { get; set; }
         public string Confirmation { get; set; }
         public string Route { get; set; }
+        public bool IsRoundTrip { get; set; }
         public string Passenger { get; set; }
         public string FlightNumber { get; set; }
-        public string FlightTime { get; set; }
-        public string FlightDate { get; set; }
+        public DateTime FlightDate { get; set; }
         public string AgencyPassenger { get; set; }
         public decimal AgencyPrice { get; set; }
         public string Currency { get; set; }

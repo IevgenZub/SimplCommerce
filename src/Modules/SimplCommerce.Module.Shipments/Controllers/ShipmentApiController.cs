@@ -69,71 +69,23 @@ namespace SimplCommerce.Module.Shipments.Controllers
         [HttpPost("grid")]
         public IActionResult List([FromBody] SmartTableParam param)
         {
-            var query = _shipmentRepository.Query();
+            var query = _orderRepository.Query()
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.District)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
+                .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.Vendor)
+                .Include(x => x.CreatedBy)
+                .Include(x => x.RegistrationAddress).ThenInclude(x => x.Address);
 
             if (param.Search.PredicateObject != null)
             {
                 dynamic search = param.Search.PredicateObject;
 
-                if (search.TrackingNumber != null)
-                {
-                    string trackingNumber = search.TrackingNumber;
-                    query = query.Where(x => x.TrackingNumber.Contains(trackingNumber));
-                }
-
-                if (search.OrderId != null)
-                {
-                    string orderIdString = search.OrderId;
-                    if (long.TryParse(orderIdString, out long orderId))
-                    {
-                        query = query.Where(x => x.OrderId == orderId);
-                    }
-                }
-
-                if (search.CreatedOn != null)
-                {
-                    if (search.CreatedOn.before != null)
-                    {
-                        DateTimeOffset before = search.CreatedOn.before;
-                        query = query.Where(x => x.CreatedOn <= before);
-                    }
-
-                    if (search.CreatedOn.after != null)
-                    {
-                        DateTimeOffset after = search.CreatedOn.after;
-                        query = query.Where(x => x.CreatedOn >= after);
-                    }
-                }
-            }
-
-            var shipments = query.ToSmartTableResult(
-                param,
-                x => new
-                {
-                    x.Id,
-                    x.TrackingNumber,
-                    x.OrderId,
-                    WarehouseName = x.Warehouse.Name,
-                    x.CreatedOn
-                });
-
-            return Json(shipments);
-        }
-
-        [HttpPost("gridV2")]
-        public IActionResult ListV2([FromBody] SmartTableParam param)
-        {
-            var query = _orderRepository.Query();
-
-            if (param.Search.PredicateObject != null)
-            {
-                dynamic search = param.Search.PredicateObject;
-
-                if (search.TrackingNumber != null)
-                {
+    //            if (search.TrackingNumber != null)
+    //            {
                     //string trackingNumber = search.TrackingNumber;
                     //query = query.Where(x => x.TrackingNumber.Contains(trackingNumber));
-                }
+    //            }
             }
 
             var result = new SmartTableResult<ShipmentItemVm>(); 
@@ -142,9 +94,24 @@ namespace SimplCommerce.Module.Shipments.Controllers
             {
                 foreach (var passenger in order.RegistrationAddress)
                 {
+                    var flight = order.OrderItems[0].Product;
+
                     result.Items.Add(new ShipmentItemVm
                     {
-
+                        OrderId = order.Id,
+                        SaleDate = order.CreatedOn.Date.ToShortDateString(),
+                        Status = order.OrderStatus.ToString(),
+                        Booking = order.AgencyReservationNumber,
+                        Confirmation = order.PnrNumber,
+                        Route = flight.Departure.Split('(', ')')[1] + "-" + flight.Destination.Split('(', ')')[1],
+                        IsRoundTrip = flight.IsRoundTrip,
+                        Passenger = passenger.Address.ContactName,
+                        FlightNumber = flight.FlightNumber,
+                        FlightDate = flight.DepartureDate.Value.Date,
+                        AgencyPassenger = flight.Vendor == null ? string.Empty : flight.Vendor.Name,
+                        AgencyPrice = flight.AgencyPrice,
+                        SalesPrice = flight.PassengerPrice,
+                        AgencyFee = 0
                     });
                 }
             }
