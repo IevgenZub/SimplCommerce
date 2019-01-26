@@ -20,13 +20,13 @@ namespace SimplCommerce.Module.Shipments.Controllers
     public class ShipmentApiController : Controller
     {
         private readonly IRepository<Shipment> _shipmentRepository;
-        private readonly IRepository<Order> _orderRepository;
+        private readonly IRepository<OrderRegistrationAddress> _orderRepository;
         private readonly IShipmentService _shipmentService;
         private readonly IWorkContext _workContext;
 
         public ShipmentApiController(IRepository<Shipment> shipmentRepository, 
             IShipmentService shipmentService, IWorkContext workContext,
-            IRepository<Order> orderRepository)
+            IRepository<OrderRegistrationAddress> orderRepository)
         {
             _shipmentRepository = shipmentRepository;
             _orderRepository = orderRepository;
@@ -69,13 +69,12 @@ namespace SimplCommerce.Module.Shipments.Controllers
         [HttpPost("grid")]
         public IActionResult List([FromBody] SmartTableParam param)
         {
-            var query = _orderRepository.Query().OrderByDescending(o=> o.CreatedOn)
-                .Include(x => x.ShippingAddress).ThenInclude(x => x.District)
-                .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
-                .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
-                .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.Vendor)
-                .Include(x => x.CreatedBy)
-                .Include(x => x.RegistrationAddress).ThenInclude(x => x.Address);
+            var query = _orderRepository.Query().
+                Include(x => x.Address).
+                Include(x => x.Order).
+                ThenInclude(x => x.OrderItems).
+                ThenInclude(x => x.Product).
+                ThenInclude(x => x.Vendor);
 
             if (param.Search.PredicateObject != null)
             {
@@ -88,35 +87,27 @@ namespace SimplCommerce.Module.Shipments.Controllers
     //            }
             }
 
-            var result = new SmartTableResult<ShipmentItemVm>(); 
-
-            foreach (var order in query.ToList())
-            {
-                foreach (var passenger in order.RegistrationAddress)
+            var passengers = query.ToSmartTableResult(
+              param,
+              passenger =>
+                new ShipmentItemVm
                 {
-                    var flight = order.OrderItems[0].Product;
-
-                    result.Items.Add(new ShipmentItemVm
-                    {
-                        OrderId = order.Id,
-                        SaleDate = order.CreatedOn.Date,
-                        Status = order.OrderStatus.ToString(),
-                        Booking = order.AgencyReservationNumber,
-                        Confirmation = order.PnrNumber,
-                        Route = flight.Departure.Split('(', ')')[1] + "-" + flight.Destination.Split('(', ')')[1],
-                        IsRoundTrip = flight.IsRoundTrip,
-                        Passenger = passenger.Address.ContactName,
-                        FlightNumber = flight.FlightNumber,
-                        FlightDate = flight.DepartureDate.Value.Date,
-                        AgencyPassenger = flight.Vendor == null ? string.Empty : flight.Vendor.Name,
-                        AgencyPrice = flight.AgencyPrice,
-                        SalesPrice = flight.PassengerPrice,
-                        AgencyFee = 0
+                    OrderId = passenger.Order.Id,
+                    SaleDate = passenger.Order.CreatedOn.Date,
+                    Status = passenger.Order.OrderStatus.ToString(),
+                    Booking = passenger.Order.AgencyReservationNumber,
+                    Confirmation = passenger.Order.PnrNumber,
+                    Route = passenger.Order.OrderItems[0].Product.Departure.Split('(', ')')[1] + "-" + passenger.Order.OrderItems[0].Product.Destination.Split('(', ')')[1],
+                    IsRoundTrip = passenger.Order.OrderItems[0].Product.IsRoundTrip,
+                    Passenger = passenger.Address.ContactName,
+                    FlightNumber = passenger.Order.OrderItems[0].Product.FlightNumber,
+                    FlightDate = passenger.Order.OrderItems[0].Product.DepartureDate.Value.Date,
+                    AgencyPassenger = passenger.Order.OrderItems[0].Product.Vendor == null ? string.Empty : passenger.Order.OrderItems[0].Product.Vendor.Name,
+                    AgencyPrice = passenger.Order.OrderItems[0].Product.AgencyPrice,
+                    SalesPrice = passenger.Order.OrderItems[0].Product.PassengerPrice
                     });
-                }
-            }
 
-            return Json(result);
+            return Json(passengers);
         }
 
         [HttpGet("id")]
