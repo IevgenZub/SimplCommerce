@@ -10,8 +10,8 @@
         returnDurationTime = string.Format("{0:00}", Model.ReturnDurationHours) + "h " + string.Format("{0:00}", Model.ReturnDurationMinutes) + "m";
     }
 
-    var selectedFlightId = (Model.Details.HasVariation && Model.Details.Variations.Any()) ? Model.Details.Variations.First().Id : Model.Id;
-    var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First().CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
+    var selectedFlightId = (Model.Details.HasVariation && Model.Details.Variations.Any()) ? Model.Details.Variations.Aggregate((c, d) => c.CalculatedProductPrice.Price < d.CalculatedProductPrice.Price ? c : d).Id : Model.Id;
+    var selectedPrice = Model.Details.HasVariation ? Model.Details.Variations.First(v => v.Id == selectedFlightId).CalculatedProductPrice.Price : Model.CalculatedProductPrice.Price;
 
     var qtyAdult = 1;
     if (Context.Request.Query.Any(q => q.Key == "A_P" && !string.IsNullOrEmpty(q.Value)))
@@ -61,7 +61,7 @@
         <div class="col-sm-2 col-xs-6">
             @if (hasVariation)
             {
-                <span class="badge badge-secondary">@minDeparture .. @maxDeparture</span>
+                <span>@minDeparture - @maxDeparture</span>
             }
             else
             {
@@ -125,7 +125,7 @@
             <div class="col-sm-2 col-xs-6">
                 @if (hasVariation)
                 {
-                <span class="badge badge-secondary">@minDeparture .. @maxDeparture</span>
+                <span>@minDeparture - @maxDeparture</span>
                 }
                 else
                 {

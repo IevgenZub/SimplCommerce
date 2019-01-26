@@ -28,7 +28,7 @@
 
                                         @foreach (var value in valuesSorted)
                                         {
-                                            var shouldChecked = Model.Variations.First().Options.Any(x => x.Value == value);
+                                            var shouldChecked = Model.Variations.Aggregate((c, d) => c.CalculatedProductPrice.Price < d.CalculatedProductPrice.Price ? c : d).Options.Any(x => x.Value == value);
                                             var departureDate = Convert.ToDateTime(value, new System.Globalization.CultureInfo("ru-RU", true));
 
                                             <li>
@@ -69,12 +69,12 @@
                         }
                     </div>
                 </form>
-
-                            foreach (var variant in Model.Variations)
-                            {
-                                var hidden = variant != Model.Variations.First() ? "collapse" : "";
-                                var returnDate = Model.AvailableOptions.Any(o => o.OptionName == "Package Days") ? 
-                                    variant.ReturnDate.Value.DateTime.ToString("dd.MM.yy") : string.Empty;
+                                        var minPriceVariant = Model.Variations.Aggregate((c, d) => c.CalculatedProductPrice.Price < d.CalculatedProductPrice.Price ? c : d);
+                                        foreach (var variant in Model.Variations)
+                                        {
+                                            var hidden = variant.Id != minPriceVariant.Id ? "collapse" : "";
+                                            var returnDate = Model.AvailableOptions.Any(o => o.OptionName == "Package Days") ?
+                                                variant.ReturnDate.Value.DateTime.ToString("dd.MM.yy") : string.Empty;
 
                                 <div class="product-variation panel-group row @hidden" data-variation-name="@variant.NormalizedName">
                                     <div class="col-sm-12">
@@ -94,7 +94,7 @@
                                                             <i class="fas fa-plane"></i>
                                                         </div>
                                                         @if (!string.IsNullOrEmpty(Model.Via))
-                                                        {
+                                    {
                                                             <div class="col-xs-4">
                                                                 Via: 
                                                             </div>
@@ -113,14 +113,14 @@
                                                             @Model.Aircraft
                                                         </div>
                                                         @if (!string.IsNullOrEmpty(Model.Via))
-                                                        {
+                                {
                                                             <div class="col-xs-4">
                                                                 @Model.Via
                                                             </div>
-                                                        }
+                            }
                                                     </div>
                                               @if (Model.IsRoundTrip)
-                                              {
+                            {
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             @Model.ReturnTerminal
@@ -132,7 +132,7 @@
                                                             @Model.ReturnAircraft
                                                         </div>
                                                         @if (!string.IsNullOrEmpty(Model.ReturnVia))
-                                                        {
+                            {
                                                             <div class="col-xs-4">
                                                                 @Model.ReturnVia
                                                             </div>
@@ -144,7 +144,7 @@
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             @if (variant.StockQuantity <= 0)
-                                                            {
+                            {
                                                                 <span class="label label-danger ">@Localizer["Out of stock"]</span>
                                                             }
                                                             else
@@ -153,7 +153,7 @@
                                                             }
 
                                                             @if (!string.IsNullOrEmpty(returnDate))
-                                                            {
+                            {
                                                                 <span>(return @returnDate)</span>
                                                             }
 
