@@ -69,7 +69,7 @@ namespace SimplCommerce.Module.Shipments.Controllers
         [HttpPost("grid")]
         public IActionResult List([FromBody] SmartTableParam param)
         {
-            var query = _orderRepository.Query()
+            var query = _orderRepository.Query().OrderByDescending(o=> o.CreatedOn)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.District)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
@@ -99,7 +99,7 @@ namespace SimplCommerce.Module.Shipments.Controllers
                     result.Items.Add(new ShipmentItemVm
                     {
                         OrderId = order.Id,
-                        SaleDate = order.CreatedOn.Date.ToShortDateString(),
+                        SaleDate = order.CreatedOn.Date,
                         Status = order.OrderStatus.ToString(),
                         Booking = order.AgencyReservationNumber,
                         Confirmation = order.PnrNumber,

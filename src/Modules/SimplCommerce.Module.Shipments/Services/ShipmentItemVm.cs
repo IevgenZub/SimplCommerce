@@ -21,7 +21,7 @@ namespace SimplCommerce.Module.Shipments.Services
         public int QuantityToShip { get; set; }
 
         public long OrderId { get; set; }
-        public string SaleDate { get; set; }
+        public DateTime SaleDate { get; set; }
         public string Status { get; set; }
         public string Booking { get; set; }
         public string Confirmation { get; set; }
