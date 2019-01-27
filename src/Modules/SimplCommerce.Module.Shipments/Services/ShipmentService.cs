@@ -28,16 +28,7 @@ namespace SimplCommerce.Module.Shipments.Services
         public async Task<IList<ShipmentItemVm>> GetItemToShip(long orderId, long warehouseId)
         {
             var itemsToShip = await GetShipmentItem(orderId);
-            var stocks = await _stockRepository.Query().Where(x => x.WarehouseId == warehouseId && itemsToShip.Any(p => p.ProductId == x.ProductId)).ToListAsync();
-            foreach(var item in itemsToShip)
-            {
-                var stock = stocks.FirstOrDefault(x => x.ProductId == item.ProductId);
-                if(stock != null)
-                {
-                    item.AvailableQuantity = stock.Quantity;
-                }
-            }
-
+            
             return itemsToShip;
         }
 
@@ -47,11 +38,7 @@ namespace SimplCommerce.Module.Shipments.Services
                 .Where(x => x.Order.Id == orderId)
                 .Select(x => new ShipmentItemVm
                 {
-                    ProductId = x.ProductId,
-                    ProductName = x.Product.Name,
-                    ProductSku = x.Product.Terminal,
-                    OrderItemId = x.Id,
-                    OrderedQuantity = x.Quantity
+
                 })
                 .ToListAsync();
 
@@ -66,11 +53,7 @@ namespace SimplCommerce.Module.Shipments.Services
 
             foreach(var item in orderedItems)
             {
-                var shippedItemsByProduct = shippedItems.Where(x => x.ProductId == item.ProductId);
-                foreach(var shippedItemByProduct in shippedItemsByProduct)
-                {
-                    item.ShippedQuantity = item.ShippedQuantity + shippedItemByProduct.Quantity;
-                }
+
             }
 
             return orderedItems;
@@ -86,16 +69,8 @@ namespace SimplCommerce.Module.Shipments.Services
             var orderedItems = await GetShipmentItem(shipment.OrderId);
             foreach (var item in shipment.Items)
             {
-                var orderedItem = orderedItems.FirstOrDefault(x => x.OrderItemId == item.OrderItemId);
-                if(orderedItem == null)
-                {
-                    return Result.Fail($"Order item {orderedItem.OrderItemId} is not found");
-                }
-
-                if(item.Quantity > orderedItem.OrderedQuantity - orderedItem.ShippedQuantity)
-                {
-                    return Result.Fail($"Quantity to ship cannot be larger than ordered quantity + shipped quantity");
-                }
+                var orderedItem = orderedItems.FirstOrDefault();
+                
 
                 var stock = await _stockRepository.Query().Where(x => x.ProductId == item.ProductId && x.WarehouseId == shipment.WarehouseId).FirstOrDefaultAsync();
                 if(stock == null || stock.Quantity < item.Quantity)

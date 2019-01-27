@@ -46,7 +46,7 @@ namespace SimplCommerce.Module.Shipments.Controllers
             var itemsToShip = await _shipmentService.GetItemToShip(orderId, warehouseId);
             foreach (var item in itemsToShip)
             {
-                item.QuantityToShip = item.OrderedQuantity - item.ShippedQuantity;
+               // item.QuantityToShip = item.OrderedQuantity - item.ShippedQuantity;
             }
 
             model.Items = itemsToShip;
@@ -89,25 +89,35 @@ namespace SimplCommerce.Module.Shipments.Controllers
 
             var passengers = query.ToSmartTableResult(
               param,
-              passenger =>
-                new ShipmentItemVm
-                {
-                    OrderId = passenger.Order.Id,
-                    SaleDate = passenger.Order.CreatedOn.Date,
-                    Status = passenger.Order.OrderStatus.ToString(),
-                    Booking = passenger.Order.AgencyReservationNumber,
-                    Confirmation = passenger.Order.PnrNumber,
-                    Route = passenger.Order.OrderItems[0].Product.Departure.Split('(', ')')[1] + "-" + passenger.Order.OrderItems[0].Product.Destination.Split('(', ')')[1],
-                    IsRoundTrip = passenger.Order.OrderItems[0].Product.IsRoundTrip,
-                    Passenger = passenger.Address.ContactName,
-                    FlightNumber = passenger.Order.OrderItems[0].Product.FlightNumber,
-                    FlightDate = passenger.Order.OrderItems[0].Product.DepartureDate.Value.Date,
-                    AgencyPassenger = passenger.Order.OrderItems[0].Product.Vendor == null ? string.Empty : passenger.Order.OrderItems[0].Product.Vendor.Name,
-                    AgencyPrice = passenger.Order.OrderItems[0].Product.AgencyPrice,
-                    SalesPrice = passenger.Order.OrderItems[0].Product.PassengerPrice
-                    });
+              passenger => GetReportItem(passenger));
 
             return Json(passengers);
+        }
+
+        private ShipmentItemVm GetReportItem(OrderRegistrationAddress passenger)
+        {
+            var order = passenger.Order;
+            var address = passenger.Address;
+            var flight = passenger.Order.OrderItems[0].Product;
+            var vendor = passenger.Order.OrderItems[0].Product.Vendor;
+
+            return new ShipmentItemVm
+            {
+                OrderId = passenger.Order.Id,
+                SaleDate = order.CreatedOn.Date,
+                Status = order.OrderStatus.ToString(),
+                Booking = order.AgencyReservationNumber,
+                Confirmation = order.PnrNumber,
+                Route = flight.Departure.Split('(', ')')[1] + "-" + flight.Destination.Split('(', ')')[1],
+                IsRoundTrip = flight.IsRoundTrip,
+                Passenger = $"{address.ContactName} {address.AddressLine1} {address.AddressLine2} {address.City} {address.PostalCode} ",
+                FlightNumber = flight.FlightNumber,
+                FlightDate = flight.DepartureDate.Value.Date,
+                AgencyPassenger = vendor == null ? string.Empty : vendor.Name,
+                AgencyFee = order.ShippingAmount,
+                AgencyPrice = flight.AgencyPrice,
+                SalesPrice = flight.PassengerPrice
+            };
         }
 
         [HttpGet("id")]
@@ -142,17 +152,11 @@ namespace SimplCommerce.Module.Shipments.Controllers
 
                 foreach(var item in model.Items)
                 {
-                    if(item.QuantityToShip <= 0)
-                    {
-                        continue;
-                    }
+
 
                     var shipmentItem = new ShipmentItem
                     {
-                        Shipment = shipment,
-                        Quantity = item.QuantityToShip,
-                        ProductId = item.ProductId,
-                        OrderItemId = item.OrderItemId
+
                     };
 
                     shipment.Items.Add(shipmentItem);

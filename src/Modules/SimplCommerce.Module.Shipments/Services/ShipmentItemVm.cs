@@ -4,22 +4,6 @@ namespace SimplCommerce.Module.Shipments.Services
 {
     public class ShipmentItemVm
     {
-        public long ProductId { get; set; }
-
-        public string ProductName { get; set; }
-
-        public string ProductSku { get; set; }
-
-        public long OrderItemId { get; set; }
-
-        public int OrderedQuantity { get; set; }
-
-        public int ShippedQuantity { get; set; }
-
-        public int AvailableQuantity { get; set; }
-
-        public int QuantityToShip { get; set; }
-
         public long OrderId { get; set; }
         public DateTime SaleDate { get; set; }
         public string Status { get; set; }
@@ -34,7 +18,6 @@ namespace SimplCommerce.Module.Shipments.Services
         public decimal AgencyPrice { get; set; }
         public string Currency { get; set; }
         public decimal AgencyFee { get; set; }
-        public decimal TotalPrice { get; set; }
         public decimal SalesPrice { get; set; }
         public decimal Profit { get; set; }
     }

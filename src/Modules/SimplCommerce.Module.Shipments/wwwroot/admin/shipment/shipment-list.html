@@ -6,76 +6,82 @@
     </div>
 </div>
 
-<table class="table table-striped" st-pipe="vm.getShipments" st-table="vm.shipments">
-    <thead>
-        <tr>
-            <th st-sort="OrderId" class="sortable">ID</th>
-            <th st-sort="CreatedOn" class="sortable">Sale Date</th>
-            <th>Status</th>
-            <th>Booking</th>
-            <th>Confirm.</th>
-            <th>Route</th>
-            <th>Is Roundtrip</th>
-            <th>Passenger</th>
-            <th>Flight #</th>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Operator</th>
-            <th>Agency Price</th>
-            <th>Sales Price</th>
-            <th>{{::vm.translate.get('Actions')}}</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="FlightNumber" />
-                </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="OrderId" />
-                </div>
-            </th>
-            <th></th>
-            <th><st-date-range predicate="DepartureDate" before="query.before" after="query.after"></st-date-range></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody ng-show="!vm.isLoading">
-        <tr ng-repeat="item in vm.shipments">
-            <td>{{item.orderId}}</td>
-            <td>{{item.saleDate}}</td>
-            <td>{{item.status}}</td>
-            <td>{{item.booking}}</td>
-            <td>{{item.confirmation}}</td>
-            <td>{{item.route}}</td>
-            <td>{{item.isRoundTrip}}</td>
-            <td>{{item.passenger}}</td>
-            <td>{{item.flightNumber}}</td>
-            <td>{{item.flightDate| date:'shortTime'}}</td>
-            <td>{{item.flightDate | date:'shortDate'}}</td>
-            <td>{{item.agencyPassenger}}</td>
-            <td>{{item.agencyPrice}}</td>
-            <td>{{item.salesPrice}}</td>
-            <td></td>
-        </tr>
-    </tbody>
-    <tbody ng-show="vm.isLoading">
-        <tr>
-            <td colspan="13" class="text-center">Loading ... </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="13"></td>
-        </tr>
-    </tfoot>
-</table>	
+<div id="scroll" style="font-size:x-small" >
+    <table class="table table-striped"  st-pipe="vm.getShipments" st-table="vm.shipments">
+        <thead>
+            <tr>
+                <th st-sort="OrderId" class="sortable">ID</th>
+                <th st-sort="CreatedOn" class="sortable">Sale Date</th>
+                <th>Status</th>
+                <th>Booking</th>
+                <th>Confirm.</th>
+                <th>Route</th>
+                <th>Is Roundtrip</th>
+                <th>Passenger</th>
+                <th>Flight #</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Operator</th>
+                <th>Agency Price</th>
+                <th>Agency Fee</th>
+                <th>Total Price</th>
+                <th>Sales Price</th>
+                <th>Profit</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="FlightNumber" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="OrderId" />
+                    </div>
+                </th>
+                <th></th>
+                <th><st-date-range predicate="DepartureDate" before="query.before" after="query.after"></st-date-range></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-show="!vm.isLoading">
+            <tr ng-repeat="item in vm.shipments">
+                <td>{{item.orderId}}</td>
+                <td>{{item.saleDate}}</td>
+                <td>{{item.status}}</td>
+                <td>{{item.booking}}</td>
+                <td>{{item.confirmation}}</td>
+                <td>{{item.route}}</td>
+                <td class="text-center"><i ng-attr-class="{{item.isRoundTrip && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
+                <td>{{item.passenger}}</td>
+                <td>{{item.flightNumber}}</td>
+                <td>{{item.flightDate| date:'shortTime'}}</td>
+                <td>{{item.flightDate | date:'shortDate'}}</td>
+                <td>{{item.agencyPassenger}}</td>
+                <td>{{item.agencyPrice}}</td>
+                <td>{{item.agencyFee}}</td>
+                <td>{{item.agencyPrice + item.agencyFee}}</td>
+                <td>{{item.salesPrice}}</td>
+                <td>{{item.salesPrice - item.agencyPrice}}</td>
+            </tr>
+        </tbody>
+        <tbody ng-show="vm.isLoading">
+            <tr>
+                <td colspan="13" class="text-center">Loading ... </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="13"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
