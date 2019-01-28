@@ -15,18 +15,18 @@
                 <th st-sort="Status" class="sortable">Status</th>
                 <th st-sort="Booking" class="sortable">Booking</th>
                 <th st-sort="Confirmation" class="sortable">Confirm.</th>
-                <th st-sort="Routre" class="sortable">Route</th>
-                <th st-sort="IsRoundTrip" class="sortable">Is Roundtrip</th>
+                <th>Route</th>
+                <th>Is Roundtrip</th>
                 <th st-sort="Passenger" class="sortable">Passenger</th>
-                <th st-sort="FlightNumber" class="sortable">Flight #</th>
-                <th st-sort="FlightTime" class="sortable">Time</th>
-                <th st-sort="FlightDate" class="sortable">Date</th>
-                <th st-sort="Operator" class="sortable">Operator</th>
-                <th st-sort="AgencyPrice" class="sortable">Agency Price</th>
-                <th st-sort="AgencyFee" class="sortable">Agency Fee</th>
-                <th st-sort="TotalPrice" class="sortable">Total Price</th>
-                <th st-sort="SalesPrice" class="sortable">Sales Price</th>
-                <th st-sort="Profit" class="sortable">Profit</th>
+                <th>Flight #</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Operator</th>
+                <th>Agency Price</th>
+                <th>Agency Fee</th>
+                <th>Total Price</th>
+                <th>Sales Price</th>
+                <th>Profit</th>
             </tr>
             <tr>
                 <th>
@@ -73,10 +73,14 @@
                     </div>
                 </th>
                 <th>
-                        <st-date-range predicate="SaleDate" before="query.before" after="query.after"></st-date-range>
+                        <st-date-range predicate="DepartureDate" before="query.before1" after="query.after1"></st-date-range>
                 </th>
                 <th></th>
-                <th></th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Operator" />
+                    </div>
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -91,8 +95,8 @@
                 <td class="text-center"><i ng-attr-class="{{item.isRoundTrip && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
                 <td>{{item.passenger}}</td>
                 <td>{{item.flightNumber}}</td>
-                <td>{{item.flightDate| date:'shortTime'}}</td>
                 <td>{{item.flightDate | date:'shortDate'}}</td>
+                <td>{{item.flightDate| date:'shortTime'}}</td>
                 <td>{{item.agencyPassenger}}</td>
                 <td>{{item.agencyPrice}}</td>
                 <td>{{item.agencyFee}}</td>

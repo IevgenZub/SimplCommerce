@@ -123,7 +123,36 @@ namespace SimplCommerce.Module.Shipments.Controllers
                 if (search.FlightNumber != null)
                 {
                     string flightNumber = search.FlightNumber;
-                    query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product != null && oi.Product.FlightNumber == flightNumber));
+                    query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product != null && 
+                        oi.Product.FlightNumber == flightNumber));
+                }
+
+                if (search.Passenger != null)
+                {
+                    string passenger = search.Passenger;
+                    query = query.Where(x => x.Address.ContactName.Contains(passenger));
+                }
+
+                if (search.Operator != null)
+                {
+                    string agency = search.Operator;
+                    query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product != null &&
+                        oi.Product.Vendor != null && oi.Product.Vendor.Name.Contains(agency)));
+                }
+
+                if (search.DepartureDate != null)
+                {
+                    if (search.DepartureDate.before != null)
+                    {
+                        DateTimeOffset before = search.DepartureDate.before;
+                        query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product.DepartureDate <= before));
+                    }
+
+                    if (search.DepartureDate.after != null)
+                    {
+                        DateTimeOffset after = search.DepartureDate.after;
+                        query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product.DepartureDate >= after));
+                    }
                 }
             }
 
@@ -201,7 +230,7 @@ namespace SimplCommerce.Module.Shipments.Controllers
             var order = passenger.Order;
             var address = passenger.Address;
             var flight = passenger.Order.OrderItems[0].Product;
-            var vendor = passenger.Order.OrderItems[0].Product.Vendor;
+            var vendor = passenger.Order.OrderItems[0].Product?.Vendor;
 
             return new ShipmentItemVm
             {
@@ -214,7 +243,7 @@ namespace SimplCommerce.Module.Shipments.Controllers
                 IsRoundTrip = flight.IsRoundTrip,
                 Passenger = $"{address.ContactName} {address.AddressLine1} {address.AddressLine2} {address.City} {address.PostalCode} ",
                 FlightNumber = flight.FlightNumber,
-                FlightDate = flight.DepartureDate.Value.Date,
+                FlightDate = flight.DepartureDate.HasValue ? flight.DepartureDate.Value.Date : DateTime.Now,
                 AgencyPassenger = vendor == null ? string.Empty : vendor.Name,
                 AgencyFee = order.ShippingAmount,
                 AgencyPrice = flight.AgencyPrice,
