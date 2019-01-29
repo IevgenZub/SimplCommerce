@@ -155,6 +155,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.District)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.Country)
+                .Include(x => x.RegistrationAddress).ThenInclude(x => x.Address)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.ThumbnailImage)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Product).ThenInclude(x => x.OptionCombinations).ThenInclude(x => x.Option)
                 .Include(x => x.CreatedBy)
@@ -175,7 +176,7 @@ namespace SimplCommerce.Module.Orders.Controllers
             {
                 Id = order.Id,
                 CreatedOn = order.CreatedOn,
-                OrderStatus = (int) order.OrderStatus,
+                OrderStatus = (int)order.OrderStatus,
                 OrderStatusString = order.OrderStatus.ToString(),
                 CustomerId = order.CreatedById,
                 CustomerName = order.CreatedBy.FullName,
@@ -199,6 +200,17 @@ namespace SimplCommerce.Module.Orders.Controllers
                     StateOrProvinceName = order.ShippingAddress.StateOrProvince.Name,
                     Phone = order.ShippingAddress.Phone
                 },
+                RegistrationAddress = order.RegistrationAddress.Select(x => 
+                    new
+                    {
+                        FirstName = x.Address.ContactName,
+                        LastName = x.Address.AddressLine1,
+                        Birth = x.Address.AddressLine2,
+                        Document = x.Address.City,
+                        Exp = x.Address.PostalCode,
+                        Country = x.Address.Country.Name,
+                        Sex = x.Address.Phone
+                    }),
                 OrderItems = order.OrderItems.Select(x => new OrderItemVm
                 {
                     Id = x.Id,

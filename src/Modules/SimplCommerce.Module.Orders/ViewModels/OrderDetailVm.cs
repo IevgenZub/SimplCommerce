@@ -53,6 +53,8 @@ namespace SimplCommerce.Module.Orders.ViewModels
 
         public ShippingAddressVm ShippingAddress { get; set; }
 
+        public IEnumerable<dynamic> RegistrationAddress { get; set; }
+
         public IList<OrderItemVm> OrderItems { get; set; } = new List<OrderItemVm>();
     }
 }
