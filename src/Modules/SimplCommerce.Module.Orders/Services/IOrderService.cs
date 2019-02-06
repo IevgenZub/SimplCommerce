@@ -19,6 +19,7 @@ namespace SimplCommerce.Module.Orders.Services
         Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId);
 
         Order GetOrder(int id);
-        Order GetOrderByPnr(string pnr);
+        Order GetOrderByPnr(string pnr, string lastName);
+        Order GetOrderByNumber(string orderNumber);
     }
 }

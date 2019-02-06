@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <td>PNR Number</td>
-                        <td><a target="_blank" ng-href="https://charterwing.com/checkout/congratulation?pnr={{vm.order.pnrNumber}}">{{vm.order.pnrNumber}}</a></td>
+                        <td><a target="_blank" ng-href="https://charterwing.com/checkout/congratulation?pnr={{vm.order.pnrNumber}}&lastName={{vm.order.registrationAddress[0].lastName}}">{{vm.order.pnrNumber}}</a></td>
                     </tr>
                     <tr>
                         <td>Confirmation Number</td>
@@ -54,21 +54,36 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">{{::vm.translate.get('Address Information')}}</h3>
+        <h3 class="panel-title">Registration</h3>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-6">
-                <h5>Billing Address</h5>
-            </div>
-            <div class="col-md-6">
-                <h5>Shipping Address</h5>
-                <p>
-                    {{vm.order.shippingAddress.contactName}} <br />
-                    {{vm.order.shippingAddress.addressLine1}} <br />
-                    {{vm.order.shippingAddress.districtName}}, {{vm.order.shippingAddress.stateOrProvinceName}} <br />
-                    Phone: {{vm.order.shippingAddress.phone}}
-                </p>
+            <div class="col-md-12">
+                <h5>Passengers</h5>
+                <table class="table table-striped order-item-list">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Birth</th>
+                            <th>Document</th>
+                            <th>Exp.</th>
+                            <th>Country</th>
+                            <th>Sex</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vm.order.registrationAddress">
+                            <td>{{item.firstName}}</td>
+                            <td>{{item.lastName}}</td>
+                            <td>{{item.birth}}</td>
+                            <td>{{item.document}}</td>
+                            <td>{{item.exp}}</td>
+                            <td>{{item.country}}</td>
+                            <td>{{item.sex}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

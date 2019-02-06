@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using SimplCommerce.Infrastructure.Data;
 using SimplCommerce.Infrastructure.Web.SmartTable;
 using SimplCommerce.Module.Core.Extensions;
+using SimplCommerce.Module.Orders.Models;
+using SimplCommerce.Module.Orders.Services;
 using SimplCommerce.Module.Shipments.Models;
 using SimplCommerce.Module.Shipments.Services;
 using SimplCommerce.Module.Shipments.ViewModels;
@@ -18,12 +21,16 @@ namespace SimplCommerce.Module.Shipments.Controllers
     public class ShipmentApiController : Controller
     {
         private readonly IRepository<Shipment> _shipmentRepository;
+        private readonly IRepository<OrderRegistrationAddress> _orderRepository;
         private readonly IShipmentService _shipmentService;
         private readonly IWorkContext _workContext;
 
-        public ShipmentApiController(IRepository<Shipment> shipmentRepository, IShipmentService shipmentService, IWorkContext workContext)
+        public ShipmentApiController(IRepository<Shipment> shipmentRepository, 
+            IShipmentService shipmentService, IWorkContext workContext,
+            IRepository<OrderRegistrationAddress> orderRepository)
         {
             _shipmentRepository = shipmentRepository;
+            _orderRepository = orderRepository;
             _shipmentService = shipmentService;
             _workContext = workContext;
         }
@@ -40,7 +47,7 @@ namespace SimplCommerce.Module.Shipments.Controllers
             var itemsToShip = await _shipmentService.GetItemToShip(orderId, warehouseId);
             foreach (var item in itemsToShip)
             {
-                item.QuantityToShip = item.OrderedQuantity - item.ShippedQuantity;
+               // item.QuantityToShip = item.OrderedQuantity - item.ShippedQuantity;
             }
 
             model.Items = itemsToShip;
@@ -63,55 +70,185 @@ namespace SimplCommerce.Module.Shipments.Controllers
         [HttpPost("grid")]
         public IActionResult List([FromBody] SmartTableParam param)
         {
-            var query = _shipmentRepository.Query();
+            IQueryable<OrderRegistrationAddress> query = _orderRepository.Query().
+                Include(x => x.Address).
+                Include(x => x.Order).
+                ThenInclude(x => x.OrderItems).
+                ThenInclude(x => x.Product).
+                ThenInclude(x => x.Vendor);
 
             if (param.Search.PredicateObject != null)
             {
                 dynamic search = param.Search.PredicateObject;
 
-                if (search.TrackingNumber != null)
+                if (search.Id != null)
                 {
-                    string trackingNumber = search.TrackingNumber;
-                    query = query.Where(x => x.TrackingNumber.Contains(trackingNumber));
+                    string id = search.Id;
+                    query = query.Where(x => x.Order.Id.ToString() == id);
                 }
 
-                if (search.OrderId != null)
+                if (search.SaleDate != null)
                 {
-                    string orderIdString = search.OrderId;
-                    if (long.TryParse(orderIdString, out long orderId))
+                    if (search.SaleDate.before != null)
                     {
-                        query = query.Where(x => x.OrderId == orderId);
+                        DateTimeOffset before = search.SaleDate.before;
+                        query = query.Where(x => x.Order.CreatedOn <= before);
+                    }
+
+                    if (search.SaleDate.after != null)
+                    {
+                        DateTimeOffset after = search.SaleDate.after;
+                        query = query.Where(x => x.Order.CreatedOn >= after);
                     }
                 }
 
-                if (search.CreatedOn != null)
+                if (search.Status != null)
                 {
-                    if (search.CreatedOn.before != null)
+                    string status = search.Status;
+                    query = query.Where(x => x.Order.OrderStatus.ToString() == status);
+                }
+
+                if (search.Booking != null)
+                {
+                    string booking = search.Booking;
+                    query = query.Where(x => x.Order.AgencyReservationNumber == booking);
+                }
+
+                if (search.Confirm != null)
+                {
+                    string confirm = search.Confirm;
+                    query = query.Where(x => x.Order.PnrNumber == confirm);
+                }
+
+                if (search.FlightNumber != null)
+                {
+                    string flightNumber = search.FlightNumber;
+                    query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product != null && 
+                        oi.Product.FlightNumber == flightNumber));
+                }
+
+                if (search.Passenger != null)
+                {
+                    string passenger = search.Passenger;
+                    query = query.Where(x => x.Address.ContactName.Contains(passenger));
+                }
+
+                if (search.Operator != null)
+                {
+                    string agency = search.Operator;
+                    query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product != null &&
+                        oi.Product.Vendor != null && oi.Product.Vendor.Name.Contains(agency)));
+                }
+
+                if (search.DepartureDate != null)
+                {
+                    if (search.DepartureDate.before != null)
                     {
-                        DateTimeOffset before = search.CreatedOn.before;
-                        query = query.Where(x => x.CreatedOn <= before);
+                        DateTimeOffset before = search.DepartureDate.before;
+                        query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product.DepartureDate <= before));
                     }
 
-                    if (search.CreatedOn.after != null)
+                    if (search.DepartureDate.after != null)
                     {
-                        DateTimeOffset after = search.CreatedOn.after;
-                        query = query.Where(x => x.CreatedOn >= after);
+                        DateTimeOffset after = search.DepartureDate.after;
+                        query = query.Where(x => x.Order.OrderItems.Any(oi => oi.Product.DepartureDate >= after));
                     }
                 }
             }
 
-            var shipments = query.ToSmartTableResult(
-                param,
-                x => new
-                {
-                    x.Id,
-                    x.TrackingNumber,
-                    x.OrderId,
-                    WarehouseName = x.Warehouse.Name,
-                    x.CreatedOn
-                });
+            var sortExpression = GetSortExpression(param.Sort.Predicate);
 
-            return Json(shipments);
+            var passengers = query.ToSmartTableResult(param, passenger => GetReportItem(passenger), sortExpression);
+
+            return Json(passengers);
+        }
+
+        private Expression<Func<OrderRegistrationAddress, object>> GetSortExpression(string sort)
+        {
+            Expression<Func<OrderRegistrationAddress, object>> sortExpression = x => x.Id;
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                switch (sort)
+                {
+                    case "Id":
+                        sortExpression = x => x.Id;
+                        break;
+                    case "SaleDate":
+                        sortExpression = x => x.Order.CreatedOn;
+                        break;
+                    case "Status":
+                        sortExpression = x => x.Order.OrderStatus;
+                        break;
+                    case "Booking":
+                        sortExpression = x => x.Order.AgencyReservationNumber;
+                        break;
+                    case "Confirm":
+                        sortExpression = x => x.Order.PnrNumber;
+                        break;
+                    case "Route":
+                        sortExpression = x => x.Order.OrderItems[0].Product.Departure;
+                        break;
+                    case "IsRoundTrip":
+                        sortExpression = x => x.Order.OrderItems[0].Product.IsRoundTrip;
+                        break;
+                    case "Passenger":
+                        sortExpression = x => x.Address.ContactName;
+                        break;
+                    case "FlightNumber":
+                        sortExpression = x => x.Order.OrderItems[0].Product.FlightNumber;
+                        break;
+                    case "FlightDate":
+                        sortExpression = x => x.Order.OrderItems[0].Product.DepartureDate.Value.Date;
+                        break;
+                    case "FlightTime":
+                        sortExpression = x => x.Order.OrderItems[0].Product.DepartureDate.Value.TimeOfDay;
+                        break;
+                    case "Operator":
+                        sortExpression = x => x.Order.OrderItems[0].Product.Vendor.Name;
+                        break;
+                    case "AgencyPrice":
+                        sortExpression = x => x.Order.OrderItems[0].Product.AgencyPrice;
+                        break;
+                    case "AgencyFee":
+                        sortExpression = x => x.Order.ShippingAmount;
+                        break;
+                    case "SalesPrice":
+                        sortExpression = x => x.Order.OrderItems[0].Product.PassengerPrice;
+                        break;
+                    default:
+                        sortExpression = x => x.Id;
+                        break;
+                }
+            }
+
+            return sortExpression;
+        }
+
+        private ShipmentItemVm GetReportItem(OrderRegistrationAddress passenger)
+        {
+            var order = passenger.Order;
+            var address = passenger.Address;
+            var flight = passenger.Order.OrderItems[0].Product;
+            var vendor = passenger.Order.OrderItems[0].Product?.Vendor;
+
+            return new ShipmentItemVm
+            {
+                OrderId = passenger.Order.Id,
+                SaleDate = order.CreatedOn.Date,
+                Status = order.OrderStatus.ToString(),
+                Booking = order.AgencyReservationNumber,
+                Confirmation = order.PnrNumber,
+                Route = flight.Departure.Split('(', ')')[1] + "-" + flight.Destination.Split('(', ')')[1],
+                IsRoundTrip = flight.IsRoundTrip,
+                Passenger = $"{address.ContactName} {address.AddressLine1} {address.AddressLine2} {address.City} {address.PostalCode} ",
+                FlightNumber = flight.FlightNumber,
+                FlightDate = flight.DepartureDate.HasValue ? flight.DepartureDate.Value.Date : DateTime.Now,
+                AgencyPassenger = vendor == null ? string.Empty : vendor.Name,
+                AgencyFee = order.ShippingAmount,
+                AgencyPrice = flight.AgencyPrice,
+                SalesPrice = flight.PassengerPrice
+            };
         }
 
         [HttpGet("id")]
@@ -146,17 +283,11 @@ namespace SimplCommerce.Module.Shipments.Controllers
 
                 foreach(var item in model.Items)
                 {
-                    if(item.QuantityToShip <= 0)
-                    {
-                        continue;
-                    }
+
 
                     var shipmentItem = new ShipmentItem
                     {
-                        Shipment = shipment,
-                        Quantity = item.QuantityToShip,
-                        ProductId = item.ProductId,
-                        OrderItemId = item.OrderItemId
+
                     };
 
                     shipment.Items.Add(shipmentItem);

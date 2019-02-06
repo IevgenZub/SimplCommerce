@@ -286,7 +286,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                 if (search.IsRoundTrip != null)
                 {
                     bool isRoundTrip = search.IsRoundTrip;
-                    query = query.Where(x => x.IsRoundTrip);
+                    query = query.Where(x => x.IsRoundTrip == isRoundTrip);
                 }
 
                 if (search.IsVisibleIndividually != null)
@@ -336,7 +336,7 @@ namespace SimplCommerce.Module.Catalog.Controllers
                     Status = x.Status,
                     Operator = x.Vendor == null ? string.Empty : x.Vendor.Name,
                     FlightClass = x.FlightClass,
-                    Price = x.Price.ToString("0.0") + " " + x.Currency
+                    Price = x.Price.ToString("0.0") + "$"
                 });
 
             return Json(gridData);

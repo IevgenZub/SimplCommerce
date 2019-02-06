@@ -36,7 +36,7 @@
 
 </style>
 
-<h3>@Localizer["Order Confirmation"]</h3>
+<h2>@Localizer["Order Confirmation"]</h2>
 
 <div class="cart-list product-detail" ng-app="simpl.shoppingCart" ng-controller="shoppingCartListCtrl as vm" ng-cloak>
     <div class="row">
@@ -57,8 +57,8 @@
                                 <div class="row" ng-repeat="cartItem in vm.cart.items">
                                     <div class="col-sm-2">
                                         <figure class="text-center">
-                                            <img style="max-height:50px;max-width:150px"  ng-src="{{cartItem.productImage}}">
-                                            <figcaption style="font-size:smaller">{{cartItem.carrier}}</figcaption>
+                                            <img style="max-height:40px;max-width:150px"  ng-src="{{cartItem.productImage}}">
+                                            <figcaption style="font-size:10px;color:gray">{{cartItem.carrier}}</figcaption>
                                         </figure>
                                     </div>
                                     <div class="col-sm-5">

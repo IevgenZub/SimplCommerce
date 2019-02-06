@@ -1,5 +1,117 @@
 ﻿[
   {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Москва",
+    "city_eng": "Moscow",
+    "country_rus": "Россия",
+    "country_eng": "Russian Federation"
+  },
+  {
+    "0": "JCX",
+    "1": "",
+    "2": "Citicorp Plaza H/P",
+    "3": "Лос Анджелес",
+    "4": "Los Angeles",
+    "5": "США",
+    "6": "United States",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Лос Анджелес",
+    "city_eng": "Los Angeles",
+    "country_rus": "США",
+    "country_eng": "United States"
+  },
+  {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Анкара",
+    "city_eng": "Ankara",
+    "country_rus": "Турция",
+    "country_eng": "Turkey"
+  },
+  {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Стамбул",
+    "city_eng": "Istanbul",
+    "country_rus": "Турция",
+    "country_eng": "Turkey"
+  },
+  {
+    "0": "*",
+    "1": "",
+    "2": "s",
+    "3": "Санкт-Петербург",
+    "4": "St Petersburg",
+    "5": "Россия",
+    "6": "Russian Federation",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Санкт-Петербург",
+    "city_eng": "St Petersburg",
+    "country_rus": "Россия",
+    "country_eng": "Russian Federation"
+  },
+  {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "США",
+    "6": "United States",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Нью-Йорк",
+    "city_eng": "New York",
+    "country_rus": "США",
+    "country_eng": "United States"
+  },
+  {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "Париж",
+    "4": "Paris",
+    "5": "Франция",
+    "6": "France",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
+    "city_rus": "Париж",
+    "city_eng": "Paris",
+    "country_rus": "Франция",
+    "country_eng": "France"
+  },
+  {
     "0": "AAA",
     "1": "Анаа",
     "2": "Anaa",
@@ -37744,6 +37856,7 @@
     "country_rus": "США",
     "country_eng": "United States"
   },
+
   {
     "0": "FLV",
     "1": "",
@@ -57200,6 +57313,7 @@
     "country_rus": "Франция",
     "country_eng": "France"
   },
+
   {
     "0": "JQA",
     "1": "",
@@ -67920,6 +68034,7 @@
     "country_rus": "Россия",
     "country_eng": "Russian Federation"
   },
+
   {
     "0": "LEE",
     "1": "",
@@ -108784,6 +108899,7 @@
     "country_rus": "Турция",
     "country_eng": "Turkey"
   },
+
   {
     "0": "SAX",
     "1": "Самбу",
@@ -117184,6 +117300,7 @@
     "country_rus": "Россия",
     "country_eng": "Russian Federation"
   },
+
   {
     "0": "SVP",
     "1": "",
@@ -121419,6 +121536,22 @@
     "iata_code": "THF",
     "name_rus": "",
     "name_eng": "Tempelhof",
+    "city_rus": "Берлин",
+    "city_eng": "Berlin",
+    "country_rus": "Германия",
+    "country_eng": "Germany"
+  },
+  {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": "Берлин",
+    "4": "Berlin",
+    "5": "Германия",
+    "6": "Germany",
+    "iata_code": "*",
+    "name_rus": "все",
+    "name_eng": "all",
     "city_rus": "Берлин",
     "city_eng": "Berlin",
     "country_rus": "Германия",

@@ -36,7 +36,7 @@ namespace SimplCommerce.Module.Catalog.Components
             };
 
             var query = _productRepository.Query()
-              .Where(x => x.IsPublished && x.IsVisibleIndividually && x.StockQuantity > 0 && x.DepartureDate >= DateTime.Now);
+              .Where(x =>(x.PassengerPrice > 0)  && x.IsPublished && x.IsVisibleIndividually && x.StockQuantity > 0 && x.DepartureDate >= DateTime.Now);
             
             if (model.Setting.FeaturedOnly)
             {
@@ -75,7 +75,7 @@ namespace SimplCommerce.Module.Catalog.Components
                 .Include(x => x.ReturnCarrier)
                 .Include(x => x.Brand)
                 .Include(x => x.TaxClass)
-                .FirstOrDefault(x => x.Id == id && x.IsPublished);
+                .FirstOrDefault(x => x.Id == id && x.IsPublished && x.PassengerPrice > 0);
 
             if (product == null)
             {

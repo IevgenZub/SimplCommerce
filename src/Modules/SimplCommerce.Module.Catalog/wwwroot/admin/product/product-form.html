@@ -4,7 +4,7 @@
         <h2 ng-if="vm.isEditMode">Edit Flight {{vm.product.name}}</h2>
     </div>
     <div class="panel-body">
-        <form name="productForm" class="form-horizontal">
+        <form name="productForm" id="productForm" class="form-horizontal">
             <div class="col-sm-offset-2 bg-danger" ng-show="vm.validationErrors">
                 <ul>
                     <li ng-repeat="error in vm.validationErrors">{{error}}</li>
@@ -829,7 +829,7 @@
             </uib-tabset>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-primary" ng-disabled="productForm.$invalid" ng-click="vm.save()"><span class="glyphicon glyphicon-ok"></span>{{::vm.translate.get('Save')}}</button>
+                    <button class="btn btn-primary"  ng-click="vm.save()"><span class="glyphicon glyphicon-ok"></span>{{::vm.translate.get('Save')}}</button>
                     <button ui-sref="product" class="btn btn-default">{{::vm.translate.get('Cancel')}}</button>
                 </div>
             </div>

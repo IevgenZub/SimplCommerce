@@ -1,56 +1,119 @@
 ﻿<div class="page-header">
     <div class="row">
         <div class="col-md-8">
-            <h2>{{::vm.translate.get('Shipments')}}</h2>
+            <h2>Passengers report</h2>
         </div>
     </div>
 </div>
 
-<table class="table table-striped" st-pipe="vm.getShipments" st-table="vm.shipments">
-    <thead>
-        <tr>
-            <th st-sort="Id" class="sortable">{{::vm.translate.get('Shipment Id')}}</th>
-            <th st-sort="TrackingNumber" class="sortable">{{::vm.translate.get('Tracking Number')}}</th>
-            <th>{{::vm.translate.get('Order Id')}}</th>
-            <th>{{::vm.translate.get('Warehouse')}}</th>
-            <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
-            <th>{{::vm.translate.get('Actions')}}</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="TrackingNumber"/>
-                </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="OrderId" />
-                </div>
-            </th>
-            <th></th>
-            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody ng-show="!vm.isLoading">
-        <tr ng-repeat="item in vm.shipments">
-            <td>{{item.id}}</td>
-            <td>{{item.trackingNumber}}</td>
-            <td>{{item.orderId}}</td>
-            <td>{{item.warehouseName}}</td>
-            <td>{{item.createdOn | date:'medium' }}</td>
-            <td></td>
-        </tr>
-    </tbody>
-    <tbody ng-show="vm.isLoading">
-        <tr>
-            <td colspan="6" class="text-center">Loading ... </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="6"></td>
-        </tr>
-    </tfoot>
-</table>	
+<div id="scroll" style="font-size:x-small" >
+    <table class="table table-striped"  st-pipe="vm.getShipments" st-table="vm.shipments">
+        <thead>
+            <tr>
+                <th st-sort="OrderId" class="sortable">ID</th>
+                <th st-sort="SaleDate" class="sortable">Sale Date</th>
+                <th st-sort="Status" class="sortable">Status</th>
+                <th st-sort="Booking" class="sortable">Booking</th>
+                <th st-sort="Confirmation" class="sortable">Confirm.</th>
+                <th>Route</th>
+                <th>Is Roundtrip</th>
+                <th st-sort="Passenger" class="sortable">Passenger</th>
+                <th>Flight #</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Operator</th>
+                <th>Agency Price</th>
+                <th>Agency Fee</th>
+                <th>Total Price</th>
+                <th>Sales Price</th>
+                <th>Profit</th>
+            </tr>
+            <tr>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Id" />
+                    </div>
+                </th>
+                <th>
+                    <st-date-range predicate="SaleDate" before="query.before" after="query.after"></st-date-range>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Status" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Booking" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Confirm" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Route" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="IsRoundTrip" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Passenger" />
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="FlightNumber" />
+                    </div>
+                </th>
+                <th>
+                        <st-date-range predicate="DepartureDate" before="query.before1" after="query.after1"></st-date-range>
+                </th>
+                <th></th>
+                <th>
+                    <div class="form-group">
+                        <input class="form-control" st-search="Operator" />
+                    </div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-show="!vm.isLoading">
+            <tr ng-repeat="item in vm.shipments">
+                <td>{{item.orderId}}</td>
+                <td>{{item.saleDate}}</td>
+                <td>{{item.status}}</td>
+                <td>{{item.booking}}</td>
+                <td>{{item.confirmation}}</td>
+                <td>{{item.route}}</td>
+                <td class="text-center"><i ng-attr-class="{{item.isRoundTrip && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
+                <td>{{item.passenger}}</td>
+                <td>{{item.flightNumber}}</td>
+                <td>{{item.flightDate | date:'shortDate'}}</td>
+                <td>{{item.flightDate| date:'shortTime'}}</td>
+                <td>{{item.agencyPassenger}}</td>
+                <td>{{item.agencyPrice}}</td>
+                <td>{{item.agencyFee}}</td>
+                <td>{{item.agencyPrice + item.agencyFee}}</td>
+                <td>{{item.salesPrice}}</td>
+                <td>{{item.salesPrice - item.agencyPrice}}</td>
+            </tr>
+        </tbody>
+        <tbody ng-show="vm.isLoading">
+            <tr>
+                <td colspan="13" class="text-center">Loading ... </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="13"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

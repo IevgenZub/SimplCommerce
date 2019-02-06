@@ -9,6 +9,8 @@ namespace SimplCommerce.Module.Catalog.ViewModels
     {
         public long Id { get; set; }
 
+        public long MergedProductId { get; set; }
+
         public string Name { get; set; }
 
         public string Departure { get; set; }

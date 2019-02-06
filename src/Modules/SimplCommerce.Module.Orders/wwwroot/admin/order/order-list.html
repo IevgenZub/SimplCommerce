@@ -1,14 +1,7 @@
-﻿<script>
-    $(function () {
-        $("#scroll").doubleScroll({
-            resetOnWindowResize: true,
-            timeToWaitForResize: 100
-        });
-    });
-</script>
+﻿
 <h3>{{::vm.translate.get('Orders')}}</h3>
-<div id="scroll" style="width:98%">
-    <table class="table table-striped" st-pipe="vm.getOrders"  st-table="vm.orders">
+<div id="scroll" style="font-size:x-small"  >
+    <table  class="table table-striped" st-pipe="vm.getOrders"  st-table="vm.orders">
         <thead>
             <tr>
                 <th>Actions</th>

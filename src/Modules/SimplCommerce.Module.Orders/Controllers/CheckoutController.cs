@@ -115,9 +115,7 @@ namespace SimplCommerce.Module.Orders.Controllers
                     DistrictId = 1,
                     City = model.DocumentNumber.ToUpper(),
                     PostalCode = model.DocumentExpiration,
-                    Phone = model.Sex,
-                    Email = model.Email,
-                    Mobile = model.Phone
+                    Phone = model.Sex
                 };
 
                 var userAddress = new UserAddress
@@ -155,12 +153,17 @@ namespace SimplCommerce.Module.Orders.Controllers
             }
 
             var cart = await _cartRepository
-               .Query()
+               .Query().Include(c => c.Items).ThenInclude(ci => ci.Product)
                .Where(x => x.UserId == currentUser.Id && x.IsActive).FirstOrDefaultAsync();
 
             if (cart == null)
             {
                 throw new ApplicationException($"Cart of user {currentUser.Id} cannot be found");
+            }
+
+            if ((cart.Items[0].Product.StockQuantity - cart.Items[0].Quantity - cart.Items[0].QuantityChild) < 0)
+            {
+                throw new ApplicationException("Can't order more than available");
             }
 
             cart.ShippingData = JsonConvert.SerializeObject(model);
@@ -221,8 +224,10 @@ namespace SimplCommerce.Module.Orders.Controllers
         public IActionResult OrderConfirmation()
         {
             var pnr = HttpContext.Request.Query["pnr"].ToString();
-            
+            var lastName = HttpContext.Request.Query["lastName"].ToString();
+
             ViewData["pnr"] = pnr;
+            ViewData["lastName"] = lastName;
 
             return View();
         }

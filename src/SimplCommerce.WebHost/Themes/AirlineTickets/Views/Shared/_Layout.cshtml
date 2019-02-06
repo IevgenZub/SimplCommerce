@@ -67,7 +67,11 @@
                         <form class="modal-form" action="~/checkout/congratulation" method="get" accept-charset="utf-8">
                             <div class="form-group">
                                 <label class="sr-only" for="rez-no">@Localizer["Reservation Number"]</label>
-                                <input type="text" class="form-control" name="pnr" id="rez-no" placeholder="@Localizer["Reservation Number"]">
+                                <input type="text" class="form-control" required name="pnr" id="rez-no" placeholder="@Localizer["Reservation Number"]">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="lastName">@Localizer["Last Name"]</label>
+                                <input type="text" class="form-control" required name="lastName" id="lastName" placeholder="@Localizer["Last Name"]">
                             </div>
                             <button type="submit" class="btn btn-rez">@Localizer["Find Reservation"]</button>
                         </form>
@@ -145,12 +149,12 @@
             </div>
             <div class="col-xs-12 text-center">
                     <h1>
-                        <a href="#" class="twitter"><i style="color:darkseagreen" class="fab fa-instagram"></i></a>
-                        <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="google"><i style="color:red" class="fab fa-google-plus"></i></a>
+                        <a target="_blank" href="https://www.instagram.com/charterwing/" class="twitter"><i style="color:darkseagreen" class="fab fa-instagram"></i></a>
+                        <a target="_blank" href="https://www.facebook.com/Ivm-Tour-956084001235642" style="color:cornflowerblue" class="facebook"><i class="fab fa-facebook"></i></a>
+                        <a target="_blank" href="https://www.facebook.com/Ivm-Tour-956084001235642" class="google"><i style="color:red;" class="fab fa-google-plus"></i></a>
                     </h1>
                 <br />
-                <p><img style="border-radius:3px" src="~/themes/AirlineTickets/img/ivm-tour.png" /></p>
+                <p><a target="_blank" href="https://www.facebook.com/Ivm-Tour-956084001235642"><img style="border-radius:3px" src="~/themes/AirlineTickets/img/ivm-tour.png" /></a></p>
                 <p style="display: inline-block; font-size: 0.75em; color: #aaa;padding-bottom:8px"><span style="margin-top:3px">Copyright 2018 www.charterwing.com </span></p>
                 <br />
             </div>
@@ -286,46 +290,64 @@
                 }
             });
 
-            function recalculatePrices() {
-                var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
-                var rate = 1;
+        function recalculatePrices() {
+            var selectedCurrency = localStorage.getItem("selectedCurrency") ? localStorage.getItem("selectedCurrency") : "USD";
+            var rate = 1;
+            $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
                 if (selectedCurrency == "UAH") {
-                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
-                        $.each(data, function (key, val) {
-                            if (val.ccy == "USD") {
-                                rate = val.sale;
-                            }
-                        });
-
-                        drawNewPrices(rate, selectedCurrency);
-                    });
+                    rate = data[0].sale
                 }
                 else if (selectedCurrency == "RUB") {
-                    alert("Not ready yet");
+                    rate = data[0].sale / data[2].sale;
                 }
-                else if (selectedCurrency == "USD") {
-                    $.getJSON("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11", function (data) {
-                        drawNewPrices(rate, selectedCurrency);
+
+                drawNewPrices(rate, selectedCurrency);
+            });
+        }
+
+        function drawNewPrices(newRate, selectedCurrency) {
+            $('.priceToConvert').each(function () {
+                var sign = "$";
+                var price = parseFloat($(this).attr("data-usd-price"));
+                var convertedPrice = Math.round(price * newRate);
+
+                $(this).text(convertedPrice);
+
+                if (selectedCurrency != "USD") {
+                    sign = selectedCurrency == "UAH" ? "₴" : "₽";
+                }
+
+                $(this).text($(this).text() + sign);
+                $('.selected-currency-sign').text(sign);
+            });
+        }
+    </script>
+
+    <script>
+            $(function () {
+                $('#portmoneForm').submit(function (event) {
+
+                    event.preventDefault(); //this will prevent the default submit
+
+                    var request = $.ajax({
+                        url: "/portmone/create-order",
+                        type: "POST",
+                        data: JSON.stringify({ orderNumber: $('#shop_order_number').val() }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8"
                     });
-                }
 
-                function drawNewPrices(newRate, selectedCurrency) {
-                    $('.priceToConvert').each(function () {
-                        var sign = "$";
-                        var price = parseFloat($(this).attr("data-usd-price"));
-                        var convertedPrice = Math.round(price * newRate);
 
-                        $(this).text(convertedPrice);
+                    request.done(function () {
+                        $('#portmoneForm').unbind('submit').submit(); // continue the submit unbind preventDefault
+                    });
 
-                        if (selectedCurrency != "USD") {
-                            sign = selectedCurrency == "UAH" ? "₴" : "₽";
-                        }
-
-                        $(this).text($(this).text() + sign);
-                        $('.selected-currency-sign').text(sign);
-                    })
-                }
-            };
+                    request.fail(function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    });
+                   
+                })
+            });
     </script>
 
     @RenderSection("scripts", required: false)

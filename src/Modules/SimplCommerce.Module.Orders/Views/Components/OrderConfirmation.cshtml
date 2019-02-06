@@ -1,145 +1,172 @@
 ﻿@model SimplCommerce.Module.Orders.Models.Order
 
-@{ 
+@if (Model != null)
+{
     var orderItem = Model.OrderItems[0];
     var flight = Model.OrderItems[0].Product;
     var carrierImageUrl = ViewBag.CarrierImageUrl;
+    var returnCarrierImageUrl = ViewBag.ReturnCarrierImageUrl;
     var totalPassengers = orderItem.QuantityBaby + orderItem.QuantityChild + orderItem.Quantity;
-}
 
-<div class="panel-group passenger-registraion-panel">
-    <div class="row">
-        <div class="col-sm-12 text-center"><h4>Order # @Model.Id Status: @Model.OrderStatus</h4></div>
-        <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <div class="row ">
-                                <div class="col-sm-1 hidden-xs"><strong>Carrier</strong></div>
-                                <div class="col-sm-2 hidden-xs"><strong>Flight</strong></div>
-                                <div class="col-sm-3 hidden-xs"><strong>Departure</strong></div>
-                                <div class="col-sm-3 hidden-xs"><strong>Destiation</strong></div>
-                                <div class="col-sm-1 hidden-xs"><strong>Date</strong></div>
-                                <div class="col-sm-2 hidden-xs"><strong>Time</strong></div>
+    if (string.IsNullOrEmpty(ViewBag.ReturnCarrierImageUrl))
+    {
+        returnCarrierImageUrl = carrierImageUrl;
+    }
+
+    <h2>@Localizer["Your order has been received!"]</h2>
+
+    <div class="panel-group passenger-registraion-panel">
+        <div class="row">
+            <div class="col-sm-12 text-center"><h4>Order # @Model.Id Status: @Model.OrderStatus</h4></div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="row ">
+                                    <div class="col-sm-2 text-center hidden-xs"><strong>Carrier</strong></div>
+                                    <div class="col-sm-2 hidden-xs"><strong>Flight</strong></div>
+                                    <div class="col-sm-2 hidden-xs"><strong>Departure</strong></div>
+                                    <div class="col-sm-2 hidden-xs"><strong>Destiation</strong></div>
+                                    <div class="col-sm-2 hidden-xs"><strong>Date</strong></div>
+                                    <div class="col-sm-2 hidden-xs"><strong>Time</strong></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3 text-right hidden-xs">
-                            <strong>Quantity/Price</strong>
+                            <div class="col-sm-3 text-right hidden-xs">
+                                <strong>Quantity/Price</strong>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <div class="row">
-                                <div class="col-sm-1">
-                                        <figure class="text-center">
-                                            <img src="@carrierImageUrl">
-                                            <figcaption style="font-size:smaller">@flight.Brand.Name</figcaption>
-                                        </figure>
-                                </div>
-                                <div class="col-sm-2">
-                                    <p>
-                                        <span style="font-size:12px" class="label label-default">@flight.FlightNumber @flight.FlightClass </span>
-                                    </p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p>@flight.Departure</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p>@flight.Destination</p>
-                                </div>
-                                <div class="col-sm-1"><p>@flight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
-                                <div class="col-sm-2"><p>@flight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
-                            </div>
-                            @if (flight.IsRoundTrip)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-1">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                @if (Model.OrderItems.Count > 1)
+                                {
+                                    var returnFlight = Model.OrderItems[1].Product;
+
+                                    <div class="row">
+                                        <div class="col-sm-2">
                                             <figure class="text-center">
-                                                <img src="@carrierImageUrl">
-                                                <figcaption style="font-size:smaller">@flight.ReturnCarrier.Name</figcaption>
+                                                <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
+                                                <figcaption style="font-size:10px; color:gray">@returnFlight.Brand.Name</figcaption>
                                             </figure>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>
+                                                <span style="font-size:12px" class="label label-default">@returnFlight.FlightNumber @returnFlight.FlightClass </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@returnFlight.Departure</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@returnFlight.Destination</p>
+                                        </div>
+                                        <div class="col-sm-2"><p>@returnFlight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                        <div class="col-sm-2"><p>@returnFlight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <figure class="text-center">
+                                            <img style="max-height:40px;max-width:150px" src="@returnCarrierImageUrl">
+                                            <figcaption style="font-size:10px; color:gray">@flight.Brand.Name</figcaption>
+                                        </figure>
                                     </div>
                                     <div class="col-sm-2">
                                         <p>
-                                            <span style="font-size:12px" class="label label-default">@flight.ReturnFlightNumber @flight.FlightClass </span>
+                                            <span style="font-size:12px" class="label label-default">@flight.FlightNumber @flight.FlightClass </span>
                                         </p>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <p>@flight.Destination</p>
-                                    </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <p>@flight.Departure</p>
                                     </div>
-                                    <div class="col-sm-1"><p>@flight.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p></div>
-                                    <div class="col-sm-2"><p>@flight.ReturnLandingTime.Value.DateTime.ToString("HH:mm")</p></div>
+                                    <div class="col-sm-2">
+                                        <p>@flight.Destination</p>
+                                    </div>
+                                    <div class="col-sm-2"><p>@flight.DepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                    <div class="col-sm-2"><p>@flight.LandingTime.Value.DateTime.ToString("HH:mm")</p></div>
                                 </div>
-                            }
-                        </div>
-                        <div class="col-sm-3 text-right">
-                            <p><i style="font-size:x-large" class="fas fa-male"></i>&nbsp;@orderItem.Quantity x <span class="priceToConvert" style="color:green">&nbsp;@orderItem.ProductPrice</span> + <i style="font-size:large" class="fas fa-male"></i> @Model.OrderItems[0].QuantityChild x <span class="priceToConvert" style="color:green">@orderItem.ProductPrice</span>  +  <i class="fas fa-male"></i>&nbsp;@orderItem.QuantityBaby x <span class="priceToConvert" style="color:green">@orderItem.ChildPrice</span></p>
-                            <p></p>
-                            <p><strong>Agency Fee</strong> <span class="priceToConvert" style="color:green">@Model.ShippingAmount</span></p>
+                                @if (flight.IsRoundTrip)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <figure class="text-center">
+                                                <img style="max-height:40px;max-width:100px" src="@carrierImageUrl">
+                                                <figcaption style="font-size:10px; color:gray">@flight.ReturnCarrier.Name</figcaption>
+                                            </figure>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>
+                                                <span style="font-size:12px" class="label label-default">@flight.ReturnFlightNumber @flight.FlightClass </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@flight.Destination</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>@flight.Departure</p>
+                                        </div>
+                                        <div class="col-sm-2"><p>@flight.ReturnDepartureDate.Value.DateTime.ToShortDateString()</p></div>
+                                        <div class="col-sm-2"><p>@flight.ReturnLandingTime.Value.DateTime.ToString("HH:mm")</p></div>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="col-sm-3 text-right">
+                                <p><i style="font-size:x-large" class="fas fa-male"></i>&nbsp;@orderItem.Quantity x <span class="priceToConvert" style="color:green">&nbsp;@orderItem.ProductPrice</span> + <i style="font-size:large" class="fas fa-male"></i> @Model.OrderItems[0].QuantityChild x <span class="priceToConvert" style="color:green">@orderItem.ProductPrice</span>  +  <i class="fas fa-male"></i>&nbsp;@orderItem.QuantityBaby x <span class="priceToConvert" style="color:green">@orderItem.ChildPrice</span></p>
+                                <p></p>
+                                <p><strong>Agency Fee</strong> <span class="priceToConvert" style="color:green">@Model.ShippingAmount</span></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-sm-6">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email</span> at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
-                        <div class="col-sm-6 text-right">
-                            <strong>Order Total <span class="priceToConvert" style="color:green">@Model.OrderTotal</span></strong> 
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-9">Created by <span style="color:cornflowerblue">@Model.ShippingAddress.Email </span> (@Model.ShippingAddress.Mobile)  at @Model.CreatedOn.DateTime.ToString() (Portmone # @Model.ExternalNumber)</div>
+                            <div class="col-sm-3 text-right">
+                                <strong>Order Total <span class="priceToConvert" style="color:green">@Model.OrderTotal</span></strong>
+                            </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 text-center"><h4>@totalPassengers Passenger(s)</h4></div>
-        <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-2 hidden-xs"><strong>First Name</strong></div>
-                        <div class="col-sm-2 hidden-xs"><strong>Last Name</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Birth Date</strong></div> 
-                        <div class="col-sm-1 hidden-xs"><strong>Document#</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
-                        <div class="col-sm-2 hidden-xs"><strong>Email</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Phone</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Country</strong></div>
-                        <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
+        <div class="row">
+            <div class="col-sm-12 text-center"><h4>@totalPassengers Passenger(s)</h4></div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-2 hidden-xs"><strong>First Name</strong></div>
+                            <div class="col-sm-2 hidden-xs"><strong>Last Name</strong></div>
+                            <div class="col-sm-2 hidden-xs"><strong>Birth Date</strong></div>
+                            <div class="col-sm-2 hidden-xs"><strong>Document#</strong></div>
+                            <div class="col-sm-1 hidden-xs"><strong>Expiration</strong></div>
+                            <div class="col-sm-2 hidden-xs"><strong>Country</strong></div>
+                            <div class="col-sm-1 hidden-xs"><strong>Sex</strong></div>
+                        </div>
                     </div>
-                </div>
-                <div class="panel-body">
+                    <div class="panel-body">
                         <div class="address-container">
                             @foreach (var address in Model.RegistrationAddress)
                             {
-                                <div class="row passenger-row" >
+                                <div class="row passenger-row">
                                     <div class="col-sm-4 col-md-2 col-xs-12 first-name">
                                         <label class="visible-xs visible-sm hidden-label">First Name:&nbsp;</label>@address.Address.ContactName
                                     </div>
                                     <div class="col-sm-4 col-md-2 col-xs-12 last-name">
                                         <label class="visible-xs visible-sm hidden-label">Last Name:&nbsp;</label>@address.Address.AddressLine1
                                     </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
+                                    <div class="col-sm-4 col-md-2 col-xs-12">
                                         <label class="visible-xs visible-sm hidden-label">Birth Date:&nbsp;</label>@address.Address.AddressLine2
                                     </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12 document-no">
+                                    <div class="col-sm-4 col-md-2 col-xs-12 document-no">
                                         <label class="visible-xs visible-sm hidden-label">Document #:&nbsp;</label>@address.Address.City
                                     </div>
                                     <div class="col-sm-4 col-md-1 col-xs-12">
                                         <label class="visible-xs visible-sm hidden-label">Expiration:&nbsp;</label>@address.Address.PostalCode
                                     </div>
                                     <div class="col-sm-4 col-md-2 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Email:&nbsp;</label>@address.Address.Email
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
-                                        <label class="visible-xs visible-sm hidden-label">Phone:&nbsp;</label>@address.Address.Mobile
-                                    </div>
-                                    <div class="col-sm-4 col-md-1 col-xs-12">
                                         <label class="visible-xs visible-sm hidden-label">Country:&nbsp;</label>@address.Address.Country.Name
                                     </div>
                                     <div class="col-sm-4 col-md-1 col-xs-12">
@@ -148,10 +175,17 @@
                                 </div>
                             }
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <h1>Order not found</h1>
+}
+
+
 
 

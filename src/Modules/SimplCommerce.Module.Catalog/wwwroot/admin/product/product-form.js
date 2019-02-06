@@ -361,6 +361,10 @@
         vm.save = function save() {
             var promise;
 
+            if (!$('#productForm')[0].checkValidity()) {
+                return;
+            }
+
             // ng-upload will post null as text
             vm.product.taxClassId = vm.product.taxClassId === null ? '' : vm.product.taxClassId;
             vm.product.brandId = vm.product.brandId === null ? '' : vm.product.brandId;

@@ -72,7 +72,13 @@ namespace SimplCommerce.Module.Orders.Services
                 billingAddress = shippingAddress = _userAddressRepository.Query().Where(x => x.Id == shippingData.ShippingAddressId).Select(x => x.Address).First();
             }
 
-            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest);
+            billingAddress.Email = shippingData.ContactEmail;
+            billingAddress.Mobile = string.Format("{0} {1}", shippingData.ContactName, shippingData.ContactPhone);
+            
+            shippingAddress.Email = shippingData.ContactEmail;
+            shippingAddress.Mobile = string.Format("{0} {1}", shippingData.ContactName, shippingData.ContactPhone);
+
+            return await CreateOrder(user, paymentMethod, shippingData, billingAddress, shippingAddress, isVendor, isGuest, orderStatus);
         }
 
         public async Task<Order> CreateOrder(User user, string paymentMethod, DeliveryInformationVm shippingData, Address billingAddress, Address shippingAddress, bool isVendor, bool isGuest, OrderStatus orderStatus = OrderStatus.New)
@@ -127,6 +133,7 @@ namespace SimplCommerce.Module.Orders.Services
                 BillingAddress = orderBillingAddress,
                 ShippingAddress = orderShippingAddress,
                 PaymentMethod = paymentMethod,
+                OrderStatus = orderStatus
             };
 
             foreach (var cartItem in cart.Items)
@@ -196,12 +203,7 @@ namespace SimplCommerce.Module.Orders.Services
 
                 order.RegistrationAddress.Add(orderRegistrationAddress);
             }
-
-            if (isGuest)
-            {
-                user.Email = order.RegistrationAddress.First().Address.Email;
-            }
-
+            
             _orderRepository.SaveChanges();
 
             var prefix = "E"; // Default
@@ -214,17 +216,10 @@ namespace SimplCommerce.Module.Orders.Services
             order.PnrNumber = prefix + order.Id.ToString("000000.##");
             _orderRepository.SaveChanges();
 
+            user.Email = order.ShippingAddress.Email;
+
             await _orderEmailService.SendEmailToUser(user, order, "OrderEmailToCustomer");
             await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
-
-            foreach (var registrationAddress in order.RegistrationAddress)
-            {
-                var email = user.Email;
-                if (email != registrationAddress.Address.Email) { 
-                    user.Email = registrationAddress.Address.Email;
-                    await _orderEmailService.SendEmailToUser(user, order, "TicketEmail");
-                }
-            }
 
             return order;
         }
@@ -247,7 +242,22 @@ namespace SimplCommerce.Module.Orders.Services
             return order;
         }
 
-        public Order GetOrderByPnr(string pnr)
+        public Order GetOrderByNumber(string orderNumber)
+        {
+            var order = _orderRepository.Query()
+                                .Include(x => x.RegistrationAddress).ThenInclude(ra => ra.Address).ThenInclude(a => a.Country)
+                                .FirstOrDefault(x => x.ExternalNumber == orderNumber);
+
+            if (order == null)
+            {
+                throw new ApplicationException($"Order not found by orderNumber = {orderNumber}");
+            }
+
+            return order;
+        }
+
+
+        public Order GetOrderByPnr(string pnr, string lastName)
         {
             var order = _orderRepository.Query().Include(x => x.ShippingAddress).ThenInclude(x => x.District)
                 .Include(x => x.ShippingAddress).ThenInclude(x => x.StateOrProvince)
@@ -260,12 +270,8 @@ namespace SimplCommerce.Module.Orders.Services
                 .Include(x => x.RegistrationAddress).ThenInclude(ra => ra.Address).ThenInclude(a => a.Country)
                 .FirstOrDefault(x => x.PnrNumber == pnr);
 
-            if (order == null)
-            {
-                throw new ApplicationException($"Order not found by PNR = {pnr}");
-            }
-
-            return order;
+            return order.RegistrationAddress[0].Address.AddressLine1.ToLower() == lastName.ToLower() ? 
+                order : null;
         }
 
         public async Task<decimal> GetTax(long cartOwnerUserId, long countryId, long stateOrProvinceId)
